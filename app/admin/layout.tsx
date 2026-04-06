@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
-const ADMIN_EMAIL = "isaac@dibbmedia.com"
+const ADMIN_EMAIL = "isaac@dibbenterprizes.com"
 
 const navItems = [
   { title: "Overview", href: "/admin", icon: LayoutDashboard },

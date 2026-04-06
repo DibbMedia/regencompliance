@@ -78,8 +78,13 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
 
     let scanResult
     try {
-      scanResult = JSON.parse(responseText)
+      let cleaned = responseText.trim()
+      if (cleaned.startsWith("```")) {
+        cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "")
+      }
+      scanResult = JSON.parse(cleaned)
     } catch {
+      console.error("Failed to parse scan response:", responseText.slice(0, 500))
       return NextResponse.json(
         { error: "Compliance engine returned invalid response. Please try again." },
         { status: 503 }
