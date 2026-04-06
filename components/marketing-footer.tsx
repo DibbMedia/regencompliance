@@ -3,7 +3,7 @@ import { Shield } from "lucide-react"
 
 export function MarketingFooter() {
   return (
-    <footer className="bg-[#060606] border-t border-white/[0.06]">
+    <footer className="relative z-10 bg-[#060606] border-t border-white/10">
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-4">
           <div className="sm:col-span-2">
@@ -13,26 +13,26 @@ export function MarketingFooter() {
               </div>
               <span className="text-[15px] font-bold text-white">RegenCompliance</span>
             </div>
-            <p className="text-sm text-white/40 leading-relaxed max-w-xs">
+            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
               FDA/FTC compliance scanning built exclusively for regenerative medicine clinics. Scan, fix, and monitor your marketing content.
             </p>
           </div>
           <div>
-            <p className="text-xs font-bold text-white/50 uppercase tracking-[0.15em] mb-4">Product</p>
+            <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-4">Product</p>
             <div className="space-y-2.5">
-              <Link href="/features" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Features</Link>
-              <Link href="/pricing" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Pricing</Link>
-              <Link href="/faq" className="block text-sm text-white/40 hover:text-white/70 transition-colors">FAQ</Link>
-              <Link href="/demo" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Demo</Link>
-              <Link href="/login" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Log In</Link>
+              <Link href="/features" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Features</Link>
+              <Link href="/pricing" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Pricing</Link>
+              <Link href="/faq" className="block text-sm text-white/60 hover:text-white/70 transition-colors">FAQ</Link>
+              <Link href="/demo" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Demo</Link>
+              <Link href="/login" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Log In</Link>
             </div>
           </div>
           <div>
-            <p className="text-xs font-bold text-white/50 uppercase tracking-[0.15em] mb-4">Legal</p>
+            <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-4">Legal</p>
             <div className="space-y-2.5">
-              <Link href="/privacy" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Terms of Service</Link>
-              <a href="mailto:support@regenportal.com" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Contact</a>
+              <Link href="/privacy" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Terms of Service</Link>
+              <a href="mailto:support@regenportal.com" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Contact</a>
             </div>
           </div>
         </div>

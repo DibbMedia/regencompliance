@@ -324,9 +324,9 @@ export default function LandingPage() {
       </section>
 
       {/* ===== PRICING ===== */}
-      <section id="pricing" className="relative py-16 scroll-mt-20">
+      <section id="pricing" className="relative py-12 scroll-mt-20">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-8">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Pricing</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">One plan. Everything included.</h2>
             <p className="mt-4 text-base text-white/60">No tiers, no hidden fees, no contracts.</p>
@@ -360,9 +360,9 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section id="faq" className="py-16 scroll-mt-20">
+      <section id="faq" className="relative py-12 scroll-mt-20">
         <div className="mx-auto max-w-2xl px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-8">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">FAQ</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Common questions</h2>
           </div>
@@ -392,7 +392,7 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="relative py-16 overflow-hidden">
+      <section className="relative py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] blur-[120px] rounded-full" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
