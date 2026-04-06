@@ -162,8 +162,8 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-[#0a0a0a] border border-white/[0.06] p-5 text-[13px] text-white/60 leading-[2.1] mb-5">
-                  <span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-md border border-amber-500/20 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-md border border-amber-500/20 font-medium">no side effects</span>. Our{" "}<span className="text-white/40">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
+                <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-5 text-[13px] text-white/60 leading-[2.2] mb-5">
+                  <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/50">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
                   <div className="flex justify-end mt-2">
                     <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
                   </div>
@@ -177,7 +177,7 @@ export default function LandingPage() {
               </div>
 
               {/* Right: Results */}
-              <div className="md:col-span-2 p-6 sm:p-8 bg-[#0d0d0d]">
+              <div className="md:col-span-2 p-6 sm:p-8 bg-[#0e0e0e]">
                 <div className="flex flex-col items-center mb-5">
                   <div className="relative">
                     <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
@@ -191,12 +191,12 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-center gap-5 text-[11px] text-white/50 mb-5 pb-5 border-b border-white/[0.06]">
+                <div className="flex justify-center gap-5 text-[11px] text-white/60 mb-5 pb-5 border-b border-white/10">
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" /> 3 high risk</span>
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" /> 2 medium</span>
                 </div>
 
-                <p className="text-[11px] text-white/40 mb-3 font-semibold uppercase tracking-wider">Flagged Phrases</p>
+                <p className="text-[11px] text-white/50 mb-3 font-bold uppercase tracking-widest">Flagged Phrases</p>
                 <div className="space-y-2">
                   {[
                     { phrase: "cures arthritis", reason: "Disease cure claim", level: "HIGH", c: "red" },
@@ -205,18 +205,18 @@ export default function LandingPage() {
                     { phrase: "FDA-approved stem cells", reason: "False FDA claim", level: "MED", c: "amber" },
                     { phrase: "no side effects", reason: "Safety claim", level: "MED", c: "amber" },
                   ].map((f) => (
-                    <div key={f.phrase} className={`rounded-lg border p-2.5 flex items-center justify-between ${f.c === "red" ? "border-red-500/15 bg-red-500/[0.04]" : "border-amber-500/15 bg-amber-500/[0.04]"}`}>
+                    <div key={f.phrase} className={`rounded-lg border p-3 flex items-center justify-between ${f.c === "red" ? "border-red-500/30 bg-red-950/40" : "border-amber-500/30 bg-amber-950/40"}`}>
                       <div>
-                        <code className={`text-[11px] font-semibold ${f.c === "red" ? "text-red-400" : "text-amber-400"}`}>&quot;{f.phrase}&quot;</code>
-                        <p className="text-[9px] text-white/25 mt-0.5">{f.reason}</p>
+                        <code className={`text-[12px] font-semibold ${f.c === "red" ? "text-red-300" : "text-amber-300"}`}>&quot;{f.phrase}&quot;</code>
+                        <p className="text-[10px] text-white/40 mt-0.5">{f.reason}</p>
                       </div>
-                      <span className={`text-[8px] font-bold tracking-wider px-2 py-0.5 rounded-md border ${f.c === "red" ? "text-red-400 bg-red-500/10 border-red-500/15" : "text-amber-400 bg-amber-500/10 border-amber-500/15"}`}>{f.level}</span>
+                      <span className={`text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md border ${f.c === "red" ? "text-red-300 bg-red-500/20 border-red-500/30" : "text-amber-300 bg-amber-500/20 border-amber-500/30"}`}>{f.level}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-4 h-9 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] flex items-center justify-center text-[11px] font-semibold text-[#55E039] shadow-[0_0_15px_rgba(85,224,57,0.08)] cursor-pointer">
-                  <Sparkles className="h-3 w-3 mr-1.5" /> Rewrite for Compliance
+                <div className="mt-4 h-10 rounded-lg border border-[#55E039]/30 bg-[#55E039]/10 flex items-center justify-center text-[12px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.12)] cursor-pointer hover:bg-[#55E039]/15 transition-colors">
+                  <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Rewrite for Compliance
                 </div>
               </div>
             </div>
