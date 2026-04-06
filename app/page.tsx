@@ -12,7 +12,6 @@ import {
   AlertTriangle,
   Zap,
   Lock,
-  ArrowDown,
 } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -118,10 +117,10 @@ export default function LandingPage() {
                 Start for $497/month
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="#how-it-works" className="inline-flex h-12 items-center gap-2 rounded-full border border-white/10 px-8 text-base font-medium text-slate-300 hover:bg-white/5 hover:border-white/20 transition-all">
-                See How It Works
-                <ArrowDown className="h-4 w-4" />
-              </a>
+              <Link href="/demo" className="inline-flex h-12 items-center gap-2 rounded-full border border-[#55E039]/30 bg-[#55E039]/5 px-8 text-base font-medium text-[#55E039] hover:bg-[#55E039]/10 hover:border-[#55E039]/50 transition-all">
+                Try Free Demo
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
             <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-slate-500">
               <span className="flex items-center gap-2">
