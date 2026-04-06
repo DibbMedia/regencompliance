@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   Shield,
+  Newspaper,
   Clock,
   BookOpen,
   Bell,
@@ -26,6 +27,7 @@ import { useRouter } from "next/navigation"
 
 const navItems = [
   { title: "Scanner", href: "/dashboard/scanner", icon: Shield },
+  { title: "News Feed", href: "/dashboard/feed", icon: Newspaper },
   { title: "Scan History", href: "/dashboard/history", icon: Clock },
   { title: "Compliance Library", href: "/dashboard/library", icon: BookOpen },
   { title: "Notifications", href: "/dashboard/notifications", icon: Bell },
