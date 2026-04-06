@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
     // Claude Haiku scan
     const response = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20241022",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 2048,
       system: `You are a regulatory compliance expert for FDA/FTC regenerative medicine marketing rules.
 Rules JSON: ${JSON.stringify(rules || [])}

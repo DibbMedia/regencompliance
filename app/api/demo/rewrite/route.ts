@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       .join("; ")
 
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-5-20241022",
+      model: "claude-4-sonnet-20250514",
       max_tokens: 4096,
       system: `You are a healthcare marketing compliance editor for regenerative medicine.
 Rewrite the content to be fully FDA/FTC compliant.

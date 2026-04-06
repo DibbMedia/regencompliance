@@ -61,7 +61,7 @@ export async function GET(request: Request) {
             if (!bodyText.trim()) continue
 
             const response = await anthropic.messages.create({
-              model: "claude-haiku-4-5-20241022",
+              model: "claude-haiku-4-5-20251001",
               max_tokens: 2048,
               system: "Extract the specific marketing phrases cited as violations in this FDA warning letter. For each: return { banned_phrase, reason (one sentence), compliant_alternative, risk_level (high/medium/low) }. Return as JSON array only. If no relevant phrases, return [].",
               messages: [{ role: "user", content: bodyText }],
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
             if (!bodyText.trim()) continue
 
             const response = await anthropic.messages.create({
-              model: "claude-haiku-4-5-20241022",
+              model: "claude-haiku-4-5-20251001",
               max_tokens: 2048,
               system: "Extract the specific marketing phrases cited as deceptive or unsubstantiated in this FTC press release. For each: return { banned_phrase, reason (one sentence), compliant_alternative, risk_level (high/medium/low) }. Return as JSON array only. If no relevant phrases, return [].",
               messages: [{ role: "user", content: bodyText }],
