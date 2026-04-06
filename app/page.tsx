@@ -13,13 +13,14 @@ import {
   Users,
   Bell,
   AlertTriangle,
-  Zap,
   Lock,
   ShieldCheck,
   Activity,
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -58,18 +59,6 @@ const faqs = [
   { q: "What if I cancel?", a: "You keep full access through your billing period. No contracts, no fees, no penalties. Resubscribe anytime." },
 ]
 
-function GridPattern() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none opacity-100"
-      style={{
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-      }}
-    />
-  )
-}
-
 export default function LandingPage() {
   const [mobileMenu, setMobileMenu] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -77,174 +66,207 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
 
-      {/* ============ HEADER ============ */}
+      {/* ===== BACKGROUND LAYERS ===== */}
+      <div className="fixed inset-0 pointer-events-none">
+        {/* Radial mesh gradient */}
+        <div className="absolute inset-0" style={{
+          background: "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(85,224,57,0.08) 0%, transparent 50%), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(85,224,57,0.04) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(137,227,228,0.03) 0%, transparent 50%)"
+        }} />
+        {/* Dot grid pattern */}
+        <div className="absolute inset-0 opacity-[0.35]" style={{
+          backgroundImage: "radial-gradient(circle at center, rgba(255,255,255,0.15) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }} />
+        {/* Noise texture */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
+      {/* ===== HEADER ===== */}
       <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="absolute inset-0 bg-[#0a0a0a]/70 backdrop-blur-xl border-b border-white/10" />
+        <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-2xl border-b border-white/10" />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="flex h-16 items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-lg shadow-[#55E039]/25">
-                <Shield className="h-4.5 w-4.5 text-white" />
+                <Shield className="h-4 w-4 text-white" />
               </div>
               <span className="text-[15px] font-bold tracking-tight">RegenCompliance</span>
             </Link>
-
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-[13px] text-white/60 hover:text-white transition-colors">Features</a>
-              <a href="#pricing" className="text-[13px] text-white/60 hover:text-white transition-colors">Pricing</a>
-              <a href="#faq" className="text-[13px] text-white/60 hover:text-white transition-colors">FAQ</a>
+              <Link href="/features" className="text-[13px] text-white/60 hover:text-white transition-colors">Features</Link>
+              <Link href="/pricing" className="text-[13px] text-white/60 hover:text-white transition-colors">Pricing</Link>
+              <Link href="/faq" className="text-[13px] text-white/60 hover:text-white transition-colors">FAQ</Link>
               <Link href="/demo" className="text-[13px] text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Try Demo</Link>
             </nav>
-
             <div className="hidden md:flex items-center gap-3">
               <Link href="/login" className="text-[13px] text-white/60 hover:text-white transition-colors px-4 py-2">Log In</Link>
-              <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+              <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
                 Get Started
                 <ArrowRight className="h-3.5 w-3.5" />
               </CheckoutButton>
             </div>
-
             <button className="md:hidden text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)}>
               {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
           {mobileMenu && (
-            <div className="md:hidden border-t border-white/10 py-4 space-y-1">
-              <a href="#features" className="block text-sm text-white/60 hover:text-white py-2.5 px-2 rounded-lg hover:bg-white/5">Features</a>
-              <a href="#pricing" className="block text-sm text-white/60 hover:text-white py-2.5 px-2 rounded-lg hover:bg-white/5">Pricing</a>
-              <a href="#faq" className="block text-sm text-white/60 hover:text-white py-2.5 px-2 rounded-lg hover:bg-white/5">FAQ</a>
-              <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5 px-2">Try Demo</Link>
-              <Link href="/login" className="block text-sm text-white/60 py-2.5 px-2">Log In</Link>
+            <div className="md:hidden border-t border-white/10 py-4 space-y-1 bg-[#0a0a0a]/90 backdrop-blur-xl -mx-6 px-6">
+              <Link href="/features" className="block text-sm text-white/60 hover:text-white py-2.5">Features</Link>
+              <Link href="/pricing" className="block text-sm text-white/60 hover:text-white py-2.5">Pricing</Link>
+              <Link href="/faq" className="block text-sm text-white/60 hover:text-white py-2.5">FAQ</Link>
+              <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5">Try Demo</Link>
+              <Link href="/login" className="block text-sm text-white/60 py-2.5">Log In</Link>
             </div>
           )}
         </div>
       </header>
 
-      {/* ============ HERO ============ */}
-      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/3 w-[700px] h-[500px] bg-[#55E039]/[0.07] rounded-full blur-[150px]" />
-          <div className="absolute top-[200px] right-0 w-[400px] h-[400px] bg-[#55E039]/[0.04] rounded-full blur-[120px]" />
-          <GridPattern />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
-        </div>
-
+      {/* ===== HERO ===== */}
+      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24">
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8 shadow-[0_0_20px_rgba(85,224,57,0.1)]">
               <ShieldCheck className="h-3.5 w-3.5" />
               FDA/FTC Compliance for Regenerative Medicine
             </div>
-
             <h1 className="text-4xl sm:text-5xl lg:text-[4.25rem] font-extrabold tracking-tight leading-[1.08]">
               Scan your content
               <br />
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">before regulators do.</span>
             </h1>
-
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
               FDA and FTC enforcement against regen clinics hit a 25-year high. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
-
             <div className="mt-10 flex flex-wrap gap-4">
-              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
                 Start Scanning — $497/mo
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
-              <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/80 hover:bg-white/10 hover:text-white backdrop-blur-sm transition-all">
+              <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
                 Try Free Demo
-                <ArrowRight className="h-4 w-4 opacity-50" />
+                <ArrowRight className="h-4 w-4 opacity-60" />
               </Link>
             </div>
-
             <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/50">
-              <span className="flex items-center gap-2">
-                <Lock className="h-4 w-4 text-[#55E039]/70" /> Zero patient data
-              </span>
-              <span className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-[#55E039]/70" /> Updated daily
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-[#55E039]/70" /> Cancel anytime
-              </span>
+              <span className="flex items-center gap-2"><Lock className="h-4 w-4 text-[#55E039]/70" /> Zero patient data</span>
+              <span className="flex items-center gap-2"><Activity className="h-4 w-4 text-[#55E039]/70" /> Updated daily</span>
+              <span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#55E039]/70" /> Cancel anytime</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ SCANNER MOCKUP ============ */}
-      <section className="pb-24 sm:pb-32">
+      {/* ===== SCANNER MOCKUP ===== */}
+      <section className="relative pb-28 sm:pb-36">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden shadow-2xl shadow-black/50 backdrop-blur-sm">
+          <div className="relative rounded-2xl border border-white/10 bg-[#111111] overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.6)]">
+            {/* Green glow at top */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#55E039]/40 to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-[#55E039]/[0.05] blur-[40px]" />
+
             {/* Browser Chrome */}
-            <div className="flex items-center gap-2.5 border-b border-white/10 px-5 py-3 bg-white/[0.02]">
+            <div className="flex items-center border-b border-white/[0.06] px-5 py-3">
               <div className="flex gap-2">
                 <div className="h-3 w-3 rounded-full bg-[#FF5F57]" />
                 <div className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
                 <div className="h-3 w-3 rounded-full bg-[#28C840]" />
               </div>
-              <div className="mx-auto flex h-7 items-center rounded-lg bg-white/5 border border-white/5 px-4 text-[11px] text-white/30 font-mono tracking-wide">
+              <div className="mx-auto flex h-7 items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-4 text-[11px] text-white/25 font-mono">
+                <Lock className="h-3 w-3 mr-1.5 text-[#28C840]" />
                 compliance.regenportal.com/dashboard/scanner
               </div>
+              <div className="w-[52px]" />
             </div>
-            {/* Content */}
-            <div className="grid md:grid-cols-5">
+
+            {/* App Content */}
+            <div className="grid md:grid-cols-5 min-h-[380px]">
+              {/* Left: Input */}
               <div className="md:col-span-3 p-6 sm:p-8 border-r border-white/[0.06]">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="h-8 w-8 rounded-lg bg-[#55E039]/10 flex items-center justify-center">
-                    <Shield className="h-4 w-4 text-[#55E039]" />
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#55E039]/20 to-[#55E039]/5 border border-[#55E039]/15 flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-[#55E039]" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-bold text-white block">Compliance Scanner</span>
+                      <span className="text-[10px] text-white/30">Paste content below to scan</span>
+                    </div>
                   </div>
-                  <span className="text-sm font-semibold text-white">Compliance Scanner</span>
+                  <div className="flex gap-1.5">
+                    {["Website", "Social", "Ad", "Email"].map((t, i) => (
+                      <span key={t} className={`text-[10px] px-2.5 py-1 rounded-md font-medium ${i === 0 ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20" : "text-white/30 hover:text-white/50 cursor-pointer"}`}>{t}</span>
+                    ))}
+                  </div>
                 </div>
-                <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5 text-sm text-white/50 leading-[2]">
-                  <span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded border border-red-500/15">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded border border-red-500/15">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/15">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded border border-red-500/15">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/15">no side effects</span>.
+
+                <div className="rounded-xl bg-[#0a0a0a] border border-white/[0.06] p-5 text-[13px] text-white/60 leading-[2.1] mb-5">
+                  <span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-md border border-amber-500/20 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-md border border-red-500/20 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-md border border-amber-500/20 font-medium">no side effects</span>. Our{" "}<span className="text-white/40">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
+                  <div className="flex justify-end mt-2">
+                    <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
+                  </div>
                 </div>
-                <div className="mt-5 h-11 rounded-xl bg-gradient-to-r from-[#55E039]/10 to-[#3BB82A]/10 border border-[#55E039]/20 flex items-center justify-center text-sm font-semibold text-[#55E039]">
+
+                <div className="h-11 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] flex items-center justify-center text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] cursor-pointer">
+                  <Scan className="h-4 w-4 mr-2" />
                   Scan for Compliance Issues
                 </div>
+                <p className="text-[10px] text-white/20 text-center mt-3">Educational guidance only. Not legal or regulatory advice.</p>
               </div>
-              <div className="md:col-span-2 p-6 sm:p-8">
-                <div className="flex flex-col items-center mb-4">
+
+              {/* Right: Results */}
+              <div className="md:col-span-2 p-6 sm:p-8 bg-[#0d0d0d]">
+                <div className="flex flex-col items-center mb-5">
                   <div className="relative">
-                    <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="6" className="text-white/[0.05]" />
-                      <circle cx="50" cy="50" r="42" fill="none" strokeWidth="6" strokeLinecap="round" className="stroke-red-500" strokeDasharray="264" strokeDashoffset="198" style={{ filter: "drop-shadow(0 0 8px rgba(239,68,68,0.4))" }} />
+                    <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="5" className="text-white/[0.04]" />
+                      <circle cx="50" cy="50" r="42" fill="none" strokeWidth="5" strokeLinecap="round" className="stroke-red-500" strokeDasharray="264" strokeDashoffset="198" style={{ filter: "drop-shadow(0 0 10px rgba(239,68,68,0.5))" }} />
                     </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-red-400">25</span>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-3xl font-extrabold text-red-400">25</span>
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-bold mt-0.5">Score</span>
+                    </div>
                   </div>
-                  <span className="mt-2 text-[10px] text-white/40 uppercase tracking-[0.15em] font-semibold">Compliance Score</span>
                 </div>
-                <div className="flex justify-center gap-4 text-[11px] text-white/50 mb-5">
-                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]" /> 3 high risk</span>
-                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.5)]" /> 2 medium</span>
+
+                <div className="flex justify-center gap-5 text-[11px] text-white/50 mb-5 pb-5 border-b border-white/[0.06]">
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" /> 3 high risk</span>
+                  <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" /> 2 medium</span>
                 </div>
+
+                <p className="text-[11px] text-white/40 mb-3 font-semibold uppercase tracking-wider">Flagged Phrases</p>
                 <div className="space-y-2">
                   {[
-                    { phrase: "cures arthritis", level: "HIGH", c: "red" },
-                    { phrase: "heals damaged tissue", level: "HIGH", c: "red" },
-                    { phrase: "FDA-approved stem cells", level: "MED", c: "amber" },
+                    { phrase: "cures arthritis", reason: "Disease cure claim", level: "HIGH", c: "red" },
+                    { phrase: "heals damaged tissue", reason: "Efficacy claim", level: "HIGH", c: "red" },
+                    { phrase: "guaranteed results", reason: "Guarantee claim", level: "HIGH", c: "red" },
+                    { phrase: "FDA-approved stem cells", reason: "False FDA claim", level: "MED", c: "amber" },
+                    { phrase: "no side effects", reason: "Safety claim", level: "MED", c: "amber" },
                   ].map((f) => (
-                    <div key={f.phrase} className={`rounded-lg border p-3 ${f.c === "red" ? "border-red-500/15 bg-red-500/[0.04]" : "border-amber-500/15 bg-amber-500/[0.04]"}`}>
-                      <div className="flex items-center justify-between">
-                        <code className={`text-[11px] font-medium ${f.c === "red" ? "text-red-400" : "text-amber-400"}`}>&quot;{f.phrase}&quot;</code>
-                        <span className={`text-[9px] font-bold tracking-wider px-2 py-0.5 rounded-md ${f.c === "red" ? "text-red-400 bg-red-500/10 border border-red-500/10" : "text-amber-400 bg-amber-500/10 border border-amber-500/10"}`}>{f.level}</span>
+                    <div key={f.phrase} className={`rounded-lg border p-2.5 flex items-center justify-between ${f.c === "red" ? "border-red-500/15 bg-red-500/[0.04]" : "border-amber-500/15 bg-amber-500/[0.04]"}`}>
+                      <div>
+                        <code className={`text-[11px] font-semibold ${f.c === "red" ? "text-red-400" : "text-amber-400"}`}>&quot;{f.phrase}&quot;</code>
+                        <p className="text-[9px] text-white/25 mt-0.5">{f.reason}</p>
                       </div>
+                      <span className={`text-[8px] font-bold tracking-wider px-2 py-0.5 rounded-md border ${f.c === "red" ? "text-red-400 bg-red-500/10 border-red-500/15" : "text-amber-400 bg-amber-500/10 border-amber-500/15"}`}>{f.level}</span>
                     </div>
                   ))}
+                </div>
+
+                <div className="mt-4 h-9 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] flex items-center justify-center text-[11px] font-semibold text-[#55E039] shadow-[0_0_15px_rgba(85,224,57,0.08)] cursor-pointer">
+                  <Sparkles className="h-3 w-3 mr-1.5" /> Rewrite for Compliance
                 </div>
               </div>
             </div>
           </div>
           {/* Glow underneath */}
-          <div className="mx-auto -mt-12 h-24 w-2/3 bg-[#55E039]/[0.06] blur-[80px] rounded-full" />
+          <div className="mx-auto -mt-16 h-32 w-2/3 bg-[#55E039]/[0.06] blur-[80px] rounded-full" />
         </div>
       </section>
 
-      {/* ============ STATS ============ */}
+      {/* ===== STATS ===== */}
       <section className="relative py-24 border-t border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.01] via-white/[0.02] to-transparent" />
-        <GridPattern />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] mb-4 flex items-center justify-center gap-2">
@@ -272,9 +294,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ HOW IT WORKS ============ */}
+      {/* ===== HOW IT WORKS ===== */}
       <section className="relative py-24 border-t border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#55E039]/[0.02] to-transparent" />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">How it works</p>
@@ -287,7 +308,7 @@ export default function LandingPage() {
               { n: "03", title: "Rewrite automatically", desc: "AI rewrites your entire content to meet FDA/FTC standards — keeping your tone, message, and voice intact." },
             ].map((s) => (
               <div key={s.n} className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:border-[#55E039]/20 hover:bg-white/[0.06] transition-all duration-300 group">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 text-[#55E039] text-sm font-bold font-mono group-hover:bg-[#55E039]/20 transition-colors">{s.n}</span>
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 text-[#55E039] text-sm font-bold font-mono group-hover:bg-[#55E039]/20 transition-colors">{s.n}</span>
                 <h3 className="mt-5 text-lg font-bold text-white">{s.title}</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{s.desc}</p>
               </div>
@@ -296,9 +317,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ FEATURES ============ */}
+      {/* ===== FEATURES ===== */}
       <section id="features" className="relative py-24 border-t border-white/10 scroll-mt-20">
-        <GridPattern />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Platform</p>
@@ -308,20 +328,22 @@ export default function LandingPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((f) => (
               <div key={f.title} className="group rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:border-[#55E039]/20 hover:bg-white/[0.06] transition-all duration-300">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#55E039]/10 text-[#55E039] mb-5 group-hover:bg-[#55E039] group-hover:text-white group-hover:shadow-lg group-hover:shadow-[#55E039]/25 transition-all duration-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 text-[#55E039] mb-5 group-hover:bg-[#55E039] group-hover:text-[#0a0a0a] group-hover:border-[#55E039] group-hover:shadow-[0_0_20px_rgba(85,224,57,0.3)] transition-all duration-300">
                   <f.icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-base font-bold text-white">{f.title}</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{f.desc}</p>
+                <Link href="/features" className="inline-flex items-center gap-1 mt-4 text-xs text-[#55E039]/60 hover:text-[#55E039] transition-colors font-medium">
+                  Learn more <ChevronRight className="h-3 w-3" />
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============ LIBRARY ============ */}
+      {/* ===== LIBRARY ===== */}
       <section className="relative py-24 border-t border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#55E039]/[0.015] to-transparent" />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Compliance Library</p>
@@ -354,9 +376,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ PRICING ============ */}
+      {/* ===== PRICING ===== */}
       <section id="pricing" className="relative py-24 border-t border-white/10 scroll-mt-20">
-        <GridPattern />
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Pricing</p>
@@ -364,10 +385,10 @@ export default function LandingPage() {
             <p className="mt-4 text-base text-white/60">No tiers, no hidden fees, no contracts.</p>
           </div>
           <div className="mx-auto max-w-md">
-            <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/20 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.05]">
-              {/* Top glow line */}
-              <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/50 to-transparent" />
-              <div className="text-center mb-10">
+            <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/20 p-10 relative overflow-hidden shadow-[0_0_40px_rgba(85,224,57,0.06)]">
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/50 to-transparent" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-20 bg-[#55E039]/[0.05] blur-[40px]" />
+              <div className="relative text-center mb-10">
                 <p className="text-6xl font-extrabold tracking-tight">$497<span className="text-xl font-normal text-white/40">/mo</span></p>
                 <p className="mt-2 text-sm text-white/50">Cancel anytime. No contracts.</p>
               </div>
@@ -379,7 +400,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <CheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+              <CheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
                 Get Started Now
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
@@ -391,7 +412,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ FAQ ============ */}
+      {/* ===== FAQ ===== */}
       <section id="faq" className="py-24 border-t border-white/10 scroll-mt-20">
         <div className="mx-auto max-w-2xl px-6">
           <div className="text-center mb-14">
@@ -415,33 +436,36 @@ export default function LandingPage() {
               </button>
             ))}
           </div>
+          <div className="text-center mt-8">
+            <Link href="/faq" className="text-sm text-[#55E039]/70 hover:text-[#55E039] transition-colors font-medium inline-flex items-center gap-1">
+              View all FAQ <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ============ FINAL CTA ============ */}
+      {/* ===== FINAL CTA ===== */}
       <section className="relative py-24 border-t border-white/10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] blur-[120px] rounded-full" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Stop guessing.<br />Start scanning.
-          </h2>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Stop guessing.<br />Start scanning.</h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             Your next Instagram post, website update, or patient email could trigger a federal investigation. It takes 30 seconds to check.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
               Get Started — $497/mo
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
+            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ============ FOOTER ============ */}
+      {/* ===== FOOTER ===== */}
       <footer className="border-t border-white/10 bg-[#060606]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <div className="grid gap-10 sm:grid-cols-4">
@@ -453,14 +477,14 @@ export default function LandingPage() {
                 <span className="text-[15px] font-bold">RegenCompliance</span>
               </div>
               <p className="text-sm text-white/40 leading-relaxed max-w-xs">
-                FDA/FTC compliance scanning built exclusively for regenerative medicine clinics. Scan, fix, and monitor your marketing content before regulators do.
+                FDA/FTC compliance scanning built exclusively for regenerative medicine clinics. Scan, fix, and monitor your marketing content.
               </p>
             </div>
             <div>
               <p className="text-xs font-bold text-white/50 uppercase tracking-[0.15em] mb-4">Product</p>
               <div className="space-y-2.5">
-                <a href="#features" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Features</a>
-                <a href="#pricing" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Pricing</a>
+                <Link href="/features" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Features</Link>
+                <Link href="/pricing" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Pricing</Link>
                 <Link href="/demo" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Demo</Link>
                 <Link href="/login" className="block text-sm text-white/40 hover:text-white/70 transition-colors">Log In</Link>
               </div>
