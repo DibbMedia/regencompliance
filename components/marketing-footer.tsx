@@ -3,7 +3,7 @@ import { Shield } from "lucide-react"
 
 export function MarketingFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#060606]">
+    <footer className="bg-[#060606] border-t border-white/[0.06]">
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-4">
           <div className="sm:col-span-2">
