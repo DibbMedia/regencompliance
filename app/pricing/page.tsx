@@ -124,7 +124,7 @@ export default function PricingPage() {
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
             <p className="text-center text-xs text-white/40 mb-8">30-day money-back guarantee. No questions asked.</p>
-            <div className="border-t border-white/10 pt-6">
+            <div className=" pt-6">
               <p className="text-sm font-semibold mb-4">Everything included:</p>
               <ul className="space-y-3">
                 {includedFeatures.map((item) => (
@@ -143,7 +143,7 @@ export default function PricingPage() {
       </section>
 
       {/* ============ ROI CALCULATOR ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">The Math</p>
@@ -239,7 +239,7 @@ export default function PricingPage() {
       </section>
 
       {/* ============ COMPARISON TABLE ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-4xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Compare</p>
@@ -300,7 +300,7 @@ export default function PricingPage() {
       </section>
 
       {/* ============ GUARANTEE ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-3xl px-6">
           <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/30 to-transparent" />
@@ -319,7 +319,7 @@ export default function PricingPage() {
       </section>
 
       {/* ============ PRICING FAQ ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-2xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">FAQ</p>
@@ -347,7 +347,7 @@ export default function PricingPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24 border-t border-white/10 overflow-hidden">
+      <section className="relative py-24  overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">

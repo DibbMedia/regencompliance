@@ -261,7 +261,7 @@ export default function FaqPage() {
       </section>
 
       {/* ============ ALL QUESTIONS EXPANDED VIEW ============ */}
-      <section className="py-12 border-t border-white/10">
+      <section className="py-12 ">
         <div className="mx-auto max-w-3xl px-6">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All Questions</h2>
@@ -308,7 +308,7 @@ export default function FaqPage() {
       </section>
 
       {/* ============ STILL HAVE QUESTIONS ============ */}
-      <section className="py-16 border-t border-white/10">
+      <section className="py-16 ">
         <div className="mx-auto max-w-2xl px-6">
           <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center">
             <div className="h-12 w-12 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center mx-auto mb-5">
@@ -332,7 +332,7 @@ export default function FaqPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24 border-t border-white/10 overflow-hidden">
+      <section className="relative py-24  overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">

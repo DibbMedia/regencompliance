@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock, Sparkles } from "lucide-react"
+import { CheckoutButton } from "@/components/checkout-button"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -170,10 +171,10 @@ export default function DemoPage() {
             <Badge variant="outline" className="border-[#55E039]/30 text-[#55E039] bg-[#55E039]/5">
               Demo Mode {scansLeft !== null && `— ${scansLeft} scan${scansLeft === 1 ? "" : "s"} left`}
             </Badge>
-            <Link href="/login" className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#55E039] px-5 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors">
+            <CheckoutButton className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#55E039] px-5 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors cursor-pointer">
               Sign Up
               <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            </CheckoutButton>
           </div>
         </div>
       </nav>
@@ -187,10 +188,10 @@ export default function DemoPage() {
             <p className="text-slate-400 mb-6 max-w-md mx-auto">
               You&apos;ve used all your free demo scans. Sign up for unlimited compliance scanning, AI rewrites, and full access to all features.
             </p>
-            <Link href="/login" className="inline-flex h-12 items-center gap-2 rounded-full bg-[#55E039] px-8 text-base font-semibold text-[#0B0515] shadow-lg shadow-[#55E039]/20 hover:bg-[#4BCC33] transition-all">
+            <CheckoutButton className="inline-flex h-12 items-center gap-2 rounded-full bg-[#55E039] px-8 text-base font-semibold text-[#0B0515] shadow-lg shadow-[#55E039]/20 hover:bg-[#4BCC33] transition-all cursor-pointer">
               Get Full Access — $497/month
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </CheckoutButton>
           </div>
         )}
 
@@ -286,19 +287,38 @@ export default function DemoPage() {
                 {/* Score */}
                 <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-6 text-center">
                   <ScoreRing score={result.compliance_score} />
-                  <p className="mt-3 text-sm text-slate-400">{result.summary}</p>
+                  <div className="mt-2">
+                    <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
+                      result.compliance_score >= 80 ? "text-green-400 bg-green-500/10 border border-green-500/20" :
+                      result.compliance_score >= 50 ? "text-yellow-400 bg-yellow-500/10 border border-yellow-500/20" :
+                      "text-red-400 bg-red-500/10 border border-red-500/20"
+                    }`}>
+                      {result.compliance_score >= 80 ? "Low Risk" : result.compliance_score >= 50 ? "Medium Risk" : "High Risk — Do Not Publish"}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm text-slate-300">{result.summary}</p>
                   <div className="flex justify-center gap-4 mt-4 text-sm">
                     <span className="text-slate-500">{result.flag_count} flags</span>
                     <span className="text-red-400">{result.high_risk_count} high</span>
                     <span className="text-yellow-400">{result.medium_risk_count} medium</span>
                     <span className="text-blue-400">{result.low_risk_count} low</span>
                   </div>
+                  {result.compliance_score < 80 && (
+                    <p className="mt-4 text-xs text-slate-500 border-t border-white/5 pt-4">
+                      {result.compliance_score < 50
+                        ? "This content contains multiple high-risk violations that could trigger an FDA warning letter or FTC enforcement action. Do not publish without rewriting."
+                        : "This content has compliance issues that should be addressed before publishing. Use the rewrite tool below to fix flagged phrases."}
+                    </p>
+                  )}
                 </div>
 
                 {/* Flags */}
                 {result.flags.length > 0 ? (
                   <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-5 space-y-3">
-                    <h3 className="font-semibold text-white text-sm">Flagged Content</h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-white text-sm">Flagged Content</h3>
+                      <span className="text-[10px] text-slate-500">{result.flags.length} violation{result.flags.length !== 1 ? "s" : ""} found</span>
+                    </div>
                     {result.flags.map((flag, i) => (
                       <div key={i} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 space-y-2">
                         <div className="flex items-center justify-between gap-2">
@@ -311,19 +331,22 @@ export default function DemoPage() {
                             "text-blue-400 bg-blue-500/10"
                           }`}>{flag.risk_level}</span>
                         </div>
-                        <p className="text-xs text-slate-500">{flag.reason}</p>
-                        <div className="flex items-center gap-2 bg-[#55E039]/5 border border-[#55E039]/10 rounded-md p-2">
-                          <p className="text-xs text-[#55E039] flex-1">{flag.alternative}</p>
-                          <button
-                            className="shrink-0 p-1 hover:bg-white/5 rounded"
-                            onClick={() => copyToClipboard(flag.alternative, i)}
-                          >
-                            {copiedIdx === i ? (
-                              <Check className="h-3 w-3 text-[#55E039]" />
-                            ) : (
-                              <Copy className="h-3 w-3 text-slate-500" />
-                            )}
-                          </button>
+                        <p className="text-xs text-slate-400">{flag.reason}</p>
+                        <div className="bg-[#55E039]/5 border border-[#55E039]/10 rounded-md p-2">
+                          <p className="text-[10px] text-[#55E039]/50 uppercase tracking-wider font-semibold mb-1">Compliant Alternative</p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-xs text-[#55E039] flex-1">{flag.alternative}</p>
+                            <button
+                              className="shrink-0 p-1 hover:bg-white/5 rounded"
+                              onClick={() => copyToClipboard(flag.alternative, i)}
+                            >
+                              {copiedIdx === i ? (
+                                <Check className="h-3 w-3 text-[#55E039]" />
+                              ) : (
+                                <Copy className="h-3 w-3 text-slate-500" />
+                              )}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -386,10 +409,10 @@ export default function DemoPage() {
                       ? `${scansLeft} free scan${scansLeft === 1 ? "" : "s"} remaining`
                       : "Want unlimited scans + full features?"}
                   </p>
-                  <Link href="/login" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#55E039] px-6 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors">
+                  <CheckoutButton className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#55E039] px-6 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors cursor-pointer">
                     Get Full Access
                     <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  </CheckoutButton>
                 </div>
               </>
             )}

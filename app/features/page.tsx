@@ -110,7 +110,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 1: SCANNER ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -158,7 +158,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 2: AI REWRITER ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
@@ -213,7 +213,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 3: COMPLIANCE LIBRARY ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -263,7 +263,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 4: DAILY UPDATES ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
@@ -332,7 +332,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 5: AUDIT TRAIL ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -385,7 +385,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 6: TEAM SEATS ============ */}
-      <section className="py-20 border-t border-white/10">
+      <section className="py-20 ">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
@@ -445,7 +445,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24 border-t border-white/10 overflow-hidden">
+      <section className="relative py-24  overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
         <div className="relative mx-auto max-w-2xl px-6 text-center">
