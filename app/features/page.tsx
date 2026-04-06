@@ -29,18 +29,7 @@ import {
 } from "lucide-react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
-
-function GridPattern() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none opacity-100"
-      style={{
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-      }}
-    />
-  )
-}
+import { MarketingBg } from "@/components/marketing-bg"
 
 const scannerCapabilities = [
   "Website copy and landing pages",
@@ -81,22 +70,14 @@ const auditFeatures = [
 export default function FeaturesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-
+      <MarketingBg />
       <MarketingHeader />
 
       {/* ============ HERO ============ */}
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-[#55E039]/[0.06] rounded-full blur-[150px]" />
-          <GridPattern />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
-        </div>
+      <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Platform Features
-            </div>
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">PLATFORM FEATURES</p>
             <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
               Every tool you need to
               <br />
@@ -110,17 +91,17 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 1: SCANNER ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <Scan className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">Core Feature</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Live Compliance Scanner</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">CORE FEATURE</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Live Compliance Scanner</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -133,8 +114,8 @@ export default function FeaturesPage() {
                 Each scan produces a detailed compliance report with a numeric score from 0 to 100, a severity breakdown of all flagged items (high, medium, low risk), and specific citations to the FDA warning letter or FTC enforcement action that makes each phrase problematic. You see exactly what regulators would see, before they see it.
               </p>
             </div>
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8">
-              <h3 className="text-lg font-bold mb-6">What You Can Scan</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
+              <h3 className="text-lg font-extrabold text-white mb-6">What You Can Scan</h3>
               <div className="space-y-3">
                 {scannerCapabilities.map((item) => (
                   <div key={item} className="flex items-start gap-3">
@@ -146,7 +127,7 @@ export default function FeaturesPage() {
               <div className="mt-8 rounded-xl bg-white/[0.03] border border-white/10 p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="h-4 w-4 text-[#55E039]" />
-                  <span className="text-sm font-semibold">Scan Coverage</span>
+                  <span className="text-sm font-extrabold text-white">Scan Coverage</span>
                 </div>
                 <p className="text-sm text-white/60 leading-relaxed">
                   The scanner analyzes content at the sentence level, checking each statement against FDA 21 CFR Part 1271 guidance, FTC Section 5 requirements, state medical board advertising rules, and our proprietary database of phrases flagged in real enforcement actions.
@@ -158,11 +139,11 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 2: AI REWRITER ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
-              <h3 className="text-lg font-bold mb-6">How the Rewriter Works</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
+              <h3 className="text-lg font-extrabold text-white mb-6">How the Rewriter Works</h3>
               <div className="space-y-3">
                 {rewriterBenefits.map((item) => (
                   <div key={item} className="flex items-start gap-3">
@@ -174,14 +155,14 @@ export default function FeaturesPage() {
               <div className="mt-8 rounded-xl bg-white/[0.03] border border-white/10 p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="h-4 w-4 text-[#55E039]" />
-                  <span className="text-sm font-semibold">Before &amp; After Example</span>
+                  <span className="text-sm font-extrabold text-white">Before &amp; After Example</span>
                 </div>
                 <div className="space-y-3">
                   <div className="rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
                     <p className="text-xs font-bold text-red-400 mb-1">FLAGGED</p>
                     <p className="text-sm text-white/70">&quot;Our stem cell therapy cures knee arthritis and eliminates the need for surgery.&quot;</p>
                   </div>
-                  <div className="rounded-lg bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-3">
+                  <div className="rounded-lg bg-[#55E039]/10 border border-[#55E039]/15 px-4 py-3">
                     <p className="text-xs font-bold text-[#55E039] mb-1">REWRITTEN</p>
                     <p className="text-sm text-white/70">&quot;Many of our patients report reduced joint discomfort and improved mobility following our regenerative protocols. Individual results vary.&quot;</p>
                   </div>
@@ -190,12 +171,12 @@ export default function FeaturesPage() {
             </div>
             <div className="order-1 lg:order-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <Pencil className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">AI-Powered</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Compliant Rewriter</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">AI-POWERED</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compliant Rewriter</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -213,17 +194,17 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 3: COMPLIANCE LIBRARY ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <BookOpen className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">Knowledge Base</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Compliance Library</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">KNOWLEDGE BASE</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Compliance Library</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -236,20 +217,20 @@ export default function FeaturesPage() {
                 Think of it as a living compliance manual written specifically for your industry. Healthcare attorneys charge $500 to $1,000 per hour to review marketing content. The compliance library gives your team the same reference knowledge that those attorneys use, accessible instantly and updated automatically as new enforcement actions are published.
               </p>
             </div>
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8">
-              <h3 className="text-lg font-bold mb-6">Library by the Numbers</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
+              <h3 className="text-lg font-extrabold text-white mb-6">Library by the Numbers</h3>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {libraryStats.map((stat) => (
                   <div key={stat.label} className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-center">
                     <p className="text-2xl font-extrabold text-[#55E039]">{stat.value}</p>
-                    <p className="text-xs text-white/50 mt-1">{stat.label}</p>
+                    <p className="text-xs text-white/40 mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>
               <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Database className="h-4 w-4 text-[#55E039]" />
-                  <span className="text-sm font-semibold">Rule Categories</span>
+                  <span className="text-sm font-extrabold text-white">Rule Categories</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {["Stem Cells", "PRP", "Exosomes", "Peptides", "Prolotherapy", "BMAC", "Efficacy Claims", "Cure Claims", "Testimonials", "FDA Status"].map((tag) => (
@@ -263,18 +244,18 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 4: DAILY UPDATES ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
-              <h3 className="text-lg font-bold mb-6">How Updates Work</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
+              <h3 className="text-lg font-extrabold text-white mb-6">How Updates Work</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="h-8 w-8 rounded-lg bg-[#55E039]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Eye className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Monitor</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Monitor</p>
                     <p className="text-sm text-white/60">Our system monitors FDA.gov, FTC.gov, and state medical board websites every morning for new enforcement actions, warning letters, and guidance updates.</p>
                   </div>
                 </div>
@@ -283,7 +264,7 @@ export default function FeaturesPage() {
                     <FileSearch className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Analyze</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Analyze</p>
                     <p className="text-sm text-white/60">New enforcement actions are analyzed to extract specific language violations, banned claims, and compliance requirements relevant to regenerative medicine.</p>
                   </div>
                 </div>
@@ -292,7 +273,7 @@ export default function FeaturesPage() {
                     <RefreshCw className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Update</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Update</p>
                     <p className="text-sm text-white/60">New rules are added to the compliance database within 24 hours. Your next scan automatically includes the updated ruleset.</p>
                   </div>
                 </div>
@@ -301,7 +282,7 @@ export default function FeaturesPage() {
                     <Bell className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Alert</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Alert</p>
                     <p className="text-sm text-white/60">Significant new enforcement actions trigger in-app alerts so your team knows immediately when the compliance landscape shifts.</p>
                   </div>
                 </div>
@@ -309,12 +290,12 @@ export default function FeaturesPage() {
             </div>
             <div className="order-1 lg:order-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <Bell className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">Always Current</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Daily Rule Updates</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">ALWAYS CURRENT</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Daily Rule Updates</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -332,17 +313,17 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 5: AUDIT TRAIL ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <Clock className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">Documentation</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Audit Trail &amp; Export</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">DOCUMENTATION</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Audit Trail &amp; Export</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -355,8 +336,8 @@ export default function FeaturesPage() {
                 The audit trail also tracks your compliance score over time, giving you a clear picture of whether your marketing content is improving or degrading. This is valuable for clinic owners who delegate marketing to staff or agencies — you can verify that content is being checked before it goes live, and you can identify patterns in the types of violations your team tends to make.
               </p>
             </div>
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8">
-              <h3 className="text-lg font-bold mb-6">Audit Trail Includes</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
+              <h3 className="text-lg font-extrabold text-white mb-6">Audit Trail Includes</h3>
               <div className="space-y-3">
                 {auditFeatures.map((item) => (
                   <div key={item} className="flex items-start gap-3">
@@ -385,18 +366,18 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FEATURE 6: TEAM SEATS ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 order-2 lg:order-1">
-              <h3 className="text-lg font-bold mb-6">Team Access Use Cases</h3>
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
+              <h3 className="text-lg font-extrabold text-white mb-6">Team Access Use Cases</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="h-8 w-8 rounded-lg bg-[#55E039]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Globe className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Marketing Manager</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Marketing Manager</p>
                     <p className="text-sm text-white/60">Scans all website copy, ad creative, and social media posts before they go live. Uses the compliance library as a reference when briefing freelance writers.</p>
                   </div>
                 </div>
@@ -405,7 +386,7 @@ export default function FeaturesPage() {
                     <Mail className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Content Writer</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Content Writer</p>
                     <p className="text-sm text-white/60">Runs every blog post and email campaign through the scanner during the drafting process. Learns compliance patterns over time through the rewriter explanations.</p>
                   </div>
                 </div>
@@ -414,7 +395,7 @@ export default function FeaturesPage() {
                     <Settings className="h-4 w-4 text-[#55E039]" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Clinic Owner</p>
+                    <p className="text-sm font-extrabold text-white mb-1">Clinic Owner</p>
                     <p className="text-sm text-white/60">Reviews audit trail to verify all marketing content was scanned before publishing. Monitors compliance score trends across the practice.</p>
                   </div>
                 </div>
@@ -422,12 +403,12 @@ export default function FeaturesPage() {
             </div>
             <div className="order-1 lg:order-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
                   <Users className="h-6 w-6 text-[#55E039]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.15em]">Collaboration</p>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">3 Team Seats</h2>
+                  <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-1">COLLABORATION</p>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">3 Team Seats</h2>
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
@@ -445,22 +426,21 @@ export default function FeaturesPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24  overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
+      <section className="relative py-16">
         <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">GET STARTED</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
             Built for regen clinics.<br />Nothing else.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             Every feature, every rule, every rewrite is designed specifically for regenerative medicine marketing compliance. No generic tools. No guesswork.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
               Get Started — $497/mo
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
+            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>
           </div>

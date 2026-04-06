@@ -24,18 +24,7 @@ import {
 import { useState } from "react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
-
-function GridPattern() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none opacity-100"
-      style={{
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-      }}
-    />
-  )
-}
+import { MarketingBg } from "@/components/marketing-bg"
 
 const includedFeatures = [
   { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content — website pages, ads, emails, social posts, scripts — as many times as you need, no limits." },
@@ -76,21 +65,13 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-
+      <MarketingBg />
       <MarketingHeader />
 
       {/* ============ HERO ============ */}
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/3 w-[600px] h-[400px] bg-[#55E039]/[0.06] rounded-full blur-[150px]" />
-          <GridPattern />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
-        </div>
+      <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8">
-            <DollarSign className="h-3.5 w-3.5" />
-            Simple, Transparent Pricing
-          </div>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">SIMPLE, TRANSPARENT PRICING</p>
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
             One plan. Everything included.
             <br />
@@ -103,36 +84,36 @@ export default function PricingPage() {
       </section>
 
       {/* ============ PRICING CARD ============ */}
-      <section className="pb-20">
-        <div className="mx-auto max-w-lg px-6">
+      <section className="relative pb-16">
+        <div className="relative mx-auto max-w-lg px-6">
           <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/20 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.05]">
             <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/50 to-transparent" />
             <div className="absolute top-4 right-4">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-3 py-1 text-xs font-semibold text-[#55E039]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#55E039]/10 border border-[#55E039]/15 px-3 py-1 text-xs font-bold text-[#55E039]">
                 <BadgeCheck className="h-3 w-3" />
                 Most Popular
               </span>
             </div>
-            <p className="text-sm font-semibold text-white/50 mb-2">Professional</p>
+            <p className="text-sm font-extrabold text-white/40 mb-2">Professional</p>
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="text-6xl font-extrabold tracking-tight">$497</p>
+              <p className="text-6xl font-extrabold tracking-tight text-white">$497</p>
               <span className="text-xl font-normal text-white/40">/mo</span>
             </div>
-            <p className="text-sm text-white/50 mb-8">Billed monthly. Cancel anytime. No contracts.</p>
-            <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer mb-6">
+            <p className="text-sm text-white/40 mb-8">Billed monthly. Cancel anytime. No contracts.</p>
+            <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
               Get Started Now
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
             <p className="text-center text-xs text-white/40 mb-8">30-day money-back guarantee. No questions asked.</p>
-            <div className=" pt-6">
-              <p className="text-sm font-semibold mb-4">Everything included:</p>
+            <div className="pt-6">
+              <p className="text-sm font-extrabold text-white mb-4">Everything included:</p>
               <ul className="space-y-3">
                 {includedFeatures.map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-[15px] text-white/80 font-medium">{item.title}</span>
-                      <p className="text-xs text-white/50 mt-0.5 leading-relaxed">{item.desc}</p>
+                      <span className="text-[15px] text-white/70 font-medium">{item.title}</span>
+                      <p className="text-xs text-white/40 mt-0.5 leading-relaxed">{item.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -143,95 +124,95 @@ export default function PricingPage() {
       </section>
 
       {/* ============ ROI CALCULATOR ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
-            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">The Math</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The cost of not scanning.</h2>
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">THE MATH</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">The cost of not scanning.</h2>
             <p className="mt-4 text-base text-white/60 max-w-2xl mx-auto">
               One FDA warning letter triggers a cascade of expenses that makes $497 per month look like a rounding error.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Cost of non-compliance */}
-            <div className="rounded-2xl bg-red-500/[0.03] border border-red-500/20 p-8">
+            <div className="rounded-2xl bg-red-500/[0.03] border border-red-500/20 p-7">
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-xl bg-red-500/10 flex items-center justify-center">
                   <AlertTriangle className="h-5 w-5 text-red-400" />
                 </div>
-                <h3 className="text-lg font-bold">Without RegenCompliance</h3>
+                <h3 className="text-lg font-extrabold text-white">Without RegenCompliance</h3>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">FDA warning letter legal response</span>
-                  <span className="text-sm font-semibold text-red-400">$50,000 - $150,000</span>
+                  <span className="text-sm font-bold text-red-400">$50,000 - $150,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">FTC consent decree compliance</span>
-                  <span className="text-sm font-semibold text-red-400">$100,000 - $500,000</span>
+                  <span className="text-sm font-bold text-red-400">$100,000 - $500,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Website takedown + rebuilding</span>
-                  <span className="text-sm font-semibold text-red-400">$15,000 - $40,000</span>
+                  <span className="text-sm font-bold text-red-400">$15,000 - $40,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Lost revenue during remediation</span>
-                  <span className="text-sm font-semibold text-red-400">$50,000 - $200,000</span>
+                  <span className="text-sm font-bold text-red-400">$50,000 - $200,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Reputation damage (est. patient loss)</span>
-                  <span className="text-sm font-semibold text-red-400">Incalculable</span>
+                  <span className="text-sm font-bold text-red-400">Incalculable</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-sm font-bold">Potential total exposure</span>
+                  <span className="text-sm font-extrabold text-white">Potential total exposure</span>
                   <span className="text-lg font-extrabold text-red-400">$215,000 - $890,000</span>
                 </div>
               </div>
             </div>
             {/* Cost of RegenCompliance */}
-            <div className="rounded-2xl bg-[#55E039]/[0.03] border border-[#55E039]/20 p-8">
+            <div className="rounded-2xl bg-[#55E039]/[0.03] border border-[#55E039]/20 p-7">
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-xl bg-[#55E039]/10 flex items-center justify-center">
                   <ShieldCheck className="h-5 w-5 text-[#55E039]" />
                 </div>
-                <h3 className="text-lg font-bold">With RegenCompliance</h3>
+                <h3 className="text-lg font-extrabold text-white">With RegenCompliance</h3>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Monthly subscription</span>
-                  <span className="text-sm font-semibold text-[#55E039]">$497/mo</span>
+                  <span className="text-sm font-bold text-[#55E039]">$497/mo</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Annual cost</span>
-                  <span className="text-sm font-semibold text-[#55E039]">$5,964/yr</span>
+                  <span className="text-sm font-bold text-[#55E039]">$5,964/yr</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Setup fees</span>
-                  <span className="text-sm font-semibold text-[#55E039]">$0</span>
+                  <span className="text-sm font-bold text-[#55E039]">$0</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Hidden costs</span>
-                  <span className="text-sm font-semibold text-[#55E039]">$0</span>
+                  <span className="text-sm font-bold text-[#55E039]">$0</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Compliance documentation</span>
-                  <span className="text-sm font-semibold text-[#55E039]">Included</span>
+                  <span className="text-sm font-bold text-[#55E039]">Included</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-sm font-bold">Total annual investment</span>
+                  <span className="text-sm font-extrabold text-white">Total annual investment</span>
                   <span className="text-lg font-extrabold text-[#55E039]">$5,964</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-10 max-w-4xl mx-auto">
-            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 text-center">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 text-center">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <TrendingDown className="h-6 w-6 text-[#55E039]" />
-                <h3 className="text-xl font-bold">The Bottom Line</h3>
+                <h3 className="text-xl font-extrabold text-white">The Bottom Line</h3>
               </div>
               <p className="text-base text-white/70 leading-relaxed max-w-2xl mx-auto">
-                A single FDA warning letter costs more in legal fees than <span className="text-white font-semibold">36 years</span> of RegenCompliance at the low end. Even if you only consider the attorney time to respond to a warning letter — typically $50,000 to $150,000 — the math is clear. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
+                A single FDA warning letter costs more in legal fees than <span className="text-white font-extrabold">36 years</span> of RegenCompliance at the low end. Even if you only consider the attorney time to respond to a warning letter — typically $50,000 to $150,000 — the math is clear. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
               </p>
             </div>
           </div>
@@ -239,11 +220,11 @@ export default function PricingPage() {
       </section>
 
       {/* ============ COMPARISON TABLE ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-4xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-4xl px-6">
           <div className="text-center mb-14">
-            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Compare</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">How we stack up.</h2>
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">COMPARE</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">How we stack up.</h2>
             <p className="mt-4 text-base text-white/60">RegenCompliance vs. hiring a healthcare attorney vs. doing it yourself.</p>
           </div>
           <div className="rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden">
@@ -251,12 +232,12 @@ export default function PricingPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="text-left text-sm font-semibold p-4 text-white/70">Feature</th>
-                    <th className="text-center text-sm font-semibold p-4">
+                    <th className="text-left text-sm font-extrabold p-4 text-white/70">Feature</th>
+                    <th className="text-center text-sm font-extrabold p-4">
                       <span className="text-[#55E039]">RegenCompliance</span>
                     </th>
-                    <th className="text-center text-sm font-semibold p-4 text-white/70">Healthcare Attorney</th>
-                    <th className="text-center text-sm font-semibold p-4 text-white/70">DIY / Google</th>
+                    <th className="text-center text-sm font-extrabold p-4 text-white/70">Healthcare Attorney</th>
+                    <th className="text-center text-sm font-extrabold p-4 text-white/70">DIY / Google</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -267,7 +248,7 @@ export default function PricingPage() {
                         {row.us === true ? (
                           <CheckCircle2 className="h-5 w-5 text-[#55E039] mx-auto" />
                         ) : typeof row.us === "string" ? (
-                          <span className="text-sm font-semibold text-[#55E039]">{row.us}</span>
+                          <span className="text-sm font-bold text-[#55E039]">{row.us}</span>
                         ) : (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         )}
@@ -278,7 +259,7 @@ export default function PricingPage() {
                         ) : row.attorney === false ? (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         ) : (
-                          <span className="text-sm text-white/50">{row.attorney}</span>
+                          <span className="text-sm text-white/40">{row.attorney}</span>
                         )}
                       </td>
                       <td className="text-center p-4">
@@ -287,7 +268,7 @@ export default function PricingPage() {
                         ) : row.diy === false ? (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         ) : (
-                          <span className="text-sm text-white/50">{row.diy}</span>
+                          <span className="text-sm text-white/40">{row.diy}</span>
                         )}
                       </td>
                     </tr>
@@ -300,18 +281,18 @@ export default function PricingPage() {
       </section>
 
       {/* ============ GUARANTEE ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center relative overflow-hidden">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-3xl px-6">
+          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center relative overflow-hidden hover:bg-white/[0.06] transition-all duration-300">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/30 to-transparent" />
-            <div className="h-16 w-16 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center mx-auto mb-6">
+            <div className="h-16 w-16 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center mx-auto mb-6">
               <Scale className="h-8 w-8 text-[#55E039]" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-4">30-Day Money-Back Guarantee</h2>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-4">30-Day Money-Back Guarantee</h2>
             <p className="text-base text-white/70 leading-relaxed mb-6 max-w-xl mx-auto">
               We are confident that once you scan your actual marketing content, you will find violations you did not know you had. If you sign up, run scans on your content, and do not find the tool valuable within 30 days, we will refund your payment in full. No forms to fill out, no hoops to jump through, no retention scripts. Just email us and the refund is processed.
             </p>
-            <p className="text-sm text-white/50 leading-relaxed max-w-lg mx-auto">
+            <p className="text-sm text-white/40 leading-relaxed max-w-lg mx-auto">
               We can offer this guarantee because the data speaks for itself. The average first scan on a regenerative medicine clinic&apos;s website finds 12 to 25 compliance violations. Most clinic owners are shocked at how much risk is sitting on their homepage right now. We want you to experience that moment yourself, risk-free.
             </p>
           </div>
@@ -319,11 +300,11 @@ export default function PricingPage() {
       </section>
 
       {/* ============ PRICING FAQ ============ */}
-      <section className="py-20 ">
-        <div className="mx-auto max-w-2xl px-6">
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-2xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">FAQ</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Pricing questions</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Pricing questions</h2>
             <p className="mt-4 text-base text-white/60">Everything you need to know about billing and your subscription.</p>
           </div>
           <div className="space-y-3">
@@ -334,7 +315,7 @@ export default function PricingPage() {
                 className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${openFaq === i ? "border-[#55E039]/20 bg-white/[0.06]" : "border-white/10 hover:bg-white/[0.06]"}`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[15px] font-semibold text-white pr-4">{faq.q}</span>
+                  <span className="text-[15px] font-extrabold text-white pr-4">{faq.q}</span>
                   <ChevronDown className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
                 </div>
                 {openFaq === i && (
@@ -347,22 +328,21 @@ export default function PricingPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24  overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
+      <section className="relative py-16">
         <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">GET STARTED</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
             Protect your clinic today.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             $497 per month is less than a single hour with a healthcare marketing attorney. Get unlimited scans, AI rewrites, and a full compliance library instead.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
               Get Started — $497/mo
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
+            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>
           </div>

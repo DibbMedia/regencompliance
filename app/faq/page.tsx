@@ -2,6 +2,9 @@
 
 import Link from "next/link"
 import { CheckoutButton } from "@/components/checkout-button"
+import { MarketingHeader } from "@/components/marketing-header"
+import { MarketingFooter } from "@/components/marketing-footer"
+import { MarketingBg } from "@/components/marketing-bg"
 import {
   ArrowRight,
   ChevronDown,
@@ -13,20 +16,6 @@ import {
   Lock,
 } from "lucide-react"
 import { useState } from "react"
-import { MarketingHeader } from "@/components/marketing-header"
-import { MarketingFooter } from "@/components/marketing-footer"
-
-function GridPattern() {
-  return (
-    <div
-      className="absolute inset-0 pointer-events-none opacity-100"
-      style={{
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-      }}
-    />
-  )
-}
 
 interface FaqItem {
   q: string
@@ -148,31 +137,31 @@ const faqCategories: FaqCategory[] = [
   },
 ]
 
+const ALL_FILTER = "All"
+
 export default function FaqPage() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
-  const [activeCategory, setActiveCategory] = useState<string>("General")
+  const [activeCategory, setActiveCategory] = useState<string>(ALL_FILTER)
 
   function toggleItem(key: string) {
     setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
+  const categories = [ALL_FILTER, ...faqCategories.map((c) => c.title)]
+  const visibleCategories =
+    activeCategory === ALL_FILTER
+      ? faqCategories
+      : faqCategories.filter((c) => c.title === activeCategory)
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-
+      <MarketingBg />
       <MarketingHeader />
 
-      {/* ============ HERO ============ */}
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-[#55E039]/[0.06] rounded-full blur-[150px]" />
-          <GridPattern />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
-        </div>
-        <div className="relative mx-auto max-w-6xl px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8">
-            <HelpCircle className="h-3.5 w-3.5" />
-            Frequently Asked Questions
-          </div>
+      {/* Hero */}
+      <section className="relative pt-32 pb-16">
+        <div className="mx-auto max-w-6xl px-6 text-center">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">FAQ</p>
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
             Everything you need
             <br />
@@ -184,24 +173,25 @@ export default function FaqPage() {
         </div>
       </section>
 
-      {/* ============ CATEGORY NAV ============ */}
-      <section className="pb-8">
+      {/* Category filter pills */}
+      <section className="relative pb-8">
         <div className="mx-auto max-w-4xl px-6">
           <div className="flex flex-wrap justify-center gap-2">
-            {faqCategories.map((cat) => {
-              const Icon = cat.icon
+            {categories.map((cat) => {
+              const catData = faqCategories.find((c) => c.title === cat)
+              const Icon = catData?.icon
               return (
                 <button
-                  key={cat.title}
-                  onClick={() => setActiveCategory(cat.title)}
-                  className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${
-                    activeCategory === cat.title
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
+                    activeCategory === cat
                       ? "bg-[#55E039]/10 border border-[#55E039]/20 text-[#55E039]"
                       : "bg-white/[0.03] border border-white/10 text-white/60 hover:bg-white/[0.06] hover:text-white"
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  {cat.title}
+                  {Icon && <Icon className="h-4 w-4" />}
+                  {cat}
                 </button>
               )
             })}
@@ -209,23 +199,23 @@ export default function FaqPage() {
         </div>
       </section>
 
-      {/* ============ FAQ SECTIONS ============ */}
-      <section className="py-12">
+      {/* FAQ Sections */}
+      <section className="relative py-16">
         <div className="mx-auto max-w-3xl px-6">
-          {faqCategories.map((category) => (
-            <div
-              key={category.title}
-              className={`mb-12 ${activeCategory !== category.title ? "hidden" : ""}`}
-            >
-              <div className="flex items-center gap-3 mb-8">
+          {visibleCategories.map((category) => (
+            <div key={category.title} className="mb-12 last:mb-0">
+              {/* Section heading */}
+              <div className="flex items-center gap-3 mb-6">
                 <div className="h-10 w-10 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
                   <category.icon className="h-5 w-5 text-[#55E039]" />
                 </div>
                 <div>
                   <h2 className="text-xl font-extrabold tracking-tight">{category.title}</h2>
-                  <p className="text-sm text-white/50">{category.faqs.length} questions</p>
+                  <p className="text-sm text-white/40">{category.faqs.length} questions</p>
                 </div>
               </div>
+
+              {/* Accordion cards */}
               <div className="space-y-3">
                 {category.faqs.map((faq, i) => {
                   const key = `${category.title}-${i}`
@@ -260,55 +250,8 @@ export default function FaqPage() {
         </div>
       </section>
 
-      {/* ============ ALL QUESTIONS EXPANDED VIEW ============ */}
-      <section className="py-12 ">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All Questions</h2>
-            <p className="mt-3 text-sm text-white/50">Browse every question across all categories.</p>
-          </div>
-          {faqCategories.map((category) => (
-            <div key={`all-${category.title}`} className="mb-10">
-              <div className="flex items-center gap-2 mb-5">
-                <category.icon className="h-4 w-4 text-[#55E039]" />
-                <h3 className="text-sm font-bold text-[#55E039] uppercase tracking-[0.15em]">{category.title}</h3>
-              </div>
-              <div className="space-y-3">
-                {category.faqs.map((faq, i) => {
-                  const key = `all-${category.title}-${i}`
-                  const isOpen = openItems[key] || false
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => toggleItem(key)}
-                      className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${
-                        isOpen
-                          ? "border-[#55E039]/20 bg-white/[0.06]"
-                          : "border-white/10 hover:bg-white/[0.06]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[15px] font-semibold text-white pr-4">{faq.q}</span>
-                        <ChevronDown
-                          className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </div>
-                      {isOpen && (
-                        <p className="mt-4 text-sm text-white/60 leading-relaxed">{faq.a}</p>
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ============ STILL HAVE QUESTIONS ============ */}
-      <section className="py-16 ">
+      {/* Still have questions? */}
+      <section className="relative py-16">
         <div className="mx-auto max-w-2xl px-6">
           <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center">
             <div className="h-12 w-12 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center mx-auto mb-5">
@@ -319,37 +262,17 @@ export default function FaqPage() {
               We are happy to answer anything that is not covered here. Reach out and we will get back to you within one business day.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="mailto:support@regencompliance.com" className="inline-flex h-12 items-center rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
+              <a
+                href="mailto:support@regencompliance.com"
+                className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/30 px-8 text-[15px] font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
+              >
                 Email Support
               </a>
-              <Link href="/demo" className="inline-flex h-12 items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
-                Try the Demo
-                <ArrowRight className="h-4 w-4 opacity-50" />
-              </Link>
+              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                Get Started — $497/mo
+                <ArrowRight className="h-4 w-4" />
+              </CheckoutButton>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ FINAL CTA ============ */}
-      <section className="relative py-24  overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#55E039]/[0.06] rounded-full blur-[120px]" />
-        <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Ready to protect your clinic?
-          </h2>
-          <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Join the regenerative medicine clinics that scan every piece of marketing content before it goes live. 30-day money-back guarantee.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-              Get Started — $497/mo
-              <ArrowRight className="h-4 w-4" />
-            </CheckoutButton>
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl bg-white/5 border border-white/10 px-8 text-[15px] font-medium text-white/70 hover:bg-white/10 hover:text-white transition-all">
-              Try Demo First
-            </Link>
           </div>
         </div>
       </section>

@@ -1,17 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock, Sparkles } from "lucide-react"
 import { CheckoutButton } from "@/components/checkout-button"
+import { MarketingHeader } from "@/components/marketing-header"
+import { MarketingFooter } from "@/components/marketing-footer"
+import { MarketingBg } from "@/components/marketing-bg"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import type { ScanFlag } from "@/lib/types"
 
 const CONTENT_TYPES = [
@@ -72,7 +68,6 @@ export default function DemoPage() {
   const [copiedRewrite, setCopiedRewrite] = useState(false)
 
   useEffect(() => {
-    // Check demo status on load
     fetch("/api/demo/status").then(r => r.json()).then(setDemoStatus)
   }, [])
 
@@ -157,38 +152,29 @@ export default function DemoPage() {
   const scansLeft = demoStatus ? demoStatus.max_scans - demoStatus.scans_used : null
 
   return (
-    <div className="min-h-screen bg-[#0B0515] text-slate-100">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-white/5 bg-[#0B0515]/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#55E039]">
-              <Shield className="h-5 w-5 text-[#0B0515]" />
-            </div>
-            <span className="text-xl font-bold tracking-tight">RegenCompliance</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className="border-[#55E039]/30 text-[#55E039] bg-[#55E039]/5">
-              Demo Mode {scansLeft !== null && `— ${scansLeft} scan${scansLeft === 1 ? "" : "s"} left`}
-            </Badge>
-            <CheckoutButton className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#55E039] px-5 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors cursor-pointer">
-              Sign Up
-              <ArrowRight className="h-3.5 w-3.5" />
-            </CheckoutButton>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <MarketingBg />
+      <MarketingHeader />
 
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      {/* Demo Mode badge */}
+      <div className="relative pt-20 pb-2">
+        <div className="mx-auto max-w-6xl px-6 flex justify-center">
+          <Badge variant="outline" className="border-[#55E039]/30 text-[#55E039] bg-[#55E039]/5 text-sm px-4 py-1.5">
+            Demo Mode {scansLeft !== null && `— ${scansLeft} scan${scansLeft === 1 ? "" : "s"} left`}
+          </Badge>
+        </div>
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6 pt-8 pb-16">
         {/* Demo Expired */}
         {demoExpired && (
-          <div className="mb-8 rounded-2xl border-2 border-[#55E039]/20 bg-[#120B1E] p-10 text-center">
+          <div className="mb-8 rounded-2xl bg-white/[0.03] border border-[#55E039]/20 p-10 text-center">
             <Lock className="h-12 w-12 text-[#55E039] mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">Demo Limit Reached</h2>
-            <p className="text-slate-400 mb-6 max-w-md mx-auto">
+            <p className="text-white/60 mb-6 max-w-md mx-auto">
               You&apos;ve used all your free demo scans. Sign up for unlimited compliance scanning, AI rewrites, and full access to all features.
             </p>
-            <CheckoutButton className="inline-flex h-12 items-center gap-2 rounded-full bg-[#55E039] px-8 text-base font-semibold text-[#0B0515] shadow-lg shadow-[#55E039]/20 hover:bg-[#4BCC33] transition-all cursor-pointer">
+            <CheckoutButton className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
               Get Full Access — $497/month
               <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
@@ -200,63 +186,69 @@ export default function DemoPage() {
           <div className="lg:col-span-3 space-y-4">
             <div>
               <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
-              <p className="text-slate-400">
+              <p className="text-white/60">
                 Paste any marketing content to check against current FDA/FTC guidelines.
               </p>
             </div>
 
-            <Tabs value={contentType} onValueChange={setContentType}>
-              <TabsList className="flex-wrap h-auto bg-white/5">
-                {CONTENT_TYPES.map((t) => (
-                  <TabsTrigger key={t.value} value={t.value} className="text-xs">
-                    {t.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
+            {/* Content type pills */}
+            <div className="flex flex-wrap gap-2">
+              {CONTENT_TYPES.map((t) => (
+                <button
+                  key={t.value}
+                  onClick={() => setContentType(t.value)}
+                  className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-300 ${
+                    contentType === t.value
+                      ? "bg-[#55E039]/10 border border-[#55E039]/20 text-[#55E039]"
+                      : "bg-white/[0.03] border border-white/10 text-white/60 hover:bg-white/[0.06] hover:text-white"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
 
             <div className="relative">
-              <Textarea
+              <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value.slice(0, 5000))}
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
-                className="min-h-[200px] resize-y bg-[#120B1E] border-white/10 text-slate-200 placeholder:text-slate-600"
+                className="w-full min-h-[200px] resize-y rounded-2xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/30 px-5 py-4 text-sm focus:outline-none focus:border-[#55E039]/30 transition-colors"
               />
-              <span className={`absolute bottom-2 right-2 text-xs ${charCount >= 4500 ? "text-red-400" : "text-slate-600"}`}>
+              <span className={`absolute bottom-3 right-3 text-xs ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
                 {charCount}/5000
               </span>
             </div>
 
             <div className="flex gap-3">
-              <Button
+              <button
                 onClick={handleScan}
-                className="flex-1 bg-[#55E039] text-[#0B0515] hover:bg-[#4BCC33] font-semibold"
+                className="flex-1 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-semibold shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={scanning || !text.trim() || demoExpired}
               >
                 {scanning ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Scanning...
                   </>
                 ) : (
                   <>
-                    <Shield className="mr-2 h-4 w-4" />
+                    <Shield className="h-4 w-4" />
                     Scan for Compliance Issues
                   </>
                 )}
-              </Button>
+              </button>
               {!text && (
-                <Button
-                  variant="outline"
+                <button
                   onClick={loadSample}
-                  className="border-white/10 text-slate-300 hover:bg-white/5"
+                  className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/30 px-6 text-sm font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
                 >
                   Load Sample
-                </Button>
+                </button>
               )}
             </div>
 
-            <p className="text-xs text-slate-600 text-center">
+            <p className="text-xs text-white/40 text-center">
               This tool provides educational guidance only and does not constitute legal or regulatory advice.
             </p>
           </div>
@@ -264,28 +256,28 @@ export default function DemoPage() {
           {/* Results Panel */}
           <div className="lg:col-span-2 space-y-4">
             {!result && !scanning && (
-              <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-12 text-center">
-                <Shield className="h-12 w-12 mb-4 opacity-20 mx-auto text-slate-600" />
-                <p className="text-slate-500">Results will appear here after scanning.</p>
+              <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-12 text-center">
+                <Shield className="h-12 w-12 mb-4 opacity-20 mx-auto text-white/40" />
+                <p className="text-white/40">Results will appear here after scanning.</p>
                 {!text && (
                   <button onClick={loadSample} className="mt-3 text-sm text-[#55E039] hover:underline">
-                    Try with sample content →
+                    Try with sample content
                   </button>
                 )}
               </div>
             )}
 
             {scanning && (
-              <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-12 text-center">
+              <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-12 text-center">
                 <Loader2 className="h-8 w-8 animate-spin text-[#55E039] mx-auto mb-4" />
-                <p className="text-slate-400">Analyzing content against FDA/FTC rules...</p>
+                <p className="text-white/60">Analyzing content against FDA/FTC rules...</p>
               </div>
             )}
 
             {result && (
               <>
                 {/* Score */}
-                <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-6 text-center">
+                <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 text-center">
                   <ScoreRing score={result.compliance_score} />
                   <div className="mt-2">
                     <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
@@ -296,15 +288,15 @@ export default function DemoPage() {
                       {result.compliance_score >= 80 ? "Low Risk" : result.compliance_score >= 50 ? "Medium Risk" : "High Risk — Do Not Publish"}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-slate-300">{result.summary}</p>
+                  <p className="mt-3 text-sm text-white/70">{result.summary}</p>
                   <div className="flex justify-center gap-4 mt-4 text-sm">
-                    <span className="text-slate-500">{result.flag_count} flags</span>
+                    <span className="text-white/40">{result.flag_count} flags</span>
                     <span className="text-red-400">{result.high_risk_count} high</span>
                     <span className="text-yellow-400">{result.medium_risk_count} medium</span>
                     <span className="text-blue-400">{result.low_risk_count} low</span>
                   </div>
                   {result.compliance_score < 80 && (
-                    <p className="mt-4 text-xs text-slate-500 border-t border-white/5 pt-4">
+                    <p className="mt-4 text-xs text-white/40 pt-4">
                       {result.compliance_score < 50
                         ? "This content contains multiple high-risk violations that could trigger an FDA warning letter or FTC enforcement action. Do not publish without rewriting."
                         : "This content has compliance issues that should be addressed before publishing. Use the rewrite tool below to fix flagged phrases."}
@@ -314,13 +306,13 @@ export default function DemoPage() {
 
                 {/* Flags */}
                 {result.flags.length > 0 ? (
-                  <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-5 space-y-3">
+                  <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 space-y-3">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-white text-sm">Flagged Content</h3>
-                      <span className="text-[10px] text-slate-500">{result.flags.length} violation{result.flags.length !== 1 ? "s" : ""} found</span>
+                      <span className="text-[10px] text-white/40">{result.flags.length} violation{result.flags.length !== 1 ? "s" : ""} found</span>
                     </div>
                     {result.flags.map((flag, i) => (
-                      <div key={i} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 space-y-2">
+                      <div key={i} className="rounded-xl border border-white/10 bg-white/[0.02] p-3 space-y-2">
                         <div className="flex items-center justify-between gap-2">
                           <code className="text-xs text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">
                             &quot;{flag.matched_text}&quot;
@@ -331,8 +323,8 @@ export default function DemoPage() {
                             "text-blue-400 bg-blue-500/10"
                           }`}>{flag.risk_level}</span>
                         </div>
-                        <p className="text-xs text-slate-400">{flag.reason}</p>
-                        <div className="bg-[#55E039]/5 border border-[#55E039]/10 rounded-md p-2">
+                        <p className="text-xs text-white/60">{flag.reason}</p>
+                        <div className="bg-[#55E039]/5 border border-[#55E039]/10 rounded-lg p-2">
                           <p className="text-[10px] text-[#55E039]/50 uppercase tracking-wider font-semibold mb-1">Compliant Alternative</p>
                           <div className="flex items-center gap-2">
                             <p className="text-xs text-[#55E039] flex-1">{flag.alternative}</p>
@@ -343,7 +335,7 @@ export default function DemoPage() {
                               {copiedIdx === i ? (
                                 <Check className="h-3 w-3 text-[#55E039]" />
                               ) : (
-                                <Copy className="h-3 w-3 text-slate-500" />
+                                <Copy className="h-3 w-3 text-white/40" />
                               )}
                             </button>
                           </div>
@@ -355,61 +347,58 @@ export default function DemoPage() {
                   <div className="rounded-2xl border border-[#55E039]/20 bg-[#55E039]/5 p-8 text-center">
                     <CheckCircle2 className="h-12 w-12 text-[#55E039] mx-auto mb-3" />
                     <p className="font-medium text-white">No compliance issues found.</p>
-                    <p className="text-sm text-slate-400 mt-1">This content appears safe to publish.</p>
+                    <p className="text-sm text-white/60 mt-1">This content appears safe to publish.</p>
                   </div>
                 )}
 
                 {/* Rewrite */}
                 {result.flags.length > 0 && (
-                  <div className="rounded-2xl border border-white/5 bg-[#120B1E] p-5 space-y-3">
+                  <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 space-y-3">
                     <h3 className="font-semibold text-white text-sm">Compliant Rewrite</h3>
                     {!result.rewritten_text ? (
-                      <Button
+                      <button
                         onClick={handleRewrite}
-                        variant="outline"
-                        className="w-full border-[#55E039]/20 text-[#55E039] hover:bg-[#55E039]/5"
+                        className="w-full inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[#55E039]/30 text-[#55E039] font-medium hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)] disabled:opacity-50"
                         disabled={rewriting}
                       >
                         {rewriting ? (
                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="h-4 w-4 animate-spin" />
                             Rewriting...
                           </>
                         ) : (
                           "Rewrite for Compliance"
                         )}
-                      </Button>
+                      </button>
                     ) : (
                       <>
-                        <div className="rounded-lg border border-[#55E039]/10 bg-[#55E039]/5 p-4">
+                        <div className="rounded-xl border border-[#55E039]/10 bg-[#55E039]/5 p-4">
                           <p className="text-xs font-medium text-[#55E039] mb-2">Compliant Version</p>
-                          <p className="text-sm text-slate-300 leading-relaxed">{result.rewritten_text}</p>
+                          <p className="text-sm text-white/70 leading-relaxed">{result.rewritten_text}</p>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full border-white/10 text-slate-300 hover:bg-white/5"
+                        <button
+                          className="w-full inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white/[0.03] border border-white/10 text-sm text-white/70 hover:bg-white/[0.06] transition-all"
                           onClick={() => copyToClipboard(result.rewritten_text!)}
                         >
                           {copiedRewrite ? (
-                            <><Check className="mr-1 h-3 w-3" /> Copied</>
+                            <><Check className="h-3 w-3" /> Copied</>
                           ) : (
-                            <><Copy className="mr-1 h-3 w-3" /> Copy Rewritten Text</>
+                            <><Copy className="h-3 w-3" /> Copy Rewritten Text</>
                           )}
-                        </Button>
+                        </button>
                       </>
                     )}
                   </div>
                 )}
 
                 {/* CTA */}
-                <div className="rounded-2xl border border-[#55E039]/20 bg-gradient-to-b from-[#55E039]/5 to-transparent p-5 text-center">
-                  <p className="text-sm text-slate-400 mb-3">
+                <div className="rounded-2xl bg-white/[0.03] border border-[#55E039]/20 p-7 text-center">
+                  <p className="text-sm text-white/60 mb-3">
                     {scansLeft !== null && scansLeft > 0
                       ? `${scansLeft} free scan${scansLeft === 1 ? "" : "s"} remaining`
                       : "Want unlimited scans + full features?"}
                   </p>
-                  <CheckoutButton className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#55E039] px-6 text-sm font-semibold text-[#0B0515] hover:bg-[#4BCC33] transition-colors cursor-pointer">
+                  <CheckoutButton className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
                     Get Full Access
                     <ArrowRight className="h-3.5 w-3.5" />
                   </CheckoutButton>
@@ -419,6 +408,8 @@ export default function DemoPage() {
           </div>
         </div>
       </div>
+
+      <MarketingFooter />
     </div>
   )
 }
