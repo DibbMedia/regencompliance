@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1")
     const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50)
     const search = searchParams.get("search") || ""
+    const status = searchParams.get("status") || ""
 
     let query = serviceClient
       .from("profiles")
@@ -19,6 +20,10 @@ export async function GET(request: Request) {
       })
       .order("created_at", { ascending: false })
       .range((page - 1) * limit, page * limit - 1)
+
+    if (status) {
+      query = query.eq("subscription_status", status)
+    }
 
     if (search) {
       query = query.ilike("clinic_name", `%${search}%`)
@@ -34,9 +39,9 @@ export async function GET(request: Request) {
       )
     }
 
-    // Get scan counts per profile
+    // Get scan counts and last scan date per profile
     const profileIds = (profiles || []).map((p) => p.id)
-    const scanCounts: Record<string, number> = {}
+    const scanInfo: Record<string, { count: number; lastScanAt: string | null }> = {}
 
     if (profileIds.length > 0) {
       for (const pid of profileIds) {
@@ -44,7 +49,18 @@ export async function GET(request: Request) {
           .from("scans")
           .select("*", { count: "exact", head: true })
           .eq("profile_id", pid)
-        scanCounts[pid] = scanCount || 0
+
+        const { data: lastScan } = await serviceClient
+          .from("scans")
+          .select("created_at")
+          .eq("profile_id", pid)
+          .order("created_at", { ascending: false })
+          .limit(1)
+
+        scanInfo[pid] = {
+          count: scanCount || 0,
+          lastScanAt: lastScan?.[0]?.created_at || null,
+        }
       }
     }
 
@@ -57,7 +73,8 @@ export async function GET(request: Request) {
       usersWithEmail.push({
         ...profile,
         email: user?.email || "unknown",
-        scan_count: scanCounts[profile.id] || 0,
+        scan_count: scanInfo[profile.id]?.count || 0,
+        last_scan_at: scanInfo[profile.id]?.lastScanAt || null,
       })
     }
 
@@ -72,7 +89,7 @@ export async function GET(request: Request) {
         .map((u) => u.id)
 
       if (matchingIds.length > 0) {
-        const { data: emailProfiles, count: emailCount } = await serviceClient
+        let emailQuery = serviceClient
           .from("profiles")
           .select("id, clinic_name, subscription_status, created_at", {
             count: "exact",
@@ -80,6 +97,12 @@ export async function GET(request: Request) {
           .in("id", matchingIds)
           .order("created_at", { ascending: false })
           .range((page - 1) * limit, page * limit - 1)
+
+        if (status) {
+          emailQuery = emailQuery.eq("subscription_status", status)
+        }
+
+        const { data: emailProfiles, count: emailCount } = await emailQuery
 
         const results = []
         for (const profile of emailProfiles || []) {
@@ -90,10 +113,17 @@ export async function GET(request: Request) {
             .from("scans")
             .select("*", { count: "exact", head: true })
             .eq("profile_id", profile.id)
+          const { data: lastScan } = await serviceClient
+            .from("scans")
+            .select("created_at")
+            .eq("profile_id", profile.id)
+            .order("created_at", { ascending: false })
+            .limit(1)
           results.push({
             ...profile,
             email: user?.email || "unknown",
             scan_count: scanCount || 0,
+            last_scan_at: lastScan?.[0]?.created_at || null,
           })
         }
 

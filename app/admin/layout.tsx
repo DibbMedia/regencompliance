@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import useSWR from "swr"
 import {
   LayoutDashboard,
   Users,
@@ -10,15 +11,19 @@ import {
   BookOpen,
   ArrowLeft,
   ShieldCheck,
+  MessageSquare,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 const ADMIN_EMAIL = "isaac@dibbenterprizes.com"
 
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
+
 const navItems = [
   { title: "Overview", href: "/admin", icon: LayoutDashboard },
   { title: "Users", href: "/admin/users", icon: Users },
   { title: "Scans", href: "/admin/scans", icon: ScanSearch },
+  { title: "Tickets", href: "/admin/tickets", icon: MessageSquare, badgeKey: "openTickets" as const },
   { title: "Rules", href: "/admin/rules", icon: BookOpen },
 ]
 
@@ -31,6 +36,12 @@ export default function AdminLayout({
   const router = useRouter()
   const [authorized, setAuthorized] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  const { data: stats } = useSWR(
+    authorized ? "/api/admin/stats" : null,
+    fetcher,
+    { refreshInterval: 60000 }
+  )
 
   useEffect(() => {
     async function checkAdmin() {
@@ -59,6 +70,8 @@ export default function AdminLayout({
     )
   }
 
+  const openTicketCount = stats?.openTickets || 0
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -74,18 +87,26 @@ export default function AdminLayout({
               item.href === "/admin"
                 ? pathname === "/admin"
                 : pathname.startsWith(item.href)
+            const showBadge = item.badgeKey && openTicketCount > 0
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-white/[0.05] hover:text-foreground"
                 }`}
               >
-                <item.icon className="h-4 w-4" />
-                {item.title}
+                <span className="flex items-center gap-3">
+                  <item.icon className="h-4 w-4" />
+                  {item.title}
+                </span>
+                {showBadge && (
+                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-yellow-500/20 px-1.5 text-[10px] font-bold text-yellow-400">
+                    {openTicketCount}
+                  </span>
+                )}
               </Link>
             )
           })}

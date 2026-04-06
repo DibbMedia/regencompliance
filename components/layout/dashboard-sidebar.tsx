@@ -8,6 +8,7 @@ import {
   Clock,
   BookOpen,
   Bell,
+  LifeBuoy,
   Settings,
   LogOut,
 } from "lucide-react"
@@ -31,6 +32,7 @@ const navItems = [
   { title: "Scan History", href: "/dashboard/history", icon: Clock },
   { title: "Compliance Library", href: "/dashboard/library", icon: BookOpen },
   { title: "Notifications", href: "/dashboard/notifications", icon: Bell },
+  { title: "Support", href: "/dashboard/support", icon: LifeBuoy },
   { title: "Account & Billing", href: "/dashboard/account", icon: Settings },
 ]
 

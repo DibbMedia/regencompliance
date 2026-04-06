@@ -18,13 +18,22 @@ export async function GET() {
       .select("*", { count: "exact", head: true })
       .eq("subscription_status", "active")
 
+    // Churned (cancelled)
+    const { count: churnedCount } = await serviceClient
+      .from("profiles")
+      .select("*", { count: "exact", head: true })
+      .eq("subscription_status", "cancelled")
+
     // Total scans
     const { count: totalScans } = await serviceClient
       .from("scans")
       .select("*", { count: "exact", head: true })
 
     // Revenue estimate
-    const revenue = (activeSubscribers || 0) * 497
+    const activeSubs = activeSubscribers || 0
+    const mrr = activeSubs * 497
+    const arr = mrr * 12
+    const avgRevenuePerUser = (totalUsers || 0) > 0 ? Math.round(mrr / (totalUsers || 1)) : 0
 
     // Scans per day (last 7 days)
     const sevenDaysAgo = new Date()
@@ -55,6 +64,75 @@ export async function GET() {
       count,
     }))
 
+    // Scans today
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    const { count: scansToday } = await serviceClient
+      .from("scans")
+      .select("*", { count: "exact", head: true })
+      .gte("created_at", todayStart.toISOString())
+
+    // Scans this week (Monday start)
+    const weekStart = new Date()
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay())
+    weekStart.setHours(0, 0, 0, 0)
+    const { count: scansThisWeek } = await serviceClient
+      .from("scans")
+      .select("*", { count: "exact", head: true })
+      .gte("created_at", weekStart.toISOString())
+
+    // Scans this month
+    const monthStart = new Date()
+    monthStart.setDate(1)
+    monthStart.setHours(0, 0, 0, 0)
+    const { count: scansThisMonth } = await serviceClient
+      .from("scans")
+      .select("*", { count: "exact", head: true })
+      .gte("created_at", monthStart.toISOString())
+
+    // Average compliance score & total flags
+    const { data: scoreData } = await serviceClient
+      .from("scans")
+      .select("compliance_score, flag_count, flags")
+
+    let avgScore = 0
+    let totalFlags = 0
+    const violationCounts: Record<string, number> = {}
+
+    if (scoreData && scoreData.length > 0) {
+      const validScores = scoreData.filter(
+        (s) => s.compliance_score !== null && s.compliance_score !== undefined
+      )
+      if (validScores.length > 0) {
+        avgScore = Math.round(
+          validScores.reduce((sum, s) => sum + (s.compliance_score || 0), 0) /
+            validScores.length
+        )
+      }
+      totalFlags = scoreData.reduce((sum, s) => sum + (s.flag_count || 0), 0)
+
+      // Count violation types from flags JSON
+      for (const scan of scoreData) {
+        const flags = scan.flags
+        if (Array.isArray(flags)) {
+          for (const flag of flags) {
+            const phrase = flag.banned_phrase || flag.reason || "Unknown"
+            violationCounts[phrase] = (violationCounts[phrase] || 0) + 1
+          }
+        }
+      }
+    }
+
+    // Most common violation
+    let mostCommonViolation = "None"
+    let maxViolationCount = 0
+    for (const [phrase, count] of Object.entries(violationCounts)) {
+      if (count > maxViolationCount) {
+        maxViolationCount = count
+        mostCommonViolation = phrase
+      }
+    }
+
     // Recent signups (last 10)
     const { data: recentSignups } = await serviceClient
       .from("profiles")
@@ -74,13 +152,67 @@ export async function GET() {
       })
     }
 
+    // Recent activity: last 10 scans with user email, score, timestamp
+    const { data: recentActivity } = await serviceClient
+      .from("scans")
+      .select("id, profile_id, compliance_score, flag_count, content_type, created_at")
+      .order("created_at", { ascending: false })
+      .limit(10)
+
+    const profileEmailCache: Record<string, string> = {}
+    const activityWithEmail = []
+    for (const scan of recentActivity || []) {
+      if (!profileEmailCache[scan.profile_id]) {
+        const {
+          data: { user },
+        } = await serviceClient.auth.admin.getUserById(scan.profile_id)
+        profileEmailCache[scan.profile_id] = user?.email || "unknown"
+      }
+      activityWithEmail.push({
+        ...scan,
+        user_email: profileEmailCache[scan.profile_id],
+      })
+    }
+
+    // Support tickets (table may not exist yet)
+    let openTickets = 0
+    let inProgressTickets = 0
+    try {
+      const { count: openCount } = await serviceClient
+        .from("support_tickets")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "open")
+      openTickets = openCount || 0
+
+      const { count: ipCount } = await serviceClient
+        .from("support_tickets")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "in_progress")
+      inProgressTickets = ipCount || 0
+    } catch {
+      // support_tickets table may not exist yet
+    }
+
     return NextResponse.json({
       totalUsers: totalUsers || 0,
-      activeSubscribers: activeSubscribers || 0,
+      activeSubscribers: activeSubs,
+      churnedCount: churnedCount || 0,
       totalScans: totalScans || 0,
-      revenue,
+      mrr,
+      arr,
+      revenue: mrr,
+      avgRevenuePerUser,
       scansPerDay,
+      scansToday: scansToday || 0,
+      scansThisWeek: scansThisWeek || 0,
+      scansThisMonth: scansThisMonth || 0,
+      avgScore,
+      totalFlags,
+      mostCommonViolation,
       recentSignups: signupsWithEmail,
+      recentActivity: activityWithEmail,
+      openTickets,
+      inProgressTickets,
     })
   } catch (error) {
     console.error("Admin stats error:", error)
