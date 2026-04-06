@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // Allow API routes that handle their own auth (webhooks, cron)
-  if (pathname.startsWith("/api/stripe/webhook") || pathname.startsWith("/api/cron/") || pathname.startsWith("/api/demo/")) {
+  if (pathname.startsWith("/api/stripe/webhook") || pathname.startsWith("/api/stripe/checkout-guest") || pathname.startsWith("/api/cron/") || pathname.startsWith("/api/demo/")) {
     return NextResponse.next()
   }
 

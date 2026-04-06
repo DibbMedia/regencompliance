@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CheckoutButton } from "@/components/checkout-button"
 import {
   Shield,
   ArrowRight,
@@ -55,7 +56,7 @@ const faqs = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#060208]">
+    <div className="fixed inset-0 overflow-y-auto bg-[#060208]" style={{ colorScheme: "dark" }}>
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#55E039]/[0.03] rounded-full blur-[150px]" />
@@ -80,10 +81,10 @@ export default function LandingPage() {
             <Link href="/login" className="text-[13px] font-medium text-slate-400 hover:text-white transition-colors">
               Log In
             </Link>
-            <Link href="/login" className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-5 text-[13px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all">
+            <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-5 text-[13px] font-semibold text-white shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all">
               Get Started
               <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            </CheckoutButton>
           </div>
         </div>
       </nav>
@@ -109,10 +110,10 @@ export default function LandingPage() {
               RegenCompliance checks every word against live FDA/FTC enforcement data — and rewrites violations automatically.
             </p>
             <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-              <Link href="/login" className="group inline-flex h-[52px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-8 text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300">
+              <CheckoutButton className="group inline-flex h-[52px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-8 text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300 cursor-pointer">
                 Start Scanning — $497/mo
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </CheckoutButton>
               <Link href="/demo" className="inline-flex h-[52px] items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-medium text-[#55E039] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all duration-300 backdrop-blur-sm">
                 Try Free Demo
                 <ArrowRight className="h-4 w-4" />
@@ -368,10 +369,10 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/login" className="group flex h-[52px] w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300">
+              <CheckoutButton className="group flex h-[52px] w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300 cursor-pointer">
                 Get Started Now
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </CheckoutButton>
               <p className="mt-6 text-center text-[12px] text-slate-600 leading-relaxed">
                 A single FDA warning letter costs more in legal fees<br />than years of RegenCompliance.
               </p>
@@ -410,10 +411,10 @@ export default function LandingPage() {
             Every day you publish without scanning is a day you&apos;re exposed. RegenCompliance takes 30 seconds.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/login" className="group inline-flex h-[52px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-8 text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300">
+            <CheckoutButton className="group inline-flex h-[52px] items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3DBF2A] px-8 text-[15px] font-semibold text-white shadow-xl shadow-[#55E039]/25 hover:shadow-[#55E039]/40 transition-all duration-300 cursor-pointer">
               Get Started — $497/mo
               <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            </CheckoutButton>
             <Link href="/demo" className="inline-flex h-[52px] items-center gap-2.5 rounded-xl border border-white/[0.08] px-8 text-[15px] font-medium text-slate-300 hover:bg-white/[0.03] transition-all duration-300">
               Try Demo First
             </Link>
