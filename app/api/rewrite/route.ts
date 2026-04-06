@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { anthropic } from "@/lib/anthropic"
 import { rewriteSchema } from "@/lib/validations"
-import { rewriteRateLimit } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
   try {
@@ -25,15 +24,6 @@ export async function POST(request: Request) {
 
     if (profile?.subscription_status !== "active") {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
-    }
-
-    // Rate limit
-    const { success: withinLimit } = await rewriteRateLimit.limit(user.id)
-    if (!withinLimit) {
-      return NextResponse.json(
-        { error: "Daily rewrite limit reached. Resets at midnight UTC." },
-        { status: 429 }
-      )
     }
 
     // Validate input
