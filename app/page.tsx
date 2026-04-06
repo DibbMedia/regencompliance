@@ -70,22 +70,22 @@ export default function LandingPage() {
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d1117] via-[#0a0a0a] to-[#0a0a0a]" />
 
-        {/* Large gradient orbs */}
-        <div className="absolute -top-[200px] left-[10%] w-[900px] h-[600px] rounded-full bg-[#55E039]/[0.07] blur-[150px]" />
-        <div className="absolute top-[30%] -right-[100px] w-[500px] h-[500px] rounded-full bg-[#55E039]/[0.04] blur-[120px]" />
-        <div className="absolute top-[60%] -left-[200px] w-[600px] h-[400px] rounded-full bg-[#89E3E4]/[0.03] blur-[130px]" />
-        <div className="absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#55E039]/[0.03] blur-[100px]" />
+        {/* Large gradient orbs — bright */}
+        <div className="absolute -top-[200px] left-[10%] w-[900px] h-[600px] rounded-full bg-[#55E039]/[0.15] blur-[150px]" />
+        <div className="absolute top-[30%] -right-[100px] w-[500px] h-[500px] rounded-full bg-[#55E039]/[0.10] blur-[120px]" />
+        <div className="absolute top-[60%] -left-[200px] w-[600px] h-[400px] rounded-full bg-[#89E3E4]/[0.08] blur-[130px]" />
+        <div className="absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-[#55E039]/[0.07] blur-[100px]" />
 
-        {/* Grid pattern — visible lines */}
+        {/* Grid pattern — bright visible lines */}
         <div className="absolute inset-0" style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(85,224,57,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(85,224,57,0.12) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }} />
 
-        {/* Smaller dot grid overlay */}
+        {/* Dot grid at intersections */}
         <div className="absolute inset-0" style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
+          backgroundImage: "radial-gradient(circle, rgba(85,224,57,0.25) 1.5px, transparent 1.5px)",
+          backgroundSize: "60px 60px",
         }} />
 
         {/* Radial fade from center */}
@@ -94,9 +94,9 @@ export default function LandingPage() {
         }} />
 
         {/* Decorative rings */}
-        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] rounded-full border border-white/[0.03]" />
-        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] rounded-full border border-white/[0.02]" />
-        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[400px] h-[400px] rounded-full border border-[#55E039]/[0.04]" />
+        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] rounded-full border border-[#55E039]/[0.08]" />
+        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] rounded-full border border-[#55E039]/[0.06]" />
+        <div className="absolute top-[15%] left-[50%] -translate-x-1/2 w-[400px] h-[400px] rounded-full border border-[#55E039]/[0.12]" />
 
         {/* Noise texture for grain */}
         <div className="absolute inset-0 opacity-[0.025]" style={{
@@ -184,17 +184,17 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-5 text-[13px] text-white/60 leading-[2.2] mb-5">
+                <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-5 text-[14px] text-white/60 leading-[2.2] mb-5" style={{ fontFamily: "var(--font-poppins), sans-serif" }}>
                   <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/50">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
                   <div className="flex justify-end mt-2">
                     <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
                   </div>
                 </div>
 
-                <div className="h-11 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] flex items-center justify-center text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] cursor-pointer">
+                <Link href="/demo" className="h-11 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] flex items-center justify-center text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.4)] hover:brightness-110 transition-all">
                   <Scan className="h-4 w-4 mr-2" />
                   Scan for Compliance Issues
-                </div>
+                </Link>
                 <p className="text-[10px] text-white/20 text-center mt-3">Educational guidance only. Not legal or regulatory advice.</p>
               </div>
 
@@ -229,7 +229,7 @@ export default function LandingPage() {
                   ].map((f) => (
                     <div key={f.phrase} className={`rounded-lg border p-3 flex items-center justify-between ${f.c === "red" ? "border-red-500/30 bg-red-950/40" : "border-amber-500/30 bg-amber-950/40"}`}>
                       <div>
-                        <code className={`text-[12px] font-semibold ${f.c === "red" ? "text-red-300" : "text-amber-300"}`}>&quot;{f.phrase}&quot;</code>
+                        <span className={`text-[12px] font-semibold ${f.c === "red" ? "text-red-300" : "text-amber-300"}`}>&quot;{f.phrase}&quot;</span>
                         <p className="text-[10px] text-white/40 mt-0.5">{f.reason}</p>
                       </div>
                       <span className={`text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-md border ${f.c === "red" ? "text-red-300 bg-red-500/20 border-red-500/30" : "text-amber-300 bg-amber-500/20 border-amber-500/30"}`}>{f.level}</span>
