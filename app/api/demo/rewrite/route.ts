@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { anthropic } from "@/lib/anthropic"
+import { getComplianceBiblePrompt, getComplianceBibleRewriteGuidance } from "@/lib/compliance-bible"
 
 export async function POST(request: Request) {
   try {
@@ -28,11 +29,24 @@ export async function POST(request: Request) {
       temperature: 0,
       system: `You are a healthcare marketing compliance editor for regenerative medicine.
 Rewrite the content to be fully FDA/FTC compliant.
-Rules: never make disease treatment/cure claims, never claim FDA approval for unapproved therapies,
-use patient experience language (many patients report..., may support..., some patients experience...),
-always include hedging (individual results may vary, results not guaranteed),
-maintain original tone and length, do not add medical disclaimers not in original.
+
+[COMPLIANCE BIBLE GUIDANCE]
+${getComplianceBiblePrompt()}
+
+[REWRITE PROTOCOL]
+${getComplianceBibleRewriteGuidance()}
+
 Flagged phrases to replace: ${flagsSummary}
+
+Additional rules:
+- Swap all RED LIGHT phrases for GREEN LIGHT alternatives
+- For YELLOW LIGHT phrases, keep the content but add the required disclaimer nearby
+- If a specific modality is mentioned (stem cells, exosomes, PRP, peptides, IV therapy, BHRT), include the appropriate regulatory status note
+- Use patient experience language (many patients report..., may support..., some patients experience...)
+- Always include hedging (individual results may vary, results not guaranteed)
+- Maintain original tone and length
+- Do not add medical disclaimers that are not contextually relevant
+
 Return ONLY the rewritten text. No explanations, no JSON.`,
       messages: [{ role: "user", content: original_text }],
     })

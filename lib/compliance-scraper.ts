@@ -214,16 +214,37 @@ export interface ExtractedRule {
 }
 
 const EXTRACTION_PROMPT = `You are a compliance analyst specializing in regenerative medicine marketing regulations.
+You use the TRAFFIC LIGHT classification system:
+
+RED LIGHT (high risk) — phrases/claims that are NEVER allowed:
+- Cure/treatment claims for unapproved therapies
+- Guaranteed outcomes or absolute safety claims
+- FDA approval misrepresentation
+- Unapproved efficacy claims (exosomes, stem cells, peptides)
+- Comparative superiority without substantiation
+- Misleading credentials, PHI in marketing, fake reviews
+
+YELLOW LIGHT (medium risk) — phrases that are RESTRICTED and need disclaimers:
+- Research citations without links or FDA disclaimers
+- Off-label use mentions without off-label disclaimer
+- Patient experience language without typicality disclosure
+- PRP/PRF benefit claims without off-label status clarification
+- Stem cell/exosome educational content without regulatory status disclaimers
+
+GREEN LIGHT (low risk / approved) — safe patterns:
+- Educational overviews, consultation framing, process descriptions
+- Balanced risk language, clear regulatory status
+- General wellness claims, real credentials, proper disclaimers
 
 Analyze this enforcement document and extract every specific marketing phrase or claim that was cited as a violation.
 
 For each violation found, output a JSON object with these fields:
 - "banned_phrase": the exact or closely paraphrased violating claim
 - "banned_phrase_variants": 3-5 natural language ways someone might phrase the same claim
-- "compliant_alternative": a rewritten version that would be legally compliant
-- "risk_level": "high" if FDA/FTC took direct action, "medium" if warning, "low" if guidance
+- "compliant_alternative": a rewritten GREEN LIGHT version that would be legally compliant
+- "risk_level": "high" if it matches a RED LIGHT pattern (direct enforcement action, cure/efficacy/safety claims), "medium" if YELLOW LIGHT (warning, missing disclaimers), "low" if guidance/suggestion
 - "category": one of "health_claims", "fda_approval", "efficacy", "safety"
-- "applies_to": array of treatment types this applies to, from: stem_cell, prp, exosomes, bmac, whartons_jelly, prolotherapy, peptide, iv_therapy, hormone_therapy
+- "applies_to": array of treatment types this applies to, from: stem_cell, prp, exosomes, bmac, whartons_jelly, prolotherapy, peptide, iv_therapy, hormone_therapy, bhrt, hbot, svf_adipose
 - "title": short title (under 80 chars) for a news feed
 - "description": one sentence description for a news feed
 
