@@ -49,6 +49,69 @@ export async function GET(
   }
 }
 
+// PATCH — update site (toggle active, rename, etc.)
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    if (!isValidUUID(id)) {
+      return NextResponse.json({ error: "Invalid site ID" }, { status: 400 })
+    }
+
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const profileId = await effectiveProfileId(user.id, supabase)
+
+    // Verify ownership
+    const { data: site } = await supabase
+      .from("monitored_sites")
+      .select("id")
+      .eq("id", id)
+      .eq("profile_id", profileId)
+      .single()
+
+    if (!site) {
+      return NextResponse.json({ error: "Site not found" }, { status: 404 })
+    }
+
+    const body = await request.json()
+    const updates: Record<string, unknown> = {}
+
+    if (typeof body.is_active === "boolean") updates.is_active = body.is_active
+    if (typeof body.name === "string") updates.name = body.name.slice(0, 200)
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 })
+    }
+
+    updates.updated_at = new Date().toISOString()
+
+    const { data: updated, error } = await supabase
+      .from("monitored_sites")
+      .update(updates)
+      .eq("id", id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error("Failed to update site:", error)
+      return NextResponse.json({ error: "Failed to update site" }, { status: 500 })
+    }
+
+    return NextResponse.json(updated)
+  } catch (error) {
+    console.error("Site PATCH error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
+}
+
 // DELETE — remove site and all its pages (cascade)
 export async function DELETE(
   _request: Request,
