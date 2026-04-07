@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
-import { Loader2, Sun, Moon, Monitor, ExternalLink } from "lucide-react"
+import { Loader2, Sun, Moon, Monitor, ExternalLink, Shield } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -103,7 +103,7 @@ export default function AccountPage() {
     if (data.url) {
       window.location.href = data.url
     } else {
-      toast.error("Failed to start checkout")
+      toast.error(data.error || "Failed to start checkout")
     }
   }
 
@@ -115,7 +115,7 @@ export default function AccountPage() {
     if (data.url) {
       window.location.href = data.url
     } else {
-      toast.error("Failed to open billing portal")
+      toast.error(data.error || "Failed to open billing portal")
     }
   }
 
@@ -135,7 +135,21 @@ export default function AccountPage() {
     inactive: "bg-gray-500/10 text-gray-400",
   }
 
+  function getDisplayStatus(): string {
+    if (profile?.is_beta_subscriber) return "Beta Lifetime"
+    return (profile?.subscription_status || "inactive").replace("_", " ")
+  }
+
+  function getStatusBadgeClass(): string {
+    if (profile?.is_beta_subscriber) return "bg-purple-500/10 text-purple-400"
+    return statusColor[profile?.subscription_status as keyof typeof statusColor] || statusColor.inactive
+  }
+
   if (!profile) return null
+
+  const isBeta = profile.is_beta_subscriber
+  const isActive = profile.subscription_status === "active"
+  const hasStripeCustomer = !!profile.stripe_customer_id
 
   return (
     <div className="space-y-4 max-w-2xl">
@@ -213,16 +227,24 @@ export default function AccountPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Billing</CardTitle>
-            <CardDescription>RegenCompliance — $497/month</CardDescription>
+            <CardDescription>
+              {isBeta ? "Beta Program" : "RegenCompliance — $497/month"}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="text-sm">Status:</span>
-              <Badge className={statusColor[profile.subscription_status] || statusColor.inactive}>
-                {profile.subscription_status.replace("_", " ")}
+              <Badge className={getStatusBadgeClass()}>
+                {isBeta && <Shield className="mr-1 h-3 w-3" />}
+                {getDisplayStatus()}
               </Badge>
             </div>
-            {profile.subscription_status === "active" ? (
+
+            {isBeta ? (
+              <p className="text-sm text-muted-foreground">
+                You have lifetime access through the beta program. No billing to manage.
+              </p>
+            ) : isActive && hasStripeCustomer ? (
               <Button variant="outline" onClick={handlePortal} disabled={portalLoading}>
                 {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <ExternalLink className="mr-1 h-3 w-3" />
@@ -266,8 +288,8 @@ export default function AccountPage() {
         </Card>
       )}
 
-      {/* Danger Zone (owner only) */}
-      {role === "owner" && profile.subscription_status === "active" && (
+      {/* Danger Zone (owner only, not for beta) */}
+      {role === "owner" && isActive && !isBeta && (
         <Card className="border-destructive/30">
           <CardHeader>
             <CardTitle className="text-base text-destructive">Danger Zone</CardTitle>

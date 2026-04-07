@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { CheckoutButton } from "@/components/checkout-button"
+import { BetaCheckoutButton, BetaSpotsCounter } from "@/components/beta-checkout-button"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
@@ -22,6 +22,7 @@ import {
   ChevronDown,
   ChevronRight,
   Sparkles,
+  Zap,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -87,10 +88,10 @@ export default function LandingPage() {
               FDA and FTC enforcement against regen clinics hit a 25-year high. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Start Scanning — $497/mo
+              <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                Claim Beta Access — $297 Lifetime
                 <ArrowRight className="h-4 w-4" />
-              </CheckoutButton>
+              </BetaCheckoutButton>
               <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
                 Try Free Demo
                 <ArrowRight className="h-4 w-4 opacity-60" />
@@ -328,31 +329,76 @@ export default function LandingPage() {
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-8">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">One plan. Everything included.</h2>
-            <p className="mt-4 text-base text-white/60">No tiers, no hidden fees, no contracts.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Lock in lifetime access at the beta price.</h2>
+            <p className="mt-4 text-base text-white/60">Limited to 25 founding members. One payment. Forever access.</p>
           </div>
-          <div className="mx-auto max-w-md">
-            <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/20 p-10 relative overflow-hidden shadow-[0_0_40px_rgba(85,224,57,0.06)]">
-              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/50 to-transparent" />
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-20 bg-[#55E039]/[0.05] blur-[40px]" />
-              <div className="relative text-center mb-10">
-                <p className="text-6xl font-extrabold tracking-tight">$497<span className="text-xl font-normal text-white/40">/mo</span></p>
-                <p className="mt-2 text-sm text-white/40">Cancel anytime. No contracts.</p>
+          <div className="mx-auto max-w-4xl grid gap-6 md:grid-cols-2 items-start">
+            {/* BETA PLAN — PRIMARY */}
+            <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-[0_0_60px_rgba(85,224,57,0.1)]">
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-24 bg-[#55E039]/[0.08] blur-[50px]" />
+              <div className="absolute top-4 right-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
+                  <Zap className="h-3 w-3" />
+                  Beta — Limited Spots
+                </span>
               </div>
-              <ul className="space-y-4 mb-10">
+              <div className="relative text-center mb-8 pt-4">
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight">$297<span className="text-lg font-normal text-white/40 ml-1">one-time</span></p>
+                <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Lifetime Access — Never pay again</p>
+                <BetaSpotsCounter className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1" />
+              </div>
+              <ul className="space-y-4 mb-8">
                 {checklist.map((item) => (
                   <li key={item} className="flex items-center gap-3">
                     <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
                     <span className="text-[15px] text-white/70">{item}</span>
                   </li>
                 ))}
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
+                  <span className="text-[15px] text-white font-semibold">Lifetime access — no recurring fees</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
+                  <span className="text-[15px] text-white font-semibold">All future updates included</span>
+                </li>
               </ul>
-              <CheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Get Started Now
+              <BetaCheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                Claim Beta Access — $297
                 <ArrowRight className="h-4 w-4" />
-              </CheckoutButton>
-              <p className="mt-6 text-center text-xs text-white/30">
-                One FDA warning letter costs more in legal fees than years of RegenCompliance.
+              </BetaCheckoutButton>
+              <p className="mt-4 text-center text-xs text-white/30">
+                One-time payment. No subscription. Saves you $5,667/yr vs monthly.
+              </p>
+            </div>
+
+            {/* STANDARD PLAN — COMING SOON */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 relative overflow-hidden opacity-70">
+              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+              <div className="absolute top-4 right-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-bold text-white/40">
+                  Coming Soon
+                </span>
+              </div>
+              <div className="relative text-center mb-8 pt-4">
+                <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">Standard</p>
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight text-white/40">$497<span className="text-lg font-normal text-white/30 ml-1">/mo</span></p>
+                <p className="mt-2 text-sm text-white/30">Available after beta ends.</p>
+              </div>
+              <ul className="space-y-4 mb-8">
+                {checklist.map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-white/20 shrink-0" />
+                    <span className="text-[15px] text-white/30">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/30 cursor-not-allowed select-none">
+                Coming Soon
+              </div>
+              <p className="mt-4 text-center text-xs text-white/20">
+                Get lifetime access now for $297 instead of paying $497 every month.
               </p>
             </div>
           </div>
@@ -401,10 +447,10 @@ export default function LandingPage() {
             Your next Instagram post, website update, or patient email could trigger a federal investigation. It takes 30 seconds to check.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-              Get Started — $497/mo
+            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+              Claim Beta Access — $297
               <ArrowRight className="h-4 w-4" />
-            </CheckoutButton>
+            </BetaCheckoutButton>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

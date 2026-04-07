@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { CheckoutButton } from "@/components/checkout-button"
+import { BetaCheckoutButton, BetaSpotsCounter } from "@/components/beta-checkout-button"
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,9 +17,9 @@ import {
   AlertTriangle,
   DollarSign,
   ChevronDown,
-  BadgeCheck,
   Scale,
   TrendingDown,
+  Zap,
 } from "lucide-react"
 import { useState } from "react"
 import { MarketingHeader } from "@/components/marketing-header"
@@ -71,42 +71,45 @@ export default function PricingPage() {
       {/* ============ HERO ============ */}
       <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6 text-center">
-          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">SIMPLE, TRANSPARENT PRICING</p>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">BETA LAUNCH — LIMITED SPOTS</p>
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
-            One plan. Everything included.
+            Lock in lifetime access.
             <br />
-            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">No tiers. No surprises.</span>
+            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">One payment. Forever.</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-            We do not believe in feature-gating compliance tools. Every clinic gets access to every feature. One price, one plan, everything your team needs to stay compliant.
+            We are opening 25 founding member spots at $297 one-time — lifetime access to every feature, every update, forever. Once they are gone, the only option is $497/mo.
           </p>
         </div>
       </section>
 
-      {/* ============ PRICING CARD ============ */}
+      {/* ============ PRICING CARDS ============ */}
       <section className="relative pb-16">
-        <div className="relative mx-auto max-w-lg px-6">
-          <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/20 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.05]">
-            <div className="absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/50 to-transparent" />
+        <div className="relative mx-auto max-w-5xl px-6 grid gap-8 md:grid-cols-2 items-start">
+          {/* BETA PLAN — PRIMARY */}
+          <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.08]">
+            <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-24 bg-[#55E039]/[0.08] blur-[50px]" />
             <div className="absolute top-4 right-4">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#55E039]/10 border border-[#55E039]/15 px-3 py-1 text-xs font-bold text-[#55E039]">
-                <BadgeCheck className="h-3 w-3" />
-                Most Popular
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
+                <Zap className="h-3 w-3" />
+                Beta — Limited Spots
               </span>
             </div>
-            <p className="text-sm font-extrabold text-white/40 mb-2">Professional</p>
+            <p className="text-sm font-extrabold text-[#55E039]/70 mb-2">Founding Member</p>
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="text-6xl font-extrabold tracking-tight text-white">$497</p>
-              <span className="text-xl font-normal text-white/40">/mo</span>
+              <p className="text-6xl font-extrabold tracking-tight text-white">$297</p>
+              <span className="text-lg font-normal text-white/40">one-time</span>
             </div>
-            <p className="text-sm text-white/40 mb-8">Billed monthly. Cancel anytime. No contracts.</p>
-            <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
-              Get Started Now
+            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Lifetime Access — Never pay again</p>
+            <BetaSpotsCounter className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8" />
+            <BetaCheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
+              Claim Beta Access — $297
               <ArrowRight className="h-4 w-4" />
-            </CheckoutButton>
-            <p className="text-center text-xs text-white/40 mb-8">30-day money-back guarantee. No questions asked.</p>
-            <div className="pt-6">
-              <p className="text-sm font-extrabold text-white mb-4">Everything included:</p>
+            </BetaCheckoutButton>
+            <p className="text-center text-xs text-white/40 mb-8">One-time payment. Saves $5,667/yr vs monthly.</p>
+            <div className="pt-6 border-t border-white/[0.06]">
+              <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
               <ul className="space-y-3">
                 {includedFeatures.map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
@@ -114,6 +117,47 @@ export default function PricingPage() {
                     <div>
                       <span className="text-[15px] text-white/70 font-medium">{item.title}</span>
                       <p className="text-xs text-white/40 mt-0.5 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[15px] text-white font-semibold">Lifetime access — no recurring fees</span>
+                    <p className="text-xs text-white/40 mt-0.5 leading-relaxed">Pay once, use forever. All future updates and features included at no extra cost.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* STANDARD PLAN — COMING SOON */}
+          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 relative overflow-hidden opacity-70">
+            <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="absolute top-4 right-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-bold text-white/40">
+                Coming Soon
+              </span>
+            </div>
+            <p className="text-sm font-extrabold text-white/40 mb-2">Professional</p>
+            <div className="flex items-baseline gap-1 mb-1">
+              <p className="text-6xl font-extrabold tracking-tight text-white/40">$497</p>
+              <span className="text-xl font-normal text-white/30">/mo</span>
+            </div>
+            <p className="text-sm text-white/30 mb-8">Available after beta period ends.</p>
+            <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/30 cursor-not-allowed select-none mb-6">
+              Coming Soon
+            </div>
+            <p className="text-center text-xs text-white/20 mb-8">Lock in lifetime access now for $297 — save $5,667/yr.</p>
+            <div className="pt-6 border-t border-white/[0.06]">
+              <p className="text-sm font-extrabold text-white/30 mb-4">Everything included:</p>
+              <ul className="space-y-3">
+                {includedFeatures.map((item) => (
+                  <li key={item.title} className="flex items-start gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-white/20 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[15px] text-white/30 font-medium">{item.title}</span>
+                      <p className="text-xs text-white/20 mt-0.5 leading-relaxed">{item.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -335,13 +379,13 @@ export default function PricingPage() {
             Protect your clinic today.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            $497 per month is less than a single hour with a healthcare marketing attorney. Get unlimited scans, AI rewrites, and a full compliance library instead.
+            Lock in lifetime access for $297 before the 25 beta spots run out. After that, it is $497/mo — no exceptions.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-              Get Started — $497/mo
+            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+              Claim Beta Access — $297
               <ArrowRight className="h-4 w-4" />
-            </CheckoutButton>
+            </BetaCheckoutButton>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

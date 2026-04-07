@@ -49,6 +49,13 @@ function LoginContent() {
       return
     }
 
+    // Attempt to claim beta purchase if one exists for this email
+    try {
+      await fetch("/api/beta/claim", { method: "POST" })
+    } catch {
+      // Non-blocking — beta claim is best-effort
+    }
+
     toast.success("Signed in successfully!")
     router.push("/dashboard/scanner")
   }
@@ -270,6 +277,13 @@ function LoginContent() {
           <p className="text-center text-sm text-[#55E039] mt-4">
             Payment received! Create your account or log in to get started.
           </p>
+        )}
+        {searchParams.get("beta") === "true" && (
+          <div className="text-center mt-4 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-3">
+            <p className="text-sm text-[#55E039] font-semibold">
+              Beta access purchased! Log in or create your account to activate lifetime access.
+            </p>
+          </div>
         )}
       </div>
     </div>

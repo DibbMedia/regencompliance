@@ -6,6 +6,8 @@ export interface Profile {
   subscription_status: 'inactive' | 'active' | 'past_due' | 'cancelled'
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
+  is_beta_subscriber: boolean
+  beta_enrolled_at: string | null
   onboarding_complete: boolean
   theme_preference: 'light' | 'dark' | 'system'
   created_at: string

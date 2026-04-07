@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
+import { createServiceClient } from "@/lib/supabase/server"
+
+const BETA_SEAT_LIMIT = 25
 
 // Simple in-memory rate limiter: max 10 checkout sessions per IP per hour
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -31,7 +34,7 @@ setInterval(() => {
       rateLimitMap.delete(key)
     }
   }
-}, 10 * 60 * 1000) // every 10 minutes
+}, 10 * 60 * 1000)
 
 export async function POST(request: Request) {
   try {
@@ -60,19 +63,57 @@ export async function POST(request: Request) {
       )
     }
 
+    // Check beta seat availability
+    const supabase = createServiceClient()
+    const { count, error: countError } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("is_beta_subscriber", true)
+
+    if (countError) {
+      console.error("Beta seat count error:", countError)
+      return NextResponse.json({ error: "Failed to check beta availability" }, { status: 500 })
+    }
+
+    const taken = count ?? 0
+    if (taken >= BETA_SEAT_LIMIT) {
+      return NextResponse.json(
+        { error: "Beta spots are full", spots_remaining: 0 },
+        { status: 409 }
+      )
+    }
+
+    // Also count unclaimed beta purchases (reserved but not yet linked to a profile)
+    const { count: pendingCount } = await supabase
+      .from("beta_purchases")
+      .select("id", { count: "exact", head: true })
+      .eq("claimed", false)
+
+    const totalReserved = taken + (pendingCount ?? 0)
+    if (totalReserved >= BETA_SEAT_LIMIT) {
+      return NextResponse.json(
+        { error: "Beta spots are full", spots_remaining: 0 },
+        { status: 409 }
+      )
+    }
+
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
-      line_items: [{ price: process.env.STRIPE_PRICE_ID!, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/login?subscribed=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}`,
-      allow_promotion_codes: true,
-      customer_creation: "always",
-      metadata: { plan_type: "standard_monthly" },
+      mode: "payment",
+      line_items: [{ price: process.env.STRIPE_BETA_PRICE_ID!, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/login?beta=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+      metadata: { plan_type: "beta_lifetime" },
+      payment_intent_data: {
+        metadata: { plan_type: "beta_lifetime" },
+      },
     })
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json({
+      url: session.url,
+      spots_remaining: BETA_SEAT_LIMIT - totalReserved,
+    })
   } catch (error) {
-    console.error("Guest checkout error:", error)
+    console.error("Beta checkout error:", error)
     return NextResponse.json({ error: "Failed to create checkout" }, { status: 500 })
   }
 }
