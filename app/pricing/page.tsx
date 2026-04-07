@@ -46,7 +46,7 @@ const comparisonRows = [
   { feature: "Audit trail & PDF export", us: true, attorney: false, diy: false },
   { feature: "Instant results (under 30 seconds)", us: true, attorney: false, diy: false },
   { feature: "Available 24/7", us: true, attorney: false, diy: true },
-  { feature: "Monthly cost", us: "$497", attorney: "$2,000-$10,000", diy: "$0" },
+  { feature: "Monthly cost", us: "$297 (beta) / $497", attorney: "$2,000-$10,000", diy: "$0" },
   { feature: "Risk of missed violations", us: "Very Low", attorney: "Low", diy: "Very High" },
 ]
 
@@ -73,12 +73,12 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-6xl px-6 text-center">
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">BETA LAUNCH — LIMITED SPOTS</p>
           <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
-            Lock in lifetime access.
+            Lock in $297/mo for life.
             <br />
-            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">One payment. Forever.</span>
+            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">Rate never increases.</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-            We are opening 25 founding member spots at $297 one-time — lifetime access to every feature, every update, forever. Once they are gone, the only option is $497/mo.
+            We are opening 25 founding member spots at $297/mo — locked in for life. Once they are gone, the only option is $497/mo.
           </p>
         </div>
       </section>
@@ -99,15 +99,15 @@ export default function PricingPage() {
             <p className="text-sm font-extrabold text-[#55E039]/70 mb-2">Founding Member</p>
             <div className="flex items-baseline gap-1 mb-1">
               <p className="text-6xl font-extrabold tracking-tight text-white">$297</p>
-              <span className="text-lg font-normal text-white/40">one-time</span>
+              <span className="text-lg font-normal text-white/40">/mo</span>
             </div>
-            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Lifetime Access — Never pay again</p>
+            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate — Never increases</p>
             <BetaSpotsCounter className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8" />
             <BetaCheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
-              Claim Beta Access — $297
+              Claim Beta Access — $297/mo
               <ArrowRight className="h-4 w-4" />
             </BetaCheckoutButton>
-            <p className="text-center text-xs text-white/40 mb-8">One-time payment. Saves $5,667/yr vs monthly.</p>
+            <p className="text-center text-xs text-white/40 mb-8">Save $200/mo vs standard pricing. Rate locked for life.</p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
               <ul className="space-y-3">
@@ -123,8 +123,8 @@ export default function PricingPage() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-[15px] text-white font-semibold">Lifetime access — no recurring fees</span>
-                    <p className="text-xs text-white/40 mt-0.5 leading-relaxed">Pay once, use forever. All future updates and features included at no extra cost.</p>
+                    <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo — never increases</span>
+                    <p className="text-xs text-white/40 mt-0.5 leading-relaxed">Your rate stays at $297/mo for life. All future updates and features included.</p>
                   </div>
                 </li>
               </ul>
@@ -148,7 +148,7 @@ export default function PricingPage() {
             <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/30 cursor-not-allowed select-none mb-6">
               Coming Soon
             </div>
-            <p className="text-center text-xs text-white/20 mb-8">Lock in lifetime access now for $297 — save $5,667/yr.</p>
+            <p className="text-center text-xs text-white/20 mb-8">Lock in $297/mo now — saves $200/mo when standard launches.</p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white/30 mb-4">Everything included:</p>
               <ul className="space-y-3">
@@ -256,7 +256,7 @@ export default function PricingPage() {
                 <h3 className="text-xl font-extrabold text-white">The Bottom Line</h3>
               </div>
               <p className="text-base text-white/70 leading-relaxed max-w-2xl mx-auto">
-                A single FDA warning letter costs more in legal fees than <span className="text-white font-extrabold">36 years</span> of RegenCompliance at the low end. Even if you only consider the attorney time to respond to a warning letter — typically $50,000 to $150,000 — the math is clear. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
+                A single FDA warning letter costs more in legal fees than <span className="text-white font-extrabold">14 years</span> of RegenCompliance at beta pricing. Even if you only consider the attorney time to respond to a warning letter — typically $50,000 to $150,000 — the math is clear. At $297/mo, that is $3,564 per year. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
               </p>
             </div>
           </div>
@@ -379,11 +379,11 @@ export default function PricingPage() {
             Protect your clinic today.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Lock in lifetime access for $297 before the 25 beta spots run out. After that, it is $497/mo — no exceptions.
+            Lock in $297/mo before the 25 beta spots run out. After that, it goes to $497/mo — no exceptions.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-              Claim Beta Access — $297
+              Claim Beta Access — $297/mo
               <ArrowRight className="h-4 w-4" />
             </BetaCheckoutButton>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">

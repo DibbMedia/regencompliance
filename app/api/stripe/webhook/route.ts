@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
-        const isBeta = session.metadata?.plan_type === "beta_lifetime"
+        const isBeta = session.metadata?.plan_type === "beta_subscription"
 
         if (!session.customer) {
           console.error("checkout.session.completed: missing customer", {
@@ -43,8 +43,12 @@ export async function POST(request: Request) {
         const customerId = session.customer as string
 
         if (isBeta) {
-          // ─── BETA ONE-TIME PAYMENT ───
-          console.log(`[Stripe Webhook] Beta checkout completed: customer=${customerId}`)
+          // ─── BETA SUBSCRIPTION ($297/mo locked-in rate) ───
+          console.log(`[Stripe Webhook] Beta subscription checkout completed: customer=${customerId}`)
+
+          const subscriptionId = typeof session.subscription === "string"
+            ? session.subscription
+            : (session.subscription as Stripe.Subscription)?.id || null
 
           // Retrieve full session with customer expanded for email
           const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
@@ -54,16 +58,12 @@ export async function POST(request: Request) {
           const customerEmail = (
             customer?.email || fullSession.customer_details?.email || ""
           ).toLowerCase()
-          const paymentIntentId =
-            typeof fullSession.payment_intent === "string"
-              ? fullSession.payment_intent
-              : fullSession.payment_intent?.id || null
 
           // Record the beta purchase
           await supabase.from("beta_purchases").insert({
             email: customerEmail,
             stripe_customer_id: customerId,
-            stripe_payment_intent_id: paymentIntentId,
+            stripe_subscription_id: subscriptionId,
           })
 
           // Try to find existing profile by stripe_customer_id
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
           }
 
           if (betaProfile) {
-            // Link profile to beta
+            // Link profile to beta subscription
             await supabase
               .from("profiles")
               .update({
@@ -104,6 +104,7 @@ export async function POST(request: Request) {
                 is_beta_subscriber: true,
                 beta_enrolled_at: new Date().toISOString(),
                 stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
               })
               .eq("id", betaProfile.id)
 
@@ -117,7 +118,7 @@ export async function POST(request: Request) {
             await supabase.from("notifications").insert({
               profile_id: betaProfile.id,
               title: "Beta Access Activated",
-              body: "Your lifetime beta access to RegenCompliance is now active. Welcome aboard!",
+              body: "Your beta subscription to RegenCompliance is now active at the locked-in rate of $297/mo. Welcome aboard!",
               type: "billing",
               action_url: "/dashboard/scanner",
             })
@@ -134,7 +135,7 @@ export async function POST(request: Request) {
             }
           } else {
             console.log(
-              `[Stripe Webhook] Beta purchase recorded for ${customerEmail} — will be claimed on signup/login`
+              `[Stripe Webhook] Beta subscription purchase recorded for ${customerEmail} — will be claimed on signup/login`
             )
           }
         } else {

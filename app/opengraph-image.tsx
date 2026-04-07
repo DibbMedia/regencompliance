@@ -139,7 +139,7 @@ export default async function Image() {
               color: "#55E039",
             }}
           >
-            $297 Lifetime Beta Access
+            $297/mo Beta — Locked In For Life
           </div>
         </div>
 

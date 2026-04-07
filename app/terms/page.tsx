@@ -94,8 +94,8 @@ export default function TermsPage() {
                 </div>
                 <div className="rounded-xl bg-white/[0.03] border border-[#55E039]/20 p-5">
                   <p className="text-sm font-extrabold text-white mb-1">Beta Founding Member</p>
-                  <p className="text-2xl font-extrabold text-[#55E039]">$297<span className="text-sm text-white/40 font-medium"> one-time</span></p>
-                  <p className="text-xs text-white/40 mt-1">Limited to 25 spots. Lifetime access.</p>
+                  <p className="text-2xl font-extrabold text-[#55E039]">$297<span className="text-sm text-white/40 font-medium">/mo</span></p>
+                  <p className="text-xs text-white/40 mt-1">Limited to 25 spots. Rate locked in for life.</p>
                 </div>
               </div>
               <p className="text-[15px] text-white/70 leading-relaxed">
@@ -107,7 +107,7 @@ export default function TermsPage() {
             <div>
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">5. Beta Program Terms</h2>
               <p className="text-[15px] text-white/70 leading-relaxed">
-                The RegenCompliance Beta Program offers lifetime access to the platform for a one-time payment of $297. This offer is limited to 25 founding member spots. Beta founding members receive lifetime access to the core compliance scanning features, including the scanner, AI rewriter, compliance library, and audit trail. &quot;Lifetime access&quot; means access for the commercial life of the RegenCompliance platform, subject to fair use. Fair use means reasonable personal or single-clinic use; we reserve the right to impose rate limits or usage caps if usage significantly exceeds normal patterns (for example, automated bulk scanning via scripts). Beta features, pricing, and availability are subject to change. We reserve the right to discontinue the beta program at any time, but existing founding members will retain their access.
+                The RegenCompliance Beta Program offers access to the platform at a locked-in monthly rate of $297/mo. This offer is limited to 25 founding member spots. Beta founding members receive access to all core compliance scanning features, including the scanner, AI rewriter, compliance library, and audit trail. The beta rate of $297/mo is locked in for life and will never increase, even when the standard rate rises to $497/mo. &quot;Locked-in for life&quot; means the rate remains $297/mo for as long as the subscription remains active and the RegenCompliance platform is commercially available, subject to fair use. Fair use means reasonable personal or single-clinic use; we reserve the right to impose rate limits or usage caps if usage significantly exceeds normal patterns (for example, automated bulk scanning via scripts). Beta features and availability are subject to change. We reserve the right to discontinue the beta program at any time, but existing founding members will retain their locked-in rate.
               </p>
             </div>
 

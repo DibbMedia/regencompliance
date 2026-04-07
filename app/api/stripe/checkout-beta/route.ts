@@ -98,13 +98,13 @@ export async function POST(request: Request) {
     }
 
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+      mode: "subscription",
       line_items: [{ price: process.env.STRIPE_BETA_PRICE_ID!, quantity: 1 }],
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/login?beta=true`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
-      metadata: { plan_type: "beta_lifetime" },
-      payment_intent_data: {
-        metadata: { plan_type: "beta_lifetime" },
+      metadata: { plan_type: "beta_subscription" },
+      subscription_data: {
+        metadata: { plan_type: "beta_subscription" },
       },
     })
 

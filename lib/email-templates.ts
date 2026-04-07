@@ -54,7 +54,7 @@ export function betaWelcomeEmail(clinicName: string): { subject: string; html: s
     html: layout(`
       <h1 style="margin:0 0 16px 0;font-size:24px;font-weight:700;color:#ffffff;">Welcome, Founding Member!</h1>
       <p style="margin:0 0 8px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
-        <strong style="color:#55E039;">${clinicName}</strong> now has lifetime beta access to RegenCompliance. No monthly fees, ever.
+        <strong style="color:#55E039;">${clinicName}</strong> now has beta access to RegenCompliance at the locked-in rate of $297/mo. Your rate is locked at $297/mo for life &mdash; it will never increase, even when the standard plan goes to $497/mo.
       </p>
       <p style="margin:0 0 16px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
         As a founding member, you&rsquo;ll get early access to every new feature and direct input on our roadmap. Your feedback shapes the product.

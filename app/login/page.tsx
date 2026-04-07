@@ -281,7 +281,7 @@ function LoginContent() {
         {searchParams.get("beta") === "true" && (
           <div className="text-center mt-4 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-3">
             <p className="text-sm text-[#55E039] font-semibold">
-              Beta access purchased! Log in or create your account to activate lifetime access.
+              Beta access purchased! Log in or create your account to activate your beta subscription.
             </p>
           </div>
         )}

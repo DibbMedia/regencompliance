@@ -75,7 +75,7 @@ export default function RootLayout({
                 "@type": "Offer",
                 price: "297",
                 priceCurrency: "USD",
-                description: "Lifetime beta access",
+                description: "Beta rate - $297/mo locked in for life",
               },
               description:
                 "FDA/FTC compliance scanner for regenerative medicine clinics",

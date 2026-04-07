@@ -89,7 +89,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Claim Beta Access — $297 Lifetime
+                Claim Beta Access — $297/mo For Life
                 <ArrowRight className="h-4 w-4" />
               </BetaCheckoutButton>
               <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
@@ -329,8 +329,8 @@ export default function LandingPage() {
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-8">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Lock in lifetime access at the beta price.</h2>
-            <p className="mt-4 text-base text-white/60">Limited to 25 founding members. One payment. Forever access.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Lock in $297/mo before it goes to $497.</h2>
+            <p className="mt-4 text-base text-white/60">Limited to 25 founding members. Rate locked for life.</p>
           </div>
           <div className="mx-auto max-w-4xl grid gap-6 md:grid-cols-2 items-start">
             {/* BETA PLAN — PRIMARY */}
@@ -344,8 +344,8 @@ export default function LandingPage() {
                 </span>
               </div>
               <div className="relative text-center mb-8 pt-4">
-                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight">$297<span className="text-lg font-normal text-white/40 ml-1">one-time</span></p>
-                <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Lifetime Access — Never pay again</p>
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight">$297<span className="text-lg font-normal text-white/40 ml-1">/mo</span></p>
+                <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Locked-In Rate — Never increases</p>
                 <BetaSpotsCounter className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1" />
               </div>
               <ul className="space-y-4 mb-8">
@@ -357,7 +357,7 @@ export default function LandingPage() {
                 ))}
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
-                  <span className="text-[15px] text-white font-semibold">Lifetime access — no recurring fees</span>
+                  <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo — never increases</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
@@ -365,11 +365,11 @@ export default function LandingPage() {
                 </li>
               </ul>
               <BetaCheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Claim Beta Access — $297
+                Claim Beta Access — $297/mo
                 <ArrowRight className="h-4 w-4" />
               </BetaCheckoutButton>
               <p className="mt-4 text-center text-xs text-white/30">
-                One-time payment. No subscription. Saves you $5,667/yr vs monthly.
+                Rate locked at $297/mo for life. Standard is $497/mo.
               </p>
             </div>
 
@@ -398,7 +398,7 @@ export default function LandingPage() {
                 Coming Soon
               </div>
               <p className="mt-4 text-center text-xs text-white/20">
-                Get lifetime access now for $297 instead of paying $497 every month.
+                Lock in $297/mo now — rate goes to $497/mo after beta.
               </p>
             </div>
           </div>
@@ -448,7 +448,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-              Claim Beta Access — $297
+              Claim Beta Access — $297/mo
               <ArrowRight className="h-4 w-4" />
             </BetaCheckoutButton>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
