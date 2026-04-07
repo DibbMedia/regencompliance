@@ -140,17 +140,18 @@ export async function GET() {
       .order("created_at", { ascending: false })
       .limit(10)
 
-    // Resolve emails from auth.users via service client
-    const signupsWithEmail = []
-    for (const signup of recentSignups || []) {
-      const {
-        data: { user },
-      } = await serviceClient.auth.admin.getUserById(signup.id)
-      signupsWithEmail.push({
-        ...signup,
-        email: user?.email || "unknown",
-      })
+    // Batch-fetch all users once and build an email lookup map
+    const { data: { users: allUsers } } = await serviceClient.auth.admin.listUsers({ perPage: 1000 })
+    const emailMap: Record<string, string> = {}
+    for (const u of allUsers || []) {
+      emailMap[u.id] = u.email || "unknown"
     }
+
+    // Resolve emails for recent signups
+    const signupsWithEmail = (recentSignups || []).map((signup) => ({
+      ...signup,
+      email: emailMap[signup.id] || "unknown",
+    }))
 
     // Recent activity: last 10 scans with user email, score, timestamp
     const { data: recentActivity } = await serviceClient
@@ -159,20 +160,10 @@ export async function GET() {
       .order("created_at", { ascending: false })
       .limit(10)
 
-    const profileEmailCache: Record<string, string> = {}
-    const activityWithEmail = []
-    for (const scan of recentActivity || []) {
-      if (!profileEmailCache[scan.profile_id]) {
-        const {
-          data: { user },
-        } = await serviceClient.auth.admin.getUserById(scan.profile_id)
-        profileEmailCache[scan.profile_id] = user?.email || "unknown"
-      }
-      activityWithEmail.push({
-        ...scan,
-        user_email: profileEmailCache[scan.profile_id],
-      })
-    }
+    const activityWithEmail = (recentActivity || []).map((scan) => ({
+      ...scan,
+      user_email: emailMap[scan.profile_id] || "unknown",
+    }))
 
     // Support tickets (table may not exist yet)
     let openTickets = 0

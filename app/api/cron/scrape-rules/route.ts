@@ -18,6 +18,8 @@ export async function GET(request: Request) {
 
   const startTime = Date.now()
   let newRulesCount = 0
+  let fdaSuccess = false
+  let ftcSuccess = false
   const supabase = createServiceClient()
 
   try {
@@ -28,6 +30,7 @@ export async function GET(request: Request) {
         { signal: AbortSignal.timeout(15000) }
       )
       if (fdaRes.ok) {
+        fdaSuccess = true
         const html = await fdaRes.text()
         const $ = cheerio.load(html)
         const links: string[] = []
@@ -101,6 +104,7 @@ export async function GET(request: Request) {
         { signal: AbortSignal.timeout(15000) }
       )
       if (ftcRes.ok) {
+        ftcSuccess = true
         const html = await ftcRes.text()
         const $ = cheerio.load(html)
         const links: string[] = []
@@ -177,7 +181,17 @@ export async function GET(request: Request) {
     }
 
     const duration = Date.now() - startTime
-    console.log(`Cron scrape complete: ${newRulesCount} new rules in ${duration}ms`)
+    const bothFailed = !fdaSuccess && !ftcSuccess
+    console.log(`Cron scrape complete: ${newRulesCount} new rules in ${duration}ms (FDA: ${fdaSuccess}, FTC: ${ftcSuccess})`)
+
+    if (bothFailed) {
+      return NextResponse.json({
+        success: false,
+        error: "Both FDA and FTC scraping failed",
+        new_rules: 0,
+        duration_ms: duration,
+      }, { status: 502 })
+    }
 
     return NextResponse.json({
       success: true,

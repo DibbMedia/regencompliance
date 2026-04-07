@@ -104,15 +104,15 @@ export default function AdminOverviewPage() {
           label="Total Users"
           value={stats.totalUsers}
           icon={Users}
-          color="text-blue-400"
-          accent="border-l-blue-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="Active Subscribers"
           value={stats.activeSubscribers}
           icon={CreditCard}
-          color="text-green-400"
-          accent="border-l-green-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="Churned"
@@ -125,15 +125,15 @@ export default function AdminOverviewPage() {
           label="MRR"
           value={`$${stats.mrr.toLocaleString()}`}
           icon={DollarSign}
-          color="text-green-400"
-          accent="border-l-green-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="ARR Projection"
           value={`$${stats.arr.toLocaleString()}`}
           icon={TrendingUp}
-          color="text-green-400"
-          accent="border-l-green-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
       </div>
 
@@ -143,29 +143,29 @@ export default function AdminOverviewPage() {
           label="Scans Today"
           value={stats.scansToday}
           icon={ScanSearch}
-          color="text-blue-400"
-          accent="border-l-blue-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="Scans This Week"
           value={stats.scansThisWeek}
           icon={CalendarDays}
-          color="text-blue-400"
-          accent="border-l-blue-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="Scans This Month"
           value={stats.scansThisMonth}
           icon={BarChart3}
-          color="text-blue-400"
-          accent="border-l-blue-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
         <StatCard
           label="Scans All Time"
           value={stats.totalScans.toLocaleString()}
           icon={ScanSearch}
-          color="text-purple-400"
-          accent="border-l-purple-500"
+          color="text-[#55E039]"
+          accent="border-l-[#55E039]"
         />
       </div>
 
@@ -175,8 +175,8 @@ export default function AdminOverviewPage() {
           label="Avg Compliance Score"
           value={`${stats.avgScore}%`}
           icon={ShieldAlert}
-          color={stats.avgScore >= 70 ? "text-green-400" : "text-yellow-400"}
-          accent={stats.avgScore >= 70 ? "border-l-green-500" : "border-l-yellow-500"}
+          color={stats.avgScore >= 70 ? "text-[#55E039]" : "text-yellow-400"}
+          accent={stats.avgScore >= 70 ? "border-l-[#55E039]" : "border-l-yellow-500"}
         />
         <StatCard
           label="Total Flags Caught"
@@ -187,7 +187,7 @@ export default function AdminOverviewPage() {
         />
         <div className="rounded-xl border border-white/10 border-l-4 border-l-orange-500 bg-white/[0.03] p-5">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Most Common Violation</span>
+            <span className="text-sm text-white/60">Most Common Violation</span>
             <AlertTriangle className="h-5 w-5 text-orange-400" />
           </div>
           <p className="mt-2 text-lg font-bold truncate" title={stats.mostCommonViolation}>
@@ -200,20 +200,20 @@ export default function AdminOverviewPage() {
 
       {/* Revenue Section */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-white/10 border-l-4 border-l-green-500 bg-white/[0.03] p-5">
-          <h3 className="text-sm text-muted-foreground mb-2">Revenue Summary</h3>
+        <div className="rounded-xl border border-white/10 border-l-4 border-l-[#55E039] bg-white/[0.03] p-5">
+          <h3 className="text-sm text-white/60 mb-2">Revenue Summary</h3>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Total Revenue Est. (Monthly)</span>
-              <span className="font-bold text-green-400">${stats.mrr.toLocaleString()}</span>
+              <span className="text-white/60">Total Revenue Est. (Monthly)</span>
+              <span className="font-bold text-[#55E039]">${stats.mrr.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">ARR Projection</span>
-              <span className="font-bold text-green-400">${stats.arr.toLocaleString()}</span>
+              <span className="text-white/60">ARR Projection</span>
+              <span className="font-bold text-[#55E039]">${stats.arr.toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Avg Revenue Per User</span>
-              <span className="font-bold text-green-400">${stats.avgRevenuePerUser.toLocaleString()}</span>
+              <span className="text-white/60">Avg Revenue Per User</span>
+              <span className="font-bold text-[#55E039]">${stats.avgRevenuePerUser.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -372,17 +372,17 @@ function StatCard({
 function ScoreBadge({ score }: { score: number | null }) {
   if (score === null || score === undefined) {
     return (
-      <span className="inline-block rounded-full bg-gray-500/20 px-2 py-0.5 text-xs font-medium text-gray-400">
+      <span className="inline-block rounded-full bg-gray-500/10 px-2 py-0.5 text-xs font-medium text-gray-400">
         N/A
       </span>
     )
   }
   const color =
     score >= 80
-      ? "bg-green-500/20 text-green-400"
+      ? "bg-[#55E039]/10 text-[#55E039]"
       : score >= 50
-      ? "bg-yellow-500/20 text-yellow-400"
-      : "bg-red-500/20 text-red-400"
+      ? "bg-yellow-500/10 text-yellow-500"
+      : "bg-red-500/10 text-red-500"
   return (
     <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${color}`}>
       {score}%
@@ -392,10 +392,10 @@ function ScoreBadge({ score }: { score: number | null }) {
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    active: "bg-green-500/20 text-green-400",
-    inactive: "bg-gray-500/20 text-gray-400",
-    past_due: "bg-yellow-500/20 text-yellow-400",
-    cancelled: "bg-red-500/20 text-red-400",
+    active: "bg-[#55E039]/10 text-[#55E039]",
+    inactive: "bg-gray-500/10 text-gray-400",
+    past_due: "bg-yellow-500/10 text-yellow-500",
+    cancelled: "bg-red-500/10 text-red-500",
   }
   return (
     <span

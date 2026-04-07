@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { ticketCreateSchema } from "@/lib/validations"
 
 export async function GET(request: Request) {
   try {
@@ -58,18 +59,12 @@ export async function POST(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
     const body = await request.json()
-    const { subject, priority, message } = body
-
-    if (!subject || !subject.trim()) {
-      return NextResponse.json({ error: "Subject is required" }, { status: 400 })
+    const parsed = ticketCreateSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
-    if (!message || !message.trim()) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 })
-    }
-
-    const validPriorities = ["low", "normal", "high", "urgent"]
-    const ticketPriority = validPriorities.includes(priority) ? priority : "normal"
+    const { subject, priority: ticketPriority, message } = parsed.data
 
     const { data: ticket, error: ticketError } = await supabase
       .from("support_tickets")
@@ -77,7 +72,7 @@ export async function POST(request: Request) {
         profile_id: profileId,
         user_id: user.id,
         subject: subject.trim(),
-        priority: ticketPriority,
+        priority: ticketPriority || "normal",
         status: "open",
       })
       .select()

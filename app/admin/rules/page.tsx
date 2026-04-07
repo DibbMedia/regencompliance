@@ -66,9 +66,9 @@ export default function AdminRulesPage() {
   }
 
   const riskColors: Record<string, string> = {
-    high: "bg-red-500/20 text-red-400",
-    medium: "bg-yellow-500/20 text-yellow-400",
-    low: "bg-blue-500/20 text-blue-400",
+    high: "bg-red-500/10 text-red-500",
+    medium: "bg-yellow-500/10 text-yellow-500",
+    low: "bg-blue-500/10 text-blue-500",
   }
 
   return (

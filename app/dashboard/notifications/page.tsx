@@ -16,7 +16,7 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 const typeIcons: Record<string, React.ReactNode> = {
   rule_update: <BookOpen className="h-4 w-4 text-blue-500" />,
   enforcement: <AlertTriangle className="h-4 w-4 text-red-500" />,
-  billing: <CreditCard className="h-4 w-4 text-green-500" />,
+  billing: <CreditCard className="h-4 w-4 text-[#55E039]" />,
   system: <Info className="h-4 w-4 text-muted-foreground" />,
 }
 
@@ -98,7 +98,7 @@ export default function NotificationsPage() {
       ) : notifications.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <Bell className="h-12 w-12 mb-4 opacity-30" />
+            <Bell className="h-12 w-12 mb-4 opacity-20" />
             <p>You&apos;re all caught up.</p>
           </CardContent>
         </Card>

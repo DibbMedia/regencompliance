@@ -152,7 +152,7 @@ export default function AdminScansPage() {
                     {scan.flag_count > 0 ? (
                       <span className="text-red-400">{scan.flag_count}</span>
                     ) : (
-                      <span className="text-green-400">0</span>
+                      <span className="text-[#55E039]">0</span>
                     )}
                   </td>
                 </tr>
@@ -200,9 +200,9 @@ function ScoreBadge({ score }: { score: number | null }) {
   if (score === null) return <span className="text-muted-foreground">—</span>
   const color =
     score >= 80
-      ? "text-green-400"
+      ? "text-[#55E039]"
       : score >= 50
-        ? "text-yellow-400"
-        : "text-red-400"
+        ? "text-yellow-500"
+        : "text-red-500"
   return <span className={`font-medium ${color}`}>{score}%</span>
 }

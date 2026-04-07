@@ -35,8 +35,8 @@ interface ScanResult {
 }
 
 function ScoreRing({ score }: { score: number }) {
-  const color = score >= 80 ? "text-green-500" : score >= 50 ? "text-yellow-500" : "text-red-500"
-  const bgColor = score >= 80 ? "stroke-green-500" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
+  const color = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
+  const bgColor = score >= 80 ? "stroke-[#55E039]" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
   const circumference = 2 * Math.PI * 45
   const offset = circumference - (score / 100) * circumference
 
@@ -216,7 +216,7 @@ export default function ScannerPage() {
         {!result && !scanning && (
           <Card className="border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-              <Shield className="h-12 w-12 mb-4 opacity-30" />
+              <Shield className="h-12 w-12 mb-4 opacity-20" />
               <p>Results will appear here after scanning.</p>
             </CardContent>
           </Card>
@@ -225,7 +225,7 @@ export default function ScannerPage() {
         {scanning && (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#55E039] mb-4" />
               <p className="text-muted-foreground">Analyzing content...</p>
             </CardContent>
           </Card>
@@ -234,7 +234,7 @@ export default function ScannerPage() {
         {result && (
           <>
             {/* Score */}
-            <Card>
+            <Card className="shadow-[0_0_30px_rgba(85,224,57,0.05)]">
               <CardContent className="flex flex-col items-center py-6">
                 <ScoreRing score={result.compliance_score} />
                 <p className="mt-3 text-sm text-center text-muted-foreground">
@@ -265,8 +265,8 @@ export default function ScannerPage() {
                         <RiskBadge level={flag.risk_level} />
                       </div>
                       <p className="text-sm text-muted-foreground">{flag.reason}</p>
-                      <div className="flex items-center gap-2 bg-green-500/10 rounded-md p-2">
-                        <p className="text-sm text-green-700 dark:text-green-400 flex-1">
+                      <div className="flex items-center gap-2 bg-[#55E039]/10 rounded-md p-2">
+                        <p className="text-sm text-[#55E039] flex-1">
                           {flag.alternative}
                         </p>
                         <Button
@@ -276,7 +276,7 @@ export default function ScannerPage() {
                           onClick={() => copyToClipboard(flag.alternative, i)}
                         >
                           {copiedIdx === i ? (
-                            <Check className="h-3 w-3 text-green-500" />
+                            <Check className="h-3 w-3 text-[#55E039]" />
                           ) : (
                             <Copy className="h-3 w-3" />
                           )}
@@ -289,7 +289,7 @@ export default function ScannerPage() {
             ) : (
               <Card>
                 <CardContent className="flex flex-col items-center py-8 text-center">
-                  <CheckCircle2 className="h-12 w-12 text-green-500 mb-3" />
+                  <CheckCircle2 className="h-12 w-12 text-[#55E039] mb-3" />
                   <p className="font-medium">No compliance issues found.</p>
                   <p className="text-sm text-muted-foreground mt-1">
                     This content appears safe to publish.
@@ -331,8 +331,8 @@ export default function ScannerPage() {
                           <p className="text-xs font-medium mb-1 text-muted-foreground">Original</p>
                           <p className="text-sm line-through opacity-60">{result.flags.map(f => f.matched_text).join(" ... ")}</p>
                         </div>
-                        <div className="rounded-md border border-green-500/30 bg-green-500/5 p-3">
-                          <p className="text-xs font-medium mb-1 text-green-600 dark:text-green-400">Rewritten</p>
+                        <div className="rounded-md border border-[#55E039]/30 bg-[#55E039]/5 p-3">
+                          <p className="text-xs font-medium mb-1 text-[#55E039]">Rewritten</p>
                           <p className="text-sm">{result.rewritten_text}</p>
                         </div>
                       </div>

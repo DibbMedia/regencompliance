@@ -12,10 +12,11 @@ import {
   ArrowLeft,
   ShieldCheck,
   MessageSquare,
+  Loader2,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
-const ADMIN_EMAIL = "isaac@dibbenterprizes.com"
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "isaac@dibbenterprizes.com"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -65,7 +66,7 @@ export default function AdminLayout({
   if (loading || !authorized) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#55E039]" />
       </div>
     )
   }
@@ -103,7 +104,7 @@ export default function AdminLayout({
                   {item.title}
                 </span>
                 {showBadge && (
-                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-yellow-500/20 px-1.5 text-[10px] font-bold text-yellow-400">
+                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-yellow-500/10 px-1.5 text-[10px] font-bold text-yellow-500">
                     {openTicketCount}
                   </span>
                 )}

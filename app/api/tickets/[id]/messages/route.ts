@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { ticketMessageSchema } from "@/lib/validations"
 
 export async function POST(
   request: Request,
@@ -36,11 +37,12 @@ export async function POST(
     }
 
     const body = await request.json()
-    const { message } = body
-
-    if (!message || !message.trim()) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 })
+    const parsed = ticketMessageSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
+
+    const { message } = parsed.data
 
     const { data: newMessage, error: messageError } = await supabase
       .from("ticket_messages")

@@ -8,7 +8,7 @@ export async function GET() {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json({ count: 0 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const profileId = await effectiveProfileId(user.id, supabase)

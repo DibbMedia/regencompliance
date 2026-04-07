@@ -56,7 +56,7 @@ interface Ticket {
 }
 
 const statusStyles: Record<string, string> = {
-  open: "bg-green-500/10 text-green-700 border-green-300 dark:text-green-400",
+  open: "bg-[#55E039]/10 text-[#55E039] border-[#55E039]/30",
   in_progress: "bg-yellow-500/10 text-yellow-700 border-yellow-300 dark:text-yellow-400",
   resolved: "bg-blue-500/10 text-blue-700 border-blue-300 dark:text-blue-400",
   closed: "bg-gray-500/10 text-gray-700 border-gray-300 dark:text-gray-400",
@@ -369,7 +369,7 @@ export default function SupportPage() {
       ) : tickets.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <LifeBuoy className="h-12 w-12 mb-4 opacity-30" />
+            <LifeBuoy className="h-12 w-12 mb-4 opacity-20" />
             <p>No tickets found. Click &ldquo;New Ticket&rdquo; to get in touch with support.</p>
           </CardContent>
         </Card>

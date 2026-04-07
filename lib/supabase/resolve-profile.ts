@@ -8,6 +8,7 @@ export async function effectiveProfileId(
     .from('team_members')
     .select('profile_id')
     .eq('user_id', userId)
-    .single()
+    .eq('accepted', true)
+    .maybeSingle()
   return member?.profile_id ?? userId
 }

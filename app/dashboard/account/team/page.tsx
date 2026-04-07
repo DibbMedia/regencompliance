@@ -184,7 +184,7 @@ export default function TeamPage() {
                   <TableCell>
                     <Badge
                       variant="outline"
-                      className={m.accepted ? "text-green-600" : "text-yellow-600"}
+                      className={m.accepted ? "text-[#55E039]" : "text-yellow-600"}
                     >
                       {m.accepted ? "Active" : "Pending"}
                     </Badge>

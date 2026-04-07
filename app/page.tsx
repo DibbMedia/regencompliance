@@ -96,7 +96,7 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4 opacity-60" />
               </Link>
             </div>
-            <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/50">
+            <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/60">
               <span className="flex items-center gap-2"><Lock className="h-4 w-4 text-[#55E039]/70" /> Zero patient data</span>
               <span className="flex items-center gap-2"><Activity className="h-4 w-4 text-[#55E039]/70" /> Updated daily</span>
               <span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#55E039]/70" /> Cancel anytime</span>
@@ -143,13 +143,13 @@ export default function LandingPage() {
                   </div>
                   <div className="flex gap-1.5">
                     {["Website", "Social", "Ad", "Email"].map((t, i) => (
-                      <span key={t} className={`text-[10px] px-2.5 py-1 rounded-md font-medium ${i === 0 ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20" : "text-white/30 hover:text-white/50 cursor-pointer"}`}>{t}</span>
+                      <span key={t} className={`text-[10px] px-2.5 py-1 rounded-md font-medium ${i === 0 ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20" : "text-white/30 hover:text-white/40 cursor-pointer"}`}>{t}</span>
                     ))}
                   </div>
                 </div>
 
                 <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-5 text-[14px] text-white/60 leading-[2.2] mb-5" style={{ fontFamily: "var(--font-poppins), sans-serif" }}>
-                  <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/50">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
+                  <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/40">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
                   <div className="flex justify-end mt-2">
                     <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
                   </div>
@@ -182,7 +182,7 @@ export default function LandingPage() {
                   <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" /> 2 medium</span>
                 </div>
 
-                <p className="text-[11px] text-white/50 mb-3 font-bold uppercase tracking-widest">Flagged Phrases</p>
+                <p className="text-[11px] text-white/40 mb-3 font-bold uppercase tracking-widest">Flagged Phrases</p>
                 <div className="space-y-2">
                   {[
                     { phrase: "cures arthritis", reason: "Disease cure claim", level: "HIGH", c: "red" },
@@ -230,11 +230,11 @@ export default function LandingPage() {
               <div key={item.stat} className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
                 <p className="text-4xl font-extrabold text-red-400 tracking-tight">{item.stat}</p>
                 <p className="mt-3 text-xs font-bold text-white/70 uppercase tracking-[0.15em]">{item.label}</p>
-                <p className="mt-3 text-sm text-white/50 leading-relaxed">{item.desc}</p>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
-          <p className="mt-12 text-center text-base text-white/50">
+          <p className="mt-12 text-center text-base text-white/60">
             One word on your website. One Instagram caption. One patient email.{" "}
             <span className="text-white font-semibold">That&apos;s all it takes.</span>
           </p>
@@ -337,7 +337,7 @@ export default function LandingPage() {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-20 bg-[#55E039]/[0.05] blur-[40px]" />
               <div className="relative text-center mb-10">
                 <p className="text-6xl font-extrabold tracking-tight">$497<span className="text-xl font-normal text-white/40">/mo</span></p>
-                <p className="mt-2 text-sm text-white/50">Cancel anytime. No contracts.</p>
+                <p className="mt-2 text-sm text-white/40">Cancel anytime. No contracts.</p>
               </div>
               <ul className="space-y-4 mb-10">
                 {checklist.map((item) => (

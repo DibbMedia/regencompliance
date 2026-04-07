@@ -260,7 +260,7 @@ function LoginContent() {
           )}
 
           <div className="mt-4 text-center">
-            <Link href="/" className="text-xs text-white/30 hover:text-white/50 transition-colors">
+            <Link href="/" className="text-xs text-white/40 hover:text-white/60 transition-colors">
               Back to home
             </Link>
           </div>

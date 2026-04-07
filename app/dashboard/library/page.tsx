@@ -161,7 +161,7 @@ export default function LibraryPage() {
       ) : rules.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <BookOpen className="h-12 w-12 mb-4 opacity-30" />
+            <BookOpen className="h-12 w-12 mb-4 opacity-20" />
             <p>No rules match your filters.</p>
           </CardContent>
         </Card>
@@ -181,7 +181,7 @@ export default function LibraryPage() {
                     {rule.banned_phrase}
                   </span>
                   <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span className="rounded-md bg-green-500/10 px-2 py-1 text-sm text-green-700 dark:text-green-400">
+                  <span className="rounded-md bg-[#55E039]/10 px-2 py-1 text-sm text-[#55E039]">
                     {rule.compliant_alternative}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export default function LibraryPage() {
                   <TableCell className="text-red-700 dark:text-red-400 font-medium">
                     {rule.banned_phrase}
                   </TableCell>
-                  <TableCell className="text-green-700 dark:text-green-400">
+                  <TableCell className="text-[#55E039]">
                     {rule.compliant_alternative}
                   </TableCell>
                   <TableCell>{rule.category.replace("_", " ")}</TableCell>

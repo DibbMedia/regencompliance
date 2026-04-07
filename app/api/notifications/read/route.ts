@@ -25,6 +25,7 @@ export async function PATCH(request: Request) {
         .from("notifications")
         .update({ read: true })
         .in("id", body.ids)
+        .or(`profile_id.eq.${profileId},profile_id.is.null`)
     }
 
     return NextResponse.json({ success: true })

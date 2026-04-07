@@ -129,10 +129,10 @@ export default function AccountPage() {
   }
 
   const statusColor = {
-    active: "bg-green-500/10 text-green-700",
-    past_due: "bg-yellow-500/10 text-yellow-700",
-    cancelled: "bg-red-500/10 text-red-700",
-    inactive: "bg-gray-500/10 text-gray-700",
+    active: "bg-[#55E039]/10 text-[#55E039]",
+    past_due: "bg-yellow-500/10 text-yellow-500",
+    cancelled: "bg-red-500/10 text-red-500",
+    inactive: "bg-gray-500/10 text-gray-400",
   }
 
   if (!profile) return null

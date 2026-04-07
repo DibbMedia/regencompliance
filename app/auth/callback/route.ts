@@ -15,6 +15,29 @@ export async function GET(request: Request) {
       if (inviteToken) {
         const { data: { user } } = await supabase.auth.getUser()
         if (user) {
+          // Verify the authenticated user's email matches the invite and it hasn't expired
+          const { data: teamMember } = await supabase
+            .from("team_members")
+            .select("email, created_at")
+            .eq("invite_token", inviteToken)
+            .eq("accepted", false)
+            .maybeSingle()
+
+          if (!teamMember || teamMember.email !== user.email) {
+            return NextResponse.redirect(
+              `${origin}/login?error=invite_email_mismatch`
+            )
+          }
+
+          // Check 72-hour expiry window
+          const createdAt = new Date(teamMember.created_at).getTime()
+          const seventyTwoHours = 72 * 60 * 60 * 1000
+          if (Date.now() - createdAt > seventyTwoHours) {
+            return NextResponse.redirect(
+              `${origin}/login?error=invite_expired`
+            )
+          }
+
           await supabase
             .from("team_members")
             .update({

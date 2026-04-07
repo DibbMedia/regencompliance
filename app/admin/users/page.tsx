@@ -295,10 +295,10 @@ function UserExpandedRow({ userId }: { userId: string }) {
                   <span
                     className={
                       (scan.compliance_score || 0) >= 80
-                        ? "text-green-400"
+                        ? "text-[#55E039]"
                         : (scan.compliance_score || 0) >= 50
-                        ? "text-yellow-400"
-                        : "text-red-400"
+                        ? "text-yellow-500"
+                        : "text-red-500"
                     }
                   >
                     {scan.compliance_score ?? "N/A"}
@@ -321,10 +321,10 @@ function UserExpandedRow({ userId }: { userId: string }) {
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    active: "bg-green-500/20 text-green-400",
-    inactive: "bg-gray-500/20 text-gray-400",
-    past_due: "bg-yellow-500/20 text-yellow-400",
-    cancelled: "bg-red-500/20 text-red-400",
+    active: "bg-[#55E039]/10 text-[#55E039]",
+    inactive: "bg-gray-500/10 text-gray-400",
+    past_due: "bg-yellow-500/10 text-yellow-500",
+    cancelled: "bg-red-500/10 text-red-500",
   }
   return (
     <span

@@ -39,8 +39,8 @@ interface DemoStatus {
 }
 
 function ScoreRing({ score }: { score: number }) {
-  const color = score >= 80 ? "text-green-400" : score >= 50 ? "text-yellow-400" : "text-red-400"
-  const bgColor = score >= 80 ? "stroke-green-500" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
+  const color = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
+  const bgColor = score >= 80 ? "stroke-[#55E039]" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
   const circumference = 2 * Math.PI * 45
   const offset = circumference - (score / 100) * circumference
 
@@ -281,7 +281,7 @@ export default function DemoPage() {
                   <ScoreRing score={result.compliance_score} />
                   <div className="mt-2">
                     <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
-                      result.compliance_score >= 80 ? "text-green-400 bg-green-500/10 border border-green-500/20" :
+                      result.compliance_score >= 80 ? "text-[#55E039] bg-[#55E039]/10 border border-[#55E039]/20" :
                       result.compliance_score >= 50 ? "text-yellow-400 bg-yellow-500/10 border border-yellow-500/20" :
                       "text-red-400 bg-red-500/10 border border-red-500/20"
                     }`}>

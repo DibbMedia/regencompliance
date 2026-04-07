@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 
-const ADMIN_EMAIL = "isaac@dibbenterprizes.com"
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "isaac@dibbenterprizes.com"
 
 /**
  * Verify the requesting user is an admin.

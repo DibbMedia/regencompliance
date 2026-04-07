@@ -355,10 +355,10 @@ function TicketExpandedRow({
 
 function TicketStatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    open: "bg-yellow-500/20 text-yellow-400",
-    in_progress: "bg-blue-500/20 text-blue-400",
-    resolved: "bg-green-500/20 text-green-400",
-    closed: "bg-gray-500/20 text-gray-400",
+    open: "bg-yellow-500/10 text-yellow-500",
+    in_progress: "bg-blue-500/10 text-blue-500",
+    resolved: "bg-[#55E039]/10 text-[#55E039]",
+    closed: "bg-gray-500/10 text-gray-400",
   }
   return (
     <span
@@ -373,10 +373,10 @@ function TicketStatusBadge({ status }: { status: string }) {
 
 function PriorityBadge({ priority }: { priority: string }) {
   const colors: Record<string, string> = {
-    low: "bg-gray-500/20 text-gray-400",
-    medium: "bg-yellow-500/20 text-yellow-400",
-    high: "bg-orange-500/20 text-orange-400",
-    urgent: "bg-red-500/20 text-red-400",
+    low: "bg-gray-500/10 text-gray-400",
+    medium: "bg-yellow-500/10 text-yellow-500",
+    high: "bg-orange-500/10 text-orange-500",
+    urgent: "bg-red-500/10 text-red-500",
   }
   return (
     <span

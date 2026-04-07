@@ -29,6 +29,18 @@ export async function POST(request: Request) {
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
 
+        // Verify profile exists before updating
+        const { data: checkoutProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle()
+
+        if (!checkoutProfile) {
+          console.error(`checkout.session.completed: no profile for stripe_customer_id ${customerId}`)
+          break
+        }
+
         await supabase
           .from("profiles")
           .update({
@@ -37,28 +49,31 @@ export async function POST(request: Request) {
           })
           .eq("stripe_customer_id", customerId)
 
-        // Get profile for notification
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("stripe_customer_id", customerId)
-          .single()
-
-        if (profile) {
-          await supabase.from("notifications").insert({
-            profile_id: profile.id,
-            title: "Subscription Active",
-            body: "Your RegenCompliance subscription is now active. Start scanning your marketing content!",
-            type: "billing",
-            action_url: "/dashboard/scanner",
-          })
-        }
+        await supabase.from("notifications").insert({
+          profile_id: checkoutProfile.id,
+          title: "Subscription Active",
+          body: "Your RegenCompliance subscription is now active. Start scanning your marketing content!",
+          type: "billing",
+          action_url: "/dashboard/scanner",
+        })
         break
       }
 
       case "customer.subscription.updated": {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
+
+        const { data: updatedProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle()
+
+        if (!updatedProfile) {
+          console.error(`customer.subscription.updated: no profile for stripe_customer_id ${customerId}`)
+          break
+        }
+
         const status = subscription.status === "active" ? "active"
           : subscription.status === "past_due" ? "past_due"
           : subscription.status === "canceled" ? "cancelled"
@@ -75,26 +90,29 @@ export async function POST(request: Request) {
         const subscription = event.data.object as Stripe.Subscription
         const customerId = subscription.customer as string
 
+        const { data: deletedProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle()
+
+        if (!deletedProfile) {
+          console.error(`customer.subscription.deleted: no profile for stripe_customer_id ${customerId}`)
+          break
+        }
+
         await supabase
           .from("profiles")
           .update({ subscription_status: "cancelled" })
           .eq("stripe_customer_id", customerId)
 
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("stripe_customer_id", customerId)
-          .single()
-
-        if (profile) {
-          await supabase.from("notifications").insert({
-            profile_id: profile.id,
-            title: "Subscription Cancelled",
-            body: "Your subscription has been cancelled. You can resubscribe anytime from your account page.",
-            type: "billing",
-            action_url: "/dashboard/account",
-          })
-        }
+        await supabase.from("notifications").insert({
+          profile_id: deletedProfile.id,
+          title: "Subscription Cancelled",
+          body: "Your subscription has been cancelled. You can resubscribe anytime from your account page.",
+          type: "billing",
+          action_url: "/dashboard/account",
+        })
         break
       }
 
@@ -102,32 +120,36 @@ export async function POST(request: Request) {
         const invoice = event.data.object as Stripe.Invoice
         const customerId = invoice.customer as string
 
+        const { data: failedProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle()
+
+        if (!failedProfile) {
+          console.error(`invoice.payment_failed: no profile for stripe_customer_id ${customerId}`)
+          break
+        }
+
         await supabase
           .from("profiles")
           .update({ subscription_status: "past_due" })
           .eq("stripe_customer_id", customerId)
 
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("stripe_customer_id", customerId)
-          .single()
-
-        if (profile) {
-          await supabase.from("notifications").insert({
-            profile_id: profile.id,
-            title: "Payment Failed",
-            body: "Your latest payment failed. Please update your payment method to keep your subscription active.",
-            type: "billing",
-            action_url: "/dashboard/account",
-          })
-        }
+        await supabase.from("notifications").insert({
+          profile_id: failedProfile.id,
+          title: "Payment Failed",
+          body: "Your latest payment failed. Please update your payment method to keep your subscription active.",
+          type: "billing",
+          action_url: "/dashboard/account",
+        })
         break
       }
     }
   } catch (error) {
     console.error("Webhook handler error:", error)
-    return NextResponse.json({ error: "Webhook handler failed" }, { status: 500 })
+    // Return 200 so Stripe doesn't retry — the event was received but unprocessable
+    return NextResponse.json({ error: "Webhook handler failed" }, { status: 200 })
   }
 
   return NextResponse.json({ received: true })

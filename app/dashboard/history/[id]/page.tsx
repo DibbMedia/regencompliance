@@ -35,7 +35,7 @@ export default function ScanDetailPage() {
   }
 
   const flags = (scan.flags || []) as ScanFlag[]
-  const scoreColor = (scan.compliance_score ?? 0) >= 80 ? "text-green-500"
+  const scoreColor = (scan.compliance_score ?? 0) >= 80 ? "text-[#55E039]"
     : (scan.compliance_score ?? 0) >= 50 ? "text-yellow-500" : "text-red-500"
 
   return (
@@ -114,7 +114,7 @@ export default function ScanDetailPage() {
                   </Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">{flag.reason}</p>
-                <p className="text-sm text-green-700 dark:text-green-400 bg-green-500/10 rounded-md p-2">
+                <p className="text-sm text-[#55E039] bg-[#55E039]/10 rounded-md p-2">
                   {flag.alternative}
                 </p>
               </div>

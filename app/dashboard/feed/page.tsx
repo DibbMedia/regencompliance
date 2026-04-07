@@ -35,8 +35,8 @@ const CATEGORY_CONFIG: Record<
   tip: {
     label: "Tip",
     icon: Lightbulb,
-    colorClass: "text-green-600 dark:text-green-400",
-    badgeClass: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 border-green-200 dark:border-green-800",
+    colorClass: "text-[#55E039]",
+    badgeClass: "bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20",
   },
   announcement: {
     label: "Announcement",
@@ -144,7 +144,7 @@ export default function FeedPage() {
       {error && (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <AlertTriangle className="h-12 w-12 mb-4 opacity-30" />
+            <AlertTriangle className="h-12 w-12 mb-4 opacity-20" />
             <p>Failed to load feed. Please try again later.</p>
           </CardContent>
         </Card>
@@ -153,7 +153,7 @@ export default function FeedPage() {
       {data && data.items.length === 0 && (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <Newspaper className="h-12 w-12 mb-4 opacity-30" />
+            <Newspaper className="h-12 w-12 mb-4 opacity-20" />
             <p>No feed items yet. Check back soon!</p>
           </CardContent>
         </Card>

@@ -40,9 +40,9 @@ function timeAgo(date: string) {
 
 function ScoreBadge({ score }: { score: number | null }) {
   if (score === null) return <Badge variant="outline">N/A</Badge>
-  const color = score >= 80 ? "bg-green-500/10 text-green-700 dark:text-green-400"
-    : score >= 50 ? "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
-    : "bg-red-500/10 text-red-700 dark:text-red-400"
+  const color = score >= 80 ? "bg-[#55E039]/10 text-[#55E039]"
+    : score >= 50 ? "bg-yellow-500/10 text-yellow-500"
+    : "bg-red-500/10 text-red-500"
   return <Badge variant="outline" className={color}>{score}</Badge>
 }
 
@@ -105,7 +105,7 @@ export default function HistoryPage() {
       ) : scans.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <Clock className="h-12 w-12 mb-4 opacity-30" />
+            <Clock className="h-12 w-12 mb-4 opacity-20" />
             <p>No scans yet. Head to the Scanner to check your first piece of content.</p>
           </CardContent>
         </Card>

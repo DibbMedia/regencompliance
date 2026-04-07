@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { adminSearchSchema } from "@/lib/validations"
 
 export async function GET(request: Request) {
   try {
@@ -8,10 +9,18 @@ export async function GET(request: Request) {
     const { serviceClient } = auth
 
     const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50)
-    const search = searchParams.get("search") || ""
-    const status = searchParams.get("status") || ""
+    const paramsParsed = adminSearchSchema.safeParse({
+      search: searchParams.get("search") || "",
+      page: searchParams.get("page") || "1",
+      limit: searchParams.get("limit") || "20",
+      status: searchParams.get("status") || "",
+    })
+    if (!paramsParsed.success) {
+      return NextResponse.json({ error: paramsParsed.error.issues[0].message }, { status: 400 })
+    }
+
+    const { search, page, status } = paramsParsed.data
+    const limit = Math.min(paramsParsed.data.limit || 20, 50)
 
     let query = serviceClient
       .from("profiles")
