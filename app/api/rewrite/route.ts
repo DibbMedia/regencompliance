@@ -59,6 +59,7 @@ export async function POST(request: Request) {
     const response = await anthropic.messages.create({
       model: "claude-4-sonnet-20250514",
       max_tokens: 4096,
+      temperature: 0,
       system: `You are a healthcare marketing compliance editor for regenerative medicine.
 Rewrite the content to be fully FDA/FTC compliant.
 Rules: never make disease treatment/cure claims, never claim FDA approval for unapproved therapies,
