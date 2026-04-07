@@ -324,7 +324,7 @@ export default function DashboardPage() {
 
         const { data: profile } = await supabase
           .from("profiles")
-          .select("clinic_name, subscription_status, is_beta")
+          .select("clinic_name, subscription_status, is_beta_subscriber")
           .eq("id", user.id)
           .single()
 
@@ -346,7 +346,7 @@ export default function DashboardPage() {
         setData({
           clinicName: profile?.clinic_name || null,
           subscriptionStatus: profile?.subscription_status || null,
-          isBeta: profile?.is_beta || false,
+          isBeta: profile?.is_beta_subscriber || false,
           totalScans,
           avgScore,
           totalFlags,

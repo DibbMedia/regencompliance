@@ -22,10 +22,10 @@ interface Site {
   id: string
   domain: string
   name: string | null
-  status: "monitoring" | "paused"
-  compliance_score: number | null
-  pages_count: number
-  last_scanned_at: string | null
+  is_active: boolean
+  avg_compliance_score: number | null
+  total_pages: number
+  last_crawl_at: string | null
   created_at: string
 }
 
@@ -140,14 +140,13 @@ export default function SitesPage() {
     }
   }
 
-  async function handleToggleStatus(siteId: string, currentStatus: string) {
+  async function handleToggleStatus(siteId: string, isActive: boolean) {
     setTogglingId(siteId)
-    const newStatus = currentStatus === "monitoring" ? "paused" : "monitoring"
     try {
       const res = await fetch(`/api/sites/${siteId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({ is_active: !isActive }),
       })
       if (!res.ok) {
         toast.error("Failed to update site status.")
@@ -282,7 +281,7 @@ export default function SitesPage() {
               <div className="flex items-center gap-4">
                 {/* Score */}
                 <div className="shrink-0">
-                  <SmallScoreRing score={site.compliance_score} />
+                  <SmallScoreRing score={site.avg_compliance_score} />
                 </div>
 
                 {/* Separator */}
@@ -294,13 +293,13 @@ export default function SitesPage() {
                     <p className="text-sm font-medium text-white truncate">
                       {site.name || site.domain}
                     </p>
-                    <StatusBadge status={site.status} />
+                    <StatusBadge status={site.is_active ? "monitoring" : "paused"} />
                   </div>
                   <p className="text-xs text-white/40 truncate">{site.domain}</p>
                   <div className="flex gap-3 mt-1.5 text-xs text-white/30">
-                    <span>{site.pages_count} page{site.pages_count !== 1 ? "s" : ""}</span>
-                    {site.last_scanned_at && (
-                      <span>Scanned {timeAgo(site.last_scanned_at)}</span>
+                    <span>{site.total_pages} page{site.total_pages !== 1 ? "s" : ""}</span>
+                    {site.last_crawl_at && (
+                      <span>Scanned {timeAgo(site.last_crawl_at)}</span>
                     )}
                   </div>
                 </div>
@@ -308,14 +307,14 @@ export default function SitesPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-2 shrink-0">
                   <button
-                    onClick={() => handleToggleStatus(site.id, site.status)}
+                    onClick={() => handleToggleStatus(site.id, site.is_active)}
                     disabled={togglingId === site.id}
                     className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-all duration-300 disabled:opacity-50"
-                    title={site.status === "monitoring" ? "Pause monitoring" : "Resume monitoring"}
+                    title={site.is_active ? "Pause monitoring" : "Resume monitoring"}
                   >
                     {togglingId === site.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : site.status === "monitoring" ? (
+                    ) : site.is_active ? (
                       <Pause className="h-4 w-4" />
                     ) : (
                       <Play className="h-4 w-4" />
