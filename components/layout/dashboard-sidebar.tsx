@@ -13,6 +13,7 @@ import {
   LogOut,
   Users,
   Rss,
+  Globe,
 } from "lucide-react"
 import {
   Sidebar,
@@ -38,6 +39,7 @@ const navSections = [
       { title: "Scanner", href: "/dashboard/scanner", icon: Shield },
       { title: "Scan History", href: "/dashboard/history", icon: Clock },
       { title: "Compliance Library", href: "/dashboard/library", icon: BookOpen },
+      { title: "Sites", href: "/dashboard/sites", icon: Globe },
     ],
   },
   {

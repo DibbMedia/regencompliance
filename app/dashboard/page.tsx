@@ -8,6 +8,7 @@ import {
   Clock,
   AlertTriangle,
   TrendingUp,
+  TrendingDown,
   ArrowRight,
   BookOpen,
   Sparkles,
@@ -15,6 +16,8 @@ import {
   Zap,
   FileSearch,
   Calendar,
+  Globe,
+  Minus,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -37,6 +40,23 @@ interface DashboardData {
   totalFlags: number
   lastScanDate: string | null
   recentScans: ScanSummary[]
+}
+
+interface TrendsData {
+  daily_scores: Array<{ date: string; avg_score: number; scan_count: number }>
+  weekly_scores: Array<{ week: string; avg_score: number; scan_count: number }>
+  overall: {
+    total_scans: number
+    avg_score: number
+    best_score: number
+    worst_score: number
+    most_common_violation: string
+    improvement: number
+  }
+  by_content_type: Array<{ content_type: string; avg_score: number; scan_count: number }>
+  recent_flags: Array<{ banned_phrase: string; count: number; risk_level: string }>
+  monitored_sites: { count: number; avg_score: number }
+  last_7_day_avg: number
 }
 
 function StatCard({
@@ -99,10 +119,202 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
 }
 
+function WeeklyTrendChart({ weeks }: { weeks: TrendsData["weekly_scores"] }) {
+  const maxScore = 100
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6">
+      <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
+        Weekly Score Trend
+      </p>
+      <div className="flex items-end gap-2 h-32">
+        {weeks.map((w, i) => {
+          const height = w.scan_count > 0 ? Math.max((w.avg_score / maxScore) * 100, 4) : 0
+          const barColor =
+            w.avg_score >= 80
+              ? "bg-[#55E039]"
+              : w.avg_score >= 50
+              ? "bg-yellow-400"
+              : w.avg_score > 0
+              ? "bg-red-400"
+              : "bg-white/[0.06]"
+          const weekDate = new Date(w.week)
+          const label = `${weekDate.getMonth() + 1}/${weekDate.getDate()}`
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1">
+              <span className="text-[10px] text-white/30 tabular-nums">
+                {w.scan_count > 0 ? w.avg_score : ""}
+              </span>
+              <div className="w-full flex items-end" style={{ height: "80px" }}>
+                <div
+                  className={`w-full rounded-t ${barColor} transition-all duration-500`}
+                  style={{ height: `${height}%`, minHeight: w.scan_count > 0 ? "3px" : "0" }}
+                />
+              </div>
+              <span className="text-[9px] text-white/20 tabular-nums">{label}</span>
+            </div>
+          )
+        })}
+      </div>
+      <p className="text-[10px] text-white/20 mt-2 text-center">Last 12 weeks</p>
+    </div>
+  )
+}
+
+function TopViolationsWidget({
+  flags,
+}: {
+  flags: TrendsData["recent_flags"]
+}) {
+  if (flags.length === 0) {
+    return (
+      <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6">
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
+          Most Common Violations
+        </p>
+        <p className="text-sm text-white/30">No violations found yet. Run some scans to see trends.</p>
+      </div>
+    )
+  }
+
+  const riskColor: Record<string, string> = {
+    high: "text-red-400 bg-red-400/10",
+    medium: "text-yellow-400 bg-yellow-400/10",
+    low: "text-blue-400 bg-blue-400/10",
+  }
+
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6">
+      <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
+        Most Common Violations
+      </p>
+      <div className="space-y-2.5">
+        {flags.slice(0, 5).map((flag, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-3 text-sm"
+          >
+            <span className="text-white/20 text-xs w-4 shrink-0 tabular-nums">
+              {i + 1}.
+            </span>
+            <span className="text-white/70 truncate flex-1 text-xs">
+              {flag.banned_phrase}
+            </span>
+            <span className="text-white/30 text-xs tabular-nums shrink-0">
+              {flag.count}x
+            </span>
+            <span
+              className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${
+                riskColor[flag.risk_level] || riskColor.medium
+              }`}
+            >
+              {flag.risk_level}
+            </span>
+          </div>
+        ))}
+      </div>
+      <Link
+        href="/dashboard/history"
+        className="inline-flex items-center gap-1 text-xs text-white/30 hover:text-[#55E039] transition-colors mt-4"
+      >
+        View all in history <ArrowRight className="h-3 w-3" />
+      </Link>
+    </div>
+  )
+}
+
+function ContentTypeBreakdown({
+  types,
+}: {
+  types: TrendsData["by_content_type"]
+}) {
+  if (types.length === 0) return null
+
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6">
+      <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
+        Score by Content Type
+      </p>
+      <div className="space-y-3">
+        {types.map((ct) => {
+          const scoreColor =
+            ct.avg_score >= 80
+              ? "text-[#55E039]"
+              : ct.avg_score >= 50
+              ? "text-yellow-400"
+              : "text-red-400"
+          return (
+            <div key={ct.content_type} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-white/60">
+                  {formatContentType(ct.content_type)}
+                </span>
+                <span className="text-[10px] text-white/20">
+                  ({ct.scan_count} scan{ct.scan_count !== 1 ? "s" : ""})
+                </span>
+              </div>
+              <span className={`text-sm font-bold tabular-nums ${scoreColor}`}>
+                {ct.avg_score}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function MonitoredSitesSummary({
+  sites,
+}: {
+  sites: TrendsData["monitored_sites"]
+}) {
+  if (sites.count === 0) return null
+
+  const scoreColor =
+    sites.avg_score >= 80
+      ? "text-[#55E039]"
+      : sites.avg_score >= 50
+      ? "text-yellow-400"
+      : "text-red-400"
+
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-400/10 text-blue-400">
+          <Globe className="h-4 w-4" />
+        </div>
+        <span className="text-xs font-medium text-white/40 uppercase tracking-wide">
+          Monitored Sites
+        </span>
+      </div>
+      <div className="flex items-end justify-between">
+        <div>
+          <p className="text-2xl font-bold text-white">{sites.count}</p>
+          <p className="text-xs text-white/40 mt-1">
+            Avg score: <span className={`font-bold ${scoreColor}`}>{sites.avg_score}</span>
+          </p>
+        </div>
+        <Link
+          href="/dashboard/sites"
+          className="text-xs text-white/30 hover:text-[#55E039] transition-colors flex items-center gap-1"
+        >
+          View <ArrowRight className="h-3 w-3" />
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 export default function DashboardPage() {
   const supabase = createClient()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // Fetch trends data via SWR
+  const { data: trends } = useSWR<TrendsData>("/api/compliance-trends", fetcher, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000,
+  })
 
   useEffect(() => {
     async function load() {
@@ -176,6 +388,11 @@ export default function DashboardPage() {
 
   const hasScans = data && data.totalScans > 0
 
+  // Determine trend direction from trends API
+  const improvement = trends?.overall?.improvement ?? 0
+  const trendDirection = improvement > 2 ? "up" : improvement < -2 ? "down" : "stable"
+  const last7Avg = trends?.last_7_day_avg ?? data?.avgScore ?? 0
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Welcome Section */}
@@ -233,6 +450,13 @@ export default function DashboardPage() {
             <BookOpen className="h-4 w-4" />
             Library
           </Link>
+          <Link
+            href="/dashboard/sites"
+            className="hidden sm:inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
+          >
+            <Globe className="h-4 w-4" />
+            Monitor Sites
+          </Link>
         </div>
       </div>
 
@@ -243,15 +467,27 @@ export default function DashboardPage() {
             <StatCard
               icon={BarChart3}
               label="Total Scans"
-              value={data.totalScans}
+              value={trends?.overall?.total_scans ?? data.totalScans}
               color="blue"
             />
             <StatCard
               icon={TrendingUp}
               label="Avg Score"
-              value={data.avgScore}
-              sub={data.avgScore >= 80 ? "Good standing" : data.avgScore >= 50 ? "Needs attention" : "High risk"}
-              color={data.avgScore >= 80 ? "green" : data.avgScore >= 50 ? "yellow" : "red"}
+              value={trends?.overall?.avg_score ?? data.avgScore}
+              sub={
+                (trends?.overall?.avg_score ?? data.avgScore) >= 80
+                  ? "Good standing"
+                  : (trends?.overall?.avg_score ?? data.avgScore) >= 50
+                  ? "Needs attention"
+                  : "High risk"
+              }
+              color={
+                (trends?.overall?.avg_score ?? data.avgScore) >= 80
+                  ? "green"
+                  : (trends?.overall?.avg_score ?? data.avgScore) >= 50
+                  ? "yellow"
+                  : "red"
+              }
             />
             <StatCard
               icon={AlertTriangle}
@@ -267,41 +503,104 @@ export default function DashboardPage() {
             />
           </div>
 
-          {/* Compliance Health */}
+          {/* Compliance Health Section */}
           <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Compliance Health</p>
-                <p className="text-sm text-white/40 mt-1">Based on your last {Math.min(data.totalScans, 50)} scans</p>
+                <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">
+                  Compliance Health
+                </p>
+                <p className="text-sm text-white/40 mt-1">
+                  7-day average score
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                  data.avgScore >= 80 ? "bg-[#55E039]/10 text-[#55E039]" :
-                  data.avgScore >= 50 ? "bg-yellow-400/10 text-yellow-400" :
-                  "bg-red-400/10 text-red-400"
-                }`}>
-                  <span className="text-xl font-bold">{data.avgScore}</span>
+              <div className="flex items-center gap-3">
+                {/* Trend indicator */}
+                {trends && (
+                  <div className="flex items-center gap-1.5">
+                    {trendDirection === "up" ? (
+                      <TrendingUp className="h-5 w-5 text-[#55E039]" />
+                    ) : trendDirection === "down" ? (
+                      <TrendingDown className="h-5 w-5 text-red-400" />
+                    ) : (
+                      <Minus className="h-5 w-5 text-yellow-400" />
+                    )}
+                    <span
+                      className={`text-sm font-medium ${
+                        trendDirection === "up"
+                          ? "text-[#55E039]"
+                          : trendDirection === "down"
+                          ? "text-red-400"
+                          : "text-yellow-400"
+                      }`}
+                    >
+                      {improvement > 0 ? "+" : ""}
+                      {improvement} pts
+                    </span>
+                  </div>
+                )}
+                {/* Large score display */}
+                <div
+                  className={`flex h-14 w-14 items-center justify-center rounded-xl ${
+                    last7Avg >= 80
+                      ? "bg-[#55E039]/10 text-[#55E039]"
+                      : last7Avg >= 50
+                      ? "bg-yellow-400/10 text-yellow-400"
+                      : "bg-red-400/10 text-red-400"
+                  }`}
+                >
+                  <span className="text-2xl font-bold">{last7Avg}</span>
                 </div>
               </div>
             </div>
             <div className="w-full h-2 rounded-full bg-white/[0.06] overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-1000 ${
-                  data.avgScore >= 80 ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A]" :
-                  data.avgScore >= 50 ? "bg-gradient-to-r from-yellow-500 to-yellow-400" :
-                  "bg-gradient-to-r from-red-500 to-red-400"
+                  last7Avg >= 80
+                    ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A]"
+                    : last7Avg >= 50
+                    ? "bg-gradient-to-r from-yellow-500 to-yellow-400"
+                    : "bg-gradient-to-r from-red-500 to-red-400"
                 }`}
-                style={{ width: `${data.avgScore}%` }}
+                style={{ width: `${last7Avg}%` }}
               />
             </div>
-            <p className="text-xs text-white/30 mt-2">
-              {data.avgScore >= 80
-                ? "Your content is generally compliant. Keep scanning new materials before publishing."
-                : data.avgScore >= 50
-                ? "Some content needs attention. Review flagged items and use the rewrite tool."
-                : "Multiple high-risk issues detected. Review your content carefully before publishing."}
+            {/* Trend message */}
+            <p className="text-xs text-white/40 mt-2">
+              {trends ? (
+                trendDirection === "up" ? (
+                  <>Your compliance score improved by <span className="text-[#55E039] font-medium">{improvement} points</span> this week.</>
+                ) : trendDirection === "down" ? (
+                  <>Your compliance score declined by <span className="text-red-400 font-medium">{Math.abs(improvement)} points</span> this week. Review recent flags.</>
+                ) : (
+                  <>Your compliance score is stable. Keep scanning new content to stay ahead.</>
+                )
+              ) : last7Avg >= 80 ? (
+                "Your content is generally compliant. Keep scanning new materials before publishing."
+              ) : last7Avg >= 50 ? (
+                "Some content needs attention. Review flagged items and use the rewrite tool."
+              ) : (
+                "Multiple high-risk issues detected. Review your content carefully before publishing."
+              )}
             </p>
           </div>
+
+          {/* Trend Chart + Violations + Content Types — 3-column grid */}
+          {trends && (
+            <div className="grid gap-4 lg:grid-cols-3">
+              {/* Weekly Trend Chart */}
+              <WeeklyTrendChart weeks={trends.weekly_scores} />
+
+              {/* Top Violations */}
+              <TopViolationsWidget flags={trends.recent_flags} />
+
+              {/* Content Type Breakdown + Monitored Sites */}
+              <div className="space-y-4">
+                <ContentTypeBreakdown types={trends.by_content_type} />
+                <MonitoredSitesSummary sites={trends.monitored_sites} />
+              </div>
+            </div>
+          )}
 
           {/* Recent Scans */}
           <div>
@@ -335,53 +634,65 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
+
+          {/* Disclaimer */}
+          <p className="text-xs text-white/30 italic">
+            Compliance scores are educational guidance only and do not constitute legal advice. Always consult qualified healthcare marketing counsel for regulatory decisions.
+          </p>
         </>
       ) : (
         /* Getting Started - No scans yet */
-        <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-          <div className="flex justify-center mb-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#55E039]/20 to-[#3BB82A]/10 border border-[#55E039]/20">
-              <Zap className="h-8 w-8 text-[#55E039]" />
+        <>
+          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+            <div className="flex justify-center mb-6">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#55E039]/20 to-[#3BB82A]/10 border border-[#55E039]/20">
+                <Zap className="h-8 w-8 text-[#55E039]" />
+              </div>
             </div>
+            <h2 className="text-xl font-bold text-white mb-2">Get started with your first scan</h2>
+            <p className="text-sm text-white/40 max-w-md mx-auto mb-8">
+              Paste any marketing content — website copy, social posts, ad text, emails — and get instant FDA/FTC compliance analysis with actionable suggestions.
+            </p>
+
+            <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto mb-8">
+              <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
+                  <span className="text-sm font-bold text-[#55E039]">1</span>
+                </div>
+                <p className="text-sm font-medium text-white">Paste Content</p>
+                <p className="text-xs text-white/40 mt-1">Copy any marketing text into the scanner</p>
+              </div>
+              <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
+                  <span className="text-sm font-bold text-[#55E039]">2</span>
+                </div>
+                <p className="text-sm font-medium text-white">Get Analysis</p>
+                <p className="text-xs text-white/40 mt-1">AI checks against current FDA/FTC rules</p>
+              </div>
+              <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
+                  <span className="text-sm font-bold text-[#55E039]">3</span>
+                </div>
+                <p className="text-sm font-medium text-white">Fix & Publish</p>
+                <p className="text-xs text-white/40 mt-1">Use AI rewrite to make content compliant</p>
+              </div>
+            </div>
+
+            <Link
+              href="/dashboard/scanner"
+              className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
+            >
+              <Shield className="h-5 w-5" />
+              Run Your First Scan
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">Get started with your first scan</h2>
-          <p className="text-sm text-white/40 max-w-md mx-auto mb-8">
-            Paste any marketing content — website copy, social posts, ad text, emails — and get instant FDA/FTC compliance analysis with actionable suggestions.
+
+          {/* Disclaimer */}
+          <p className="text-xs text-white/30 italic">
+            Compliance scores are educational guidance only and do not constitute legal advice. Always consult qualified healthcare marketing counsel for regulatory decisions.
           </p>
-
-          <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto mb-8">
-            <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
-                <span className="text-sm font-bold text-[#55E039]">1</span>
-              </div>
-              <p className="text-sm font-medium text-white">Paste Content</p>
-              <p className="text-xs text-white/40 mt-1">Copy any marketing text into the scanner</p>
-            </div>
-            <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
-                <span className="text-sm font-bold text-[#55E039]">2</span>
-              </div>
-              <p className="text-sm font-medium text-white">Get Analysis</p>
-              <p className="text-xs text-white/40 mt-1">AI checks against current FDA/FTC rules</p>
-            </div>
-            <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
-                <span className="text-sm font-bold text-[#55E039]">3</span>
-              </div>
-              <p className="text-sm font-medium text-white">Fix & Publish</p>
-              <p className="text-xs text-white/40 mt-1">Use AI rewrite to make content compliant</p>
-            </div>
-          </div>
-
-          <Link
-            href="/dashboard/scanner"
-            className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
-          >
-            <Shield className="h-5 w-5" />
-            Run Your First Scan
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        </>
       )}
     </div>
   )

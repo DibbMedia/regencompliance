@@ -282,6 +282,11 @@ export default function ScanDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Disclaimer */}
+      <p className="text-xs text-white/30 italic text-center">
+        This tool provides educational compliance guidance only. It is not legal advice and does not guarantee regulatory compliance. Always consult qualified healthcare marketing counsel.
+      </p>
     </div>
   )
 }

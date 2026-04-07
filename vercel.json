@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/deep-scrape",
       "schedule": "0 3 1 * *"
+    },
+    {
+      "path": "/api/cron/site-monitor",
+      "schedule": "0 6 * * 1"
     }
   ]
 }

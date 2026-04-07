@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { ScanFlag } from "@/lib/types"
@@ -30,7 +31,11 @@ interface ScanResult {
   low_risk_count: number
   scan_duration_ms: number
   rewritten_text?: string | null
+  page_title?: string | null
+  source_url?: string | null
 }
+
+type ScanMode = "paste" | "url"
 
 function ScoreRing({ score, animate }: { score: number; animate: boolean }) {
   const color = score >= 80 ? "#55E039" : score >= 50 ? "#eab308" : "#ef4444"
@@ -80,7 +85,9 @@ function RiskBadge({ level }: { level: string }) {
 
 export default function ScannerPage() {
   const searchParams = useSearchParams()
+  const [scanMode, setScanMode] = useState<ScanMode>("paste")
   const [text, setText] = useState("")
+  const [url, setUrl] = useState("")
   const [contentType, setContentType] = useState("website_copy")
   const [scanning, setScanning] = useState(false)
   const [rewriting, setRewriting] = useState(false)
@@ -147,6 +154,52 @@ export default function ScannerPage() {
     }
   }
 
+  async function handleUrlScan() {
+    if (!url.trim()) return
+    setScanning(true)
+    setResult(null)
+
+    try {
+      // Normalize URL - add https:// if no protocol
+      let scanUrl = url.trim()
+      if (!/^https?:\/\//i.test(scanUrl)) {
+        scanUrl = `https://${scanUrl}`
+      }
+
+      const res = await fetch("/api/scan-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: scanUrl, content_type: "website_copy" }),
+      })
+
+      if (res.status === 429) {
+        toast.error("Rate limit reached. Please try again later.")
+        return
+      }
+      if (res.status === 403) {
+        toast.error("Active subscription required to scan.")
+        return
+      }
+      if (res.status === 422) {
+        const data = await res.json()
+        toast.error(data.error || "Could not extract content from this URL.")
+        return
+      }
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error(data.error || "URL scan failed. Please try again.")
+        return
+      }
+
+      const data = await res.json()
+      setResult(data)
+    } catch {
+      toast.error("Network error. Please try again.")
+    } finally {
+      setScanning(false)
+    }
+  }
+
   async function handleRewrite() {
     if (!result) return
     setRewriting(true)
@@ -201,78 +254,162 @@ export default function ScannerPage() {
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
           <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
           <p className="text-white/60 mt-1">
-            Paste any marketing content to check against current FDA/FTC guidelines.
+            Paste content or scan a URL to check against current FDA/FTC guidelines.
           </p>
         </div>
 
-        {/* Content Type Pills */}
-        <div className="flex flex-wrap gap-2">
-          {CONTENT_TYPES.map((t) => {
-            const Icon = t.icon
-            const isActive = contentType === t.value
-            return (
-              <button
-                key={t.value}
-                onClick={() => setContentType(t.value)}
-                className={`
-                  inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
-                  transition-all duration-300 border
-                  ${isActive
-                    ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] border-transparent shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
-                    : "bg-white/[0.03] border-white/10 text-white/60 hover:bg-white/[0.06] hover:border-white/15 hover:text-white/80"
-                  }
-                `}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {t.label}
-              </button>
-            )
-          })}
+        {/* Mode Toggle */}
+        <div className="flex rounded-xl border border-white/10 overflow-hidden bg-white/[0.02]">
+          <button
+            onClick={() => { setScanMode("paste"); setResult(null) }}
+            className={`
+              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              transition-all duration-300
+              ${scanMode === "paste"
+                ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
+                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+              }
+            `}
+          >
+            <FileText className="h-4 w-4" />
+            Paste Content
+          </button>
+          <button
+            onClick={() => { setScanMode("url"); setResult(null) }}
+            className={`
+              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              transition-all duration-300 border-l border-white/10
+              ${scanMode === "url"
+                ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
+                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+              }
+            `}
+          >
+            <Globe className="h-4 w-4" />
+            Scan URL
+          </button>
         </div>
 
-        {/* Textarea */}
-        <div className="relative group">
-          <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
-          <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value.slice(0, 5000))}
-            placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
-            className="relative min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
-          />
-          <span className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
-            {charCount.toLocaleString()}/5,000
-          </span>
-        </div>
+        {scanMode === "paste" ? (
+          <>
+            {/* Content Type Pills */}
+            <div className="flex flex-wrap gap-2">
+              {CONTENT_TYPES.map((t) => {
+                const Icon = t.icon
+                const isActive = contentType === t.value
+                return (
+                  <button
+                    key={t.value}
+                    onClick={() => setContentType(t.value)}
+                    className={`
+                      inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                      transition-all duration-300 border
+                      ${isActive
+                        ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] border-transparent shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
+                        : "bg-white/[0.03] border-white/10 text-white/60 hover:bg-white/[0.06] hover:border-white/15 hover:text-white/80"
+                      }
+                    `}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {t.label}
+                  </button>
+                )
+              })}
+            </div>
 
-        {/* Scan Button */}
-        <button
-          onClick={handleScan}
-          disabled={scanning || !text.trim()}
-          className={`
-            w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider
-            transition-all duration-300 flex items-center justify-center gap-2
-            disabled:opacity-40 disabled:cursor-not-allowed
-            ${scanning
-              ? "bg-white/[0.03] border border-white/10 text-white/60"
-              : "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:scale-[1.01] active:scale-[0.99]"
-            }
-          `}
-        >
-          {scanning ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Analyzing Content...
-            </>
-          ) : (
-            <>
-              <Shield className="h-4 w-4" />
-              Scan for Compliance Issues
-            </>
-          )}
-        </button>
+            {/* Textarea */}
+            <div className="relative group">
+              <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
+              <Textarea
+                value={text}
+                onChange={(e) => setText(e.target.value.slice(0, 5000))}
+                placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
+                className="relative min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
+              />
+              <span className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
+                {charCount.toLocaleString()}/5,000
+              </span>
+            </div>
 
-        <p className="text-xs text-white/30 text-center">
-          This tool provides educational guidance only and does not constitute legal or regulatory advice.
+            {/* Scan Button */}
+            <button
+              onClick={handleScan}
+              disabled={scanning || !text.trim()}
+              className={`
+                w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider
+                transition-all duration-300 flex items-center justify-center gap-2
+                disabled:opacity-40 disabled:cursor-not-allowed
+                ${scanning
+                  ? "bg-white/[0.03] border border-white/10 text-white/60"
+                  : "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:scale-[1.01] active:scale-[0.99]"
+                }
+              `}
+            >
+              {scanning ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Analyzing Content...
+                </>
+              ) : (
+                <>
+                  <Shield className="h-4 w-4" />
+                  Scan for Compliance Issues
+                </>
+              )}
+            </button>
+          </>
+        ) : (
+          <>
+            {/* URL Input */}
+            <div className="relative group">
+              <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
+              <div className="relative flex items-center">
+                <Link2 className="absolute left-4 h-4 w-4 text-white/30 z-10" />
+                <Input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://yourclinic.com/services/stem-cell-therapy"
+                  onKeyDown={(e) => { if (e.key === "Enter" && url.trim()) handleUrlScan() }}
+                  className="pl-11 py-6 bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300 text-base"
+                />
+              </div>
+            </div>
+
+            <p className="text-sm text-white/40">
+              Enter a URL to automatically extract and scan the page content for compliance issues.
+            </p>
+
+            {/* Scan URL Button */}
+            <button
+              onClick={handleUrlScan}
+              disabled={scanning || !url.trim()}
+              className={`
+                w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider
+                transition-all duration-300 flex items-center justify-center gap-2
+                disabled:opacity-40 disabled:cursor-not-allowed
+                ${scanning
+                  ? "bg-white/[0.03] border border-white/10 text-white/60"
+                  : "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:scale-[1.01] active:scale-[0.99]"
+                }
+              `}
+            >
+              {scanning ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Fetching &amp; Analyzing Page...
+                </>
+              ) : (
+                <>
+                  <Globe className="h-4 w-4" />
+                  Scan URL
+                </>
+              )}
+            </button>
+          </>
+        )}
+
+        <p className="text-xs text-white/30 italic text-center">
+          This tool provides educational compliance guidance only. It is not legal advice and does not guarantee regulatory compliance. Always consult qualified healthcare marketing counsel.
         </p>
       </div>
 
@@ -306,6 +443,23 @@ export default function ScannerPage() {
         {/* Results */}
         {result && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* URL Source Info */}
+            {result.source_url && (
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                {result.page_title && (
+                  <p className="text-sm font-medium text-white mb-1">{result.page_title}</p>
+                )}
+                <a
+                  href={result.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors truncate block"
+                >
+                  {result.source_url}
+                </a>
+              </div>
+            )}
+
             {/* Score Card */}
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 flex flex-col items-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
               <ScoreRing score={result.compliance_score} animate={scoreAnimated} />

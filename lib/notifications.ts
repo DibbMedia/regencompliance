@@ -32,3 +32,20 @@ export async function createUserNotification(
     action_url: actionUrl,
   })
 }
+
+export async function createComplianceAlert(
+  profileId: string,
+  title: string,
+  body: string,
+  actionUrl: string,
+  type?: string
+): Promise<void> {
+  const supabase = createServiceClient()
+  await supabase.from("notifications").insert({
+    profile_id: profileId,
+    title,
+    body,
+    type: type || "enforcement",
+    action_url: actionUrl,
+  })
+}
