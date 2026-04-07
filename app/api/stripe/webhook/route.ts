@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
+import { sendEmail } from "@/lib/email"
+import { welcomeEmail, betaWelcomeEmail, paymentFailedEmail, subscriptionCancelledEmail } from "@/lib/email-templates"
 import type Stripe from "stripe"
 
 export async function POST(request: Request) {
@@ -119,6 +121,17 @@ export async function POST(request: Request) {
               type: "billing",
               action_url: "/dashboard/scanner",
             })
+
+            // Send beta welcome email
+            if (customerEmail) {
+              const { data: betaFullProfile } = await supabase
+                .from("profiles")
+                .select("clinic_name")
+                .eq("id", betaProfile.id)
+                .maybeSingle()
+              const template = betaWelcomeEmail(betaFullProfile?.clinic_name || "there")
+              await sendEmail(customerEmail, template.subject, template.html)
+            }
           } else {
             console.log(
               `[Stripe Webhook] Beta purchase recorded for ${customerEmail} — will be claimed on signup/login`
@@ -201,6 +214,22 @@ export async function POST(request: Request) {
             type: "billing",
             action_url: "/dashboard/scanner",
           })
+
+          // Send welcome email
+          try {
+            const stripeCustomerObj = await stripe.customers.retrieve(customerId)
+            if (!stripeCustomerObj.deleted && stripeCustomerObj.email) {
+              const { data: subProfile } = await supabase
+                .from("profiles")
+                .select("clinic_name")
+                .eq("id", checkoutProfile.id)
+                .maybeSingle()
+              const template = welcomeEmail(subProfile?.clinic_name || "there")
+              await sendEmail(stripeCustomerObj.email, template.subject, template.html)
+            }
+          } catch (emailErr) {
+            console.error("[Stripe Webhook] Welcome email failed (non-blocking):", emailErr)
+          }
         }
         break
       }
@@ -273,6 +302,22 @@ export async function POST(request: Request) {
           type: "billing",
           action_url: "/dashboard/account",
         })
+
+        // Send cancellation email
+        try {
+          const cancelCustomerObj = await stripe.customers.retrieve(customerId)
+          if (!cancelCustomerObj.deleted && cancelCustomerObj.email) {
+            const { data: cancelProfile } = await supabase
+              .from("profiles")
+              .select("clinic_name")
+              .eq("id", deletedProfile.id)
+              .maybeSingle()
+            const template = subscriptionCancelledEmail(cancelProfile?.clinic_name || "there")
+            await sendEmail(cancelCustomerObj.email, template.subject, template.html)
+          }
+        } catch (emailErr) {
+          console.error("[Stripe Webhook] Cancellation email failed (non-blocking):", emailErr)
+        }
         break
       }
 
@@ -310,6 +355,22 @@ export async function POST(request: Request) {
           type: "billing",
           action_url: "/dashboard/account",
         })
+
+        // Send payment failed email
+        try {
+          const failedCustomerObj = await stripe.customers.retrieve(customerId)
+          if (!failedCustomerObj.deleted && failedCustomerObj.email) {
+            const { data: failedFullProfile } = await supabase
+              .from("profiles")
+              .select("clinic_name")
+              .eq("id", failedProfile.id)
+              .maybeSingle()
+            const template = paymentFailedEmail(failedFullProfile?.clinic_name || "there")
+            await sendEmail(failedCustomerObj.email, template.subject, template.html)
+          }
+        } catch (emailErr) {
+          console.error("[Stripe Webhook] Payment failed email failed (non-blocking):", emailErr)
+        }
         break
       }
     }

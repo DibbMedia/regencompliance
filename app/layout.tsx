@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { CookieConsent } from "@/components/cookie-consent"
 import "./globals.css"
 
 const poppins = Poppins({
@@ -12,9 +13,41 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "RegenCompliance — FDA/FTC Compliance Scanner for Regenerative Medicine",
+  title: {
+    default: "RegenCompliance — FDA/FTC Compliance Scanner for Regenerative Medicine",
+    template: "%s | RegenCompliance",
+  },
   description:
-    "Scan your marketing content against live FDA/FTC guidelines before you publish. Built exclusively for regenerative medicine clinics.",
+    "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for regenerative medicine clinics.",
+  metadataBase: new URL("https://compliance.regenportal.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://compliance.regenportal.com",
+    siteName: "RegenCompliance",
+    title: "RegenCompliance — FDA/FTC Compliance Scanner",
+    description:
+      "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for regenerative medicine clinics.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "RegenCompliance — FDA/FTC Compliance Scanner",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RegenCompliance — FDA/FTC Compliance Scanner",
+    description:
+      "Scan your marketing content against live FDA/FTC enforcement data.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({
@@ -28,6 +61,29 @@ export default function RootLayout({
       className={`${poppins.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "RegenCompliance",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "297",
+                priceCurrency: "USD",
+                description: "Lifetime beta access",
+              },
+              description:
+                "FDA/FTC compliance scanner for regenerative medicine clinics",
+              url: "https://compliance.regenportal.com",
+            }),
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
         <ThemeProvider
           attribute="class"
@@ -39,6 +95,7 @@ export default function RootLayout({
             {children}
           </TooltipProvider>
           <Toaster richColors position="top-right" />
+          <CookieConsent />
         </ThemeProvider>
       </body>
     </html>

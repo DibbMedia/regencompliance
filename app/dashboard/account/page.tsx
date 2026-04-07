@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, ExternalLink, Shield, Crown, X, Plus, Users, CreditCard, AlertTriangle } from "lucide-react"
+import { Loader2, ExternalLink, Shield, Crown, X, Plus, Users, CreditCard, AlertTriangle, Download, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,6 +35,9 @@ export default function AccountPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [portalLoading, setPortalLoading] = useState(false)
   const [role, setRole] = useState("owner")
+  const [exportLoading, setExportLoading] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -112,6 +115,54 @@ export default function AccountPage() {
       window.location.href = data.url
     } else {
       toast.error(data.error || "Failed to open billing portal")
+    }
+  }
+
+  async function handleExport() {
+    setExportLoading(true)
+    try {
+      const res = await fetch("/api/user/export", { method: "POST" })
+      if (!res.ok) {
+        toast.error("Failed to export data")
+        return
+      }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = "regencompliance-data-export.json"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      toast.success("Data exported successfully")
+    } catch {
+      toast.error("Failed to export data")
+    } finally {
+      setExportLoading(false)
+    }
+  }
+
+  async function handleDeleteAccount() {
+    setDeleteLoading(true)
+    try {
+      const res = await fetch("/api/user/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: true }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error(data.error || "Failed to delete account")
+        return
+      }
+      toast.success("Account deleted. Redirecting...")
+      router.push("/")
+    } catch {
+      toast.error("Failed to delete account")
+    } finally {
+      setDeleteLoading(false)
+      setShowDeleteConfirm(false)
     }
   }
 
@@ -325,29 +376,102 @@ export default function AccountPage() {
         </div>
       )}
 
+      {/* ── DATA & PRIVACY ── */}
+      {role === "owner" && (
+        <div className="space-y-4">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Data & Privacy</p>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 space-y-4 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-[#55E039]/10 flex items-center justify-center">
+                <Download className="h-5 w-5 text-[#55E039]" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Export My Data</h3>
+                <p className="text-white/50 text-sm">Download all your data as a JSON file (GDPR compliant)</p>
+              </div>
+            </div>
+            <button
+              onClick={handleExport}
+              disabled={exportLoading}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] transition-all duration-200"
+            >
+              {exportLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              Export My Data
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── DANGER ZONE ── */}
-      {role === "owner" && isActive && !isBeta && (
+      {role === "owner" && (
         <div className="space-y-4">
           <p className="text-xs font-bold text-red-500 uppercase tracking-[0.2em]">Danger Zone</p>
+
+          {isActive && !isBeta && (
+            <div className="bg-red-500/[0.04] border border-red-500/20 rounded-xl p-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-red-500" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">Cancel Subscription</h3>
+                  <p className="text-white/50 text-sm">This will cancel your subscription at the end of the current billing period</p>
+                </div>
+              </div>
+              <button
+                onClick={handlePortal}
+                disabled={portalLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all duration-200"
+              >
+                {portalLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                Cancel Subscription
+              </button>
+            </div>
+          )}
 
           <div className="bg-red-500/[0.04] border border-red-500/20 rounded-xl p-6 space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
-                <AlertTriangle className="h-5 w-5 text-red-500" />
+                <Trash2 className="h-5 w-5 text-red-500" />
               </div>
               <div>
-                <h3 className="text-white font-bold">Cancel Subscription</h3>
-                <p className="text-white/50 text-sm">This will cancel your subscription at the end of the current billing period</p>
+                <h3 className="text-white font-bold">Delete My Account</h3>
+                <p className="text-white/50 text-sm">Permanently delete your account, all scans, tickets, and data. This cannot be undone.</p>
               </div>
             </div>
-            <button
-              onClick={handlePortal}
-              disabled={portalLoading}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all duration-200"
-            >
-              {portalLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-              Cancel Subscription
-            </button>
+
+            {!showDeleteConfirm ? (
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all duration-200"
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete My Account
+              </button>
+            ) : (
+              <div className="space-y-3 p-4 bg-red-500/[0.06] border border-red-500/20 rounded-lg">
+                <p className="text-sm text-red-400 font-medium">
+                  Are you absolutely sure? This will permanently delete your account, cancel any active subscription, and remove all your data. This action cannot be undone.
+                </p>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleDeleteAccount}
+                    disabled={deleteLoading}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all duration-200"
+                  >
+                    {deleteLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                    Yes, Delete Everything
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    className="inline-flex items-center px-4 py-2 rounded-lg border border-white/10 text-white/60 text-sm font-medium hover:text-white hover:border-white/20 transition-all duration-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

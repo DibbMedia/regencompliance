@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/server"
+import { sendEmail } from "@/lib/email"
+import { betaWelcomeEmail } from "@/lib/email-templates"
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -70,29 +72,48 @@ export async function GET(request: Request) {
               .maybeSingle()
 
             if (betaPurchase) {
-              // Claim the beta purchase for this user
-              await serviceClient
+              // Check if the webhook already activated this user (avoid duplicate email)
+              const { data: existingProfile } = await serviceClient
                 .from("profiles")
-                .update({
-                  subscription_status: "active",
-                  is_beta_subscriber: true,
-                  beta_enrolled_at: new Date().toISOString(),
-                  stripe_customer_id: betaPurchase.stripe_customer_id,
-                })
+                .select("subscription_status, is_beta_subscriber, clinic_name")
                 .eq("id", user.id)
+                .maybeSingle()
 
-              await serviceClient
-                .from("beta_purchases")
-                .update({ claimed: true, claimed_by: user.id })
-                .eq("id", betaPurchase.id)
+              const alreadyActivated = existingProfile?.is_beta_subscriber === true
+                && existingProfile?.subscription_status === "active"
 
-              await serviceClient.from("notifications").insert({
-                profile_id: user.id,
-                title: "Beta Access Activated",
-                body: "Your lifetime beta access to RegenCompliance is now active. Welcome aboard!",
-                type: "billing",
-                action_url: "/dashboard/scanner",
-              })
+              if (!alreadyActivated) {
+                // Claim the beta purchase for this user
+                await serviceClient
+                  .from("profiles")
+                  .update({
+                    subscription_status: "active",
+                    is_beta_subscriber: true,
+                    beta_enrolled_at: new Date().toISOString(),
+                    stripe_customer_id: betaPurchase.stripe_customer_id,
+                  })
+                  .eq("id", user.id)
+
+                await serviceClient
+                  .from("beta_purchases")
+                  .update({ claimed: true, claimed_by: user.id })
+                  .eq("id", betaPurchase.id)
+
+                await serviceClient.from("notifications").insert({
+                  profile_id: user.id,
+                  title: "Beta Access Activated",
+                  body: "Your lifetime beta access to RegenCompliance is now active. Welcome aboard!",
+                  type: "billing",
+                  action_url: "/dashboard/scanner",
+                })
+
+                // Send beta welcome email (only if webhook didn't already)
+                if (userEmail) {
+                  const clinicName = existingProfile?.clinic_name || "there"
+                  const template = betaWelcomeEmail(clinicName)
+                  await sendEmail(userEmail, template.subject, template.html)
+                }
+              }
             }
           }
         } catch (betaErr) {
