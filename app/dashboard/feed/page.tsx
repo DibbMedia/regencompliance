@@ -2,47 +2,52 @@
 
 import useSWR from "swr"
 import {
-  Newspaper,
+  Rss,
   Scale,
   AlertTriangle,
   Lightbulb,
   Megaphone,
-  Loader2,
+  ExternalLink,
 } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
 import type { FeedItem } from "@/app/api/feed/route"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const CATEGORY_CONFIG: Record<
   FeedItem["category"],
-  { label: string; icon: typeof Newspaper; colorClass: string; badgeClass: string }
+  { label: string; icon: typeof Rss; iconBg: string; iconColor: string; badgeBg: string; badgeText: string }
 > = {
   rule_update: {
     label: "Rule Update",
     icon: Scale,
-    colorClass: "text-blue-600 dark:text-blue-400",
-    badgeClass: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800",
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-400",
+    badgeBg: "bg-blue-500/10 border-blue-500/20",
+    badgeText: "text-blue-400",
   },
   enforcement: {
     label: "Enforcement Alert",
     icon: AlertTriangle,
-    colorClass: "text-red-600 dark:text-red-400",
-    badgeClass: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 border-red-200 dark:border-red-800",
+    iconBg: "bg-red-500/10",
+    iconColor: "text-red-400",
+    badgeBg: "bg-red-500/10 border-red-500/20",
+    badgeText: "text-red-400",
   },
   tip: {
     label: "Tip",
     icon: Lightbulb,
-    colorClass: "text-[#55E039]",
-    badgeClass: "bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20",
+    iconBg: "bg-[#55E039]/10",
+    iconColor: "text-[#55E039]",
+    badgeBg: "bg-[#55E039]/10 border-[#55E039]/20",
+    badgeText: "text-[#55E039]",
   },
   announcement: {
     label: "Announcement",
     icon: Megaphone,
-    colorClass: "text-purple-600 dark:text-purple-400",
-    badgeClass: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200 dark:border-purple-800",
+    iconBg: "bg-purple-500/10",
+    iconColor: "text-purple-400",
+    badgeBg: "bg-purple-500/10 border-purple-500/20",
+    badgeText: "text-purple-400",
   },
 }
 
@@ -63,20 +68,20 @@ function formatRelativeTime(dateStr: string): string {
 
 function FeedCardSkeleton() {
   return (
-    <Card>
-      <CardContent className="flex gap-4 py-1">
-        <Skeleton className="h-10 w-10 shrink-0 rounded-lg" />
-        <div className="flex-1 space-y-2">
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
+      <div className="flex gap-4">
+        <div className="h-10 w-10 shrink-0 rounded-lg bg-white/[0.06] animate-pulse" />
+        <div className="flex-1 space-y-3">
           <div className="flex items-center gap-2">
-            <Skeleton className="h-5 w-20 rounded-full" />
-            <Skeleton className="h-4 w-16" />
+            <div className="h-5 w-20 rounded-full bg-white/[0.06] animate-pulse" />
+            <div className="h-4 w-16 rounded bg-white/[0.04] animate-pulse" />
           </div>
-          <Skeleton className="h-5 w-3/4" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-2/3" />
+          <div className="h-5 w-3/4 rounded bg-white/[0.06] animate-pulse" />
+          <div className="h-4 w-full rounded bg-white/[0.04] animate-pulse" />
+          <div className="h-4 w-2/3 rounded bg-white/[0.04] animate-pulse" />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -85,31 +90,36 @@ function FeedCard({ item }: { item: FeedItem }) {
   const Icon = config.icon
 
   return (
-    <Card>
-      <CardContent className="flex gap-4 py-1">
-        <div
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted ${config.colorClass}`}
-        >
-          <Icon className="h-5 w-5" />
+    <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
+      <div className="flex gap-4">
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${config.iconBg}`}>
+          <Icon className={`h-5 w-5 ${config.iconColor}`} />
         </div>
-        <div className="flex-1 min-w-0 space-y-1">
+        <div className="flex-1 min-w-0 space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span
-              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${config.badgeClass}`}
-            >
+            <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${config.badgeBg} ${config.badgeText}`}>
               {config.label}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-white/30">
               {formatRelativeTime(item.timestamp)}
             </span>
           </div>
-          <h3 className="font-medium leading-snug">{item.title}</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {item.body}
-          </p>
+          <h3 className="font-semibold text-white leading-snug">{item.title}</h3>
+          <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
+          {(item as any).source_url && (
+            <a
+              href={(item as any).source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors mt-1"
+            >
+              <ExternalLink className="h-3 w-3" />
+              View source
+            </a>
+          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -122,45 +132,44 @@ export default function FeedPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Newspaper className="h-6 w-6" />
-          News Feed
-        </h2>
-        <p className="text-muted-foreground">
-          Stay updated on FDA/FTC enforcement news, compliance rule changes, and
-          best practices for regenerative medicine marketing.
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Updates</p>
+        <h2 className="text-2xl font-bold text-white">Compliance Feed</h2>
+        <p className="text-sm text-white/40 mt-1">
+          Stay updated on FDA/FTC enforcement news and rule changes that affect your clinic.
         </p>
       </div>
 
+      {/* Loading */}
       {isLoading && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <FeedCardSkeleton key={i} />
           ))}
         </div>
       )}
 
+      {/* Error */}
       {error && (
-        <Card>
-          <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <AlertTriangle className="h-12 w-12 mb-4 opacity-20" />
-            <p>Failed to load feed. Please try again later.</p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl bg-white/[0.03] border border-white/10 p-12 text-center">
+          <AlertTriangle className="h-12 w-12 text-white/10 mx-auto mb-4" />
+          <p className="text-sm text-white/40">Failed to load feed. Please try again later.</p>
+        </div>
       )}
 
+      {/* Empty */}
       {data && data.items.length === 0 && (
-        <Card>
-          <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <Newspaper className="h-12 w-12 mb-4 opacity-20" />
-            <p>No feed items yet. Check back soon!</p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl bg-white/[0.03] border border-white/10 p-12 text-center">
+          <Rss className="h-12 w-12 text-white/10 mx-auto mb-4" />
+          <p className="text-sm font-medium text-white/60">No compliance updates yet</p>
+          <p className="text-xs text-white/30 mt-1">Check back soon for the latest FDA/FTC news and rule changes.</p>
+        </div>
       )}
 
+      {/* Feed Items */}
       {data && data.items.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {data.items.map((item) => (
             <FeedCard key={item.id} item={item} />
           ))}

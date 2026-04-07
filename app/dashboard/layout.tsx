@@ -37,12 +37,12 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-[#0a0a0a]">
         <DashboardSidebar
           clinicName={profile?.clinic_name}
           userEmail={user.email}
         />
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col min-w-0">
           <DashboardHeader
             userEmail={user.email}
             clinicName={profile?.clinic_name}

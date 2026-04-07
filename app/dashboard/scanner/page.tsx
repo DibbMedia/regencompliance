@@ -2,23 +2,21 @@
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2 } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
 import type { ScanFlag } from "@/lib/types"
 
 const CONTENT_TYPES = [
-  { value: "website_copy", label: "Website Copy" },
-  { value: "social_post", label: "Social Post" },
-  { value: "ad_copy", label: "Ad Copy" },
-  { value: "email", label: "Email" },
-  { value: "script", label: "Script" },
-  { value: "other", label: "Other" },
+  { value: "website_copy", label: "Website", icon: FileText },
+  { value: "social_post", label: "Social", icon: Share2 },
+  { value: "ad_copy", label: "Ad Copy", icon: Megaphone },
+  { value: "email", label: "Email", icon: Mail },
+  { value: "script", label: "Script", icon: Clapperboard },
+  { value: "other", label: "Other", icon: MoreHorizontal },
 ]
 
 interface ScanResult {
@@ -34,28 +32,50 @@ interface ScanResult {
   rewritten_text?: string | null
 }
 
-function ScoreRing({ score }: { score: number }) {
-  const color = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
-  const bgColor = score >= 80 ? "stroke-[#55E039]" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
+function ScoreRing({ score, animate }: { score: number; animate: boolean }) {
+  const color = score >= 80 ? "#55E039" : score >= 50 ? "#eab308" : "#ef4444"
+  const textColor = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
   const circumference = 2 * Math.PI * 45
-  const offset = circumference - (score / 100) * circumference
+  const offset = animate ? circumference - (score / 100) * circumference : circumference
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      <svg className="w-32 h-32 -rotate-90" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-muted/30" />
-        <circle cx="50" cy="50" r="45" fill="none" strokeWidth="8" strokeLinecap="round"
-          className={bgColor} strokeDasharray={circumference} strokeDashoffset={offset}
-          style={{ transition: "stroke-dashoffset 1s ease" }} />
+      {/* Outer glow */}
+      <div
+        className="absolute inset-0 rounded-full blur-2xl opacity-30"
+        style={{ background: color }}
+      />
+      <svg className="w-36 h-36 -rotate-90 relative z-10" viewBox="0 0 100 100">
+        {/* Background track */}
+        <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
+        {/* Score arc */}
+        <circle
+          cx="50" cy="50" r="45" fill="none" strokeWidth="7" strokeLinecap="round"
+          stroke={color}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)" }}
+        />
       </svg>
-      <span className={`absolute text-3xl font-bold ${color}`}>{score}</span>
+      <div className="absolute z-10 flex flex-col items-center">
+        <span className={`text-4xl font-bold ${textColor}`}>{score}</span>
+        <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest">Score</span>
+      </div>
     </div>
   )
 }
 
 function RiskBadge({ level }: { level: string }) {
-  const variant = level === "high" ? "destructive" : level === "medium" ? "secondary" : "outline"
-  return <Badge variant={variant} className="text-xs uppercase">{level}</Badge>
+  const styles = {
+    high: "bg-red-500/10 text-red-500 border-red-500/20",
+    medium: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
+    low: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  }
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${styles[level as keyof typeof styles] || styles.low}`}>
+      {level}
+    </span>
+  )
 }
 
 export default function ScannerPage() {
@@ -67,12 +87,22 @@ export default function ScannerPage() {
   const [result, setResult] = useState<ScanResult | null>(null)
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
   const [copiedRewrite, setCopiedRewrite] = useState(false)
+  const [scoreAnimated, setScoreAnimated] = useState(false)
 
   useEffect(() => {
     if (searchParams.get("subscribed") === "true") {
       toast.success("Subscription active! Start scanning.")
     }
   }, [searchParams])
+
+  useEffect(() => {
+    if (result) {
+      const timer = setTimeout(() => setScoreAnimated(true), 100)
+      return () => clearTimeout(timer)
+    } else {
+      setScoreAnimated(false)
+    }
+  }, [result])
 
   async function handleScan() {
     if (!text.trim()) return
@@ -156,220 +186,282 @@ export default function ScannerPage() {
   const charCount = text.length
 
   return (
-    <div className="grid gap-6 lg:grid-cols-5">
+    <div className="p-6 grid gap-6 lg:grid-cols-5">
       {/* Input Panel */}
-      <div className="lg:col-span-3 space-y-4">
+      <div className="lg:col-span-3 space-y-6">
         <div>
-          <h2 className="text-2xl font-bold">Compliance Scanner</h2>
-          <p className="text-muted-foreground">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
+          <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
+          <p className="text-white/60 mt-1">
             Paste any marketing content to check against current FDA/FTC guidelines.
           </p>
         </div>
 
-        <Tabs value={contentType} onValueChange={setContentType}>
-          <TabsList className="flex-wrap h-auto">
-            {CONTENT_TYPES.map((t) => (
-              <TabsTrigger key={t.value} value={t.value} className="text-xs">
+        {/* Content Type Pills */}
+        <div className="flex flex-wrap gap-2">
+          {CONTENT_TYPES.map((t) => {
+            const Icon = t.icon
+            const isActive = contentType === t.value
+            return (
+              <button
+                key={t.value}
+                onClick={() => setContentType(t.value)}
+                className={`
+                  inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                  transition-all duration-300 border
+                  ${isActive
+                    ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] border-transparent shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
+                    : "bg-white/[0.03] border-white/10 text-white/60 hover:bg-white/[0.06] hover:border-white/15 hover:text-white/80"
+                  }
+                `}
+              >
+                <Icon className="h-3.5 w-3.5" />
                 {t.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+              </button>
+            )
+          })}
+        </div>
 
-        <div className="relative">
+        {/* Textarea */}
+        <div className="relative group">
+          <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value.slice(0, 5000))}
             placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
-            className="min-h-[200px] resize-y"
+            className="relative min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
           />
-          <span className={`absolute bottom-2 right-2 text-xs ${charCount >= 4500 ? "text-red-500" : "text-muted-foreground"}`}>
-            {charCount}/5000
+          <span className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
+            {charCount.toLocaleString()}/5,000
           </span>
         </div>
 
-        <Button
+        {/* Scan Button */}
+        <button
           onClick={handleScan}
-          className="w-full"
           disabled={scanning || !text.trim()}
+          className={`
+            w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider
+            transition-all duration-300 flex items-center justify-center gap-2
+            disabled:opacity-40 disabled:cursor-not-allowed
+            ${scanning
+              ? "bg-white/[0.03] border border-white/10 text-white/60"
+              : "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:scale-[1.01] active:scale-[0.99]"
+            }
+          `}
         >
           {scanning ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Scanning...
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Analyzing Content...
             </>
           ) : (
             <>
-              <Shield className="mr-2 h-4 w-4" />
+              <Shield className="h-4 w-4" />
               Scan for Compliance Issues
             </>
           )}
-        </Button>
+        </button>
 
-        <p className="text-xs text-muted-foreground text-center">
+        <p className="text-xs text-white/30 text-center">
           This tool provides educational guidance only and does not constitute legal or regulatory advice.
         </p>
       </div>
 
       {/* Results Panel */}
       <div className="lg:col-span-2 space-y-4">
+        {/* Empty State */}
         {!result && !scanning && (
-          <Card className="border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-              <Shield className="h-12 w-12 mb-4 opacity-20" />
-              <p>Results will appear here after scanning.</p>
-            </CardContent>
-          </Card>
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-[#55E039]/[0.06] flex items-center justify-center mb-5">
+              <Shield className="h-8 w-8 text-[#55E039]/30" />
+            </div>
+            <p className="text-white/50 font-medium mb-1">Ready to Scan</p>
+            <p className="text-white/30 text-sm">Paste your content and hit scan to check compliance.</p>
+          </div>
         )}
 
+        {/* Loading State */}
         {scanning && (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-[#55E039] mb-4" />
-              <p className="text-muted-foreground">Analyzing content...</p>
-            </CardContent>
-          </Card>
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center py-16 relative overflow-hidden">
+            {/* Pulsing glow background */}
+            <div className="absolute inset-0 bg-[#55E039]/[0.02] animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#55E039]/10 rounded-full blur-3xl animate-pulse" />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="w-14 h-14 rounded-full border-2 border-[#55E039]/20 border-t-[#55E039] animate-spin mb-5" />
+              <p className="text-white/70 font-medium">Analyzing content...</p>
+              <p className="text-white/30 text-xs mt-1">Checking FDA/FTC compliance rules</p>
+            </div>
+          </div>
         )}
 
+        {/* Results */}
         {result && (
-          <>
-            {/* Score */}
-            <Card className="shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-              <CardContent className="flex flex-col items-center py-6">
-                <ScoreRing score={result.compliance_score} />
-                <p className="mt-3 text-sm text-center text-muted-foreground">
-                  {result.summary}
-                </p>
-                <div className="flex gap-4 mt-4 text-sm">
-                  <span>{result.flag_count} flags</span>
-                  <span className="text-red-500">{result.high_risk_count} high</span>
-                  <span className="text-yellow-500">{result.medium_risk_count} medium</span>
-                  <span className="text-blue-500">{result.low_risk_count} low</span>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Score Card */}
+            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 flex flex-col items-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+              <ScoreRing score={result.compliance_score} animate={scoreAnimated} />
+              <p className="mt-4 text-sm text-center text-white/60 leading-relaxed max-w-xs">
+                {result.summary}
+              </p>
+              <div className="flex gap-3 mt-4 text-xs font-medium">
+                <span className="flex items-center gap-1.5 text-white/50">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                  {result.flag_count} flags
+                </span>
+                {result.high_risk_count > 0 && (
+                  <span className="flex items-center gap-1.5 text-red-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    {result.high_risk_count} high
+                  </span>
+                )}
+                {result.medium_risk_count > 0 && (
+                  <span className="flex items-center gap-1.5 text-yellow-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
+                    {result.medium_risk_count} med
+                  </span>
+                )}
+                {result.low_risk_count > 0 && (
+                  <span className="flex items-center gap-1.5 text-blue-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    {result.low_risk_count} low
+                  </span>
+                )}
+              </div>
+            </div>
 
             {/* Flags */}
             {result.flags.length > 0 ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Flagged Content</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+                <div className="px-4 py-3 border-b border-white/[0.06]">
+                  <h3 className="text-sm font-bold text-white">Flagged Content</h3>
+                </div>
+                <div className="p-4 space-y-3">
                   {result.flags.map((flag, i) => (
-                    <div key={i} className="rounded-lg border p-3 space-y-2">
-                      <div className="flex items-center justify-between gap-2">
-                        <Badge variant="outline" className="text-xs font-mono">
+                    <div
+                      key={i}
+                      className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 space-y-3 hover:bg-white/[0.04] transition-colors duration-200"
+                      style={{ animationDelay: `${i * 100}ms` }}
+                    >
+                      {/* Header: matched text + risk */}
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="text-sm font-medium text-red-400 bg-red-500/[0.08] rounded-md px-2.5 py-1 border border-red-500/10 font-mono leading-relaxed">
                           &quot;{flag.matched_text}&quot;
-                        </Badge>
+                        </p>
                         <RiskBadge level={flag.risk_level} />
                       </div>
-                      <p className="text-sm text-muted-foreground">{flag.reason}</p>
-                      <div className="flex items-center gap-2 bg-[#55E039]/10 rounded-md p-2">
-                        <p className="text-sm text-[#55E039] flex-1">
+                      {/* Reason */}
+                      <p className="text-sm text-white/50 leading-relaxed">{flag.reason}</p>
+                      {/* Alternative */}
+                      <div className="flex items-center gap-2 bg-[#55E039]/[0.06] border border-[#55E039]/10 rounded-lg px-3 py-2.5">
+                        <Sparkles className="h-3.5 w-3.5 text-[#55E039] shrink-0" />
+                        <p className="text-sm text-[#55E039] flex-1 leading-relaxed">
                           {flag.alternative}
                         </p>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 shrink-0"
+                        <button
+                          className="shrink-0 p-1.5 rounded-md hover:bg-[#55E039]/10 transition-colors"
                           onClick={() => copyToClipboard(flag.alternative, i)}
                         >
                           {copiedIdx === i ? (
-                            <Check className="h-3 w-3 text-[#55E039]" />
+                            <Check className="h-3.5 w-3.5 text-[#55E039]" />
                           ) : (
-                            <Copy className="h-3 w-3" />
+                            <Copy className="h-3.5 w-3.5 text-[#55E039]/60" />
                           )}
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ) : (
-              <Card>
-                <CardContent className="flex flex-col items-center py-8 text-center">
-                  <CheckCircle2 className="h-12 w-12 text-[#55E039] mb-3" />
-                  <p className="font-medium">No compliance issues found.</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    This content appears safe to publish.
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Always review with qualified healthcare marketing counsel before publishing.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.03] p-8 flex flex-col items-center text-center">
+                <div className="w-14 h-14 rounded-full bg-[#55E039]/10 flex items-center justify-center mb-4">
+                  <CheckCircle2 className="h-7 w-7 text-[#55E039]" />
+                </div>
+                <p className="font-bold text-white">No compliance issues found</p>
+                <p className="text-sm text-white/50 mt-1">
+                  This content appears safe to publish.
+                </p>
+                <p className="text-xs text-white/30 mt-3">
+                  Always review with qualified healthcare marketing counsel before publishing.
+                </p>
+              </div>
             )}
 
-            {/* Rewrite */}
+            {/* Rewrite Section */}
             {result.flags.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Compliant Rewrite</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+                <div className="px-4 py-3 border-b border-white/[0.06]">
+                  <h3 className="text-sm font-bold text-white">Compliant Rewrite</h3>
+                </div>
+                <div className="p-4 space-y-3">
                   {!result.rewritten_text ? (
-                    <Button
+                    <button
                       onClick={handleRewrite}
-                      variant="outline"
-                      className="w-full"
                       disabled={rewriting}
+                      className={`
+                        w-full py-3 rounded-lg text-sm font-semibold
+                        transition-all duration-300 flex items-center justify-center gap-2
+                        border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039]
+                        hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                      `}
                     >
                       {rewriting ? (
                         <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="h-4 w-4 animate-spin" />
                           Rewriting...
                         </>
                       ) : (
-                        "Rewrite for Compliance"
+                        <>
+                          <Sparkles className="h-4 w-4" />
+                          Rewrite for Compliance
+                        </>
                       )}
-                    </Button>
+                    </button>
                   ) : (
                     <>
                       <div className="grid gap-3 md:grid-cols-2">
-                        <div className="rounded-md border p-3">
-                          <p className="text-xs font-medium mb-1 text-muted-foreground">Original</p>
-                          <p className="text-sm line-through opacity-60">{result.flags.map(f => f.matched_text).join(" ... ")}</p>
+                        <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-white/30 mb-2">Original</p>
+                          <p className="text-sm text-white/40 line-through leading-relaxed">{result.flags.map(f => f.matched_text).join(" ... ")}</p>
                         </div>
-                        <div className="rounded-md border border-[#55E039]/30 bg-[#55E039]/5 p-3">
-                          <p className="text-xs font-medium mb-1 text-[#55E039]">Rewritten</p>
-                          <p className="text-sm">{result.rewritten_text}</p>
+                        <div className="rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] p-3">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-[#55E039] mb-2">Rewritten</p>
+                          <p className="text-sm text-white/80 leading-relaxed">{result.rewritten_text}</p>
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex-1"
+                        <button
+                          className="flex-1 py-2.5 rounded-lg text-sm font-medium border border-white/10 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] transition-all duration-300 flex items-center justify-center gap-2"
                           onClick={() => copyToClipboard(result.rewritten_text!)}
                         >
                           {copiedRewrite ? (
                             <>
-                              <Check className="mr-1 h-3 w-3" />
-                              Copied
+                              <Check className="h-3.5 w-3.5 text-[#55E039]" />
+                              Copied!
                             </>
                           ) : (
                             <>
-                              <Copy className="mr-1 h-3 w-3" />
+                              <Copy className="h-3.5 w-3.5" />
                               Copy Rewritten Text
                             </>
                           )}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        </button>
+                        <button
+                          className="py-2.5 px-4 rounded-lg text-sm font-medium border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] hover:bg-[#55E039]/[0.08] transition-all duration-300 flex items-center gap-2"
                           onClick={handleRescan}
                         >
-                          <RefreshCw className="mr-1 h-3 w-3" />
+                          <RefreshCw className="h-3.5 w-3.5" />
                           Re-scan
-                        </Button>
+                        </button>
                       </div>
                     </>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

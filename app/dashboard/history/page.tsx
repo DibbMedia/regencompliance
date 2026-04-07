@@ -3,12 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import useSWR from "swr"
-import { Clock, Search, RefreshCw, Eye } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Clock, Search, RefreshCw, Eye, ChevronLeft, ChevronRight, Shield } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   Select,
   SelectContent,
@@ -16,16 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import type { Scan } from "@/lib/types"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -38,12 +24,46 @@ function timeAgo(date: string) {
   return `${Math.floor(seconds / 86400)}d ago`
 }
 
-function ScoreBadge({ score }: { score: number | null }) {
-  if (score === null) return <Badge variant="outline">N/A</Badge>
-  const color = score >= 80 ? "bg-[#55E039]/10 text-[#55E039]"
-    : score >= 50 ? "bg-yellow-500/10 text-yellow-500"
-    : "bg-red-500/10 text-red-500"
-  return <Badge variant="outline" className={color}>{score}</Badge>
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+function ScoreIndicator({ score }: { score: number | null }) {
+  if (score === null) return <span className="text-white/30 text-sm">N/A</span>
+  const color = score >= 80 ? "#55E039" : score >= 50 ? "#eab308" : "#ef4444"
+  const textColor = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
+  const bgColor = score >= 80 ? "bg-[#55E039]/10" : score >= 50 ? "bg-yellow-500/10" : "bg-red-500/10"
+  const circumference = 2 * Math.PI * 12
+  const offset = circumference - (score / 100) * circumference
+
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="relative">
+        <svg className="w-8 h-8 -rotate-90" viewBox="0 0 28 28">
+          <circle cx="14" cy="14" r="12" fill="none" strokeWidth="2.5" className="stroke-white/[0.06]" />
+          <circle
+            cx="14" cy="14" r="12" fill="none" strokeWidth="2.5" strokeLinecap="round"
+            stroke={color}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+          />
+        </svg>
+      </div>
+      <span className={`text-lg font-bold ${textColor}`}>{score}</span>
+    </div>
+  )
+}
+
+function ContentTypeBadge({ type }: { type: string }) {
+  return (
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white/10 bg-white/[0.04] text-white/50">
+      {type.replace("_", " ")}
+    </span>
+  )
 }
 
 export default function HistoryPage() {
@@ -61,26 +81,27 @@ export default function HistoryPage() {
   const totalPages = data?.totalPages || 1
 
   return (
-    <div className="space-y-4">
+    <div className="p-6 space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Scan History</h2>
-        <p className="text-muted-foreground">View all past compliance scans.</p>
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Records</p>
+        <h2 className="text-2xl font-bold text-white">Scan History</h2>
+        <p className="text-white/60 mt-1">View and manage all past compliance scans.</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
           <Input
             placeholder="Search content..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") { setSearch(searchInput); setPage(1) } }}
-            className="pl-8"
+            className="pl-9 bg-white/[0.03] border-white/10 text-white/80 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10"
           />
         </div>
         <Select value={contentType} onValueChange={(v) => { setContentType(v ?? "all"); setPage(1) }}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="w-[160px] bg-white/[0.03] border-white/10 text-white/70">
             <SelectValue placeholder="Content Type" />
           </SelectTrigger>
           <SelectContent>
@@ -95,96 +116,127 @@ export default function HistoryPage() {
         </Select>
       </div>
 
-      {/* Table */}
+      {/* Content */}
       {isLoading ? (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-12 w-full" />
+            <div key={i} className="rounded-xl border border-white/10 bg-white/[0.03] h-24 animate-pulse" />
           ))}
         </div>
       ) : scans.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <Clock className="h-12 w-12 mb-4 opacity-20" />
-            <p>No scans yet. Head to the Scanner to check your first piece of content.</p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
+            <Clock className="h-8 w-8 text-white/20" />
+          </div>
+          <p className="text-white/50 font-medium mb-1">No scans yet</p>
+          <p className="text-white/30 text-sm mb-4">Head to the Scanner to check your first piece of content.</p>
+          <Link
+            href="/dashboard/scanner"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"
+          >
+            <Shield className="h-4 w-4" />
+            Start Scanning
+          </Link>
+        </div>
       ) : (
         <>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Score</TableHead>
-                  <TableHead>Flags</TableHead>
-                  <TableHead>Preview</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {scans.map((scan) => (
-                  <TableRow key={scan.id}>
-                    <TableCell className="whitespace-nowrap" title={new Date(scan.created_at).toLocaleString()}>
-                      {timeAgo(scan.created_at)}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                        {scan.content_type.replace("_", " ")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <ScoreBadge score={scan.compliance_score} />
-                    </TableCell>
-                    <TableCell>{scan.flag_count}</TableCell>
-                    <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
-                      {scan.original_text.slice(0, 80)}...
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-1">
-                        <Link
-                          href={`/dashboard/history/${scan.id}`}
-                          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "h-7 w-7")}
-                        >
-                          <Eye className="h-3 w-3" />
-                        </Link>
-                        <Link
-                          href={`/dashboard/scanner?text=${encodeURIComponent(scan.original_text)}`}
-                          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "h-7 w-7")}
-                        >
-                          <RefreshCw className="h-3 w-3" />
-                        </Link>
+          {/* Scan Cards */}
+          <div className="space-y-3">
+            {scans.map((scan) => (
+              <Link
+                key={scan.id}
+                href={`/dashboard/history/${scan.id}`}
+                className="block group"
+              >
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    {/* Score */}
+                    <div className="shrink-0">
+                      <ScoreIndicator score={scan.compliance_score} />
+                    </div>
+
+                    {/* Separator */}
+                    <div className="w-px h-10 bg-white/[0.06] shrink-0" />
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <ContentTypeBadge type={scan.content_type} />
+                        {scan.flag_count > 0 && (
+                          <span className="text-[10px] font-bold text-white/40">
+                            {scan.flag_count} flag{scan.flag_count !== 1 ? "s" : ""}
+                          </span>
+                        )}
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                      <p className="text-sm text-white/50 truncate leading-relaxed">
+                        {scan.original_text.slice(0, 120)}
+                      </p>
+                    </div>
+
+                    {/* Date + Actions */}
+                    <div className="shrink-0 flex items-center gap-3">
+                      <div className="text-right hidden sm:block">
+                        <p className="text-xs font-medium text-white/40" title={new Date(scan.created_at).toLocaleString()}>
+                          {timeAgo(scan.created_at)}
+                        </p>
+                        <p className="text-[10px] text-white/25">{formatDate(scan.created_at)}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <span className="p-2 rounded-lg text-white/30 group-hover:text-[#55E039] group-hover:bg-[#55E039]/[0.06] transition-all duration-300">
+                          <Eye className="h-4 w-4" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
+            <div className="flex items-center justify-center gap-1 pt-2">
+              <button
                 disabled={page <= 1}
                 onClick={() => setPage(page - 1)}
+                className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                Previous
-              </Button>
-              <span className="text-sm text-muted-foreground">
-                Page {page} of {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              {Array.from({ length: Math.min(totalPages, 7) }).map((_, i) => {
+                let pageNum: number
+                if (totalPages <= 7) {
+                  pageNum = i + 1
+                } else if (page <= 4) {
+                  pageNum = i + 1
+                } else if (page >= totalPages - 3) {
+                  pageNum = totalPages - 6 + i
+                } else {
+                  pageNum = page - 3 + i
+                }
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => setPage(pageNum)}
+                    className={`
+                      w-9 h-9 rounded-lg text-sm font-medium transition-all duration-300
+                      ${page === pageNum
+                        ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
+                        : "border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70"
+                      }
+                    `}
+                  >
+                    {pageNum}
+                  </button>
+                )
+              })}
+              <button
                 disabled={page >= totalPages}
                 onClick={() => setPage(page + 1)}
+                className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                Next
-              </Button>
+                <ChevronRight className="h-4 w-4" />
+              </button>
             </div>
           )}
         </>

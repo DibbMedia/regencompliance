@@ -2,17 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useTheme } from "next-themes"
-import { Loader2, Sun, Moon, Monitor, ExternalLink, Shield } from "lucide-react"
+import { Loader2, ExternalLink, Shield, Crown, X, Plus, Users, CreditCard, AlertTriangle } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Separator } from "@/components/ui/separator"
-import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 import type { Profile } from "@/lib/types"
@@ -31,9 +26,9 @@ const TREATMENTS = [
 
 export default function AccountPage() {
   const router = useRouter()
-  const { theme, setTheme } = useTheme()
   const supabase = createClient()
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [email, setEmail] = useState("")
   const [clinicName, setClinicName] = useState("")
   const [treatments, setTreatments] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
@@ -45,6 +40,8 @@ export default function AccountPage() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
+
+      setEmail(user.email || "")
 
       const { data: p } = await supabase
         .from("profiles")
@@ -58,7 +55,6 @@ export default function AccountPage() {
         setTreatments(p.treatments || [])
       }
 
-      // Check if member
       const { data: member } = await supabase
         .from("team_members")
         .select("role")
@@ -119,53 +115,46 @@ export default function AccountPage() {
     }
   }
 
-  async function handleThemeChange(newTheme: string) {
-    setTheme(newTheme)
-    await fetch("/api/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ theme_preference: newTheme }),
-    })
+  if (!profile) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-6 w-6 animate-spin text-white/40" />
+      </div>
+    )
   }
-
-  const statusColor = {
-    active: "bg-[#55E039]/10 text-[#55E039]",
-    past_due: "bg-yellow-500/10 text-yellow-500",
-    cancelled: "bg-red-500/10 text-red-500",
-    inactive: "bg-gray-500/10 text-gray-400",
-  }
-
-  function getDisplayStatus(): string {
-    if (profile?.is_beta_subscriber) return "Beta Lifetime"
-    return (profile?.subscription_status || "inactive").replace("_", " ")
-  }
-
-  function getStatusBadgeClass(): string {
-    if (profile?.is_beta_subscriber) return "bg-purple-500/10 text-purple-400"
-    return statusColor[profile?.subscription_status as keyof typeof statusColor] || statusColor.inactive
-  }
-
-  if (!profile) return null
 
   const isBeta = profile.is_beta_subscriber
   const isActive = profile.subscription_status === "active"
   const hasStripeCustomer = !!profile.stripe_customer_id
 
   return (
-    <div className="space-y-4 max-w-2xl">
+    <div className="p-6 max-w-3xl space-y-6">
+      {/* Page Header */}
       <div>
-        <h2 className="text-2xl font-bold">Account & Billing</h2>
-        <p className="text-muted-foreground">Manage your clinic profile, subscription, and team.</p>
+        <h1 className="text-2xl font-bold text-white">Account & Billing</h1>
+        <p className="text-white/60 mt-1">Manage your clinic profile, subscription, and team.</p>
       </div>
 
-      {/* Clinic Profile */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Clinic Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      {/* ── PROFILE SECTION ── */}
+      <div className="space-y-4">
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Clinic Profile</p>
+
+        <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 space-y-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+          {/* Display info row */}
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] flex items-center justify-center text-[#0a0a0a] font-bold text-lg shrink-0">
+              {(clinicName || "C").charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-white font-bold text-lg truncate">{clinicName || "Your Clinic"}</h3>
+              <p className="text-white/50 text-sm">{email}</p>
+            </div>
+            {saving && <Loader2 className="h-4 w-4 animate-spin text-[#55E039] shrink-0" />}
+          </div>
+
+          {/* Clinic Name Input */}
           <div className="space-y-2">
-            <Label>Clinic Name</Label>
+            <Label className="text-white/70 text-sm">Clinic Name</Label>
             <Input
               value={clinicName}
               onChange={(e) => setClinicName(e.target.value)}
@@ -175,131 +164,192 @@ export default function AccountPage() {
                 }
               }}
               disabled={role === "member"}
+              className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 focus:border-[#55E039]/50 focus:ring-[#55E039]/20 rounded-lg"
+              placeholder="Enter your clinic name"
             />
           </div>
-          <div className="space-y-2">
-            <Label>Treatments</Label>
-            <div className="grid grid-cols-2 gap-2">
-              {TREATMENTS.map((t) => (
-                <div key={t.slug} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`acct-${t.slug}`}
-                    checked={treatments.includes(t.slug)}
-                    onCheckedChange={() => toggleTreatment(t.slug)}
+
+          {/* Treatments as pills */}
+          <div className="space-y-3">
+            <Label className="text-white/70 text-sm">Treatments</Label>
+            <div className="flex flex-wrap gap-2">
+              {TREATMENTS.map((t) => {
+                const selected = treatments.includes(t.slug)
+                return (
+                  <button
+                    key={t.slug}
+                    onClick={() => { if (role !== "member") toggleTreatment(t.slug) }}
                     disabled={role === "member"}
-                  />
-                  <Label htmlFor={`acct-${t.slug}`} className="text-sm cursor-pointer">{t.label}</Label>
-                </div>
-              ))}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border",
+                      selected
+                        ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039] shadow-[0_0_10px_rgba(85,224,57,0.1)]"
+                        : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/20 hover:text-white/70",
+                      role === "member" && "opacity-50 cursor-not-allowed"
+                    )}
+                  >
+                    {selected ? (
+                      <X className="h-3 w-3" />
+                    ) : (
+                      <Plus className="h-3 w-3" />
+                    )}
+                    {t.label}
+                  </button>
+                )
+              })}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Appearance */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Appearance</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2">
-            {[
-              { value: "light", icon: Sun, label: "Light" },
-              { value: "dark", icon: Moon, label: "Dark" },
-              { value: "system", icon: Monitor, label: "System" },
-            ].map(({ value, icon: Icon, label }) => (
-              <Button
-                key={value}
-                variant={theme === value ? "secondary" : "outline"}
-                size="sm"
-                onClick={() => handleThemeChange(value)}
-              >
-                <Icon className="mr-1 h-3 w-3" />
-                {label}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Billing (owner only) */}
+      {/* ── SUBSCRIPTION SECTION ── */}
       {role === "owner" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Billing</CardTitle>
-            <CardDescription>
-              {isBeta ? "Beta Program" : "RegenCompliance — $497/month"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="text-sm">Status:</span>
-              <Badge className={getStatusBadgeClass()}>
-                {isBeta && <Shield className="mr-1 h-3 w-3" />}
-                {getDisplayStatus()}
-              </Badge>
-            </div>
+        <div className="space-y-4">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Subscription</p>
 
-            {isBeta ? (
-              <p className="text-sm text-muted-foreground">
-                You have lifetime access through the beta program. No billing to manage.
-              </p>
-            ) : isActive && hasStripeCustomer ? (
-              <Button variant="outline" onClick={handlePortal} disabled={portalLoading}>
-                {portalLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                <ExternalLink className="mr-1 h-3 w-3" />
+          {isBeta ? (
+            /* Beta Lifetime Card */
+            <div className="relative bg-white/[0.03] border border-[#55E039]/20 rounded-xl p-6 overflow-hidden shadow-[0_0_40px_rgba(85,224,57,0.08)]">
+              {/* Subtle glow overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#55E039]/[0.04] to-transparent pointer-events-none" />
+              <div className="relative space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#55E039]/10 flex items-center justify-center">
+                    <Shield className="h-5 w-5 text-[#55E039]" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-white font-bold">Beta Lifetime Access</h3>
+                      <Badge className="bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20 text-xs">
+                        <Crown className="h-3 w-3 mr-1" />
+                        Founding Member
+                      </Badge>
+                    </div>
+                    <p className="text-white/50 text-sm mt-0.5">You have lifetime access through the beta program</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-2 bg-[#55E039]/[0.06] rounded-lg border border-[#55E039]/10">
+                  <Shield className="h-4 w-4 text-[#55E039]" />
+                  <span className="text-sm text-[#55E039]">No billing required — your access never expires</span>
+                </div>
+              </div>
+            </div>
+          ) : isActive && hasStripeCustomer ? (
+            /* Active Subscriber Card */
+            <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 space-y-4 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#55E039]/10 flex items-center justify-center">
+                    <CreditCard className="h-5 w-5 text-[#55E039]" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold">RegenCompliance Pro</h3>
+                    <p className="text-white/50 text-sm">$497/month</p>
+                  </div>
+                </div>
+                <Badge className="bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20">Active</Badge>
+              </div>
+              <button
+                onClick={handlePortal}
+                disabled={portalLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] transition-all duration-200"
+              >
+                {portalLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <ExternalLink className="h-4 w-4" />
+                )}
                 Manage Billing & Payment Method
-              </Button>
-            ) : (
-              <Button onClick={handleCheckout} disabled={checkoutLoading}>
-                {checkoutLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Subscribe Now — $497/month
-              </Button>
-            )}
-          </CardContent>
-        </Card>
+              </button>
+            </div>
+          ) : (
+            /* Subscribe CTA */
+            <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 space-y-4 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-white/[0.06] flex items-center justify-center">
+                  <CreditCard className="h-5 w-5 text-white/40" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">RegenCompliance Pro</h3>
+                  <p className="text-white/50 text-sm">Full compliance scanning, alerts, and team access</p>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-white">$497</span>
+                <span className="text-white/40">/month</span>
+              </div>
+              <button
+                onClick={handleCheckout}
+                disabled={checkoutLoading}
+                className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-bold text-sm shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"
+              >
+                {checkoutLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                Subscribe Now
+              </button>
+            </div>
+          )}
+        </div>
       )}
 
       {/* Member view */}
       {role === "member" && (
-        <Card>
-          <CardContent className="py-4">
-            <p className="text-sm text-muted-foreground">
-              You are a member of <strong>{profile.clinic_name}</strong>&apos;s account.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6">
+          <p className="text-sm text-white/70">
+            You are a member of <strong className="text-white">{profile.clinic_name}</strong>&apos;s account.
+          </p>
+        </div>
       )}
 
-      {/* Team (owner only) */}
+      {/* ── TEAM SECTION ── */}
       {role === "owner" && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Team</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="space-y-4">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Team</p>
+
+          <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 flex items-center justify-between hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-white/[0.06] flex items-center justify-center">
+                <Users className="h-5 w-5 text-white/40" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Team Members</h3>
+                <p className="text-white/50 text-sm">Manage access for your clinic staff</p>
+              </div>
+            </div>
             <Link
               href="/dashboard/account/team"
-              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] transition-all duration-200"
             >
-              Manage Team →
+              Manage Team
             </Link>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Danger Zone (owner only, not for beta) */}
+      {/* ── DANGER ZONE ── */}
       {role === "owner" && isActive && !isBeta && (
-        <Card className="border-destructive/30">
-          <CardHeader>
-            <CardTitle className="text-base text-destructive">Danger Zone</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Button variant="destructive" size="sm" onClick={handlePortal}>
+        <div className="space-y-4">
+          <p className="text-xs font-bold text-red-500 uppercase tracking-[0.2em]">Danger Zone</p>
+
+          <div className="bg-red-500/[0.04] border border-red-500/20 rounded-xl p-6 space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Cancel Subscription</h3>
+                <p className="text-white/50 text-sm">This will cancel your subscription at the end of the current billing period</p>
+              </div>
+            </div>
+            <button
+              onClick={handlePortal}
+              disabled={portalLoading}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-all duration-200"
+            >
+              {portalLoading && <Loader2 className="h-4 w-4 animate-spin" />}
               Cancel Subscription
-            </Button>
-          </CardContent>
-        </Card>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -2,12 +2,8 @@
 
 import { useState } from "react"
 import useSWR from "swr"
-import { BookOpen, Search, ArrowRight, LayoutGrid, Table as TableIcon, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { BookOpen, Search, ArrowRight, LayoutGrid, Table as TableIcon, X, ExternalLink, AlertTriangle } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   Select,
   SelectContent,
@@ -27,10 +23,19 @@ import type { ComplianceRule } from "@/lib/types"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-const RISK_COLORS = {
-  high: "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/30",
-  medium: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/30",
-  low: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/30",
+const RISK_STYLES = {
+  high: {
+    badge: "bg-red-500/10 text-red-400 border-red-500/20",
+    dot: "bg-red-500",
+  },
+  medium: {
+    badge: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    dot: "bg-yellow-500",
+  },
+  low: {
+    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    dot: "bg-blue-500",
+  },
 }
 
 export default function LibraryPage() {
@@ -59,42 +64,53 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="p-6 space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Compliance Library</h2>
-        <p className="text-muted-foreground">
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Reference</p>
+        <h2 className="text-2xl font-bold text-white">Compliance Library</h2>
+        <p className="text-white/60 mt-1">
           Live database of FDA/FTC-flagged phrases. Updated automatically.
         </p>
         {rules.length > 0 && (
-          <p className="text-sm text-muted-foreground mt-1">{rules.length} rules tracked</p>
+          <p className="text-xs text-white/30 mt-2 font-medium">{rules.length} rules tracked</p>
         )}
       </div>
 
+      {/* Disclaimer */}
       {!dismissed && (
-        <div className="relative rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-4 text-sm">
-          <button onClick={dismissDisclaimer} className="absolute top-2 right-2">
-            <X className="h-4 w-4 text-muted-foreground" />
+        <div className="relative rounded-xl border border-yellow-500/20 bg-yellow-500/[0.04] p-4 flex gap-3">
+          <div className="shrink-0 w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-yellow-500 mb-0.5">Educational Reference Only</p>
+            <p className="text-sm text-white/50 leading-relaxed">
+              Always have final content reviewed by a qualified healthcare marketing attorney.
+              This library does not constitute legal advice.
+            </p>
+          </div>
+          <button
+            onClick={dismissDisclaimer}
+            className="shrink-0 p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors self-start"
+          >
+            <X className="h-4 w-4 text-white/30" />
           </button>
-          <p>
-            Using this library for reference? Always have final content reviewed by a qualified
-            healthcare marketing attorney. Educational only, not legal advice.
-          </p>
         </div>
       )}
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
           <Input
             placeholder="Search phrases..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-8"
+            className="pl-9 bg-white/[0.03] border-white/10 text-white/80 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10"
           />
         </div>
         <Select value={riskLevel} onValueChange={(v) => setRiskLevel(v ?? "all")}>
-          <SelectTrigger className="w-[130px]">
+          <SelectTrigger className="w-[130px] bg-white/[0.03] border-white/10 text-white/70">
             <SelectValue placeholder="Risk Level" />
           </SelectTrigger>
           <SelectContent>
@@ -105,7 +121,7 @@ export default function LibraryPage() {
           </SelectContent>
         </Select>
         <Select value={category} onValueChange={(v) => setCategory(v ?? "all")}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[150px] bg-white/[0.03] border-white/10 text-white/70">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -117,7 +133,7 @@ export default function LibraryPage() {
           </SelectContent>
         </Select>
         <Select value={treatment} onValueChange={(v) => setTreatment(v ?? "all")}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[150px] bg-white/[0.03] border-white/10 text-white/70">
             <SelectValue placeholder="Treatment" />
           </SelectTrigger>
           <SelectContent>
@@ -131,23 +147,29 @@ export default function LibraryPage() {
             <SelectItem value="peptide">Peptide</SelectItem>
           </SelectContent>
         </Select>
-        <div className="flex border rounded-lg">
-          <Button
-            variant={viewMode === "grid" ? "secondary" : "ghost"}
-            size="icon"
-            className="h-8 w-8 rounded-r-none"
+
+        {/* View Toggle */}
+        <div className="flex rounded-lg border border-white/10 overflow-hidden">
+          <button
             onClick={() => setViewMode("grid")}
+            className={`p-2 transition-all duration-200 ${
+              viewMode === "grid"
+                ? "bg-[#55E039]/10 text-[#55E039]"
+                : "bg-white/[0.02] text-white/30 hover:text-white/50"
+            }`}
           >
             <LayoutGrid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "table" ? "secondary" : "ghost"}
-            size="icon"
-            className="h-8 w-8 rounded-l-none"
+          </button>
+          <button
             onClick={() => setViewMode("table")}
+            className={`p-2 border-l border-white/10 transition-all duration-200 ${
+              viewMode === "table"
+                ? "bg-[#55E039]/10 text-[#55E039]"
+                : "bg-white/[0.02] text-white/30 hover:text-white/50"
+            }`}
           >
             <TableIcon className="h-4 w-4" />
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -155,94 +177,141 @@ export default function LibraryPage() {
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-48" />
+            <div key={i} className="rounded-xl border border-white/10 bg-white/[0.03] h-48 animate-pulse" />
           ))}
         </div>
       ) : rules.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center py-12 text-center text-muted-foreground">
-            <BookOpen className="h-12 w-12 mb-4 opacity-20" />
-            <p>No rules match your filters.</p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
+            <BookOpen className="h-8 w-8 text-white/20" />
+          </div>
+          <p className="text-white/50 font-medium mb-1">No rules match your filters</p>
+          <p className="text-white/30 text-sm">Try adjusting your search or filter criteria.</p>
+        </div>
       ) : viewMode === "grid" ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {rules.map((rule) => (
-            <Card key={rule.id} className="relative">
-              <CardContent className="pt-4 space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <Badge variant="outline" className="text-xs">{rule.category.replace("_", " ")}</Badge>
-                  <Badge className={`text-xs uppercase ${RISK_COLORS[rule.risk_level]}`}>
-                    {rule.risk_level}
-                  </Badge>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="rounded-md bg-red-500/10 px-2 py-1 text-sm text-red-700 dark:text-red-400 font-medium">
-                    {rule.banned_phrase}
-                  </span>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span className="rounded-md bg-[#55E039]/10 px-2 py-1 text-sm text-[#55E039]">
-                    {rule.compliant_alternative}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {rule.applies_to.slice(0, 3).map((t) => (
-                    <Badge key={t} variant="outline" className="text-xs">
-                      {t.replace("_", " ")}
-                    </Badge>
-                  ))}
-                  {rule.applies_to.length > 3 && (
-                    <Badge variant="outline" className="text-xs">+{rule.applies_to.length - 3}</Badge>
+          {rules.map((rule) => {
+            const riskStyle = RISK_STYLES[rule.risk_level as keyof typeof RISK_STYLES] || RISK_STYLES.low
+            return (
+              <div
+                key={rule.id}
+                className="rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300 overflow-hidden group"
+              >
+                {/* Risk strip at top */}
+                <div className={`h-0.5 ${riskStyle.dot}`} />
+
+                <div className="p-4 space-y-3">
+                  {/* Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border border-white/10 bg-white/[0.04] text-white/40">
+                      {rule.category.replace("_", " ")}
+                    </span>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${riskStyle.badge}`}>
+                      {rule.risk_level}
+                    </span>
+                  </div>
+
+                  {/* Banned -> Alternative */}
+                  <div className="space-y-2">
+                    <div className="rounded-lg bg-red-500/[0.06] border border-red-500/10 px-3 py-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-red-400/60 mb-1">Banned</p>
+                      <p className="text-sm font-medium text-red-400">{rule.banned_phrase}</p>
+                    </div>
+                    <div className="flex justify-center">
+                      <ArrowRight className="h-3.5 w-3.5 text-white/15 rotate-90" />
+                    </div>
+                    <div className="rounded-lg bg-[#55E039]/[0.04] border border-[#55E039]/10 px-3 py-2">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#55E039]/60 mb-1">Use Instead</p>
+                      <p className="text-sm text-[#55E039]">{rule.compliant_alternative}</p>
+                    </div>
+                  </div>
+
+                  {/* Applies to */}
+                  <div className="flex flex-wrap gap-1">
+                    {rule.applies_to.slice(0, 3).map((t) => (
+                      <span key={t} className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                        {t.replace("_", " ")}
+                      </span>
+                    ))}
+                    {rule.applies_to.length > 3 && (
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                        +{rule.applies_to.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Source */}
+                  {rule.source_url && (
+                    <div className="pt-2 border-t border-white/[0.04]">
+                      <a
+                        href={rule.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] text-white/30 hover:text-[#55E039] transition-colors duration-200"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                        {rule.source_name || "Source"}
+                        {rule.source_date && ` · ${new Date(rule.source_date).toLocaleDateString()}`}
+                      </a>
+                    </div>
                   )}
                 </div>
-                {rule.source_url && (
-                  <div className="text-xs text-muted-foreground">
-                    <a href={rule.source_url} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      {rule.source_name || "Source"} →
-                    </a>
-                    {rule.source_date && ` · ${new Date(rule.source_date).toLocaleDateString()}`}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            )
+          })}
         </div>
       ) : (
-        <div className="rounded-md border">
+        <div className="rounded-xl border border-white/10 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Risk</TableHead>
-                <TableHead>Banned Phrase</TableHead>
-                <TableHead>Compliant Alternative</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Source</TableHead>
+              <TableRow className="border-white/[0.06] hover:bg-transparent">
+                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[80px]">Risk</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30">Banned Phrase</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30">Compliant Alternative</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[120px]">Category</TableHead>
+                <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[100px]">Source</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rules.map((rule) => (
-                <TableRow key={rule.id}>
-                  <TableCell>
-                    <Badge className={`text-xs uppercase ${RISK_COLORS[rule.risk_level]}`}>
-                      {rule.risk_level}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-red-700 dark:text-red-400 font-medium">
-                    {rule.banned_phrase}
-                  </TableCell>
-                  <TableCell className="text-[#55E039]">
-                    {rule.compliant_alternative}
-                  </TableCell>
-                  <TableCell>{rule.category.replace("_", " ")}</TableCell>
-                  <TableCell className="text-xs">
-                    {rule.source_url ? (
-                      <a href={rule.source_url} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                        {rule.source_name || "Source"}
-                      </a>
-                    ) : "—"}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {rules.map((rule) => {
+                const riskStyle = RISK_STYLES[rule.risk_level as keyof typeof RISK_STYLES] || RISK_STYLES.low
+                return (
+                  <TableRow
+                    key={rule.id}
+                    className="border-white/[0.04] hover:bg-white/[0.04] transition-colors duration-200"
+                  >
+                    <TableCell>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${riskStyle.badge}`}>
+                        {rule.risk_level}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm font-medium text-red-400">{rule.banned_phrase}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm text-[#55E039]">{rule.compliant_alternative}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-xs text-white/40 capitalize">{rule.category.replace("_", " ")}</span>
+                    </TableCell>
+                    <TableCell>
+                      {rule.source_url ? (
+                        <a
+                          href={rule.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-white/30 hover:text-[#55E039] transition-colors duration-200"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                          {rule.source_name || "Link"}
+                        </a>
+                      ) : (
+                        <span className="text-xs text-white/20">--</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </div>
