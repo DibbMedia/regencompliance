@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { anthropic } from "@/lib/anthropic"
 import { scanSchema } from "@/lib/validations"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
   try {
@@ -11,6 +12,12 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Rate limit: 30 scans per user per hour
+    const { allowed } = checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
+    if (!allowed) {
+      return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }
 
     const profileId = await effectiveProfileId(user.id, supabase)
@@ -22,7 +29,7 @@ export async function POST(request: Request) {
       .eq("id", profileId)
       .single()
 
-    if (profile?.subscription_status !== "active") {
+    if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
     }
 

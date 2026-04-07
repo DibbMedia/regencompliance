@@ -16,7 +16,10 @@ export const inviteSchema = z.object({
 
 export const profileSchema = z.object({
   clinic_name: z.string().min(1).max(200).optional(),
-  logo_url: z.string().url().optional(),
+  logo_url: z.string().url().refine(
+    (url) => /^https?:\/\//i.test(url),
+    { message: "Logo URL must use http or https protocol" }
+  ).optional(),
   treatments: z.array(z.string().max(100)).max(20, 'Maximum 20 treatments allowed').optional(),
   theme_preference: z.enum(['light', 'dark', 'system']).optional(),
 })
@@ -57,6 +60,12 @@ export const signupSchema = z.object({
   message: 'Passwords do not match',
   path: ['confirmPassword'],
 })
+
+export const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+export function isValidUUID(id: string): boolean {
+  return UUID_REGEX.test(id)
+}
 
 export type ScanInput = z.infer<typeof scanSchema>
 export type RewriteInput = z.infer<typeof rewriteSchema>

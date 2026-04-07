@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { isValidUUID } from "@/lib/validations"
 
 export async function GET(
   _request: Request,
@@ -11,6 +12,10 @@ export async function GET(
     const { serviceClient } = auth
 
     const { id: userId } = await params
+
+    if (!isValidUUID(userId)) {
+      return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 })
+    }
 
     // Get profile info
     const { data: profile } = await serviceClient

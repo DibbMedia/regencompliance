@@ -44,15 +44,8 @@ export async function POST() {
       const message = stripeError instanceof Error ? stripeError.message : "Unknown Stripe error"
       console.error("Stripe portal session creation failed:", message)
 
-      if (message.includes("No such customer")) {
-        return NextResponse.json(
-          { error: "Your Stripe customer record was not found. Please contact support." },
-          { status: 400 }
-        )
-      }
-
       return NextResponse.json(
-        { error: "Failed to create billing portal session. Please try again or contact support." },
+        { error: "Unable to access billing portal. Please contact support." },
         { status: 500 }
       )
     }

@@ -35,7 +35,8 @@ export async function GET(request: Request) {
     }
 
     if (search) {
-      query = query.ilike("clinic_name", `%${search}%`)
+      const escapedSearch = search.replace(/%/g, '\\%').replace(/_/g, '\\_')
+      query = query.ilike("clinic_name", `%${escapedSearch}%`)
     }
 
     const { data: profiles, count, error } = await query

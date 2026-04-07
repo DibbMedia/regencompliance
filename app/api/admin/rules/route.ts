@@ -30,8 +30,9 @@ export async function GET(request: Request) {
       .range((page - 1) * limit, page * limit - 1)
 
     if (search) {
+      const escapedSearch = search.replace(/%/g, '\\%').replace(/_/g, '\\_')
       query = query.or(
-        `banned_phrase.ilike.%${search}%,compliant_alternative.ilike.%${search}%`
+        `banned_phrase.ilike.%${escapedSearch}%,compliant_alternative.ilike.%${escapedSearch}%`
       )
     }
     if (category) {

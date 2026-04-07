@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import ReactPDF from "@react-pdf/renderer"
 import { ScanPdfDocument } from "@/lib/pdf-template"
+import { isValidUUID } from "@/lib/validations"
 
 export async function GET(
   request: Request,
@@ -10,6 +11,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+
+    if (!isValidUUID(id)) {
+      return NextResponse.json({ error: "Invalid scan ID format" }, { status: 400 })
+    }
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -51,7 +56,7 @@ export async function GET(
     return new Response(buffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="compliance-scan-${id.slice(0, 8)}.pdf"`,
+        "Content-Disposition": `attachment; filename="compliance-scan.pdf"`,
       },
     })
   } catch (error) {

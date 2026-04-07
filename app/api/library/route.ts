@@ -27,7 +27,8 @@ export async function GET(request: Request) {
     if (category) query = query.eq("category", category)
     if (treatment) query = query.contains("applies_to", [treatment])
     if (search) {
-      query = query.or(`banned_phrase.ilike.%${search}%,compliant_alternative.ilike.%${search}%`)
+      const escapedSearch = search.replace(/%/g, '\\%').replace(/_/g, '\\_')
+      query = query.or(`banned_phrase.ilike.%${escapedSearch}%,compliant_alternative.ilike.%${escapedSearch}%`)
     }
 
     const { data: rules, error } = await query

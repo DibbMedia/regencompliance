@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { isValidUUID } from "@/lib/validations"
 
 export async function GET(
   request: Request,
@@ -8,6 +9,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+
+    if (!isValidUUID(id)) {
+      return NextResponse.json({ error: "Invalid ticket ID format" }, { status: 400 })
+    }
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

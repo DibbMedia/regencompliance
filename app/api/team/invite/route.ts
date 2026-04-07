@@ -29,6 +29,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Maximum 3 seats (including owner). Remove a member first." }, { status: 400 })
     }
 
+    // Check for existing pending invite for the same email
+    const { data: existingInvite } = await supabase
+      .from("team_members")
+      .select("id, email, invite_token")
+      .eq("profile_id", user.id)
+      .eq("email", parsed.data.email)
+      .is("user_id", null)
+      .single()
+
+    if (existingInvite) {
+      const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?invite_token=${existingInvite.invite_token}`
+      return NextResponse.json({ invite_url: inviteUrl, existing: true })
+    }
+
     // Generate token
     const token = crypto.randomBytes(32).toString("hex")
 

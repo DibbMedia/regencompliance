@@ -3,6 +3,7 @@ import { cookies } from "next/headers"
 import { anthropic } from "@/lib/anthropic"
 import { createServiceClient } from "@/lib/supabase/server"
 import { scanSchema } from "@/lib/validations"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 const MAX_DEMO_SCANS = 3
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
@@ -38,6 +39,16 @@ function getDemoState(cookieValue: string | undefined): DemoCookie {
 
 export async function POST(request: Request) {
   try {
+    // IP-based rate limiting: max 10 demo scans per IP per day
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
+    const { allowed: ipAllowed } = checkRateLimit(`demo-ip:${ip}`, 10, 24 * 60 * 60 * 1000)
+    if (!ipAllowed) {
+      return NextResponse.json({
+        error: "Demo limit reached. Sign up for unlimited scans.",
+        demo_status: { scans_used: MAX_DEMO_SCANS, max_scans: MAX_DEMO_SCANS, expired: true },
+      }, { status: 429 })
+    }
+
     const cookieStore = await cookies()
     const demoCookie = cookieStore.get("regen_demo")
     const demoState = getDemoState(demoCookie?.value)
