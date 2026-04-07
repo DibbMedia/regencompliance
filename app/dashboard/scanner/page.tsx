@@ -96,6 +96,14 @@ export default function ScannerPage() {
   }, [searchParams])
 
   useEffect(() => {
+    const rescanText = sessionStorage.getItem("rescan_text")
+    if (rescanText) {
+      setText(rescanText)
+      sessionStorage.removeItem("rescan_text")
+    }
+  }, [])
+
+  useEffect(() => {
     if (result) {
       const timer = setTimeout(() => setScoreAnimated(true), 100)
       return () => clearTimeout(timer)
