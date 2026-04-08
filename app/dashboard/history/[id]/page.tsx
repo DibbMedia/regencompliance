@@ -22,7 +22,7 @@ function ScoreRing({ score }: { score: number }) {
         className="absolute inset-0 rounded-full blur-2xl opacity-20"
         style={{ background: color }}
       />
-      <svg className="w-28 h-28 -rotate-90 relative z-10" viewBox="0 0 100 100">
+      <svg className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 -rotate-90 relative z-10" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
         <circle
           cx="50" cy="50" r="45" fill="none" strokeWidth="7" strokeLinecap="round"
@@ -158,9 +158,9 @@ export default function ScanDetailPage() {
 
       {/* Header Card */}
       <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-        <div className="flex flex-wrap items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
           <ScoreRing score={score} />
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-0 sm:min-w-[200px]">
             <div className="flex items-center gap-2 mb-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white/10 bg-white/[0.04] text-white/50">
                 {scan.content_type.replace("_", " ")}
@@ -197,10 +197,10 @@ export default function ScanDetailPage() {
               </div>
             )}
           </div>
-          <div className="flex gap-2 shrink-0">
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0 w-full sm:w-auto">
             <a
               href={`/api/scans/${id}/export`}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"
             >
               <Download className="h-4 w-4" />
               Export PDF
@@ -212,7 +212,7 @@ export default function ScanDetailPage() {
                   sessionStorage.setItem("rescan_text", scan.original_text)
                 }
               }}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all duration-300"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all duration-300"
             >
               <RefreshCw className="h-4 w-4" />
               Re-scan

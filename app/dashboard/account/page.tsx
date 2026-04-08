@@ -192,7 +192,7 @@ export default function AccountPage() {
 
         <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 space-y-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
           {/* Display info row */}
-          <div className="flex items-start gap-4">
+          <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] flex items-center justify-center text-[#0a0a0a] font-bold text-lg shrink-0">
               {(clinicName || "C").charAt(0).toUpperCase()}
             </div>
@@ -338,7 +338,7 @@ export default function AccountPage() {
                 </div>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-white">$497</span>
+                <span className="text-2xl sm:text-3xl font-bold text-white">$497</span>
                 <span className="text-white/40">/month</span>
               </div>
               <button

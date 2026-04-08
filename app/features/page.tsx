@@ -93,7 +93,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 1: SCANNER ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
@@ -141,7 +141,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 2: AI REWRITER ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
               <h3 className="text-lg font-extrabold text-white mb-6">How the Rewriter Works</h3>
               <div className="space-y-3">
@@ -196,7 +196,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 3: COMPLIANCE LIBRARY ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
@@ -246,7 +246,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 4: DAILY UPDATES ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
               <h3 className="text-lg font-extrabold text-white mb-6">How Updates Work</h3>
               <div className="space-y-4">
@@ -315,7 +315,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 5: AUDIT TRAIL ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="h-12 w-12 rounded-2xl bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
@@ -368,7 +368,7 @@ export default function FeaturesPage() {
       {/* ============ FEATURE 6: TEAM SEATS ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300 order-2 lg:order-1">
               <h3 className="text-lg font-extrabold text-white mb-6">Team Access Use Cases</h3>
               <div className="space-y-4">

@@ -126,7 +126,7 @@ function WeeklyTrendChart({ weeks }: { weeks: TrendsData["weekly_scores"] }) {
       <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
         Weekly Score Trend
       </p>
-      <div className="flex items-end gap-2 h-32">
+      <div className="flex items-end gap-1 sm:gap-2 h-32 overflow-hidden">
         {weeks.map((w, i) => {
           const height = w.scan_count > 0 ? Math.max((w.avg_score / maxScore) * 100, 4) : 0
           const barColor =
@@ -371,7 +371,7 @@ export default function DashboardPage() {
           <div className="h-4 w-48 rounded-lg bg-white/[0.04] animate-pulse" />
         </div>
         {/* Skeleton stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-28 rounded-xl bg-white/[0.03] border border-white/10 animate-pulse" />
           ))}
@@ -428,31 +428,31 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Link
             href="/dashboard/scanner"
-            className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
+            className="inline-flex h-9 px-3 text-xs sm:h-10 sm:px-5 sm:text-sm items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
           >
             <Shield className="h-4 w-4" />
             New Scan
           </Link>
           <Link
             href="/dashboard/history"
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
+            className="inline-flex h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
           >
             <Clock className="h-4 w-4" />
             History
           </Link>
           <Link
             href="/dashboard/library"
-            className="hidden sm:inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
+            className="hidden sm:inline-flex h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
           >
             <BookOpen className="h-4 w-4" />
             Library
           </Link>
           <Link
             href="/dashboard/sites"
-            className="hidden sm:inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
+            className="hidden sm:inline-flex h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
           >
             <Globe className="h-4 w-4" />
             Monitor Sites
@@ -463,7 +463,7 @@ export default function DashboardPage() {
       {hasScans ? (
         <>
           {/* Stats Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
               icon={BarChart3}
               label="Total Scans"
@@ -643,7 +643,7 @@ export default function DashboardPage() {
       ) : (
         /* Getting Started - No scans yet */
         <>
-          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 text-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
+          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-5 sm:p-8 lg:p-10 text-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
             <div className="flex justify-center mb-6">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#55E039]/20 to-[#3BB82A]/10 border border-[#55E039]/20">
                 <Zap className="h-8 w-8 text-[#55E039]" />

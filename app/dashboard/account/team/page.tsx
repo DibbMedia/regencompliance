@@ -211,7 +211,7 @@ export default function TeamPage() {
               return (
                 <div
                   key={m.id}
-                  className={`bg-white/[0.03] border rounded-xl p-4 flex items-center gap-4 transition-all duration-300 hover:bg-white/[0.06] ${
+                  className={`bg-white/[0.03] border rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 transition-all duration-300 hover:bg-white/[0.06] ${
                     isPending
                       ? "border-dashed border-white/10"
                       : "border-white/10 hover:border-white/15"

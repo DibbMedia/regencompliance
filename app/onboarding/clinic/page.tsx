@@ -122,7 +122,7 @@ export default function OnboardingClinicPage() {
                 onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
-                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-all duration-200 cursor-pointer ${
+                className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-4 sm:p-6 lg:p-8 transition-all duration-200 cursor-pointer ${
                   dragOver
                     ? "border-[#55E039]/40 bg-[#55E039]/5"
                     : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"

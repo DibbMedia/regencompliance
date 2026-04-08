@@ -132,7 +132,7 @@ export default function NotificationsPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/10 w-fit">
+      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/10 w-fit overflow-x-auto max-w-full">
         {filterTabs.map((tab) => (
           <button
             key={tab.value}
@@ -177,7 +177,7 @@ export default function NotificationsPage() {
                     <div
                       key={n.id}
                       onClick={() => handleClick(n)}
-                      className={`relative flex gap-4 rounded-xl border p-4 cursor-pointer transition-all duration-300 hover:bg-white/[0.06] hover:border-white/15 ${
+                      className={`relative flex gap-4 rounded-xl border p-3 sm:p-4 cursor-pointer transition-all duration-300 hover:bg-white/[0.06] hover:border-white/15 ${
                         !n.read
                           ? "bg-white/[0.03] border-l-2 border-l-[#55E039] border-t-white/10 border-r-white/10 border-b-white/10"
                           : "bg-white/[0.02] border-white/[0.07]"

@@ -74,7 +74,7 @@ export default function OnboardingTreatmentsPage() {
         </p>
 
         {/* Treatment pills */}
-        <div className="grid grid-cols-2 gap-2.5 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-6">
           {TREATMENTS.map((t) => {
             const isSelected = selected.includes(t.slug)
             return (
@@ -82,7 +82,7 @@ export default function OnboardingTreatmentsPage() {
                 key={t.slug}
                 type="button"
                 onClick={() => toggleTreatment(t.slug)}
-                className={`relative flex items-center gap-2.5 rounded-xl border p-3.5 text-left transition-all duration-200 ${
+                className={`relative flex items-center gap-2.5 rounded-xl border p-4 sm:p-3.5 min-h-[48px] text-left transition-all duration-200 ${
                   isSelected
                     ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039]"
                     : "bg-white/[0.02] border-white/10 text-white/50 hover:bg-white/[0.04] hover:border-white/15 hover:text-white/70"

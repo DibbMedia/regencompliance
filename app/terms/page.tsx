@@ -31,7 +31,7 @@ export default function TermsPage() {
       {/* Content */}
       <section className="relative pb-24">
         <div className="mx-auto max-w-4xl px-6">
-          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-8 sm:p-12 space-y-12">
+          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-5 sm:p-8 lg:p-12 space-y-12">
 
             {/* 1 */}
             <div>

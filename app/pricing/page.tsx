@@ -72,7 +72,7 @@ export default function PricingPage() {
       <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6 text-center">
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">BETA LAUNCH — LIMITED SPOTS</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
             Lock in $297/mo for life.
             <br />
             <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">Rate never increases.</span>
@@ -85,7 +85,7 @@ export default function PricingPage() {
 
       {/* ============ PRICING CARDS ============ */}
       <section className="relative pb-16">
-        <div className="relative mx-auto max-w-5xl px-6 grid gap-8 md:grid-cols-2 items-start">
+        <div className="relative mx-auto max-w-5xl px-6 grid gap-5 md:gap-8 md:grid-cols-2 items-start">
           {/* BETA PLAN — PRIMARY */}
           <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.08]">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
@@ -177,7 +177,7 @@ export default function PricingPage() {
               One FDA warning letter triggers a cascade of expenses that makes $497 per month look like a rounding error.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-5 md:gap-8 max-w-4xl mx-auto">
             {/* Cost of non-compliance */}
             <div className="rounded-2xl bg-red-500/[0.03] border border-red-500/20 p-7">
               <div className="flex items-center gap-3 mb-6">
@@ -276,43 +276,43 @@ export default function PricingPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="text-left text-sm font-extrabold p-4 text-white/70">Feature</th>
-                    <th className="text-center text-sm font-extrabold p-4">
+                    <th className="text-left text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">Feature</th>
+                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4">
                       <span className="text-[#55E039]">RegenCompliance</span>
                     </th>
-                    <th className="text-center text-sm font-extrabold p-4 text-white/70">Healthcare Attorney</th>
-                    <th className="text-center text-sm font-extrabold p-4 text-white/70">DIY / Google</th>
+                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">Healthcare Attorney</th>
+                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">DIY / Google</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comparisonRows.map((row, i) => (
                     <tr key={i} className={i < comparisonRows.length - 1 ? "border-b border-white/[0.06]" : ""}>
-                      <td className="text-sm text-white/60 p-4">{row.feature}</td>
-                      <td className="text-center p-4">
+                      <td className="text-xs sm:text-sm text-white/60 p-2 sm:p-4">{row.feature}</td>
+                      <td className="text-center p-2 sm:p-4">
                         {row.us === true ? (
                           <CheckCircle2 className="h-5 w-5 text-[#55E039] mx-auto" />
                         ) : typeof row.us === "string" ? (
-                          <span className="text-sm font-bold text-[#55E039]">{row.us}</span>
+                          <span className="text-xs sm:text-sm font-bold text-[#55E039]">{row.us}</span>
                         ) : (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         )}
                       </td>
-                      <td className="text-center p-4">
+                      <td className="text-center p-2 sm:p-4">
                         {row.attorney === true ? (
                           <CheckCircle2 className="h-5 w-5 text-white/40 mx-auto" />
                         ) : row.attorney === false ? (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         ) : (
-                          <span className="text-sm text-white/40">{row.attorney}</span>
+                          <span className="text-xs sm:text-sm text-white/40">{row.attorney}</span>
                         )}
                       </td>
-                      <td className="text-center p-4">
+                      <td className="text-center p-2 sm:p-4">
                         {row.diy === true ? (
                           <CheckCircle2 className="h-5 w-5 text-white/40 mx-auto" />
                         ) : row.diy === false ? (
                           <X className="h-5 w-5 text-white/20 mx-auto" />
                         ) : (
-                          <span className="text-sm text-white/40">{row.diy}</span>
+                          <span className="text-xs sm:text-sm text-white/40">{row.diy}</span>
                         )}
                       </td>
                     </tr>
@@ -381,12 +381,12 @@ export default function PricingPage() {
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             Lock in $297/mo before the 25 beta spots run out. After that, it goes to $497/mo — no exceptions.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+          <div className="mt-10 flex flex-wrap justify-center gap-2 sm:gap-4">
+            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
               Claim Beta Access — $297/mo
               <ArrowRight className="h-4 w-4" />
             </BetaCheckoutButton>
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
+            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-5 sm:px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>
           </div>

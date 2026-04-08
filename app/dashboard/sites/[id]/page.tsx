@@ -51,11 +51,11 @@ function ScoreRing({ score }: { score: number | null }) {
   if (score === null) {
     return (
       <div className="relative inline-flex items-center justify-center">
-        <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+        <svg className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 -rotate-90" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
         </svg>
         <div className="absolute flex flex-col items-center">
-          <span className="text-2xl font-bold text-white/30">--</span>
+          <span className="text-xl sm:text-2xl font-bold text-white/30">--</span>
           <span className="text-[9px] font-medium text-white/20 uppercase tracking-widest">No Data</span>
         </div>
       </div>
@@ -73,7 +73,7 @@ function ScoreRing({ score }: { score: number | null }) {
         className="absolute inset-0 rounded-full blur-2xl opacity-20"
         style={{ background: color }}
       />
-      <svg className="w-28 h-28 -rotate-90 relative z-10" viewBox="0 0 100 100">
+      <svg className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 -rotate-90 relative z-10" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
         <circle
           cx="50" cy="50" r="45" fill="none" strokeWidth="7" strokeLinecap="round"
@@ -84,7 +84,7 @@ function ScoreRing({ score }: { score: number | null }) {
         />
       </svg>
       <div className="absolute z-10 flex flex-col items-center">
-        <span className={`text-3xl font-bold ${textColor}`}>{score}</span>
+        <span className={`text-2xl sm:text-3xl font-bold ${textColor}`}>{score}</span>
         <span className="text-[9px] font-medium text-white/40 uppercase tracking-widest">Score</span>
       </div>
     </div>
@@ -242,9 +242,9 @@ export default function SiteDetailPage() {
 
       {/* Header Card */}
       <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-        <div className="flex flex-wrap items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
           <ScoreRing score={site.compliance_score} />
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-0 sm:min-w-[200px]">
             <h2 className="text-xl font-bold text-white mb-1">
               {site.name || site.domain}
             </h2>
@@ -339,7 +339,7 @@ export default function SiteDetailPage() {
       )}
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-400/10">
@@ -383,7 +383,7 @@ export default function SiteDetailPage() {
       </div>
 
       {/* Sort and Filter */}
-      <div className="flex flex-wrap gap-3 items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center rounded-xl border border-white/10 bg-white/[0.03] p-3 overflow-x-auto">
         <div className="flex items-center gap-2">
           <ArrowUpDown className="h-4 w-4 text-white/30" />
           <span className="text-xs text-white/30">Sort:</span>

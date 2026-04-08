@@ -99,7 +99,7 @@ export default function LibraryPage() {
       )}
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
+      <div className="flex flex-col md:flex-row flex-wrap gap-2 md:gap-3 items-stretch md:items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
           <Input
@@ -152,7 +152,7 @@ export default function LibraryPage() {
         <div className="flex rounded-lg border border-white/10 overflow-hidden">
           <button
             onClick={() => setViewMode("grid")}
-            className={`p-2 transition-all duration-200 ${
+            className={`min-w-[40px] min-h-[40px] p-2 flex items-center justify-center transition-all duration-200 ${
               viewMode === "grid"
                 ? "bg-[#55E039]/10 text-[#55E039]"
                 : "bg-white/[0.02] text-white/30 hover:text-white/50"
@@ -162,7 +162,7 @@ export default function LibraryPage() {
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`p-2 border-l border-white/10 transition-all duration-200 ${
+            className={`min-w-[40px] min-h-[40px] p-2 flex items-center justify-center border-l border-white/10 transition-all duration-200 ${
               viewMode === "table"
                 ? "bg-[#55E039]/10 text-[#55E039]"
                 : "bg-white/[0.02] text-white/30 hover:text-white/50"
@@ -261,7 +261,7 @@ export default function LibraryPage() {
           })}
         </div>
       ) : (
-        <div className="rounded-xl border border-white/10 overflow-hidden">
+        <div className="rounded-xl border border-white/10 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="border-white/[0.06] hover:bg-transparent">

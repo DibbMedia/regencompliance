@@ -85,7 +85,7 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-3 sm:px-4">
       <MarketingBg />
 
       <div className="relative w-full max-w-md">

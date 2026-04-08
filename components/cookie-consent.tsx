@@ -40,7 +40,7 @@ export function CookieConsent() {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-[100] p-4 sm:p-6">
-      <div className="mx-auto max-w-3xl rounded-2xl bg-[#111111]/95 backdrop-blur-md border border-white/10 px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-[0_-4px_30px_rgba(0,0,0,0.5)]">
+      <div className="mx-auto max-w-3xl rounded-2xl bg-[#111111]/95 backdrop-blur-md border border-white/10 px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-[0_-4px_30px_rgba(0,0,0,0.5)]">
         <p className="text-sm text-white/70 leading-relaxed flex-1">
           We use cookies to improve your experience. See our{" "}
           <Link href="/privacy" className="text-[#55E039] hover:underline">
@@ -48,7 +48,7 @@ export function CookieConsent() {
           </Link>{" "}
           for details.
         </p>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full sm:w-auto">
           <button
             onClick={() => handleConsent("declined")}
             className="h-9 rounded-lg border border-white/10 bg-transparent px-5 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"

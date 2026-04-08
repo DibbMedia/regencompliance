@@ -174,7 +174,7 @@ export default function SitesPage() {
         </div>
         <button
           onClick={() => setShowAddDialog(true)}
-          className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all shrink-0"
+          className="w-full sm:w-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all shrink-0"
         >
           <Plus className="h-4 w-4" />
           Add Site
@@ -278,14 +278,14 @@ export default function SitesPage() {
               key={site.id}
               className="rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                 {/* Score */}
-                <div className="shrink-0">
+                <div className="shrink-0 flex items-center gap-3 sm:gap-4">
                   <SmallScoreRing score={site.avg_compliance_score} />
-                </div>
 
-                {/* Separator */}
-                <div className="w-px h-12 bg-white/[0.06] shrink-0" />
+                  {/* Separator - hidden on mobile */}
+                  <div className="w-px h-12 bg-white/[0.06] shrink-0 hidden sm:block" />
+                </div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
@@ -305,7 +305,7 @@ export default function SitesPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
                   <button
                     onClick={() => handleToggleStatus(site.id, site.is_active)}
                     disabled={togglingId === site.id}

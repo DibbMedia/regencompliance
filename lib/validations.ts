@@ -36,7 +36,7 @@ export const ticketMessageSchema = z.object({
 
 export const adminSearchSchema = z.object({
   search: z.string().max(100, 'Search must be under 100 characters').regex(/^[a-zA-Z0-9@.\-_ ]*$/, 'Search contains invalid characters').optional().default(''),
-  page: z.coerce.number().int().positive().optional().default(1),
+  page: z.coerce.number().int().positive().max(1000).optional().default(1),
   limit: z.coerce.number().int().positive().max(100).optional(),
   status: z.string().max(50).optional().default(''),
   category: z.string().max(50).optional().default(''),
@@ -75,5 +75,13 @@ export type TicketCreateInput = z.infer<typeof ticketCreateSchema>
 export type TicketMessageInput = z.infer<typeof ticketMessageSchema>
 export type AdminSearchInput = z.infer<typeof adminSearchSchema>
 export type AdminRulePatchInput = z.infer<typeof adminRulePatchSchema>
+export function parsePagination(searchParams: URLSearchParams): { page: number; limit: number } {
+  const rawPage = parseInt(searchParams.get("page") || "1")
+  const rawLimit = parseInt(searchParams.get("limit") || "20")
+  const page = Math.max(1, Math.min(Number.isNaN(rawPage) ? 1 : rawPage, 1000))
+  const limit = Math.max(1, Math.min(Number.isNaN(rawLimit) ? 20 : rawLimit, 100))
+  return { page, limit }
+}
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>

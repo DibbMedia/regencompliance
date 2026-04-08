@@ -144,7 +144,7 @@ function TicketThread({ ticketId, status }: { ticketId: string; status: string }
             className={`flex ${msg.is_admin ? "justify-start" : "justify-end"}`}
           >
             <div
-              className={`max-w-[80%] rounded-xl px-4 py-3 text-sm border ${
+              className={`max-w-[90%] sm:max-w-[80%] rounded-xl px-4 py-3 text-sm border ${
                 msg.is_admin
                   ? "bg-white/[0.03] border-white/10 text-white/70"
                   : "bg-[#55E039]/10 border-[#55E039]/20 text-white/90"
@@ -365,7 +365,7 @@ export default function SupportPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/10 w-fit">
+      <div className="flex gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/10 w-fit overflow-x-auto max-w-full">
         {filterTabs.map((tab) => (
           <button
             key={tab.value}

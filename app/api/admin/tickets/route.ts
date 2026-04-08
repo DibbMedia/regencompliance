@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { parsePagination } from "@/lib/validations"
 
 export async function GET(request: Request) {
   try {
@@ -9,8 +10,7 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url)
     const status = searchParams.get("status") || ""
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50)
+    const { page, limit } = parsePagination(searchParams)
 
     let query = serviceClient
       .from("support_tickets")

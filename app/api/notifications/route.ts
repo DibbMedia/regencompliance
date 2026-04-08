@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { parsePagination } from "@/lib/validations"
 
 export async function GET(request: Request) {
   try {
@@ -13,8 +14,7 @@ export async function GET(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
     const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get("page") || "1")
-    const limit = 20
+    const { page, limit } = parsePagination(searchParams)
     const unreadOnly = searchParams.get("unread_only") === "true"
     const type = searchParams.get("type")
 

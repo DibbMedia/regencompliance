@@ -79,7 +79,7 @@ export default function LandingPage() {
               <ShieldCheck className="h-3.5 w-3.5" />
               FDA/FTC Compliance for Regenerative Medicine
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-[4.25rem] font-extrabold tracking-tight leading-[1.08]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl lg:text-[4.25rem] font-extrabold tracking-tight leading-[1.08]">
               Scan your content
               <br />
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">before regulators do.</span>
@@ -129,7 +129,7 @@ export default function LandingPage() {
             </div>
 
             {/* App Content */}
-            <div className="grid md:grid-cols-5 min-h-[380px]">
+            <div className="grid md:grid-cols-5 min-h-0 md:min-h-[380px]">
               {/* Left: Input */}
               <div className="md:col-span-3 p-6 sm:p-8 border-r border-white/[0.06]">
                 <div className="flex items-center justify-between mb-5">
@@ -214,7 +214,7 @@ export default function LandingPage() {
       </section>
 
       {/* ===== STATS ===== */}
-      <section className="relative py-16">
+      <section className="relative py-12 sm:py-16">
         <div className="relative mx-auto max-w-6xl px-6">
           <div className="text-center mb-14">
             <p className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] mb-4 flex items-center justify-center gap-2">

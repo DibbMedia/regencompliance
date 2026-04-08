@@ -50,7 +50,7 @@ function ScoreRing({ score, animate }: { score: number; animate: boolean }) {
         className="absolute inset-0 rounded-full blur-2xl opacity-30"
         style={{ background: color }}
       />
-      <svg className="w-36 h-36 -rotate-90 relative z-10" viewBox="0 0 100 100">
+      <svg className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 -rotate-90 relative z-10" viewBox="0 0 100 100">
         {/* Background track */}
         <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
         {/* Score arc */}
@@ -247,7 +247,7 @@ export default function ScannerPage() {
   const charCount = text.length
 
   return (
-    <div className="p-6 grid gap-6 lg:grid-cols-5">
+    <div className="p-4 sm:p-6 grid gap-4 sm:gap-6 lg:grid-cols-5">
       {/* Input Panel */}
       <div className="lg:col-span-3 space-y-6">
         <div>
@@ -302,7 +302,7 @@ export default function ScannerPage() {
                     key={t.value}
                     onClick={() => setContentType(t.value)}
                     className={`
-                      inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+                      inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium
                       transition-all duration-300 border
                       ${isActive
                         ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] border-transparent shadow-[0_4px_20px_rgba(85,224,57,0.3)]"

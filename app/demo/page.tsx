@@ -181,9 +181,9 @@ export default function DemoPage() {
           </div>
         )}
 
-        <div className={`grid gap-6 lg:grid-cols-5 ${demoExpired ? "opacity-40 pointer-events-none" : ""}`}>
+        <div className={`grid gap-6 md:grid-cols-2 lg:grid-cols-5 ${demoExpired ? "opacity-40 pointer-events-none" : ""}`}>
           {/* Input Panel */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="md:col-span-1 lg:col-span-3 space-y-4">
             <div>
               <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
               <p className="text-white/60">
@@ -197,7 +197,7 @@ export default function DemoPage() {
                 <button
                   key={t.value}
                   onClick={() => setContentType(t.value)}
-                  className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-300 ${
+                  className={`rounded-full px-4 py-2 text-xs font-medium min-h-[40px] transition-all duration-300 ${
                     contentType === t.value
                       ? "bg-[#55E039]/10 border border-[#55E039]/20 text-[#55E039]"
                       : "bg-white/[0.03] border border-white/10 text-white/60 hover:bg-white/[0.06] hover:text-white"
@@ -254,7 +254,7 @@ export default function DemoPage() {
           </div>
 
           {/* Results Panel */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="md:col-span-1 lg:col-span-2 space-y-4">
             {!result && !scanning && (
               <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-12 text-center">
                 <Shield className="h-12 w-12 mb-4 opacity-20 mx-auto text-white/40" />

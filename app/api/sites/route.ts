@@ -81,6 +81,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid domain format" }, { status: 400 })
     }
 
+    // Additional URL validation
+    try {
+      new URL(`https://${normalizedDomain}`)
+    } catch {
+      return NextResponse.json({ error: "Invalid domain" }, { status: 400 })
+    }
+
     // Check limit: max 5 sites per user
     const { count } = await supabase
       .from("monitored_sites")

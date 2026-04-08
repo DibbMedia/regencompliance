@@ -104,7 +104,7 @@ function FeedCard({ item }: { item: FeedItem }) {
               {formatRelativeTime(item.timestamp)}
             </span>
           </div>
-          <h3 className="font-semibold text-white leading-snug">{item.title}</h3>
+          <h3 className="text-sm sm:text-base font-semibold text-white leading-snug">{item.title}</h3>
           <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
           {(item as any).source_url && (
             <a

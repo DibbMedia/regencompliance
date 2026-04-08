@@ -13,19 +13,21 @@ export async function POST() {
     const serviceClient = createServiceClient()
     const userEmail = user.email.toLowerCase()
 
-    // Check for unclaimed beta purchase matching this email
-    const { data: betaPurchase } = await serviceClient
+    // Atomically claim: only succeeds if not already claimed
+    const { data: betaPurchase, error: claimError } = await serviceClient
       .from("beta_purchases")
-      .select("id, stripe_customer_id")
+      .update({ claimed: true, claimed_by: user.id })
       .eq("email", userEmail)
       .eq("claimed", false)
-      .maybeSingle()
+      .select("id, stripe_customer_id")
+      .single()
 
-    if (!betaPurchase) {
+    if (claimError || !betaPurchase) {
+      // Either no matching purchase or already claimed
       return NextResponse.json({ claimed: false })
     }
 
-    // Claim the beta purchase
+    // Activate the user's subscription
     await serviceClient
       .from("profiles")
       .update({
@@ -35,11 +37,6 @@ export async function POST() {
         stripe_customer_id: betaPurchase.stripe_customer_id,
       })
       .eq("id", user.id)
-
-    await serviceClient
-      .from("beta_purchases")
-      .update({ claimed: true, claimed_by: user.id })
-      .eq("id", betaPurchase.id)
 
     await serviceClient.from("notifications").insert({
       profile_id: user.id,

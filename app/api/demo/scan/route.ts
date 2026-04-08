@@ -29,7 +29,7 @@ function getDemoState(cookieValue: string | undefined): DemoCookie {
       typeof parsed.scans_used !== "number" ||
       !Number.isFinite(parsed.scans_used) ||
       parsed.scans_used < 0 ||
-      parsed.scans_used > MAX_DEMO_SCANS + 1 ||
+      parsed.scans_used > MAX_DEMO_SCANS ||
       typeof parsed.started_at !== "string"
     ) {
       return { scans_used: 0, started_at: new Date().toISOString() }

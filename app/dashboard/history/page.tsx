@@ -89,7 +89,7 @@ export default function HistoryPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-3 items-stretch md:items-center rounded-xl border border-white/10 bg-white/[0.03] p-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
           <Input
@@ -149,7 +149,7 @@ export default function HistoryPage() {
                 className="block group"
               >
                 <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     {/* Score */}
                     <div className="shrink-0">
                       <ScoreIndicator score={scan.compliance_score} />
