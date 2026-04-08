@@ -125,6 +125,7 @@ export default function SitesPage() {
 
   async function handleScanNow(siteId: string) {
     setScanningId(siteId)
+    toast.info("Scanning site pages... This may take a minute.", { duration: 10000 })
     try {
       const res = await fetch(`/api/sites/${siteId}/scan`, { method: "POST" })
       if (!res.ok) {
@@ -132,7 +133,10 @@ export default function SitesPage() {
         toast.error(data.error || "Scan failed.")
         return
       }
-      toast.success("Scan started! Results will update shortly.")
+      const data = await res.json()
+      const pagesScanned = data.summary?.pages_scanned || 0
+      const avgScore = data.summary?.avg_score || "N/A"
+      toast.success(`Scan complete! ${pagesScanned} pages scanned. Average score: ${avgScore}`)
       mutate("/api/sites")
     } catch {
       toast.error("Network error.")

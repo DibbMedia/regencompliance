@@ -15,17 +15,28 @@ export async function PATCH(request: Request) {
     const body = await request.json()
 
     if (body.all) {
-      await supabase
+      // Mark all unread notifications as read for this user (including broadcasts)
+      const { error } = await supabase
         .from("notifications")
         .update({ read: true })
-        .or(`profile_id.eq.${profileId},profile_id.is.null`)
         .eq("read", false)
+        .or(`profile_id.eq.${profileId},profile_id.is.null`)
+
+      if (error) {
+        console.error("Mark all read error:", error)
+        return NextResponse.json({ error: "Failed to mark notifications as read" }, { status: 500 })
+      }
     } else if (body.ids && Array.isArray(body.ids)) {
-      await supabase
+      const { error } = await supabase
         .from("notifications")
         .update({ read: true })
         .in("id", body.ids)
         .or(`profile_id.eq.${profileId},profile_id.is.null`)
+
+      if (error) {
+        console.error("Mark read error:", error)
+        return NextResponse.json({ error: "Failed to mark notifications as read" }, { status: 500 })
+      }
     }
 
     return NextResponse.json({ success: true })

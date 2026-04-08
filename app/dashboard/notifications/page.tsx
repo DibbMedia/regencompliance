@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import useSWR, { mutate } from "swr"
+import { toast } from "sonner"
 import { Bell, CheckCheck, AlertTriangle, CreditCard, Scale, Info } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -82,13 +83,19 @@ export default function NotificationsPage() {
   }, [notifications])
 
   async function markAllRead() {
-    await fetch("/api/notifications/read", {
+    const res = await fetch("/api/notifications/read", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ all: true }),
     })
+    if (res.ok) {
+      toast.success("All notifications marked as read.")
+    } else {
+      toast.error("Failed to mark notifications as read.")
+    }
     mutate(`/api/notifications?${params}`)
-    mutate("unread-notifications")
+    // Force sidebar badge refresh by re-fetching
+    window.dispatchEvent(new CustomEvent("notifications-updated"))
   }
 
   async function handleClick(n: Notification) {

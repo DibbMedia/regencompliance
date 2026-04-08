@@ -2,27 +2,81 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, Check, Sparkles } from "lucide-react"
+import { Loader2, Check, Sparkles, Plus } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 
-const TREATMENTS = [
-  { slug: "prp", label: "PRP (Platelet-Rich Plasma)", emoji: "🩸" },
-  { slug: "stem_cell", label: "Stem Cell Therapy", emoji: "🧬" },
-  { slug: "exosomes", label: "Exosomes", emoji: "🔬" },
-  { slug: "bmac", label: "BMAC", emoji: "🦴" },
-  { slug: "whartons_jelly", label: "Wharton's Jelly", emoji: "🧪" },
-  { slug: "prolotherapy", label: "Prolotherapy", emoji: "💉" },
-  { slug: "peptide", label: "Peptide Therapy", emoji: "⚗️" },
-  { slug: "other", label: "Other Regenerative", emoji: "✨" },
+const TREATMENT_CATEGORIES = [
+  {
+    label: "Regenerative Medicine",
+    treatments: [
+      { slug: "prp", label: "PRP (Platelet-Rich Plasma)" },
+      { slug: "stem_cell", label: "Stem Cell Therapy" },
+      { slug: "exosomes", label: "Exosomes" },
+      { slug: "bmac", label: "BMAC" },
+      { slug: "whartons_jelly", label: "Wharton's Jelly" },
+      { slug: "prolotherapy", label: "Prolotherapy" },
+      { slug: "peptide", label: "Peptide Therapy" },
+    ],
+  },
+  {
+    label: "Med Spa & Aesthetics",
+    treatments: [
+      { slug: "botox", label: "Botox / Neurotoxins" },
+      { slug: "dermal_fillers", label: "Dermal Fillers" },
+      { slug: "laser_treatments", label: "Laser Treatments" },
+      { slug: "chemical_peels", label: "Chemical Peels" },
+      { slug: "microneedling", label: "Microneedling" },
+      { slug: "body_contouring", label: "Body Contouring" },
+    ],
+  },
+  {
+    label: "Weight Loss & Wellness",
+    treatments: [
+      { slug: "glp1", label: "GLP-1 / Semaglutide" },
+      { slug: "iv_therapy", label: "IV Therapy / NAD+" },
+      { slug: "hormone_therapy", label: "Hormone Therapy / BHRT" },
+      { slug: "weight_loss", label: "Medical Weight Loss" },
+      { slug: "nutrition", label: "Nutrition Programs" },
+    ],
+  },
+  {
+    label: "Dental & Surgical",
+    treatments: [
+      { slug: "dental_implants", label: "Dental Implants" },
+      { slug: "cosmetic_dentistry", label: "Cosmetic Dentistry" },
+      { slug: "plastic_surgery", label: "Plastic Surgery" },
+      { slug: "dermatology", label: "Dermatology" },
+      { slug: "orthopedic", label: "Orthopedic / Sports Medicine" },
+    ],
+  },
+  {
+    label: "Other Specialties",
+    treatments: [
+      { slug: "chiropractic", label: "Chiropractic" },
+      { slug: "physical_therapy", label: "Physical Therapy" },
+      { slug: "functional_medicine", label: "Functional Medicine" },
+      { slug: "hyperbaric", label: "Hyperbaric Oxygen (HBOT)" },
+    ],
+  },
 ]
 
 export default function OnboardingTreatmentsPage() {
   const [selected, setSelected] = useState<string[]>([])
+  const [customTreatment, setCustomTreatment] = useState("")
+  const [customTreatments, setCustomTreatments] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [redirecting, setRedirecting] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+
+  function addCustom() {
+    const trimmed = customTreatment.trim()
+    if (!trimmed || customTreatments.includes(trimmed)) return
+    setCustomTreatments((prev) => [...prev, trimmed])
+    setSelected((prev) => [...prev, trimmed])
+    setCustomTreatment("")
+  }
 
   function toggleTreatment(slug: string) {
     setSelected((prev) =>
@@ -37,7 +91,7 @@ export default function OnboardingTreatmentsPage() {
 
     const updates: Record<string, unknown> = { onboarding_complete: true }
     if (!skip && selected.length > 0) {
-      updates.treatments = selected
+      updates.treatments = [...new Set(selected)]
     }
 
     const { error } = await supabase
@@ -82,37 +136,87 @@ export default function OnboardingTreatmentsPage() {
 
       {/* Card */}
       <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6 sm:p-8 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-        <h1 className="text-xl font-bold text-white mb-1">What treatments does your clinic offer?</h1>
+        <h1 className="text-xl font-bold text-white mb-1">What services does your practice offer?</h1>
         <p className="text-sm text-white/40 mb-6">
-          This helps us tailor compliance rules to your specific services. Select all that apply.
+          This helps us tailor compliance rules to your specific services. Select all that apply, or add your own.
         </p>
 
-        {/* Treatment pills */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-6">
-          {TREATMENTS.map((t) => {
-            const isSelected = selected.includes(t.slug)
-            return (
-              <button
-                key={t.slug}
-                type="button"
-                onClick={() => toggleTreatment(t.slug)}
-                disabled={isDisabled}
-                className={`relative flex items-center gap-2.5 rounded-xl border p-4 sm:p-3.5 min-h-[48px] text-left transition-all duration-200 disabled:opacity-50 ${
-                  isSelected
-                    ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039]"
-                    : "bg-white/[0.02] border-white/10 text-white/50 hover:bg-white/[0.04] hover:border-white/15 hover:text-white/70"
-                }`}
-              >
-                <span className="text-base">{t.emoji}</span>
-                <span className="text-xs font-medium flex-1">{t.label}</span>
-                {isSelected && (
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#55E039]">
-                    <Check className="h-3 w-3 text-[#0a0a0a]" />
+        {/* Treatment categories */}
+        <div className="space-y-5 mb-6">
+          {TREATMENT_CATEGORIES.map((cat) => (
+            <div key={cat.label}>
+              <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">{cat.label}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {cat.treatments.map((t) => {
+                  const isSelected = selected.includes(t.slug)
+                  return (
+                    <button
+                      key={t.slug}
+                      type="button"
+                      onClick={() => toggleTreatment(t.slug)}
+                      disabled={isDisabled}
+                      className={`relative flex items-center gap-2.5 rounded-xl border p-3.5 min-h-[44px] text-left transition-all duration-200 disabled:opacity-50 ${
+                        isSelected
+                          ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039]"
+                          : "bg-white/[0.02] border-white/10 text-white/50 hover:bg-white/[0.04] hover:border-white/15 hover:text-white/70"
+                      }`}
+                    >
+                      <span className="text-xs font-medium flex-1">{t.label}</span>
+                      {isSelected && (
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#55E039]">
+                          <Check className="h-3 w-3 text-[#0a0a0a]" />
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+
+          {/* Custom treatments */}
+          {customTreatments.length > 0 && (
+            <div>
+              <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">Your Custom Services</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {customTreatments.map((t) => (
+                  <div
+                    key={t}
+                    className="relative flex items-center gap-2.5 rounded-xl border p-3.5 min-h-[44px] bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039]"
+                  >
+                    <span className="text-xs font-medium flex-1">{t}</span>
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#55E039]">
+                      <Check className="h-3 w-3 text-[#0a0a0a]" />
+                    </div>
                   </div>
-                )}
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Add custom */}
+          <div>
+            <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">Add Your Own</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={customTreatment}
+                onChange={(e) => setCustomTreatment(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addCustom())}
+                placeholder="e.g., Ozone Therapy, PRP Hair Restoration..."
+                disabled={isDisabled}
+                className="flex-1 h-11 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/30 px-4 text-sm focus:outline-none focus:border-[#55E039]/30 transition-colors disabled:opacity-50"
+              />
+              <button
+                type="button"
+                onClick={addCustom}
+                disabled={isDisabled || !customTreatment.trim()}
+                className="h-11 px-4 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] transition-all disabled:opacity-30"
+              >
+                <Plus className="h-4 w-4" />
               </button>
-            )
-          })}
+            </div>
+          </div>
         </div>
 
         {selected.length > 0 && (

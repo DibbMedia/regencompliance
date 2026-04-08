@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -75,7 +76,7 @@ export function DashboardSidebar({ clinicName, userEmail }: DashboardSidebarProp
   const router = useRouter()
   const supabase = createClient()
 
-  const { data: unreadCount } = useSWR(
+  const { data: unreadCount, mutate: refreshUnread } = useSWR(
     "sidebar-unread",
     async () => {
       const res = await fetch("/api/notifications/unread-count")
@@ -85,6 +86,13 @@ export function DashboardSidebar({ clinicName, userEmail }: DashboardSidebarProp
     },
     { refreshInterval: 60000 }
   )
+
+  // Listen for notification updates from other components
+  useEffect(() => {
+    function handleUpdate() { refreshUnread() }
+    window.addEventListener("notifications-updated", handleUpdate)
+    return () => window.removeEventListener("notifications-updated", handleUpdate)
+  }, [refreshUnread])
 
   async function handleLogout() {
     await supabase.auth.signOut()

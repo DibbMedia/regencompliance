@@ -41,6 +41,32 @@ function ScoreRing({ score }: { score: number }) {
   )
 }
 
+function OriginalContentCard({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const isLong = text.length > 300
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
+      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between gap-2">
+        <h3 className="text-sm font-bold text-white">Original Content</h3>
+        {isLong && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-xs text-[#55E039] hover:text-[#55E039]/80 font-medium transition-colors"
+          >
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        )}
+      </div>
+      <div className="p-4">
+        <p className={`text-sm text-white/60 whitespace-pre-wrap leading-relaxed ${!expanded && isLong ? "line-clamp-3" : ""}`}>
+          {text}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function RiskBadge({ level }: { level: string }) {
   const styles = {
     high: "bg-red-500/10 text-red-500 border-red-500/20",
@@ -225,15 +251,8 @@ export default function ScanDetailPage() {
         </div>
       </div>
 
-      {/* Original Text */}
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-2">
-          <h3 className="text-sm font-bold text-white">Original Content</h3>
-        </div>
-        <div className="p-4">
-          <p className="text-sm text-white/60 whitespace-pre-wrap leading-relaxed">{scan.original_text}</p>
-        </div>
-      </div>
+      {/* Original Text — collapsed by default */}
+      <OriginalContentCard text={scan.original_text} />
 
       {/* Flags */}
       {flags.length > 0 && (

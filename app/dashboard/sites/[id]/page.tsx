@@ -38,14 +38,20 @@ interface SitePage {
   status: string
 }
 
-interface SiteDetail {
+interface SiteData {
   id: string
   domain: string
   name: string | null
-  status: string
-  compliance_score: number | null
-  pages_count: number
-  last_scanned_at: string | null
+  is_active: boolean
+  avg_compliance_score: number | null
+  total_pages: number
+  last_crawl_at: string | null
+  pages: SitePage[]
+}
+
+// API returns { site, pages } — we merge them
+interface SiteApiResponse {
+  site: Omit<SiteData, "pages">
   pages: SitePage[]
 }
 
@@ -127,10 +133,12 @@ export default function SiteDetailPage() {
   const [sortBy, setSortBy] = useState<SortKey>("score")
   const [filterBy, setFilterBy] = useState<FilterKey>("all")
 
-  const { data: site, isLoading } = useSWR<SiteDetail>(`/api/sites/${id}`, fetcher)
+  const { data: apiData, isLoading } = useSWR<SiteApiResponse>(`/api/sites/${id}`, fetcher)
+  const site = apiData ? { ...apiData.site, pages: apiData.pages } : null
 
   async function handleScanAll() {
     setScanning(true)
+    toast.info("Scanning all pages... This may take a few minutes.", { duration: 15000 })
     try {
       const res = await fetch(`/api/sites/${id}/scan`, { method: "POST" })
       if (!res.ok) {
@@ -138,7 +146,9 @@ export default function SiteDetailPage() {
         toast.error(data.error || "Scan failed.")
         return
       }
-      toast.success("Scan started for all pages! Results will update shortly.")
+      const data = await res.json()
+      const pagesScanned = data.summary?.pages_scanned || 0
+      toast.success(`Scan complete! ${pagesScanned} pages scanned.`)
       mutate(`/api/sites/${id}`)
     } catch {
       toast.error("Network error.")
@@ -246,9 +256,9 @@ export default function SiteDetailPage() {
       <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
         <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
           <div className="flex flex-col items-center gap-1">
-            <ScoreRing score={site.compliance_score} />
-            {site.compliance_score !== null && (
-              <ScoreExplainer score={site.compliance_score} />
+            <ScoreRing score={site.avg_compliance_score} />
+            {site.avg_compliance_score !== null && (
+              <ScoreExplainer score={site.avg_compliance_score} />
             )}
           </div>
           <div className="flex-1 min-w-0 sm:min-w-[200px]">
@@ -265,9 +275,9 @@ export default function SiteDetailPage() {
               {site.domain}
               <ExternalLink className="h-3 w-3" />
             </a>
-            {site.last_scanned_at && (
+            {site.last_crawl_at && (
               <p className="text-xs text-white/30 mt-2">
-                Last scanned {timeAgo(site.last_scanned_at)} &middot; {formatDate(site.last_scanned_at)}
+                Last scanned {timeAgo(site.last_crawl_at)} &middot; {formatDate(site.last_crawl_at)}
               </p>
             )}
             <p className="text-xs text-white/30 italic mt-2">
