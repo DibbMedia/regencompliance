@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar"
 import { DashboardHeader } from "@/components/layout/dashboard-header"
+import { HelpButton } from "@/components/help-button"
+import { NavigationProgress } from "@/components/navigation-progress"
+import { SessionTimeout } from "@/components/session-timeout"
 
 export default async function DashboardLayout({
   children,
@@ -37,6 +40,7 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
+      <NavigationProgress />
       <div className="flex min-h-screen w-full bg-[#0a0a0a]">
         <DashboardSidebar
           clinicName={profile?.clinic_name}
@@ -50,6 +54,8 @@ export default async function DashboardLayout({
           />
           <main className="flex-1 p-4 lg:p-6">{children}</main>
         </div>
+        <HelpButton />
+        <SessionTimeout />
       </div>
     </SidebarProvider>
   )

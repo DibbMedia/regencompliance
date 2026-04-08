@@ -5,7 +5,7 @@ import Link from "next/link"
 
 export const metadata = {
   title: "Privacy Policy — RegenCompliance",
-  description: "Privacy Policy for RegenCompliance, the FDA/FTC compliance scanner for regenerative medicine clinics.",
+  description: "Privacy Policy for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
 }
 
 export default function PrivacyPage() {
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
             <div>
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">1. Introduction</h2>
               <p className="text-[15px] text-white/70 leading-relaxed">
-                Dibb Enterprises LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), operating as RegenCompliance, provides an FDA/FTC compliance scanning platform for regenerative medicine clinics at{" "}
+                Dibb Enterprises LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), operating as RegenCompliance, provides an FDA/FTC compliance scanning platform for healthcare practices at{" "}
                 <span className="text-[#55E039]">compliance.regenportal.com</span>. This Privacy Policy describes how we collect, use, disclose, and protect your personal information when you use our website and services (collectively, the &quot;Service&quot;). By using the Service, you agree to the practices described in this policy.
               </p>
             </div>

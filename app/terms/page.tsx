@@ -5,7 +5,7 @@ import Link from "next/link"
 
 export const metadata = {
   title: "Terms of Service — RegenCompliance",
-  description: "Terms of Service for RegenCompliance, the FDA/FTC compliance scanner for regenerative medicine clinics.",
+  description: "Terms of Service for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
 }
 
 export default function TermsPage() {
@@ -45,7 +45,7 @@ export default function TermsPage() {
             <div>
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">2. Description of Service</h2>
               <p className="text-[15px] text-white/70 leading-relaxed mb-4">
-                RegenCompliance is an educational compliance scanning platform designed for regenerative medicine clinics. The Service analyzes user-submitted marketing text against a database of FDA and FTC compliance rules and generates compliance reports, scores, and AI-powered rewrite suggestions.
+                RegenCompliance is an educational compliance scanning platform designed for healthcare practices. The Service analyzes user-submitted marketing text against a database of FDA and FTC compliance rules and generates compliance reports, scores, and AI-powered rewrite suggestions.
               </p>
               <div className="rounded-xl bg-red-500/5 border border-red-500/15 p-5">
                 <p className="text-sm font-extrabold text-red-400 mb-2">IMPORTANT DISCLAIMER</p>

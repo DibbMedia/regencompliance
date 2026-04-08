@@ -7,6 +7,8 @@ import { anthropic } from "@/lib/anthropic"
 import { rewriteSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt, getComplianceBibleRewriteGuidance } from "@/lib/compliance-bible"
+import { trackApiUsage } from "@/lib/api-costs"
+import { captureError } from "@/lib/error-tracking"
 
 export async function POST(request: Request) {
   try {
@@ -87,6 +89,9 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
       messages: [{ role: "user", content: scan.original_text }],
     })
 
+    // Track API cost (non-blocking)
+    trackApiUsage(supabase, user.id, "/api/rewrite", "claude-4-sonnet-20250514", response)
+
     const rewrittenText = response.content[0].type === "text" ? response.content[0].text : ""
 
     // Update scan with rewrite
@@ -97,7 +102,7 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
 
     return NextResponse.json({ rewritten_text: rewrittenText })
   } catch (error) {
-    console.error("Rewrite error:", error)
+    captureError(error, { route: "/api/rewrite" })
     return NextResponse.json(
       { error: "Compliance engine temporarily unavailable." },
       { status: 503 }

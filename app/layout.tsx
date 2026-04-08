@@ -14,11 +14,11 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "RegenCompliance — FDA/FTC Compliance Scanner for Regenerative Medicine",
+    default: "RegenCompliance — FDA/FTC Compliance Scanner for Healthcare Marketing",
     template: "%s | RegenCompliance",
   },
   description:
-    "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for regenerative medicine clinics.",
+    "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for healthcare practices.",
   metadataBase: new URL("https://compliance.regenportal.com"),
   openGraph: {
     type: "website",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "RegenCompliance",
     title: "RegenCompliance — FDA/FTC Compliance Scanner",
     description:
-      "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for regenerative medicine clinics.",
+      "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for healthcare practices.",
     images: [
       {
         url: "/og-image.png",
@@ -43,6 +43,9 @@ export const metadata: Metadata = {
     description:
       "Scan your marketing content against live FDA/FTC enforcement data.",
     images: ["/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://compliance.regenportal.com",
   },
   robots: {
     index: true,
@@ -78,7 +81,7 @@ export default function RootLayout({
                 description: "Beta rate - $297/mo locked in for life",
               },
               description:
-                "FDA/FTC compliance scanner for regenerative medicine clinics",
+                "FDA/FTC compliance scanner for healthcare practices",
               url: "https://compliance.regenportal.com",
             }),
           }}

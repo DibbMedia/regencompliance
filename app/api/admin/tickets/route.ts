@@ -82,32 +82,51 @@ export async function PATCH(request: Request) {
     const { serviceClient } = auth
 
     const body = await request.json()
-    const { id, status } = body
+    const { id, status, priority } = body
 
-    if (!id || !status) {
+    if (!id) {
       return NextResponse.json(
-        { error: "Missing id or status" },
+        { error: "Missing ticket id" },
+        { status: 400 }
+      )
+    }
+
+    if (!status && !priority) {
+      return NextResponse.json(
+        { error: "Must provide status or priority to update" },
         { status: 400 }
       )
     }
 
     const validStatuses = ["open", "in_progress", "resolved", "closed"]
-    if (!validStatuses.includes(status)) {
+    if (status && !validStatuses.includes(status)) {
       return NextResponse.json(
         { error: "Invalid status" },
         { status: 400 }
       )
     }
 
+    const validPriorities = ["low", "normal", "medium", "high", "urgent"]
+    if (priority && !validPriorities.includes(priority)) {
+      return NextResponse.json(
+        { error: "Invalid priority" },
+        { status: 400 }
+      )
+    }
+
+    const updates: Record<string, string> = { updated_at: new Date().toISOString() }
+    if (status) updates.status = status
+    if (priority) updates.priority = priority
+
     const { data, error } = await serviceClient
       .from("support_tickets")
-      .update({ status, updated_at: new Date().toISOString() })
+      .update(updates)
       .eq("id", id)
       .select()
       .single()
 
     if (error) {
-      console.error("Ticket status update error:", error)
+      console.error("Ticket update error:", error)
       return NextResponse.json(
         { error: "Failed to update ticket" },
         { status: 500 }

@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Lock in $297/mo for life during beta. 25 founding member spots. Unlimited scans, full compliance library, 3 team seats.",
+    "FDA/FTC compliance scanner starting at $297/mo. Unlimited scans, AI rewrites, 300+ rules, weekly site monitoring for healthcare practices.",
 }
 
 export default function PricingLayout({

@@ -7,6 +7,9 @@ import { anthropic } from "@/lib/anthropic"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { extractPageContent } from "@/lib/site-crawler"
+import { trackApiUsage } from "@/lib/api-costs"
+import { hashContent } from "@/lib/scan-cache"
+import { captureError } from "@/lib/error-tracking"
 
 export async function POST(request: Request) {
   try {
@@ -61,6 +64,27 @@ export async function POST(request: Request) {
         { error: "Could not extract content from the URL. The page may be empty, blocked, or unreachable." },
         { status: 422 }
       )
+    }
+
+    // Check scan cache — skip Claude if identical content was scanned recently
+    const contentHash = hashContent(pageContent.text)
+    const { data: cached } = await supabase
+      .from("scans")
+      .select("*")
+      .eq("profile_id", profileId)
+      .eq("content_hash", contentHash)
+      .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single()
+
+    if (cached) {
+      return NextResponse.json({
+        ...cached,
+        summary: "Cached result — identical content was scanned recently.",
+        page_title: pageContent.title,
+        cached: true,
+      })
     }
 
     const startTime = Date.now()
@@ -127,6 +151,9 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: pageContent.text }],
     })
 
+    // Track API cost (non-blocking)
+    trackApiUsage(supabase, user.id, "/api/scan-url", "claude-haiku-4-5-20251001", response)
+
     const scanDuration = Date.now() - startTime
     const responseText = response.content[0].type === "text" ? response.content[0].text : ""
 
@@ -150,7 +177,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     const mediumCount = flags.filter((f: { risk_level: string }) => f.risk_level === "medium").length
     const lowCount = flags.filter((f: { risk_level: string }) => f.risk_level === "low").length
 
-    // Save scan with URL metadata
+    // Save scan with URL metadata and content hash for caching
     const { data: scan, error } = await supabase
       .from("scans")
       .insert({
@@ -166,6 +193,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
         low_risk_count: lowCount,
         scan_duration_ms: scanDuration,
         source_url: url,
+        content_hash: contentHash,
       })
       .select()
       .single()
@@ -181,7 +209,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       page_title: pageContent.title,
     })
   } catch (error) {
-    console.error("URL scan error:", error)
+    captureError(error, { route: "/api/scan-url" })
     return NextResponse.json(
       { error: "Compliance engine temporarily unavailable." },
       { status: 503 }

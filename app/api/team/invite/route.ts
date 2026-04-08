@@ -2,12 +2,18 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { inviteSchema } from "@/lib/validations"
+import { checkRateLimit } from "@/lib/rate-limit"
 import crypto from "crypto"
 
 export async function POST(request: Request) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+
+    if (user) {
+      const { allowed } = checkRateLimit(`invite:${user.id}`, 10, 60 * 60 * 1000)
+      if (!allowed) return NextResponse.json({ error: "Rate limit exceeded." }, { status: 429 })
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

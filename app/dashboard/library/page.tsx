@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { ComplianceRule } from "@/lib/types"
+import { HelpTooltip } from "@/components/ui/help-tooltip"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -67,7 +68,10 @@ export default function LibraryPage() {
     <div className="p-6 space-y-6">
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Reference</p>
-        <h2 className="text-2xl font-bold text-white">Compliance Library</h2>
+        <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+          Compliance Library
+          <HelpTooltip text="Browse all active compliance rules sourced from FDA warning letters and FTC enforcement actions." />
+        </h2>
         <p className="text-white/60 mt-1">
           Live database of FDA/FTC-flagged phrases. Updated automatically.
         </p>

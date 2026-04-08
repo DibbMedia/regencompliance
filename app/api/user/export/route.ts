@@ -2,14 +2,20 @@ import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { sendEmail } from "@/lib/email"
 import { dataExportEmail } from "@/lib/email-templates"
+import { checkRateLimit } from "@/lib/rate-limit"
+import { logAudit } from "@/lib/audit-log"
 
 export async function POST() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+
+  const { allowed } = checkRateLimit(`export:${user.id}`, 5, 24 * 60 * 60 * 1000)
+  if (!allowed) return NextResponse.json({ error: "Rate limit exceeded. Maximum 5 exports per day." }, { status: 429 })
 
   const serviceClient = createServiceClient()
 
@@ -49,6 +55,8 @@ export async function POST() {
     await sendEmail(user.email, template.subject, template.html)
   }
 
+  logAudit({ user_id: user.id, user_email: user.email, action: "data.exported", resource_type: "profile" })
+
   const jsonStr = JSON.stringify(exportData, null, 2)
 
   return new NextResponse(jsonStr, {
@@ -58,4 +66,8 @@ export async function POST() {
       "Content-Disposition": 'attachment; filename="regencompliance-data-export.json"',
     },
   })
+  } catch (error) {
+    console.error("[Export] Data export failed:", error)
+    return NextResponse.json({ error: "Export failed. Please try again." }, { status: 500 })
+  }
 }

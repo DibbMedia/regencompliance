@@ -7,6 +7,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import type { Scan, ScanFlag } from "@/lib/types"
 import Link from "next/link"
+import { ScoreExplainer } from "@/components/score-explainer"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -159,7 +160,10 @@ export default function ScanDetailPage() {
       {/* Header Card */}
       <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
         <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
-          <ScoreRing score={score} />
+          <div className="flex flex-col items-center gap-1">
+            <ScoreRing score={score} />
+            <ScoreExplainer score={score} />
+          </div>
           <div className="flex-1 min-w-0 sm:min-w-[200px]">
             <div className="flex items-center gap-2 mb-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white/10 bg-white/[0.04] text-white/50">

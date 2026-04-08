@@ -3,6 +3,7 @@ import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
 import { sendEmail } from "@/lib/email"
 import { welcomeEmail, betaWelcomeEmail, paymentFailedEmail, subscriptionCancelledEmail } from "@/lib/email-templates"
+import { logAudit } from "@/lib/audit-log"
 import type Stripe from "stripe"
 
 export async function POST(request: Request) {
@@ -27,6 +28,28 @@ export async function POST(request: Request) {
   // Log every webhook event for debugging
   console.log(`[Stripe Webhook] event=${event.type} id=${event.id}`)
 
+  // Idempotency: skip if this event was already processed
+  const { data: existingEvent } = await supabase
+    .from("webhook_events")
+    .select("event_id")
+    .eq("event_id", event.id)
+    .maybeSingle()
+
+  if (existingEvent) {
+    console.log(`[Stripe Webhook] Duplicate event ${event.id}, skipping`)
+    return NextResponse.json({ received: true, duplicate: true })
+  }
+
+  // Record event as processed (non-blocking)
+  supabase.from("webhook_events").insert({
+    event_id: event.id,
+    event_type: event.type,
+  }).then(({ error }) => {
+    if (error) console.error("[Webhook] Failed to record event:", error)
+  })
+
+  logAudit({ action: "stripe.webhook", resource_type: "stripe_event", resource_id: event.id, details: { event_type: event.type } })
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
@@ -44,7 +67,7 @@ export async function POST(request: Request) {
 
         if (isBeta) {
           // ─── BETA SUBSCRIPTION ($297/mo locked-in rate) ───
-          console.log(`[Stripe Webhook] Beta subscription checkout completed: customer=${customerId}`)
+          console.log(`[Stripe Webhook] Beta subscription checkout completed: customer=[redacted:${customerId.slice(-4)}]`)
 
           const subscriptionId = typeof session.subscription === "string"
             ? session.subscription
@@ -135,7 +158,7 @@ export async function POST(request: Request) {
             }
           } else {
             console.log(
-              `[Stripe Webhook] Beta subscription purchase recorded for ${customerEmail} — will be claimed on signup/login`
+              `[Stripe Webhook] Beta subscription purchase recorded for email=[redacted] — will be claimed on signup/login`
             )
           }
         } else {
@@ -150,7 +173,7 @@ export async function POST(request: Request) {
 
           const subscriptionId = session.subscription as string
 
-          console.log(`[Stripe Webhook] checkout.session.completed: customer=${customerId} subscription=${subscriptionId}`)
+          console.log(`[Stripe Webhook] checkout.session.completed: customer=[redacted:${customerId.slice(-4)}] subscription=${subscriptionId}`)
 
           // Try to find profile by stripe_customer_id
           let { data: checkoutProfile } = await supabase
@@ -161,7 +184,7 @@ export async function POST(request: Request) {
 
           // If no profile found, try to link by email
           if (!checkoutProfile) {
-            console.log(`[Stripe Webhook] No profile found by stripe_customer_id ${customerId}, trying email lookup...`)
+            console.log(`[Stripe Webhook] No profile found by stripe_customer_id [redacted:${customerId.slice(-4)}], trying email lookup...`)
 
             try {
               const stripeCustomer = await stripe.customers.retrieve(customerId)
@@ -172,7 +195,7 @@ export async function POST(request: Request) {
                 const authUser = authData?.users?.find((u) => u.email === email)
 
                 if (authUser) {
-                  console.log(`[Stripe Webhook] Found auth user ${authUser.id} by email ${email}, linking stripe_customer_id`)
+                  console.log(`[Stripe Webhook] Found auth user [redacted:${authUser.id.slice(-4)}] by email=[redacted], linking stripe_customer_id`)
 
                   await supabase
                     .from("profiles")
@@ -187,7 +210,7 @@ export async function POST(request: Request) {
 
                   checkoutProfile = linkedProfile
                 } else {
-                  console.error(`[Stripe Webhook] No auth user found for email ${email}`)
+                  console.error(`[Stripe Webhook] No auth user found for email=[redacted]`)
                 }
               }
             } catch (lookupErr) {
@@ -196,7 +219,7 @@ export async function POST(request: Request) {
           }
 
           if (!checkoutProfile) {
-            console.error(`[Stripe Webhook] checkout.session.completed: no profile found for customer ${customerId}`)
+            console.error(`[Stripe Webhook] checkout.session.completed: no profile found for customer=[redacted:${customerId.slice(-4)}]`)
             break
           }
 
@@ -244,7 +267,7 @@ export async function POST(request: Request) {
         }
 
         const customerId = subscription.customer as string
-        console.log(`[Stripe Webhook] customer.subscription.updated: customer=${customerId} status=${subscription.status}`)
+        console.log(`[Stripe Webhook] customer.subscription.updated: customer=[redacted:${customerId.slice(-4)}] status=${subscription.status}`)
 
         const { data: updatedProfile } = await supabase
           .from("profiles")
@@ -253,7 +276,7 @@ export async function POST(request: Request) {
           .maybeSingle()
 
         if (!updatedProfile) {
-          console.error(`[Stripe Webhook] customer.subscription.updated: no profile for customer ${customerId}`)
+          console.error(`[Stripe Webhook] customer.subscription.updated: no profile for customer=[redacted:${customerId.slice(-4)}]`)
           break
         }
 
@@ -278,7 +301,7 @@ export async function POST(request: Request) {
         }
 
         const customerId = subscription.customer as string
-        console.log(`[Stripe Webhook] customer.subscription.deleted: customer=${customerId}`)
+        console.log(`[Stripe Webhook] customer.subscription.deleted: customer=[redacted:${customerId.slice(-4)}]`)
 
         const { data: deletedProfile } = await supabase
           .from("profiles")
@@ -287,7 +310,7 @@ export async function POST(request: Request) {
           .maybeSingle()
 
         if (!deletedProfile) {
-          console.error(`[Stripe Webhook] customer.subscription.deleted: no profile for customer ${customerId}`)
+          console.error(`[Stripe Webhook] customer.subscription.deleted: no profile for customer=[redacted:${customerId.slice(-4)}]`)
           break
         }
 
@@ -331,7 +354,7 @@ export async function POST(request: Request) {
         }
 
         const customerId = invoice.customer as string
-        console.log(`[Stripe Webhook] invoice.payment_failed: customer=${customerId}`)
+        console.log(`[Stripe Webhook] invoice.payment_failed: customer=[redacted:${customerId.slice(-4)}]`)
 
         const { data: failedProfile } = await supabase
           .from("profiles")
@@ -340,7 +363,7 @@ export async function POST(request: Request) {
           .maybeSingle()
 
         if (!failedProfile) {
-          console.error(`[Stripe Webhook] invoice.payment_failed: no profile for customer ${customerId}`)
+          console.error(`[Stripe Webhook] invoice.payment_failed: no profile for customer=[redacted:${customerId.slice(-4)}]`)
           break
         }
 

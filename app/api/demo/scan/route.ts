@@ -7,6 +7,8 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { scanSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
+import { trackApiUsage } from "@/lib/api-costs"
+import { captureError } from "@/lib/error-tracking"
 
 const MAX_DEMO_SCANS = 3
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
@@ -138,6 +140,10 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: text }],
     })
 
+    // Track API cost (non-blocking) — use "demo" as user_id
+    const supabaseForTracking = createServiceClient()
+    trackApiUsage(supabaseForTracking, "00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
+
     const scanDuration = Date.now() - startTime
     const responseText = response.content[0].type === "text" ? response.content[0].text : ""
 
@@ -193,7 +199,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
 
     return res
   } catch (error) {
-    console.error("Demo scan error:", error)
+    captureError(error, { route: "/api/demo/scan" })
     return NextResponse.json(
       { error: "Compliance engine temporarily unavailable." },
       { status: 503 }

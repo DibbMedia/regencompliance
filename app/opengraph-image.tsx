@@ -116,7 +116,7 @@ export default async function Image() {
             textAlign: "center",
           }}
         >
-          FDA/FTC Compliance Scanner for Regenerative Medicine
+          FDA/FTC Compliance Scanner for Healthcare Practices
         </div>
 
         {/* Beta badge */}

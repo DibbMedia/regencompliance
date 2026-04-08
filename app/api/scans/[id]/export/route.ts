@@ -5,6 +5,8 @@ import ReactPDF from "@react-pdf/renderer"
 import { ScanPdfDocument } from "@/lib/pdf-template"
 import { isValidUUID } from "@/lib/validations"
 
+export const maxDuration = 30
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -40,10 +42,13 @@ export async function GET(
       .eq("id", profileId)
       .single()
 
+    const clinicName = profile?.clinic_name || "Unknown Clinic"
+    const scanDate = new Date(scan.created_at).toISOString().split("T")[0]
+
     const pdfStream = await ReactPDF.renderToStream(
       ScanPdfDocument({
         scan,
-        clinicName: profile?.clinic_name || "Unknown Clinic",
+        clinicName,
       })
     )
 
@@ -53,10 +58,12 @@ export async function GET(
     }
     const buffer = Buffer.concat(chunks)
 
+    const safeName = clinicName.replace(/[^a-zA-Z0-9]/g, "-").replace(/-+/g, "-").slice(0, 40)
+
     return new Response(buffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="compliance-scan.pdf"`,
+        "Content-Disposition": `attachment; filename="${safeName}-compliance-report-${scanDate}.pdf"`,
       },
     })
   } catch (error) {

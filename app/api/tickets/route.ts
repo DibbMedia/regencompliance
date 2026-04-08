@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { ticketCreateSchema, parsePagination } from "@/lib/validations"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function GET(request: Request) {
   try {
@@ -55,6 +56,9 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const { allowed } = checkRateLimit(`ticket:${user.id}`, 20, 60 * 60 * 1000)
+    if (!allowed) return NextResponse.json({ error: "Rate limit exceeded." }, { status: 429 })
 
     const profileId = await effectiveProfileId(user.id, supabase)
     const body = await request.json()

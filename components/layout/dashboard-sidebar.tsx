@@ -14,6 +14,9 @@ import {
   Users,
   Rss,
   Globe,
+  HelpCircle,
+  Award,
+  FileText,
 } from "lucide-react"
 import {
   Sidebar,
@@ -40,6 +43,8 @@ const navSections = [
       { title: "Scan History", href: "/dashboard/history", icon: Clock },
       { title: "Compliance Library", href: "/dashboard/library", icon: BookOpen },
       { title: "Sites", href: "/dashboard/sites", icon: Globe },
+      { title: "Templates", href: "/dashboard/templates", icon: FileText },
+      { title: "Badge", href: "/dashboard/badge", icon: Award },
     ],
   },
   {
@@ -55,6 +60,7 @@ const navSections = [
       { title: "Account & Billing", href: "/dashboard/account", icon: Settings },
       { title: "Team", href: "/dashboard/account/team", icon: Users },
       { title: "Support", href: "/dashboard/support", icon: LifeBuoy },
+      { title: "Help", href: "/dashboard/help", icon: HelpCircle },
     ],
   },
 ]

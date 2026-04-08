@@ -4,7 +4,7 @@ import { useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Shield, Loader2, Eye, EyeOff } from "lucide-react"
+import { Shield, Loader2, Eye, EyeOff, AlertCircle } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,13 +14,26 @@ import { createClient } from "@/lib/supabase/client"
 import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
 
+const ERROR_MESSAGES: Record<string, string> = {
+  auth: "Authentication failed. Please try again.",
+  auth_failed: "Authentication failed. Please try again.",
+  invite_email_mismatch: "The invite link does not match your email address.",
+  invite_expired: "This invite link has expired. Please request a new one.",
+  session_expired: "Your session expired due to inactivity. Please sign in again.",
+}
+
 function LoginContent() {
   const [mode, setMode] = useState<"login" | "signup">("login")
   const [loading, setLoading] = useState(false)
+  const [redirecting, setRedirecting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
+
+  const errorParam = searchParams.get("error")
+  const errorMessage = errorParam ? ERROR_MESSAGES[errorParam] || "An error occurred. Please try again." : null
 
   const loginForm = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -34,34 +47,90 @@ function LoginContent() {
 
   async function handleLogin(data: LoginInput) {
     setLoading(true)
+    setFormError(null)
+
+    // Check if account is locked
+    try {
+      const lockCheck = await fetch("/api/auth/check-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      })
+      const lockData = await lockCheck.json()
+      if (!lockData.allowed) {
+        setLoading(false)
+        setFormError("Account temporarily locked due to too many failed login attempts. Please try again in 30 minutes.")
+        return
+      }
+    } catch {
+      // Continue if check fails
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     })
-    setLoading(false)
 
     if (error) {
+      setLoading(false)
+      // Record failed attempt
+      fetch("/api/auth/check-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, success: false }),
+      }).catch(() => {})
+
       if (error.message.includes("Invalid login")) {
+        setFormError("Invalid email or password.")
         toast.error("Invalid email or password.")
       } else {
+        setFormError(error.message)
         toast.error(error.message)
       }
       return
     }
 
-    // Attempt to claim beta purchase if one exists for this email
+    // Clear failed attempts on success
+    fetch("/api/auth/check-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: data.email, success: true }),
+    }).catch(() => {})
+
+    // Check subscription status and show appropriate welcome message
     try {
-      await fetch("/api/beta/claim", { method: "POST" })
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("subscription_status")
+          .eq("id", user.id)
+          .maybeSingle()
+
+        if (profile?.subscription_status === "active") {
+          toast.success("Welcome back! Your subscription is active.")
+        } else {
+          toast.success("Signed in successfully!")
+        }
+      }
     } catch {
-      // Non-blocking — beta claim is best-effort
+      toast.success("Signed in successfully!")
     }
 
-    toast.success("Signed in successfully!")
+    // Attempt to claim beta purchase if one exists for this email (non-blocking)
+    try {
+      fetch("/api/beta/claim", { method: "POST" })
+    } catch {
+      // Non-blocking
+    }
+
+    setRedirecting(true)
     router.push("/dashboard/scanner")
   }
 
   async function handleSignup(data: SignupInput) {
     setLoading(true)
+    setFormError(null)
     const { error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
@@ -69,20 +138,40 @@ function LoginContent() {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
-    setLoading(false)
 
     if (error) {
+      setLoading(false)
       if (error.message.includes("already registered")) {
+        setFormError("An account with this email already exists. Try logging in.")
         toast.error("An account with this email already exists. Try logging in.")
       } else {
+        setFormError(error.message)
         toast.error(error.message)
       }
       return
     }
 
+    setLoading(false)
     toast.success("Account created! Check your email to verify, then log in.")
     setMode("login")
   }
+
+  if (redirecting) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-3 sm:px-4">
+        <MarketingBg />
+        <div className="relative flex flex-col items-center gap-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-lg shadow-[#55E039]/25">
+            <Shield className="h-5 w-5 text-white" />
+          </div>
+          <Loader2 className="h-6 w-6 animate-spin text-[#55E039]" />
+          <p className="text-sm text-white/60">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const isFormDisabled = loading || redirecting
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-3 sm:px-4">
@@ -110,10 +199,27 @@ function LoginContent() {
             </p>
           </div>
 
+          {/* URL param error banner */}
+          {errorMessage && (
+            <div className="flex items-start gap-2.5 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 mb-4">
+              <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+              <p className="text-sm text-red-400">{errorMessage}</p>
+            </div>
+          )}
+
+          {/* Inline form error */}
+          {formError && (
+            <div className="flex items-start gap-2.5 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 mb-4">
+              <AlertCircle className="h-4 w-4 text-red-400 mt-0.5 shrink-0" />
+              <p className="text-sm text-red-400">{formError}</p>
+            </div>
+          )}
+
           {/* Tab toggle */}
           <div className="flex mb-6 rounded-lg bg-white/[0.03] border border-white/10 p-1">
             <button
-              onClick={() => setMode("login")}
+              onClick={() => { setMode("login"); setFormError(null) }}
+              disabled={isFormDisabled}
               className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
                 mode === "login" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
               }`}
@@ -121,7 +227,8 @@ function LoginContent() {
               Log In
             </button>
             <button
-              onClick={() => setMode("signup")}
+              onClick={() => { setMode("signup"); setFormError(null) }}
+              disabled={isFormDisabled}
               className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
                 mode === "signup" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
               }`}
@@ -143,6 +250,7 @@ function LoginContent() {
                         <Input
                           type="email"
                           placeholder="you@yourclinic.com"
+                          disabled={isFormDisabled}
                           className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
                           {...field}
                         />
@@ -162,6 +270,7 @@ function LoginContent() {
                           <Input
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
+                            disabled={isFormDisabled}
                             className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 pr-10"
                             {...field}
                           />
@@ -181,10 +290,16 @@ function LoginContent() {
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-bold shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110"
-                  disabled={loading}
+                  disabled={isFormDisabled}
                 >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Sign In
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </form>
             </Form>
@@ -201,6 +316,7 @@ function LoginContent() {
                         <Input
                           type="email"
                           placeholder="you@yourclinic.com"
+                          disabled={isFormDisabled}
                           className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
                           {...field}
                         />
@@ -220,6 +336,7 @@ function LoginContent() {
                           <Input
                             type={showPassword ? "text" : "password"}
                             placeholder="At least 8 characters"
+                            disabled={isFormDisabled}
                             className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 pr-10"
                             {...field}
                           />
@@ -246,6 +363,7 @@ function LoginContent() {
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder="Confirm your password"
+                          disabled={isFormDisabled}
                           className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
                           {...field}
                         />
@@ -257,10 +375,16 @@ function LoginContent() {
                 <Button
                   type="submit"
                   className="w-full bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-bold shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110"
-                  disabled={loading}
+                  disabled={isFormDisabled}
                 >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Create Account
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
                 </Button>
               </form>
             </Form>
@@ -272,19 +396,6 @@ function LoginContent() {
             </Link>
           </div>
         </div>
-
-        {searchParams.get("subscribed") === "true" && (
-          <p className="text-center text-sm text-[#55E039] mt-4">
-            Payment received! Create your account or log in to get started.
-          </p>
-        )}
-        {searchParams.get("beta") === "true" && (
-          <div className="text-center mt-4 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-3">
-            <p className="text-sm text-[#55E039] font-semibold">
-              Beta access purchased! Log in or create your account to activate your beta subscription.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   )

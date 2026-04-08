@@ -17,8 +17,10 @@ import {
   FileSearch,
   ArrowUpDown,
   Filter,
+  Download,
 } from "lucide-react"
 import { toast } from "sonner"
+import { ScoreExplainer } from "@/components/score-explainer"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -243,7 +245,12 @@ export default function SiteDetailPage() {
       {/* Header Card */}
       <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_0_30px_rgba(85,224,57,0.05)]">
         <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
-          <ScoreRing score={site.compliance_score} />
+          <div className="flex flex-col items-center gap-1">
+            <ScoreRing score={site.compliance_score} />
+            {site.compliance_score !== null && (
+              <ScoreExplainer score={site.compliance_score} />
+            )}
+          </div>
           <div className="flex-1 min-w-0 sm:min-w-[200px]">
             <h2 className="text-xl font-bold text-white mb-1">
               {site.name || site.domain}
@@ -267,7 +274,7 @@ export default function SiteDetailPage() {
               Automated compliance monitoring is educational guidance only, not a substitute for legal review.
             </p>
           </div>
-          <div className="flex gap-2 shrink-0">
+          <div className="flex flex-wrap gap-2 shrink-0">
             <button
               onClick={handleScanAll}
               disabled={scanning}
@@ -285,6 +292,13 @@ export default function SiteDetailPage() {
                 </>
               )}
             </button>
+            <a
+              href={`/api/sites/${id}/export`}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all duration-300"
+            >
+              <Download className="h-4 w-4" />
+              Export Site Report
+            </a>
             <button
               onClick={() => setShowRemoveConfirm(true)}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-red-500/20 bg-red-500/[0.04] text-red-400 text-sm font-medium hover:bg-red-500/[0.08] hover:border-red-500/30 transition-all duration-300"

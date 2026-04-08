@@ -4,6 +4,9 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { anthropic } from "@/lib/anthropic"
 import { getComplianceBiblePrompt, getComplianceBibleRewriteGuidance } from "@/lib/compliance-bible"
+import { createServiceClient } from "@/lib/supabase/server"
+import { trackApiUsage } from "@/lib/api-costs"
+import { captureError } from "@/lib/error-tracking"
 
 export async function POST(request: Request) {
   try {
@@ -53,11 +56,15 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
       messages: [{ role: "user", content: original_text }],
     })
 
+    // Track API cost (non-blocking) — use demo UUID as user_id
+    const supabase = createServiceClient()
+    trackApiUsage(supabase, "00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-4-sonnet-20250514", response)
+
     const rewrittenText = response.content[0].type === "text" ? response.content[0].text : ""
 
     return NextResponse.json({ rewritten_text: rewrittenText })
   } catch (error) {
-    console.error("Demo rewrite error:", error)
+    captureError(error, { route: "/api/demo/rewrite" })
     return NextResponse.json(
       { error: "Compliance engine temporarily unavailable." },
       { status: 503 }

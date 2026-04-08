@@ -20,6 +20,8 @@ import {
   Minus,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { GettingStartedChecklist } from "@/components/getting-started-checklist"
+import { TutorialModal } from "@/components/tutorial-modal"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -309,6 +311,8 @@ export default function DashboardPage() {
   const supabase = createClient()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [showTutorial, setShowTutorial] = useState(false)
+  const [onboardingChecklist, setOnboardingChecklist] = useState<Record<string, boolean> | null>(null)
 
   // Fetch trends data via SWR
   const { data: trends } = useSWR<TrendsData>("/api/compliance-trends", fetcher, {
@@ -353,6 +357,25 @@ export default function DashboardPage() {
           lastScanDate,
           recentScans: allScans.slice(0, 5),
         })
+
+        // Fetch onboarding checklist
+        try {
+          const checklistRes = await fetch("/api/onboarding-checklist")
+          if (checklistRes.ok) {
+            const checklistData = await checklistRes.json()
+            setOnboardingChecklist(checklistData.checklist)
+            // Show tutorial for brand new users
+            if (
+              totalScans === 0 &&
+              !checklistData.checklist.tutorial_completed &&
+              !checklistData.checklist.dismissed
+            ) {
+              setShowTutorial(true)
+            }
+          }
+        } catch {
+          // silent
+        }
       } catch {
         // fail silently
       } finally {
@@ -393,8 +416,35 @@ export default function DashboardPage() {
   const trendDirection = improvement > 2 ? "up" : improvement < -2 ? "down" : "stable"
   const last7Avg = trends?.last_7_day_avg ?? data?.avgScore ?? 0
 
+  const showChecklist =
+    onboardingChecklist &&
+    !onboardingChecklist.dismissed &&
+    !(
+      onboardingChecklist.first_scan &&
+      onboardingChecklist.review_score &&
+      onboardingChecklist.try_rewrite &&
+      onboardingChecklist.add_site &&
+      onboardingChecklist.invite_team &&
+      onboardingChecklist.explore_library
+    )
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
+      {/* Tutorial Modal */}
+      {showTutorial && (
+        <TutorialModal
+          onComplete={() => {
+            setShowTutorial(false)
+            setOnboardingChecklist((prev) => prev ? { ...prev, tutorial_completed: true } : prev)
+          }}
+        />
+      )}
+
+      {/* Getting Started Checklist */}
+      {showChecklist && (
+        <GettingStartedChecklist initialChecklist={onboardingChecklist} />
+      )}
+
       {/* Welcome Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>

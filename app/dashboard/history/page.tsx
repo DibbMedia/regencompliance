@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { Scan } from "@/lib/types"
+import { HelpTooltip } from "@/components/ui/help-tooltip"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -84,7 +85,10 @@ export default function HistoryPage() {
     <div className="p-6 space-y-6">
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Records</p>
-        <h2 className="text-2xl font-bold text-white">Scan History</h2>
+        <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+          Scan History
+          <HelpTooltip text="All your past compliance scans with scores, flags, and export options." />
+        </h2>
         <p className="text-white/60 mt-1">View and manage all past compliance scans.</p>
       </div>
 

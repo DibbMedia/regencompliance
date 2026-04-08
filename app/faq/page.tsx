@@ -35,11 +35,11 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "What is RegenCompliance?",
-        a: "RegenCompliance is a specialized FDA/FTC compliance scanning platform built exclusively for regenerative medicine clinics. It analyzes your marketing content — website copy, social media posts, ads, emails, scripts, and more — against a database of over 300 compliance rules derived from real FDA warning letters and FTC enforcement actions. The platform flags non-compliant language and generates compliant alternative wording with a single click.",
+        a: "RegenCompliance is a specialized FDA/FTC compliance scanning platform built for healthcare practices of all types. It analyzes your marketing content — website copy, social media posts, ads, emails, scripts, and more — against a database of over 300 compliance rules derived from real FDA warning letters and FTC enforcement actions. The platform flags non-compliant language and generates compliant alternative wording with a single click.",
       },
       {
         q: "Who is RegenCompliance designed for?",
-        a: "RegenCompliance is built specifically for regenerative medicine clinics offering treatments such as PRP (platelet-rich plasma), stem cell therapy, exosomes, BMAC (bone marrow aspirate concentrate), Wharton's jelly, prolotherapy, and peptide therapy. It is used by clinic owners, marketing managers, content writers, and front desk staff who create or review patient-facing marketing content. If your clinic offers any regenerative or biologic treatment and you produce marketing materials, RegenCompliance is built for you.",
+        a: "RegenCompliance is built for any healthcare practice that markets FDA/FTC-regulated treatments. This includes regenerative medicine clinics (PRP, stem cells, exosomes, BMAC, prolotherapy, peptides), med spas (Botox, dermal fillers, laser treatments), dental practices (implants, cosmetic dentistry), plastic surgery, dermatology, weight loss clinics, chiropractic offices, IV therapy lounges, and wellness centers. It is used by practice owners, marketing managers, content writers, and front desk staff who create or review patient-facing marketing content. If your practice markets health outcomes to patients, RegenCompliance is built for you.",
       },
       {
         q: "Is RegenCompliance a replacement for legal counsel?",
@@ -47,7 +47,7 @@ const faqCategories: FaqCategory[] = [
       },
       {
         q: "How is this different from a generic AI writing tool?",
-        a: "Generic AI tools like ChatGPT have no awareness of FDA or FTC regulations specific to regenerative medicine. They will happily write marketing copy that includes drug claims, unapproved efficacy statements, and misleading testimonials — all of which violate federal law. RegenCompliance is purpose-built with a ruleset derived from actual enforcement actions against regen clinics. It knows that 'FDA-approved stem cells' is a false claim, that 'cures arthritis' is an unapproved drug claim, and that 'reverses aging' triggers FTC scrutiny. No generic tool has this specialized knowledge.",
+        a: "Generic AI tools like ChatGPT have no awareness of FDA or FTC regulations specific to healthcare marketing. They will happily write marketing copy that includes drug claims, unapproved efficacy statements, and misleading testimonials — all of which violate federal law. RegenCompliance is purpose-built with a ruleset derived from actual enforcement actions against healthcare practices. It knows that 'FDA-approved stem cells' is a false claim, that 'cures arthritis' is an unapproved drug claim, that 'guaranteed weight loss' triggers FTC scrutiny, and that 'painless dental implants' is a misleading safety claim. No generic tool has this specialized knowledge.",
       },
     ],
   },
@@ -57,15 +57,15 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "What types of compliance violations does the scanner detect?",
-        a: "The scanner detects a wide range of FDA and FTC violations common in regenerative medicine marketing. This includes unapproved drug claims (e.g., 'heals,' 'cures,' 'treats'), false FDA status claims (e.g., 'FDA-approved stem cells'), misleading efficacy claims (e.g., 'proven to reverse aging'), improper testimonial use (patient stories that imply guaranteed outcomes), comparative claims without substantiation (e.g., 'better than surgery'), and structure/function claims that cross into drug claim territory. Each flagged violation includes the specific regulatory basis — whether from an FDA warning letter, FTC enforcement action, or CBER guidance document.",
+        a: "The scanner detects a wide range of FDA and FTC violations common in healthcare marketing. This includes unapproved drug claims (e.g., 'heals,' 'cures,' 'treats'), false FDA status claims (e.g., 'FDA-approved stem cells'), misleading efficacy claims (e.g., 'proven to reverse aging,' 'guaranteed weight loss'), improper testimonial use (patient stories that imply guaranteed outcomes), comparative claims without substantiation (e.g., 'better than surgery'), and structure/function claims that cross into drug claim territory. These rules apply across all practice types — regenerative medicine, med spas, dental, dermatology, weight loss, plastic surgery, and more. Each flagged violation includes the specific regulatory basis — whether from an FDA warning letter, FTC enforcement action, or CBER guidance document.",
       },
       {
         q: "How current is the compliance database?",
-        a: "The database is updated daily. Our system monitors FDA.gov for new warning letters, FTC.gov for enforcement actions and press releases, and state medical board websites for updated advertising guidance every morning. When a new enforcement action is relevant to regenerative medicine marketing, the specific language violations are extracted and added to the compliance database within 24 hours. This means you are always scanning against the most current regulatory landscape available, not a static ruleset that was compiled months ago.",
+        a: "The database is updated daily. Our system monitors FDA.gov for new warning letters, FTC.gov for enforcement actions and press releases, and state medical board websites for updated advertising guidance every morning. When a new enforcement action is relevant to healthcare marketing, the specific language violations are extracted and added to the compliance database within 24 hours. This means you are always scanning against the most current regulatory landscape available, not a static ruleset that was compiled months ago.",
       },
       {
         q: "Does RegenCompliance cover state-level regulations?",
-        a: "Our primary focus is federal FDA and FTC regulations, as these carry the highest enforcement risk and apply nationwide. However, we also incorporate guidance from state medical boards where they have published specific advertising rules for regenerative medicine. State-level rules vary significantly, and we continue to expand our state coverage. If your state has specific advertising regulations for regenerative treatments that are not yet in our database, contact us and we will prioritize adding them.",
+        a: "Our primary focus is federal FDA and FTC regulations, as these carry the highest enforcement risk and apply nationwide. However, we also incorporate guidance from state medical boards where they have published specific advertising rules for healthcare treatments. State-level rules vary significantly, and we continue to expand our state coverage. If your state has specific advertising regulations for healthcare treatments that are not yet in our database, contact us and we will prioritize adding them.",
       },
       {
         q: "What is the difference between a drug claim and a structure/function claim?",
@@ -83,7 +83,7 @@ const faqCategories: FaqCategory[] = [
       },
       {
         q: "How does the AI Rewriter work?",
-        a: "When the scanner flags a violation, the AI Rewriter generates compliant alternative language with one click. The rewriter is specifically trained on FDA/FTC enforcement language and compliant marketing examples from regenerative medicine practices. It preserves your clinic's voice and messaging while removing regulatory risk. Each rewrite includes an explanation of why the original language was problematic and what compliance principle the new language satisfies. You can accept the rewrite as-is, manually edit it, or request a different alternative. Over time, your team learns the compliance reasoning behind each change.",
+        a: "When the scanner flags a violation, the AI Rewriter generates compliant alternative language with one click. The rewriter is specifically trained on FDA/FTC enforcement language and compliant marketing examples from healthcare practices across all specialties. It preserves your clinic's voice and messaging while removing regulatory risk. Each rewrite includes an explanation of why the original language was problematic and what compliance principle the new language satisfies. You can accept the rewrite as-is, manually edit it, or request a different alternative. Over time, your team learns the compliance reasoning behind each change.",
       },
       {
         q: "Is there a limit on how many scans I can run?",
@@ -168,7 +168,7 @@ export default function FaqPage() {
             <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">to know.</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-            Detailed answers to the most common questions about RegenCompliance, our compliance scanner, billing, security, and how the platform works for your clinic.
+            Detailed answers to the most common questions about RegenCompliance, our compliance scanner, billing, security, and how the platform works for your practice.
           </p>
         </div>
       </section>

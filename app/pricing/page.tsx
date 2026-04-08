@@ -34,12 +34,12 @@ const includedFeatures = [
   { icon: Clock, title: "Complete Audit Trail + PDF Export", desc: "Every scan permanently logged with timestamps, scores, and full reports. Export PDF or CSV for legal documentation." },
   { icon: Users, title: "3 Team Seats Included", desc: "Give access to your marketing manager, content writer, and clinic owner — shared history under one account." },
   { icon: Lock, title: "Zero Patient Data Exposure", desc: "We analyze marketing text only. No PHI, no patient records, no clinical data. Zero HIPAA implications whatsoever." },
-  { icon: ShieldCheck, title: "Real-Time Enforcement Alerts", desc: "Get notified when significant new FDA or FTC enforcement actions impact regenerative medicine marketing rules." },
+  { icon: ShieldCheck, title: "Real-Time Enforcement Alerts", desc: "Get notified when significant new FDA or FTC enforcement actions impact healthcare marketing rules." },
 ]
 
 const comparisonRows = [
   { feature: "FDA/FTC compliance scanning", us: true, attorney: true, diy: false },
-  { feature: "Regen-medicine-specific rules", us: true, attorney: "Varies", diy: false },
+  { feature: "Healthcare-specific compliance rules", us: true, attorney: "Varies", diy: false },
   { feature: "AI-powered compliant rewrites", us: true, attorney: false, diy: false },
   { feature: "300+ active compliance rules", us: true, attorney: false, diy: false },
   { feature: "Daily rule updates", us: true, attorney: false, diy: false },
@@ -337,7 +337,7 @@ export default function PricingPage() {
               We are confident that once you scan your actual marketing content, you will find violations you did not know you had. If you sign up, run scans on your content, and do not find the tool valuable within 30 days, we will refund your payment in full. No forms to fill out, no hoops to jump through, no retention scripts. Just email us and the refund is processed.
             </p>
             <p className="text-sm text-white/40 leading-relaxed max-w-lg mx-auto">
-              We can offer this guarantee because the data speaks for itself. The average first scan on a regenerative medicine clinic&apos;s website finds 12 to 25 compliance violations. Most clinic owners are shocked at how much risk is sitting on their homepage right now. We want you to experience that moment yourself, risk-free.
+              We can offer this guarantee because the data speaks for itself. The average first scan on a healthcare practice&apos;s website finds 12 to 25 compliance violations. Most practice owners are shocked at how much risk is sitting on their homepage right now. We want you to experience that moment yourself, risk-free.
             </p>
           </div>
         </div>

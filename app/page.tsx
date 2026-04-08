@@ -57,7 +57,7 @@ const faqs = [
   { q: "Is this actual legal advice?", a: "No. RegenCompliance is an educational compliance tool. We strongly recommend having all final content reviewed by qualified healthcare marketing counsel." },
   { q: "Does this access any patient data?", a: "Never. We analyze marketing text only — no PHI, no patient records, no clinical data. Zero HIPAA implications." },
   { q: "How are rules updated?", a: "Daily. Our system monitors FDA warning letters and FTC press releases every morning. New enforcement actions are processed and added automatically." },
-  { q: "Who is this for?", a: "Regenerative medicine clinics offering PRP, stem cell therapy, exosomes, BMAC, Wharton's jelly, prolotherapy, and peptide therapy." },
+  { q: "Who is this for?", a: "Any healthcare practice marketing FDA/FTC-regulated treatments — regenerative medicine clinics, med spas, dental practices, plastic surgery, dermatology, weight loss clinics, chiropractic, wellness centers, and more. If you market health outcomes, you need compliance scanning." },
   { q: "What if I cancel?", a: "You keep full access through your billing period. No contracts, no fees, no penalties. Resubscribe anytime." },
 ]
 
@@ -77,7 +77,7 @@ export default function LandingPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-[#55E039]/10 border border-[#55E039]/20 px-4 py-2 text-xs font-semibold text-[#55E039] mb-8 shadow-[0_0_20px_rgba(85,224,57,0.1)]">
               <ShieldCheck className="h-3.5 w-3.5" />
-              FDA/FTC Compliance for Regenerative Medicine
+              FDA/FTC Compliance for Healthcare Practices
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl lg:text-[4.25rem] font-extrabold tracking-tight leading-[1.08]">
               Scan your content
@@ -85,7 +85,7 @@ export default function LandingPage() {
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">before regulators do.</span>
             </h1>
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
-              FDA and FTC enforcement against regen clinics hit a 25-year high. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
+              FDA and FTC enforcement against healthcare practices hit a 25-year high — from regenerative medicine to med spas, dental, dermatology, and beyond. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
@@ -220,7 +220,7 @@ export default function LandingPage() {
             <p className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] mb-4 flex items-center justify-center gap-2">
               <AlertTriangle className="h-3.5 w-3.5" /> Enforcement at all-time high
             </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The FDA and FTC are actively targeting regen clinics.</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The FDA and FTC are actively targeting healthcare practices — especially regenerative medicine, med spas, and aesthetics.</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
             {[

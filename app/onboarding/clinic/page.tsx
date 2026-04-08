@@ -69,12 +69,13 @@ export default function OnboardingClinicPage() {
       .update({ clinic_name: clinicName, ...(logoUrl && { logo_url: logoUrl }) })
       .eq("id", user.id)
 
-    setLoading(false)
     if (error) {
+      setLoading(false)
       toast.error("Failed to save. Please try again.")
       return
     }
 
+    toast.success("Clinic saved! Setting up treatments...")
     router.push("/onboarding/treatments")
   }
 
@@ -109,7 +110,8 @@ export default function OnboardingClinicPage() {
               onChange={(e) => setClinicName(e.target.value)}
               placeholder="e.g. Rejuve Wellness Center"
               required
-              className="w-full h-11 rounded-xl bg-white/[0.03] border border-white/10 px-4 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#55E039]/30 focus:ring-1 focus:ring-[#55E039]/20 transition-all"
+              disabled={loading}
+              className="w-full h-11 rounded-xl bg-white/[0.03] border border-white/10 px-4 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-[#55E039]/30 focus:ring-1 focus:ring-[#55E039]/20 transition-all disabled:opacity-50"
             />
           </div>
 
@@ -126,12 +128,13 @@ export default function OnboardingClinicPage() {
                   dragOver
                     ? "border-[#55E039]/40 bg-[#55E039]/5"
                     : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
-                }`}
+                } ${loading ? "pointer-events-none opacity-50" : ""}`}
               >
                 <input
                   type="file"
                   accept="image/png,image/jpeg,image/webp"
                   onChange={handleFileChange}
+                  disabled={loading}
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
                 <Upload className={`h-8 w-8 mb-3 ${dragOver ? "text-[#55E039]" : "text-white/20"}`} />
@@ -150,6 +153,7 @@ export default function OnboardingClinicPage() {
                 <button
                   type="button"
                   onClick={() => { setLogoFile(null); setLogoPreview(null) }}
+                  disabled={loading}
                   className="text-xs text-white/30 hover:text-red-400 transition-colors"
                 >
                   Remove
@@ -164,7 +168,10 @@ export default function OnboardingClinicPage() {
             className="w-full h-12 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-semibold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Saving...</span>
+              </>
             ) : (
               <>
                 Continue

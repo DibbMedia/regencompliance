@@ -20,6 +20,7 @@ const TREATMENTS = [
 export default function OnboardingTreatmentsPage() {
   const [selected, setSelected] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [redirecting, setRedirecting] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
@@ -44,13 +45,26 @@ export default function OnboardingTreatmentsPage() {
       .update(updates)
       .eq("id", user.id)
 
-    setLoading(false)
     if (error) {
+      setLoading(false)
       toast.error("Failed to save. Please try again.")
       return
     }
 
+    setRedirecting(true)
+    toast.success("Setup complete! Setting up your dashboard...")
     router.push("/dashboard/scanner")
+  }
+
+  const isDisabled = loading || redirecting
+
+  if (redirecting) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-[#55E039]" />
+        <p className="text-sm text-white/60">Setting up your dashboard...</p>
+      </div>
+    )
   }
 
   return (
@@ -82,7 +96,8 @@ export default function OnboardingTreatmentsPage() {
                 key={t.slug}
                 type="button"
                 onClick={() => toggleTreatment(t.slug)}
-                className={`relative flex items-center gap-2.5 rounded-xl border p-4 sm:p-3.5 min-h-[48px] text-left transition-all duration-200 ${
+                disabled={isDisabled}
+                className={`relative flex items-center gap-2.5 rounded-xl border p-4 sm:p-3.5 min-h-[48px] text-left transition-all duration-200 disabled:opacity-50 ${
                   isSelected
                     ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039]"
                     : "bg-white/[0.02] border-white/10 text-white/50 hover:bg-white/[0.04] hover:border-white/15 hover:text-white/70"
@@ -107,12 +122,15 @@ export default function OnboardingTreatmentsPage() {
         )}
 
         <button
-          disabled={loading || selected.length === 0}
+          disabled={isDisabled || selected.length === 0}
           onClick={() => handleFinish(false)}
           className="w-full h-12 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-semibold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Finishing setup...</span>
+            </>
           ) : (
             <>
               <Sparkles className="h-4 w-4" />
@@ -125,7 +143,7 @@ export default function OnboardingTreatmentsPage() {
           type="button"
           className="w-full mt-3 text-center text-sm text-white/30 hover:text-white/50 transition-colors py-2"
           onClick={() => handleFinish(true)}
-          disabled={loading}
+          disabled={isDisabled}
         >
           Skip for now
         </button>

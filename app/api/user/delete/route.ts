@@ -3,12 +3,15 @@ import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { stripe } from "@/lib/stripe"
 import { sendEmail } from "@/lib/email"
 import { accountDeletedEmail } from "@/lib/email-templates"
+import { logAudit, getRequestMeta } from "@/lib/audit-log"
 
 export async function POST(request: Request) {
+  const { ip, userAgent } = getRequestMeta(request)
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
+    logAudit({ action: "account.delete.attempt", status: "failure", details: { reason: "unauthenticated" }, ip_address: ip, user_agent: userAgent })
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -63,6 +66,9 @@ export async function POST(request: Request) {
       await serviceClient.from("support_tickets").delete().eq("profile_id", user.id)
     }
 
+    // 3b. Delete API usage records
+    await serviceClient.from("api_usage").delete().eq("user_id", user.id)
+
     // 4. Delete all user's notifications
     await serviceClient.from("notifications").delete().eq("profile_id", user.id)
 
@@ -84,9 +90,11 @@ export async function POST(request: Request) {
       await sendEmail(userEmail, template.subject, template.html)
     }
 
+    logAudit({ user_id: user.id, user_email: user.email, action: "account.deleted", details: { clinic_name: clinicName }, ip_address: ip, user_agent: userAgent })
     return NextResponse.json({ success: true, message: "Account and all data deleted." })
   } catch (error) {
     console.error("[Delete] Account deletion failed:", error)
+    logAudit({ user_id: user.id, user_email: user.email, action: "account.delete.failed", status: "error", ip_address: ip, user_agent: userAgent })
     return NextResponse.json({ error: "Account deletion failed. Please contact support." }, { status: 500 })
   }
 }

@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
+import { HelpTooltip } from "@/components/ui/help-tooltip"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -165,7 +166,10 @@ export default function SitesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Site Monitoring</p>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2 inline-flex items-center gap-2">
+            Site Monitoring
+            <HelpTooltip text="Add your clinic website to receive weekly automated compliance scans with per-page scoring." />
+          </p>
           <h2 className="text-2xl font-bold text-white">Monitored Sites</h2>
           <p className="text-white/60 mt-1">Monitor your clinic websites for compliance issues. Weekly automated scans.</p>
           <p className="text-xs text-white/30 italic mt-2">

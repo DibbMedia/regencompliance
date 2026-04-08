@@ -7,6 +7,9 @@ import { anthropic } from "@/lib/anthropic"
 import { scanSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
+import { trackApiUsage } from "@/lib/api-costs"
+import { hashContent } from "@/lib/scan-cache"
+import { captureError } from "@/lib/error-tracking"
 
 export async function POST(request: Request) {
   try {
@@ -44,6 +47,27 @@ export async function POST(request: Request) {
     }
 
     const { text, content_type } = parsed.data
+
+    // Check scan cache — skip Claude if identical content was scanned recently
+    const contentHash = hashContent(text)
+    const { data: cached } = await supabase
+      .from("scans")
+      .select("*")
+      .eq("profile_id", profileId)
+      .eq("content_hash", contentHash)
+      .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single()
+
+    if (cached) {
+      return NextResponse.json({
+        ...cached,
+        summary: "Cached result — identical content was scanned recently.",
+        cached: true,
+      })
+    }
+
     const startTime = Date.now()
 
     // Fetch active compliance rules
@@ -110,6 +134,9 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: text }],
     })
 
+    // Track API cost (non-blocking)
+    trackApiUsage(supabase, user.id, "/api/scan", "claude-haiku-4-5-20251001", response)
+
     const scanDuration = Date.now() - startTime
     const responseText = response.content[0].type === "text" ? response.content[0].text : ""
 
@@ -133,7 +160,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     const mediumCount = flags.filter((f: { risk_level: string }) => f.risk_level === "medium").length
     const lowCount = flags.filter((f: { risk_level: string }) => f.risk_level === "low").length
 
-    // Save scan
+    // Save scan with content hash for caching
     const { data: scan, error } = await supabase
       .from("scans")
       .insert({
@@ -148,6 +175,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
         medium_risk_count: mediumCount,
         low_risk_count: lowCount,
         scan_duration_ms: scanDuration,
+        content_hash: contentHash,
       })
       .select()
       .single()
@@ -162,7 +190,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       summary: scanResult.summary,
     })
   } catch (error) {
-    console.error("Scan error:", error)
+    captureError(error, { route: "/api/scan" })
     return NextResponse.json(
       { error: "Compliance engine temporarily unavailable." },
       { status: 503 }

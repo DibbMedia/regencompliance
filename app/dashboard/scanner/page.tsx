@@ -5,11 +5,13 @@ import { useSearchParams } from "next/navigation"
 import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2, Upload, X } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { HelpTooltip } from "@/components/ui/help-tooltip"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { ScanFlag } from "@/lib/types"
+import { ScoreExplainer } from "@/components/score-explainer"
 
 const CONTENT_TYPES = [
   { value: "website_copy", label: "Website", icon: FileText },
@@ -337,7 +339,10 @@ export default function ScannerPage() {
       <div className="lg:col-span-3 space-y-6">
         <div>
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
-          <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
+          <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+            Compliance Scanner
+            <HelpTooltip text="Paste any marketing content to check it against FDA/FTC compliance rules. Results are educational guidance, not legal advice." />
+          </h2>
           <p className="text-white/60 mt-1">
             Paste content, scan a URL, or upload a file to check against current FDA/FTC guidelines.
           </p>
@@ -682,7 +687,13 @@ export default function ScannerPage() {
 
             {/* Score Card */}
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6 flex flex-col items-center shadow-[0_0_30px_rgba(85,224,57,0.05)]">
-              <ScoreRing score={result.compliance_score} animate={scoreAnimated} />
+              <div className="relative">
+                <ScoreRing score={result.compliance_score} animate={scoreAnimated} />
+                <div className="absolute -top-1 -right-1">
+                  <HelpTooltip text="Scores above 80 are generally low risk. Below 50 indicates multiple high-risk violations that should be addressed." />
+                </div>
+              </div>
+              <ScoreExplainer score={result.compliance_score} />
               <p className="mt-4 text-sm text-center text-white/60 leading-relaxed max-w-xs">
                 {result.summary}
               </p>

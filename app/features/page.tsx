@@ -84,7 +84,7 @@ export default function FeaturesPage() {
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">stay compliant.</span>
             </h1>
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
-              RegenCompliance combines real-time scanning, AI-powered rewrites, and a living compliance library into a single platform built exclusively for regenerative medicine clinics.
+              RegenCompliance combines real-time scanning, AI-powered rewrites, and a living compliance library into a single platform purpose-built for healthcare marketing compliance — from regenerative medicine and med spas to dental, dermatology, weight loss, and beyond.
             </p>
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function FeaturesPage() {
                 Finding compliance violations is only half the problem. The real challenge is rewriting flagged content so it remains persuasive and on-brand while meeting regulatory standards. That is exactly what the AI Rewriter does. When the scanner flags a violation, the rewriter generates compliant alternative language with a single click.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The rewriter is not a generic AI text generator. It has been specifically trained on FDA and FTC enforcement language, compliant marketing examples from leading regenerative medicine practices, and the nuanced difference between a health claim, a structure/function claim, and a patient experience statement. It understands that &quot;heals damaged tissue&quot; is a drug claim that requires FDA approval, while &quot;may support the body&apos;s natural healing processes&quot; is a structure/function claim that carries significantly less regulatory risk.
+                The rewriter is not a generic AI text generator. It has been specifically trained on FDA and FTC enforcement language, compliant marketing examples from leading healthcare practices across all specialties, and the nuanced difference between a health claim, a structure/function claim, and a patient experience statement. It understands that &quot;heals damaged tissue&quot; is a drug claim that requires FDA approval, while &quot;may support the body&apos;s natural healing processes&quot; is a structure/function claim that carries significantly less regulatory risk.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-8">
                 Every rewrite comes with an explanation of why the original language was problematic and what specific regulatory principle the new language satisfies. This means your marketing team does not just get compliant copy — they learn the compliance reasoning behind each change. Over time, your team writes fewer violations because they understand the underlying rules, not just the individual corrections.
@@ -208,10 +208,10 @@ export default function FeaturesPage() {
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The Compliance Library is a searchable, categorized database of over 300 active compliance rules specific to regenerative medicine marketing. Each rule includes the banned or risky phrase, a compliant alternative, a risk severity rating, and the original source — whether that is an FDA warning letter, FTC press release, CBER guidance document, or state medical board ruling.
+                The Compliance Library is a searchable, categorized database of over 300 active compliance rules covering healthcare marketing across all practice types. Each rule includes the banned or risky phrase, a compliant alternative, a risk severity rating, and the original source — whether that is an FDA warning letter, FTC press release, CBER guidance document, or state medical board ruling.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The library is organized by treatment type (PRP, stem cells, exosomes, peptides, prolotherapy, BMAC, Wharton&apos;s jelly), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
+                The library is organized by treatment type (PRP, stem cells, exosomes, peptides, prolotherapy, BMAC, Wharton&apos;s jelly, dermal fillers, weight loss treatments, dental implants, chiropractic, IV therapy), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-8">
                 Think of it as a living compliance manual written specifically for your industry. Healthcare attorneys charge $500 to $1,000 per hour to review marketing content. The compliance library gives your team the same reference knowledge that those attorneys use, accessible instantly and updated automatically as new enforcement actions are published.
@@ -233,7 +233,7 @@ export default function FeaturesPage() {
                   <span className="text-sm font-extrabold text-white">Rule Categories</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {["Stem Cells", "PRP", "Exosomes", "Peptides", "Prolotherapy", "BMAC", "Efficacy Claims", "Cure Claims", "Testimonials", "FDA Status"].map((tag) => (
+                  {["Stem Cells", "PRP", "Exosomes", "Peptides", "Prolotherapy", "BMAC", "Dermal Fillers", "Weight Loss", "Dental", "IV Therapy", "Efficacy Claims", "Cure Claims", "Testimonials", "FDA Status"].map((tag) => (
                     <span key={tag} className="rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs text-white/60">{tag}</span>
                   ))}
                 </div>
@@ -265,7 +265,7 @@ export default function FeaturesPage() {
                   </div>
                   <div>
                     <p className="text-sm font-extrabold text-white mb-1">Analyze</p>
-                    <p className="text-sm text-white/60">New enforcement actions are analyzed to extract specific language violations, banned claims, and compliance requirements relevant to regenerative medicine.</p>
+                    <p className="text-sm text-white/60">New enforcement actions are analyzed to extract specific language violations, banned claims, and compliance requirements relevant to healthcare marketing — including regenerative medicine, aesthetics, dental, weight loss, and more.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -299,10 +299,10 @@ export default function FeaturesPage() {
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                Compliance is not static. The FDA issues new warning letters to regenerative medicine clinics every month. The FTC regularly updates its enforcement guidance on health claims. State medical boards modify advertising rules. A compliance tool that uses a fixed ruleset from six months ago is already dangerously outdated.
+                Compliance is not static. The FDA issues new warning letters to healthcare practices every month. The FTC regularly updates its enforcement guidance on health claims. State medical boards modify advertising rules. A compliance tool that uses a fixed ruleset from six months ago is already dangerously outdated.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                RegenCompliance solves this with automated daily monitoring. Every morning, our system checks FDA.gov for new warning letters, FTC.gov for new enforcement actions and press releases, and state medical board websites for updated advertising guidance. When a new enforcement action is relevant to regenerative medicine marketing, we extract the specific language violations and add them to the compliance database within 24 hours.
+                RegenCompliance solves this with automated daily monitoring. Every morning, our system checks FDA.gov for new warning letters, FTC.gov for new enforcement actions and press releases, and state medical board websites for updated advertising guidance. When a new enforcement action is relevant to healthcare marketing, we extract the specific language violations and add them to the compliance database within 24 hours.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-8">
                 This means the language that got a clinic in Florida a warning letter on Monday is already in your scanner&apos;s ruleset by Tuesday. You do not have to track enforcement actions yourself. You do not have to wait for your attorney to email you about new developments. The system handles it automatically, and every scan you run always uses the most current compliance data available.
@@ -430,10 +430,10 @@ export default function FeaturesPage() {
         <div className="relative mx-auto max-w-2xl px-6 text-center">
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">GET STARTED</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Built for regen clinics.<br />Nothing else.
+            Built for healthcare practices.<br />Every specialty covered.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Every feature, every rule, every rewrite is designed specifically for regenerative medicine marketing compliance. No generic tools. No guesswork.
+            Every feature, every rule, every rewrite is designed specifically for healthcare marketing compliance — regenerative medicine, med spas, dental, plastic surgery, dermatology, weight loss, and more. No generic tools. No guesswork.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
