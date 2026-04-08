@@ -168,7 +168,7 @@ export default function DemoPage() {
       <div className="relative mx-auto max-w-6xl px-6 pt-8 pb-16">
         {/* Demo Expired */}
         {demoExpired && (
-          <div className="mb-8 rounded-2xl bg-white/[0.03] border border-[#55E039]/20 p-10 text-center">
+          <div className="mb-8 rounded-2xl bg-[#111111] border border-[#55E039]/20 p-10 text-center">
             <Lock className="h-12 w-12 text-[#55E039] mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">Demo Limit Reached</h2>
             <p className="text-white/60 mb-6 max-w-md mx-auto">
@@ -199,8 +199,8 @@ export default function DemoPage() {
                   onClick={() => setContentType(t.value)}
                   className={`rounded-full px-4 py-2 text-xs font-medium min-h-[40px] transition-all duration-300 ${
                     contentType === t.value
-                      ? "bg-[#55E039]/10 border border-[#55E039]/20 text-[#55E039]"
-                      : "bg-white/[0.03] border border-white/10 text-white/60 hover:bg-white/[0.06] hover:text-white"
+                      ? "bg-[#55E039]/15 border border-[#55E039]/30 text-[#55E039]"
+                      : "bg-[#111111] border border-white/15 text-white/60 hover:bg-[#1a1a1a] hover:text-white"
                   }`}
                 >
                   {t.label}
@@ -213,7 +213,7 @@ export default function DemoPage() {
                 value={text}
                 onChange={(e) => setText(e.target.value.slice(0, 5000))}
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
-                className="w-full min-h-[200px] resize-y rounded-2xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/30 px-5 py-4 text-sm focus:outline-none focus:border-[#55E039]/30 transition-colors"
+                className="w-full min-h-[200px] resize-y rounded-2xl bg-[#111111] border border-white/15 text-white placeholder:text-white/40 px-5 py-4 text-sm focus:outline-none focus:border-[#55E039]/40 focus:bg-[#131313] transition-colors"
               />
               <span className={`absolute bottom-3 right-3 text-xs ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
                 {charCount}/5000
@@ -249,7 +249,7 @@ export default function DemoPage() {
             </div>
 
             {/* File Upload Teaser */}
-            <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-6 text-center">
+            <div className="rounded-xl border border-dashed border-white/15 bg-[#111111]/80 p-6 text-center">
               <Upload className="h-6 w-6 text-white/20 mx-auto mb-2" />
               <p className="text-sm text-white/50 font-medium mb-1">File Scanning</p>
               <p className="text-xs text-white/30 mb-3">
@@ -269,7 +269,7 @@ export default function DemoPage() {
           {/* Results Panel */}
           <div className="md:col-span-1 lg:col-span-2 space-y-4">
             {!result && !scanning && (
-              <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-12 text-center">
+              <div className="rounded-2xl bg-[#111111] border border-white/15 p-12 text-center">
                 <Shield className="h-12 w-12 mb-4 opacity-20 mx-auto text-white/40" />
                 <p className="text-white/40">Results will appear here after scanning.</p>
                 {!text && (
@@ -281,7 +281,7 @@ export default function DemoPage() {
             )}
 
             {scanning && (
-              <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-12 text-center">
+              <div className="rounded-2xl bg-[#111111] border border-white/15 p-12 text-center">
                 <Loader2 className="h-8 w-8 animate-spin text-[#55E039] mx-auto mb-4" />
                 <p className="text-white/60">Analyzing content against FDA/FTC rules...</p>
               </div>
@@ -290,7 +290,7 @@ export default function DemoPage() {
             {result && (
               <>
                 {/* Score */}
-                <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 text-center">
+                <div className="rounded-2xl bg-[#111111] border border-white/15 p-7 text-center">
                   <ScoreRing score={result.compliance_score} />
                   <div className="mt-2">
                     <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
@@ -319,13 +319,13 @@ export default function DemoPage() {
 
                 {/* Flags */}
                 {result.flags.length > 0 ? (
-                  <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 space-y-3">
+                  <div className="rounded-2xl bg-[#111111] border border-white/15 p-7 space-y-3">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-white text-sm">Flagged Content</h3>
                       <span className="text-[10px] text-white/40">{result.flags.length} violation{result.flags.length !== 1 ? "s" : ""} found</span>
                     </div>
                     {result.flags.map((flag, i) => (
-                      <div key={i} className="rounded-xl border border-white/10 bg-white/[0.02] p-3 space-y-2">
+                      <div key={i} className="rounded-xl border border-white/10 bg-[#0e0e0e] p-3 space-y-2">
                         <div className="flex items-center justify-between gap-2">
                           <code className="text-xs text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">
                             &quot;{flag.matched_text}&quot;
@@ -366,7 +366,7 @@ export default function DemoPage() {
 
                 {/* Rewrite */}
                 {result.flags.length > 0 && (
-                  <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 space-y-3">
+                  <div className="rounded-2xl bg-[#111111] border border-white/15 p-7 space-y-3">
                     <h3 className="font-semibold text-white text-sm">Compliant Rewrite</h3>
                     {!result.rewritten_text ? (
                       <button
@@ -390,7 +390,7 @@ export default function DemoPage() {
                           <p className="text-sm text-white/70 leading-relaxed">{result.rewritten_text}</p>
                         </div>
                         <button
-                          className="w-full inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white/[0.03] border border-white/10 text-sm text-white/70 hover:bg-white/[0.06] transition-all"
+                          className="w-full inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#111111] border border-white/15 text-sm text-white/70 hover:bg-[#1a1a1a] transition-all"
                           onClick={() => copyToClipboard(result.rewritten_text!)}
                         >
                           {copiedRewrite ? (
