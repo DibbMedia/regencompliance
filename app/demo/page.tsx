@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock, Sparkles } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock, Sparkles, Upload } from "lucide-react"
 import { CheckoutButton } from "@/components/checkout-button"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
@@ -246,6 +246,19 @@ export default function DemoPage() {
                   Load Sample
                 </button>
               )}
+            </div>
+
+            {/* File Upload Teaser */}
+            <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-6 text-center">
+              <Upload className="h-6 w-6 text-white/20 mx-auto mb-2" />
+              <p className="text-sm text-white/50 font-medium mb-1">File Scanning</p>
+              <p className="text-xs text-white/30 mb-3">
+                Upload .docx, .pdf, or .txt files for compliance scanning.
+              </p>
+              <CheckoutButton className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[#55E039]/20 px-4 text-xs font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all cursor-pointer">
+                Available with subscription
+                <ArrowRight className="h-3 w-3" />
+              </CheckoutButton>
             </div>
 
             <p className="text-xs text-white/40 text-center">

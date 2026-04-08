@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2 } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2, Upload, X } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -35,7 +35,13 @@ interface ScanResult {
   source_url?: string | null
 }
 
-type ScanMode = "paste" | "url"
+type ScanMode = "paste" | "url" | "file"
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
 
 function ScoreRing({ score, animate }: { score: number; animate: boolean }) {
   const color = score >= 80 ? "#55E039" : score >= 50 ? "#eab308" : "#ef4444"
@@ -95,6 +101,9 @@ export default function ScannerPage() {
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
   const [copiedRewrite, setCopiedRewrite] = useState(false)
   const [scoreAnimated, setScoreAnimated] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [dragging, setDragging] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (searchParams.get("subscribed") === "true") {
@@ -200,6 +209,82 @@ export default function ScannerPage() {
     }
   }
 
+  async function handleFileScan() {
+    if (!file) return
+    setScanning(true)
+    setResult(null)
+
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("content_type", contentType)
+
+      const res = await fetch("/api/scan-file", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (res.status === 429) {
+        toast.error("Rate limit reached. Please try again later.")
+        return
+      }
+      if (res.status === 403) {
+        toast.error("Active subscription required to scan.")
+        return
+      }
+      if (res.status === 422) {
+        const data = await res.json()
+        toast.error(data.error || "Could not extract text from this file.")
+        return
+      }
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error(data.error || "File scan failed. Please try again.")
+        return
+      }
+
+      const data = await res.json()
+      setResult(data)
+    } catch {
+      toast.error("Network error. Please try again.")
+    } finally {
+      setScanning(false)
+    }
+  }
+
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0]
+    if (selected) {
+      setFile(selected)
+      setResult(null)
+    }
+  }
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(false)
+    const dropped = e.dataTransfer.files?.[0]
+    if (dropped) {
+      const ext = dropped.name.toLowerCase()
+      if (ext.endsWith(".txt") || ext.endsWith(".pdf") || ext.endsWith(".docx")) {
+        setFile(dropped)
+        setResult(null)
+      } else {
+        toast.error("Unsupported file type. Please upload a .txt, .pdf, or .docx file.")
+      }
+    }
+  }, [])
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(true)
+  }, [])
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(false)
+  }, [])
+
   async function handleRewrite() {
     if (!result) return
     setRewriting(true)
@@ -254,7 +339,7 @@ export default function ScannerPage() {
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
           <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
           <p className="text-white/60 mt-1">
-            Paste content or scan a URL to check against current FDA/FTC guidelines.
+            Paste content, scan a URL, or upload a file to check against current FDA/FTC guidelines.
           </p>
         </div>
 
@@ -288,9 +373,130 @@ export default function ScannerPage() {
             <Globe className="h-4 w-4" />
             Scan URL
           </button>
+          <button
+            onClick={() => { setScanMode("file"); setResult(null) }}
+            className={`
+              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              transition-all duration-300 border-l border-white/10
+              ${scanMode === "file"
+                ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
+                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+              }
+            `}
+          >
+            <Upload className="h-4 w-4" />
+            Upload File
+          </button>
         </div>
 
-        {scanMode === "paste" ? (
+        {scanMode === "file" ? (
+          <>
+            {/* Content Type Pills */}
+            <div className="flex flex-wrap gap-2">
+              {CONTENT_TYPES.map((t) => {
+                const Icon = t.icon
+                const isActive = contentType === t.value
+                return (
+                  <button
+                    key={t.value}
+                    onClick={() => setContentType(t.value)}
+                    className={`
+                      inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium
+                      transition-all duration-300 border
+                      ${isActive
+                        ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] border-transparent shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
+                        : "bg-white/[0.03] border-white/10 text-white/60 hover:bg-white/[0.06] hover:border-white/15 hover:text-white/80"
+                      }
+                    `}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {t.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Drop Zone */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept=".docx,.pdf,.txt"
+              onChange={handleFileSelect}
+            />
+
+            {!file ? (
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`
+                  rounded-xl border-2 border-dashed p-8 sm:p-12 text-center cursor-pointer
+                  transition-all duration-300
+                  ${dragging
+                    ? "border-[#55E039]/40 bg-[#55E039]/[0.04]"
+                    : "border-white/10 bg-white/[0.02] hover:border-[#55E039]/20 hover:bg-[#55E039]/[0.02]"
+                  }
+                `}
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors duration-300 ${dragging ? "bg-[#55E039]/10" : "bg-white/[0.04]"}`}>
+                    <Upload className={`h-7 w-7 transition-colors duration-300 ${dragging ? "text-[#55E039]" : "text-white/30"}`} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white/70">
+                      <span className="hidden sm:inline">Drop your file here or </span>
+                      <span className="text-[#55E039] hover:text-[#55E039]/80">click to browse</span>
+                    </p>
+                    <p className="text-xs text-white/30 mt-1">.docx, .pdf, or .txt — max 10MB</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] p-4 flex items-center gap-3">
+                <FileText className="h-8 w-8 text-[#55E039] shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-white truncate">{file.name}</p>
+                  <p className="text-xs text-white/40">{formatFileSize(file.size)}</p>
+                </div>
+                <button
+                  onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = "" }}
+                  className="ml-auto shrink-0 p-1.5 rounded-md text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Scan File Button */}
+            <button
+              onClick={handleFileScan}
+              disabled={scanning || !file}
+              className={`
+                w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider
+                transition-all duration-300 flex items-center justify-center gap-2
+                disabled:opacity-40 disabled:cursor-not-allowed
+                ${scanning
+                  ? "bg-white/[0.03] border border-white/10 text-white/60"
+                  : "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:scale-[1.01] active:scale-[0.99]"
+                }
+              `}
+            >
+              {scanning ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Extracting &amp; Analyzing File...
+                </>
+              ) : (
+                <>
+                  <Shield className="h-4 w-4" />
+                  Scan File
+                </>
+              )}
+            </button>
+          </>
+        ) : scanMode === "paste" ? (
           <>
             {/* Content Type Pills */}
             <div className="flex flex-wrap gap-2">
@@ -443,20 +649,34 @@ export default function ScannerPage() {
         {/* Results */}
         {result && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* URL Source Info */}
+            {/* URL / File Source Info */}
             {result.source_url && (
               <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                {result.page_title && (
-                  <p className="text-sm font-medium text-white mb-1">{result.page_title}</p>
+                {result.source_url.startsWith("file://") ? (
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-[#55E039] shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-white truncate">{result.source_url.replace("file://", "")}</p>
+                      {(result as ScanResult & { page_count?: number }).page_count && (
+                        <p className="text-xs text-white/40">{(result as ScanResult & { page_count?: number }).page_count} pages</p>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {result.page_title && (
+                      <p className="text-sm font-medium text-white mb-1">{result.page_title}</p>
+                    )}
+                    <a
+                      href={result.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors truncate block"
+                    >
+                      {result.source_url}
+                    </a>
+                  </>
                 )}
-                <a
-                  href={result.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors truncate block"
-                >
-                  {result.source_url}
-                </a>
               </div>
             )}
 
