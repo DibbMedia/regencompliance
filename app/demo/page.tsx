@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, ArrowRight, Lock, Sparkles, Upload } from "lucide-react"
-import { CheckoutButton } from "@/components/checkout-button"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
@@ -172,12 +172,12 @@ export default function DemoPage() {
             <Lock className="h-12 w-12 text-[#55E039] mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">Demo Limit Reached</h2>
             <p className="text-white/60 mb-6 max-w-md mx-auto">
-              You&apos;ve used all your free demo scans. Sign up for unlimited compliance scanning, AI rewrites, and full access to all features.
+              You&apos;ve used all your free demo scans. Join the pre-release waitlist to get unlimited compliance scanning, AI rewrites, and full access when your invite is ready.
             </p>
-            <CheckoutButton className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-              Get Full Access — $497/month
+            <Link href="/waitlist" className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+              Join the Waitlist
               <ArrowRight className="h-4 w-4" />
-            </CheckoutButton>
+            </Link>
           </div>
         )}
 
@@ -255,10 +255,10 @@ export default function DemoPage() {
               <p className="text-xs text-white/30 mb-3">
                 Upload .docx, .pdf, or .txt files for compliance scanning.
               </p>
-              <CheckoutButton className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[#55E039]/20 px-4 text-xs font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all cursor-pointer">
-                Available with subscription
+              <Link href="/waitlist" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[#55E039]/20 px-4 text-xs font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all cursor-pointer">
+                Join the waitlist
                 <ArrowRight className="h-3 w-3" />
-              </CheckoutButton>
+              </Link>
             </div>
 
             <p className="text-xs text-white/40 text-center">
@@ -411,10 +411,10 @@ export default function DemoPage() {
                       ? `${scansLeft} free scan${scansLeft === 1 ? "" : "s"} remaining`
                       : "Want unlimited scans + full features?"}
                   </p>
-                  <CheckoutButton className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-                    Get Full Access
+                  <Link href="/waitlist" className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                    Join the Waitlist
                     <ArrowRight className="h-3.5 w-3.5" />
-                  </CheckoutButton>
+                  </Link>
                 </div>
               </>
             )}

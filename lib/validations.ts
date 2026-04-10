@@ -14,6 +14,11 @@ export const inviteSchema = z.object({
   email: z.string().email('Invalid email address'),
 })
 
+export const waitlistSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be under 100 characters'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+})
+
 export const profileSchema = z.object({
   clinic_name: z.string().min(1).max(200).optional(),
   logo_url: z.string().url().refine(
@@ -77,6 +82,7 @@ export function isValidUUID(id: string): boolean {
 export type ScanInput = z.infer<typeof scanSchema>
 export type RewriteInput = z.infer<typeof rewriteSchema>
 export type InviteInput = z.infer<typeof inviteSchema>
+export type WaitlistInput = z.infer<typeof waitlistSchema>
 export type ProfileInput = z.infer<typeof profileSchema>
 export type TicketCreateInput = z.infer<typeof ticketCreateSchema>
 export type TicketMessageInput = z.infer<typeof ticketMessageSchema>

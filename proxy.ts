@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-const publicPaths = ["/", "/login", "/auth/callback", "/demo", "/features", "/pricing", "/faq"]
+const publicPaths = ["/", "/login", "/auth/callback", "/demo", "/features", "/pricing", "/faq", "/waitlist"]
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // Allow API routes that handle their own auth (webhooks, cron)
-  if (pathname.startsWith("/api/stripe/webhook") || pathname.startsWith("/api/stripe/checkout-guest") || pathname.startsWith("/api/cron/") || pathname.startsWith("/api/demo/")) {
+  if (pathname.startsWith("/api/stripe/webhook") || pathname.startsWith("/api/stripe/checkout-guest") || pathname.startsWith("/api/cron/") || pathname.startsWith("/api/demo/") || pathname === "/api/waitlist") {
     return NextResponse.next()
   }
 

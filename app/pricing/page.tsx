@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { BetaCheckoutButton, BetaSpotsCounter } from "@/components/beta-checkout-button"
 import {
   ArrowRight,
   CheckCircle2,
@@ -93,7 +92,7 @@ export default function PricingPage() {
             <div className="absolute top-4 right-4">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
                 <Zap className="h-3 w-3" />
-                Beta — Limited Spots
+                Pre-Release
               </span>
             </div>
             <p className="text-sm font-extrabold text-[#55E039]/70 mb-2">Founding Member</p>
@@ -102,12 +101,14 @@ export default function PricingPage() {
               <span className="text-lg font-normal text-white/40">/mo</span>
             </div>
             <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate — Never increases</p>
-            <BetaSpotsCounter className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8" />
-            <BetaCheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
-              Claim Beta Access — $297/mo
+            <span className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8">
+              Invite-only — Join the waitlist
+            </span>
+            <Link href="/waitlist" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
+              Join the Waitlist
               <ArrowRight className="h-4 w-4" />
-            </BetaCheckoutButton>
-            <p className="text-center text-xs text-white/40 mb-8">Save $200/mo vs standard pricing. Rate locked for life.</p>
+            </Link>
+            <p className="text-center text-xs text-white/40 mb-8">Pre-release access. Founding rate locked at $297/mo for life when invited.</p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
               <ul className="space-y-3">
@@ -379,13 +380,13 @@ export default function PricingPage() {
             Protect your clinic today.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Lock in $297/mo before the 25 beta spots run out. After that, it goes to $497/mo — no exceptions.
+            Pre-release access is invite-only. Join the waitlist to lock in the $297/mo founding rate when your invite is ready — standard launch pricing is $497/mo.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-2 sm:gap-4">
-            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-              Claim Beta Access — $297/mo
+            <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+              Join the Waitlist
               <ArrowRight className="h-4 w-4" />
-            </BetaCheckoutButton>
+            </Link>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-5 sm:px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

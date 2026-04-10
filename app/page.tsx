@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { BetaCheckoutButton, BetaSpotsCounter } from "@/components/beta-checkout-button"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
@@ -88,10 +87,10 @@ export default function LandingPage() {
               FDA and FTC enforcement against healthcare practices hit a 25-year high — from regenerative medicine to med spas, dental, dermatology, and beyond. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Claim Beta Access — $297/mo For Life
+              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                Join the Waitlist
                 <ArrowRight className="h-4 w-4" />
-              </BetaCheckoutButton>
+              </Link>
               <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
                 Try Free Demo
                 <ArrowRight className="h-4 w-4 opacity-60" />
@@ -340,13 +339,15 @@ export default function LandingPage() {
               <div className="absolute top-4 right-4">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
                   <Zap className="h-3 w-3" />
-                  Beta — Limited Spots
+                  Pre-Release
                 </span>
               </div>
               <div className="relative text-center mb-8 pt-4">
                 <p className="text-5xl sm:text-6xl font-extrabold tracking-tight">$297<span className="text-lg font-normal text-white/40 ml-1">/mo</span></p>
                 <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Locked-In Rate — Never increases</p>
-                <BetaSpotsCounter className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1" />
+                <span className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1">
+                  Invite-only — Join the waitlist
+                </span>
               </div>
               <ul className="space-y-4 mb-8">
                 {checklist.map((item) => (
@@ -364,12 +365,12 @@ export default function LandingPage() {
                   <span className="text-[15px] text-white font-semibold">All future updates included</span>
                 </li>
               </ul>
-              <BetaCheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Claim Beta Access — $297/mo
+              <Link href="/waitlist" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                Join the Waitlist
                 <ArrowRight className="h-4 w-4" />
-              </BetaCheckoutButton>
+              </Link>
               <p className="mt-4 text-center text-xs text-white/30">
-                Rate locked at $297/mo for life. Standard is $497/mo.
+                Pre-release access. Rate locked at $297/mo for life when you&apos;re invited.
               </p>
             </div>
 
@@ -447,10 +448,10 @@ export default function LandingPage() {
             Your next Instagram post, website update, or patient email could trigger a federal investigation. It takes 30 seconds to check.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <BetaCheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-              Claim Beta Access — $297/mo
+            <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+              Join the Waitlist
               <ArrowRight className="h-4 w-4" />
-            </BetaCheckoutButton>
+            </Link>
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

@@ -14,6 +14,7 @@ import {
   MessageSquare,
   Loader2,
   Zap,
+  ListChecks,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -25,6 +26,7 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 const navItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Users", href: "/admin/users", icon: Users },
+  { title: "Waitlist", href: "/admin/waitlist", icon: ListChecks },
   { title: "Scans", href: "/admin/scans", icon: ScanSearch },
   {
     title: "Tickets",

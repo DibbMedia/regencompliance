@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { Shield, ArrowRight, Menu, X } from "lucide-react"
-import { CheckoutButton } from "@/components/checkout-button"
 import { useState } from "react"
 
 export function MarketingHeader() {
@@ -27,10 +26,13 @@ export function MarketingHeader() {
           </nav>
           <div className="hidden md:flex items-center gap-3">
             <Link href="/login" className="text-[13px] text-white/60 hover:text-white transition-colors px-4 py-2">Log In</Link>
-            <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-              Get Started
+            <Link
+              href="/waitlist"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer"
+            >
+              Join Waitlist
               <ArrowRight className="h-3.5 w-3.5" />
-            </CheckoutButton>
+            </Link>
           </div>
           <button className="md:hidden text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)}>
             {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -43,6 +45,7 @@ export function MarketingHeader() {
             <Link href="/faq" className="block text-sm text-white/60 hover:text-white py-2.5">FAQ</Link>
             <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5">Try Demo</Link>
             <Link href="/login" className="block text-sm text-white/60 py-2.5">Log In</Link>
+            <Link href="/waitlist" className="block text-sm text-[#55E039] font-bold py-2.5">Join Waitlist →</Link>
           </div>
         )}
       </div>
