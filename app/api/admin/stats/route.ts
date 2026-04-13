@@ -164,13 +164,23 @@ export async function GET() {
       }
     }
 
-    // Batch-fetch all users once and build an email lookup map
-    const {
-      data: { users: allUsers },
-    } = await serviceClient.auth.admin.listUsers({ perPage: 1000 })
+    // Paginate through all auth users to build an email lookup map
     const emailMap: Record<string, string> = {}
-    for (const u of allUsers || []) {
-      emailMap[u.id] = u.email || "unknown"
+    let authPage = 1
+    const authPerPage = 1000
+    while (true) {
+      const {
+        data: { users: batch },
+      } = await serviceClient.auth.admin.listUsers({
+        page: authPage,
+        perPage: authPerPage,
+      })
+      if (!batch || batch.length === 0) break
+      for (const u of batch) {
+        emailMap[u.id] = u.email || "unknown"
+      }
+      if (batch.length < authPerPage) break
+      authPage++
     }
 
     // Recent signups (last 10)

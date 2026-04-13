@@ -349,8 +349,10 @@ export default function ScannerPage() {
         </div>
 
         {/* Mode Toggle */}
-        <div className="flex rounded-xl border border-white/10 overflow-hidden bg-white/[0.02]">
+        <div className="flex rounded-xl border border-white/10 overflow-hidden bg-white/[0.02]" role="tablist" aria-label="Scan input mode">
           <button
+            role="tab"
+            aria-selected={scanMode === "paste"}
             onClick={() => { setScanMode("paste"); setResult(null) }}
             className={`
               flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
@@ -365,6 +367,8 @@ export default function ScannerPage() {
             Paste Content
           </button>
           <button
+            role="tab"
+            aria-selected={scanMode === "url"}
             onClick={() => { setScanMode("url"); setResult(null) }}
             className={`
               flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
@@ -379,6 +383,8 @@ export default function ScannerPage() {
             Scan URL
           </button>
           <button
+            role="tab"
+            aria-selected={scanMode === "file"}
             onClick={() => { setScanMode("file"); setResult(null) }}
             className={`
               flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
@@ -397,13 +403,15 @@ export default function ScannerPage() {
         {scanMode === "file" ? (
           <>
             {/* Content Type Pills */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Content type">
               {CONTENT_TYPES.map((t) => {
                 const Icon = t.icon
                 const isActive = contentType === t.value
                 return (
                   <button
                     key={t.value}
+                    role="radio"
+                    aria-checked={isActive}
                     onClick={() => setContentType(t.value)}
                     className={`
                       inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium
@@ -504,13 +512,15 @@ export default function ScannerPage() {
         ) : scanMode === "paste" ? (
           <>
             {/* Content Type Pills */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Content type">
               {CONTENT_TYPES.map((t) => {
                 const Icon = t.icon
                 const isActive = contentType === t.value
                 return (
                   <button
                     key={t.value}
+                    role="radio"
+                    aria-checked={isActive}
                     onClick={() => setContentType(t.value)}
                     className={`
                       inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-sm font-medium
@@ -537,7 +547,7 @@ export default function ScannerPage() {
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
                 className="relative min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
               />
-              <span className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
+              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
                 {charCount.toLocaleString()}/5,000
               </span>
             </div>
@@ -753,6 +763,7 @@ export default function ScannerPage() {
                         </p>
                         <button
                           className="shrink-0 p-1.5 rounded-md hover:bg-[#55E039]/10 transition-colors"
+                          aria-label="Copy to clipboard"
                           onClick={() => copyToClipboard(flag.alternative, i)}
                         >
                           {copiedIdx === i ? (
@@ -827,6 +838,7 @@ export default function ScannerPage() {
                       <div className="flex gap-2">
                         <button
                           className="flex-1 py-2.5 rounded-lg text-sm font-medium border border-white/10 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] transition-all duration-300 flex items-center justify-center gap-2"
+                          aria-label="Copy to clipboard"
                           onClick={() => copyToClipboard(result.rewritten_text!)}
                         >
                           {copiedRewrite ? (

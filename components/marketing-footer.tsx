@@ -32,7 +32,7 @@ export function MarketingFooter() {
             <div className="space-y-2.5">
               <Link href="/privacy" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Terms of Service</Link>
-              <a href="mailto:support@regenportal.com" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Contact</a>
+              <a href="mailto:support@regencompliance.com" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Contact</a>
             </div>
           </div>
         </div>

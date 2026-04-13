@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl">
             Your privacy matters. This policy explains what data we collect, how we use it, and your rights as a user of RegenCompliance.
           </p>
-          <p className="mt-4 text-sm text-white/40">Effective Date: April 7, 2026</p>
+          <p className="mt-4 text-sm text-white/40">Last Updated: April 2026</p>
         </div>
       </section>
 
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
               <div className="space-y-4">
                 <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
                   <h3 className="text-sm font-extrabold text-white mb-2">Account Information</h3>
-                  <p className="text-sm text-white/60 leading-relaxed">Email address, clinic name, and treatment types offered. This information is collected during account registration and is required to provide the Service.</p>
+                  <p className="text-sm text-white/60 leading-relaxed">Email address, password (hashed), clinic name, and treatment types offered. This information is collected during account registration and is required to provide the Service.</p>
                 </div>
                 <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
                   <h3 className="text-sm font-extrabold text-white mb-2">Scan Content</h3>
@@ -62,6 +62,10 @@ export default function PrivacyPage() {
                 <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
                   <h3 className="text-sm font-extrabold text-white mb-2">Usage Data</h3>
                   <p className="text-sm text-white/60 leading-relaxed">Information about how you interact with the Service, including pages visited, features used, scan frequency, and timestamps. This data helps us improve the platform.</p>
+                </div>
+                <div className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
+                  <h3 className="text-sm font-extrabold text-white mb-2">Support Communications</h3>
+                  <p className="text-sm text-white/60 leading-relaxed">If you contact us for support, we collect the content of your support tickets, including any attachments or screenshots you provide, along with your email address and communication history. This data is used solely to resolve your support request.</p>
                 </div>
               </div>
             </div>
@@ -85,9 +89,14 @@ export default function PrivacyPage() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-[15px] text-white/70 leading-relaxed">
-                The Service has zero connection to patient-facing systems. There are no HIPAA implications because we never handle PHI in any form.
-              </p>
+              <div className="mt-4 rounded-xl bg-red-500/5 border border-red-500/15 p-5">
+                <p className="text-sm font-extrabold text-red-400 mb-2">HIPAA DISCLAIMER</p>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  RegenCompliance is <strong className="text-white">NOT</strong> HIPAA compliant and is not designed or intended to process, store, or transmit Protected Health Information (PHI). You must <strong className="text-white">not</strong> submit any content containing patient names, medical records, treatment histories, health conditions tied to identifiable individuals, or any other PHI through the Service. The Service is designed exclusively for analyzing marketing and advertising content. If you inadvertently submit PHI, contact us immediately at{" "}
+                  <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>{" "}
+                  so we can delete it from our systems.
+                </p>
+              </div>
             </div>
 
             {/* 4 */}
@@ -205,7 +214,7 @@ export default function PrivacyPage() {
                   { right: "Right of Access", desc: "Request a copy of the personal data we hold about you" },
                   { right: "Right to Rectification", desc: "Request correction of inaccurate or incomplete personal data" },
                   { right: "Right to Erasure", desc: "Request deletion of your personal data" },
-                  { right: "Right to Data Portability", desc: "Request your data in a structured, machine-readable format" },
+                  { right: "Right to Data Portability", desc: "Request your data in a structured, machine-readable format. You can also use our built-in data export feature in your account settings to download your scan history and compliance reports at any time" },
                   { right: "Right to Restriction", desc: "Request that we restrict processing of your personal data" },
                   { right: "Right to Object", desc: "Object to processing of your personal data for certain purposes" },
                 ].map((item) => (
@@ -217,7 +226,7 @@ export default function PrivacyPage() {
               </ul>
               <p className="mt-4 text-[15px] text-white/70 leading-relaxed">
                 To exercise any of these rights, contact us at{" "}
-                <a href="mailto:isaac@dibbenterprizes.com" className="text-[#55E039] hover:underline">isaac@dibbenterprizes.com</a>.
+                <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>.
                 We will respond within 30 days.
               </p>
             </div>
@@ -243,7 +252,7 @@ export default function PrivacyPage() {
               </ul>
               <p className="mt-4 text-[15px] text-white/70 leading-relaxed">
                 To exercise your CCPA rights, contact us at{" "}
-                <a href="mailto:isaac@dibbenterprizes.com" className="text-[#55E039] hover:underline">isaac@dibbenterprizes.com</a>.
+                <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>.
               </p>
             </div>
 
@@ -260,7 +269,7 @@ export default function PrivacyPage() {
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">11. Children&apos;s Privacy</h2>
               <p className="text-[15px] text-white/70 leading-relaxed">
                 The Service is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If we become aware that we have collected personal information from a child under 13, we will take steps to delete that information promptly. If you believe a child under 13 has provided us with personal information, please contact us at{" "}
-                <a href="mailto:isaac@dibbenterprizes.com" className="text-[#55E039] hover:underline">isaac@dibbenterprizes.com</a>.
+                <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>.
               </p>
             </div>
 
@@ -283,7 +292,7 @@ export default function PrivacyPage() {
                 <p className="text-sm text-white/60 mt-1">Operating as RegenCompliance</p>
                 <p className="text-sm text-white/60 mt-1">
                   Email:{" "}
-                  <a href="mailto:isaac@dibbenterprizes.com" className="text-[#55E039] hover:underline">isaac@dibbenterprizes.com</a>
+                  <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>
                 </p>
                 <p className="text-sm text-white/60 mt-1">
                   Website:{" "}

@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     // Rate limit site additions
-    const { allowed } = checkRateLimit(`site-add:${user.id}`, 10, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`site-add:${user.id}`, 10, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }

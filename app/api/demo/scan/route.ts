@@ -44,9 +44,9 @@ function getDemoState(cookieValue: string | undefined): DemoCookie {
 
 export async function POST(request: Request) {
   try {
-    // IP-based rate limiting: max 10 demo scans per IP per day
+    // IP-based rate limiting: max 5 demo scans per IP per day (hard backstop)
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
-    const { allowed: ipAllowed } = checkRateLimit(`demo-ip:${ip}`, 10, 24 * 60 * 60 * 1000)
+    const { allowed: ipAllowed } = await checkRateLimit(`demo-ip:${ip}`, 5, 24 * 60 * 60 * 1000)
     if (!ipAllowed) {
       return NextResponse.json({
         error: "Demo limit reached. Sign up for unlimited scans.",

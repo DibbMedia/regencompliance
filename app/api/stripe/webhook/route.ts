@@ -40,13 +40,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true, duplicate: true })
   }
 
-  // Record event as processed (non-blocking)
-  supabase.from("webhook_events").insert({
+  // Record event as processed BEFORE handling to prevent race conditions
+  const { error: insertError } = await supabase.from("webhook_events").insert({
     event_id: event.id,
     event_type: event.type,
-  }).then(({ error }) => {
-    if (error) console.error("[Webhook] Failed to record event:", error)
   })
+  if (insertError) {
+    console.error("[Webhook] Failed to record event:", insertError)
+  }
 
   logAudit({ action: "stripe.webhook", resource_type: "stripe_event", resource_id: event.id, details: { event_type: event.type } })
 

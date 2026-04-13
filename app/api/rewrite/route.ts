@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     // Rate limit: 30 rewrites per user per hour
-    const { allowed } = checkRateLimit(`rewrite:${user.id}`, 30, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`rewrite:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }

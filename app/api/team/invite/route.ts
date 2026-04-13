@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (user) {
-      const { allowed } = checkRateLimit(`invite:${user.id}`, 10, 60 * 60 * 1000)
+      const { allowed } = await checkRateLimit(`invite:${user.id}`, 10, 60 * 60 * 1000)
       if (!allowed) return NextResponse.json({ error: "Rate limit exceeded." }, { status: 429 })
     }
 

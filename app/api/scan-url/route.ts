@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     // Rate limit: 20 URL scans per user per hour
-    const { allowed } = checkRateLimit(`scan-url:${user.id}`, 20, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`scan-url:${user.id}`, 20, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }
@@ -48,13 +48,60 @@ export async function POST(request: Request) {
     }
 
     // Validate URL format
+    let parsed: URL
     try {
-      const parsed = new URL(url)
-      if (!["http:", "https:"].includes(parsed.protocol)) {
-        return NextResponse.json({ error: "URL must use http or https" }, { status: 400 })
+      parsed = new URL(url)
+      if (parsed.protocol !== "https:") {
+        return NextResponse.json({ error: "Only https:// URLs are allowed" }, { status: 400 })
       }
     } catch {
       return NextResponse.json({ error: "Invalid URL format" }, { status: 400 })
+    }
+
+    // SSRF protection: block private/internal IPs and localhost
+    const hostname = parsed.hostname.toLowerCase()
+    if (
+      hostname === "localhost" ||
+      hostname === "[::1]" ||
+      /^127\./.test(hostname) ||
+      /^10\./.test(hostname) ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(hostname) ||
+      /^192\.168\./.test(hostname) ||
+      /^169\.254\./.test(hostname) ||
+      /^0\./.test(hostname) ||
+      hostname.startsWith("fc") && hostname.includes(":") ||
+      hostname.startsWith("fd") && hostname.includes(":") ||
+      hostname === "::1" ||
+      hostname === "[::1]"
+    ) {
+      return NextResponse.json({ error: "URLs pointing to private or internal networks are not allowed" }, { status: 400 })
+    }
+
+    // Additional SSRF check: resolve hostname and verify IP is not private
+    try {
+      const { resolve4, resolve6 } = await import("node:dns/promises")
+      const isPrivateIP = (ip: string): boolean => {
+        // IPv4 private ranges
+        if (/^127\./.test(ip)) return true
+        if (/^10\./.test(ip)) return true
+        if (/^172\.(1[6-9]|2\d|3[01])\./.test(ip)) return true
+        if (/^192\.168\./.test(ip)) return true
+        if (/^169\.254\./.test(ip)) return true
+        if (/^0\./.test(ip)) return true
+        // IPv6 private
+        if (ip === "::1" || ip.startsWith("fc") || ip.startsWith("fd")) return true
+        return false
+      }
+
+      let ips: string[] = []
+      try { ips = ips.concat(await resolve4(parsed.hostname)) } catch { /* no A records */ }
+      try { ips = ips.concat(await resolve6(parsed.hostname)) } catch { /* no AAAA records */ }
+
+      if (ips.some(isPrivateIP)) {
+        return NextResponse.json({ error: "URLs resolving to private or internal networks are not allowed" }, { status: 400 })
+      }
+    } catch {
+      // DNS resolution failed — let the fetch below handle the error
     }
 
     // Extract page content

@@ -1,8 +1,18 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 
-export function getAdminEmail(): string | null {
-  return process.env.ADMIN_EMAIL || process.env.NEXT_PUBLIC_ADMIN_EMAIL || null
+const FALLBACK_ADMIN_EMAIL = "isaac@dibbenterprizes.com"
+
+export function getAdminEmail(): string {
+  return process.env.ADMIN_EMAIL || FALLBACK_ADMIN_EMAIL
+}
+
+/**
+ * Check if a given email is the admin email. Server-only.
+ */
+export function isAdminEmail(email: string | undefined | null): boolean {
+  if (!email) return false
+  return email === getAdminEmail()
 }
 
 /**
@@ -10,19 +20,12 @@ export function getAdminEmail(): string | null {
  * Returns { user, serviceClient } on success, or a NextResponse error.
  */
 export async function verifyAdmin() {
-  const adminEmail = getAdminEmail()
-  if (!adminEmail) {
-    return {
-      error: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
-    }
-  }
-
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user || user.email !== adminEmail) {
+  if (!user || !isAdminEmail(user.email)) {
     return {
       error: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
     }

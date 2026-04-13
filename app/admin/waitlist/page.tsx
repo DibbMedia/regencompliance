@@ -5,7 +5,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search, Download, Trash2, Mail, Loader2, ListChecks } from "lucide-react"
+import { Search, Download, Trash2, Mail, Loader2, ListChecks, Send } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -27,6 +27,7 @@ export default function AdminWaitlistPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [page, setPage] = useState(1)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [sendingLaunch, setSendingLaunch] = useState(false)
 
   const params = new URLSearchParams({ page: String(page), limit: "20" })
   if (searchQuery) params.set("search", searchQuery)
@@ -70,6 +71,37 @@ export default function AdminWaitlistPage() {
     window.location.href = "/api/admin/waitlist/export"
   }
 
+  async function handleSendLaunch() {
+    if (
+      !confirm(
+        "Send the launch announcement email to every waitlist signup that hasn't been emailed yet? This cannot be undone."
+      )
+    )
+      return
+    setSendingLaunch(true)
+    try {
+      const res = await fetch("/api/admin/waitlist/send-launch", { method: "POST" })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data.error || "Failed to send launch emails")
+        return
+      }
+      const { total, sent, failed } = data
+      if (failed > 0) {
+        toast.warning(`Sent ${sent} of ${total}. ${failed} failed — check server logs.`)
+      } else if (sent === 0) {
+        toast.info("No pending waitlist signups to email.")
+      } else {
+        toast.success(`Launch email sent to ${sent} waitlist signups.`)
+      }
+      mutate(key)
+    } catch {
+      toast.error("Network error")
+    } finally {
+      setSendingLaunch(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -92,6 +124,24 @@ export default function AdminWaitlistPage() {
           >
             <Download className="h-3.5 w-3.5 mr-1.5" />
             Export CSV
+          </Button>
+          <Button
+            onClick={handleSendLaunch}
+            disabled={sendingLaunch}
+            size="sm"
+            className="bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] hover:brightness-110 disabled:opacity-60"
+          >
+            {sendingLaunch ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="h-3.5 w-3.5 mr-1.5" />
+                Send Launch Email
+              </>
+            )}
           </Button>
         </div>
       </div>

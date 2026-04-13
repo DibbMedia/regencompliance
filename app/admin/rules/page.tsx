@@ -89,6 +89,11 @@ export default function AdminRulesPage() {
   }
 
   async function toggleRule(id: string, currentActive: boolean) {
+    const action = currentActive ? "deactivate" : "activate"
+    const rule = rules.find((r) => r.id === id)
+    const label = rule ? `"${rule.banned_phrase}"` : "this rule"
+    if (!window.confirm(`Are you sure you want to ${action} ${label}?`)) return
+
     setToggling(id)
     const res = await fetch("/api/admin/rules", {
       method: "PATCH",
@@ -124,6 +129,14 @@ export default function AdminRulesPage() {
   }
 
   async function bulkToggle(activate: boolean) {
+    const action = activate ? "activate" : "deactivate"
+    if (
+      !window.confirm(
+        `Are you sure you want to ${action} ${selectedRules.size} selected rule${selectedRules.size !== 1 ? "s" : ""}?`
+      )
+    )
+      return
+
     setBulkProcessing(true)
     const promises = Array.from(selectedRules).map((id) =>
       fetch("/api/admin/rules", {

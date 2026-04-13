@@ -4,6 +4,8 @@ import Link from "next/link"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { CheckoutButton } from "@/components/checkout-button"
+import { IS_LAUNCHED } from "@/lib/env"
 import {
   ArrowRight,
   ChevronDown,
@@ -220,27 +222,33 @@ export default function FaqPage() {
                   const key = `${category.title}-${i}`
                   const isOpen = openItems[key] || false
                   return (
-                    <button
-                      key={key}
-                      onClick={() => toggleItem(key)}
-                      className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${
-                        isOpen
-                          ? "border-[#55E039]/20 bg-white/[0.06]"
-                          : "border-white/10 hover:bg-white/[0.06]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[15px] font-semibold text-white pr-4">{faq.q}</span>
-                        <ChevronDown
-                          className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </div>
+                    <div key={key}>
+                      <button
+                        id={`faq-btn-${key}`}
+                        onClick={() => toggleItem(key)}
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-panel-${key}`}
+                        className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${
+                          isOpen
+                            ? "border-[#55E039]/20 bg-white/[0.06]"
+                            : "border-white/10 hover:bg-white/[0.06]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[15px] font-semibold text-white pr-4">{faq.q}</span>
+                          <ChevronDown
+                            className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${
+                              isOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </div>
+                      </button>
                       {isOpen && (
-                        <p className="mt-4 text-sm text-white/60 leading-relaxed">{faq.a}</p>
+                        <div id={`faq-panel-${key}`} role="region" aria-labelledby={`faq-btn-${key}`} className="px-6 pb-5">
+                          <p className="mt-4 text-sm text-white/60 leading-relaxed">{faq.a}</p>
+                        </div>
                       )}
-                    </button>
+                    </div>
                   )
                 })}
               </div>
@@ -267,10 +275,17 @@ export default function FaqPage() {
               >
                 Email Support
               </a>
-              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-                Join the Waitlist
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {IS_LAUNCHED ? (
+                <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+                  Start Free Trial
+                  <ArrowRight className="h-4 w-4" />
+                </CheckoutButton>
+              ) : (
+                <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                  Join the Waitlist
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
             </div>
           </div>
         </div>

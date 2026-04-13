@@ -9,9 +9,10 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { loginSchema, type LoginInput } from "@/lib/validations"
+import { loginSchema, signupSchema, type LoginInput, type SignupInput } from "@/lib/validations"
 import { createClient } from "@/lib/supabase/client"
 import { MarketingBg } from "@/components/marketing-bg"
+import { IS_LAUNCHED } from "@/lib/env"
 import Link from "next/link"
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -23,6 +24,7 @@ const ERROR_MESSAGES: Record<string, string> = {
 }
 
 function LoginContent() {
+  const [mode, setMode] = useState<"login" | "signup">("login")
   const [loading, setLoading] = useState(false)
   const [redirecting, setRedirecting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -37,6 +39,11 @@ function LoginContent() {
   const loginForm = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
+  })
+
+  const signupForm = useForm<SignupInput>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: { email: "", password: "", confirmPassword: "" },
   })
 
   async function handleLogin(data: LoginInput) {
@@ -122,6 +129,34 @@ function LoginContent() {
     router.push("/dashboard/scanner")
   }
 
+  async function handleSignup(data: SignupInput) {
+    setLoading(true)
+    setFormError(null)
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+
+    if (error) {
+      setLoading(false)
+      if (error.message.includes("already registered")) {
+        setFormError("An account with this email already exists. Try logging in.")
+        toast.error("An account with this email already exists. Try logging in.")
+      } else {
+        setFormError(error.message)
+        toast.error(error.message)
+      }
+      return
+    }
+
+    setLoading(false)
+    toast.success("Account created! Check your email to verify, then log in.")
+    setMode("login")
+  }
+
   if (redirecting) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-3 sm:px-4">
@@ -155,9 +190,13 @@ function LoginContent() {
         <div className="rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-sm p-7">
           {/* Header */}
           <div className="text-center mb-4">
-            <h1 className="text-xl font-bold text-white">Sign in to your account</h1>
+            <h1 className="text-xl font-bold text-white">
+              {IS_LAUNCHED && mode === "signup" ? "Create your account" : "Sign in to your account"}
+            </h1>
             <p className="text-sm text-white/60 mt-1">
-              Enter your credentials to access the dashboard.
+              {IS_LAUNCHED && mode === "signup"
+                ? "Get started with RegenCompliance today."
+                : "Enter your credentials to access the dashboard."}
             </p>
           </div>
 
@@ -177,7 +216,122 @@ function LoginContent() {
             </div>
           )}
 
-          <Form {...loginForm}>
+          {/* Tab toggle — only shown when site is launched */}
+          {IS_LAUNCHED && (
+            <div className="flex mb-6 rounded-lg bg-white/[0.03] border border-white/10 p-1" role="tablist">
+              <button
+                role="tab"
+                aria-selected={mode === "login"}
+                onClick={() => { setMode("login"); setFormError(null) }}
+                disabled={isFormDisabled}
+                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
+                  mode === "login" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
+                }`}
+              >
+                Log In
+              </button>
+              <button
+                role="tab"
+                aria-selected={mode === "signup"}
+                onClick={() => { setMode("signup"); setFormError(null) }}
+                disabled={isFormDisabled}
+                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
+                  mode === "signup" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
+                }`}
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
+
+          {IS_LAUNCHED && mode === "signup" ? (
+            <Form {...signupForm}>
+              <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
+                <FormField
+                  control={signupForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white/70">Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="you@yourclinic.com"
+                          disabled={isFormDisabled}
+                          className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={signupForm.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white/70">Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="At least 12 characters"
+                            disabled={isFormDisabled}
+                            className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 pr-10"
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={signupForm.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white/70">Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Confirm your password"
+                          disabled={isFormDisabled}
+                          className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-bold shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110"
+                  disabled={isFormDisabled}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
+                </Button>
+              </form>
+            </Form>
+          ) : (
+            <Form {...loginForm}>
               <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
                 <FormField
                   control={loginForm.control}
@@ -203,7 +357,15 @@ function LoginContent() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white/70">Password</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel className="text-white/70">Password</FormLabel>
+                        <Link
+                          href="/forgot-password"
+                          className="text-xs text-[#55E039]/80 hover:text-[#55E039] transition-colors"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -216,6 +378,7 @@ function LoginContent() {
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
                             className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
                           >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -242,14 +405,17 @@ function LoginContent() {
                 </Button>
               </form>
             </Form>
+          )}
 
           <div className="mt-6 pt-5 border-t border-white/[0.06] text-center space-y-2">
-            <p className="text-xs text-white/50">
-              Don&apos;t have access yet?{" "}
-              <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-                Join the waitlist →
-              </Link>
-            </p>
+            {!IS_LAUNCHED && (
+              <p className="text-xs text-white/50">
+                Don&apos;t have access yet?{" "}
+                <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+                  Join the waitlist →
+                </Link>
+              </p>
+            )}
             <Link href="/" className="block text-xs text-white/40 hover:text-white/60 transition-colors">
               Back to home
             </Link>

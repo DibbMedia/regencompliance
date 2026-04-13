@@ -3,12 +3,15 @@
 import Link from "next/link"
 import { Shield, ArrowRight, Menu, X } from "lucide-react"
 import { useState } from "react"
+import { IS_LAUNCHED } from "@/lib/env"
+import { CheckoutButton } from "@/components/checkout-button"
 
 export function MarketingHeader() {
   const [mobileMenu, setMobileMenu] = useState(false)
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#55E039] focus:text-[#0a0a0a] focus:rounded-lg focus:font-bold focus:text-sm">Skip to content</a>
       <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-2xl border-b border-white/10" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="flex h-16 items-center justify-between">
@@ -26,15 +29,22 @@ export function MarketingHeader() {
           </nav>
           <div className="hidden md:flex items-center gap-3">
             <Link href="/login" className="text-[13px] text-white/60 hover:text-white transition-colors px-4 py-2">Log In</Link>
-            <Link
-              href="/waitlist"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer"
-            >
-              Join Waitlist
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            {IS_LAUNCHED ? (
+              <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+                Get Started
+                <ArrowRight className="h-3.5 w-3.5" />
+              </CheckoutButton>
+            ) : (
+              <Link
+                href="/waitlist"
+                className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer"
+              >
+                Join Waitlist
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
           </div>
-          <button className="md:hidden text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)}>
+          <button className="md:hidden text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Close menu" : "Open menu"} aria-expanded={mobileMenu}>
             {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -45,7 +55,11 @@ export function MarketingHeader() {
             <Link href="/faq" className="block text-sm text-white/60 hover:text-white py-2.5">FAQ</Link>
             <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5">Try Demo</Link>
             <Link href="/login" className="block text-sm text-white/60 py-2.5">Log In</Link>
-            <Link href="/waitlist" className="block text-sm text-[#55E039] font-bold py-2.5">Join Waitlist →</Link>
+            {IS_LAUNCHED ? (
+              <Link href="/pricing" className="block text-sm text-[#55E039] font-bold py-2.5">Get Started →</Link>
+            ) : (
+              <Link href="/waitlist" className="block text-sm text-[#55E039] font-bold py-2.5">Join Waitlist →</Link>
+            )}
           </div>
         )}
       </div>

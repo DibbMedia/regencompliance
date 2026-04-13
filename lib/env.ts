@@ -13,7 +13,12 @@ const envSchema = z.object({
   CRON_SECRET: z.string().min(1),
   NEXT_PUBLIC_APP_URL: z.string().url(),
   NEXT_PUBLIC_APP_NAME: z.string().min(1),
+  NEXT_PUBLIC_LAUNCHED: z.enum(['true', 'false']).default('false'),
+  NEXT_PUBLIC_EARLY_ACCESS_CODE: z.string().optional(),
 })
+
+export const IS_LAUNCHED = process.env.NEXT_PUBLIC_LAUNCHED === 'true'
+export const EARLY_ACCESS_CODE = process.env.NEXT_PUBLIC_EARLY_ACCESS_CODE || ''
 
 export type Env = z.infer<typeof envSchema>
 

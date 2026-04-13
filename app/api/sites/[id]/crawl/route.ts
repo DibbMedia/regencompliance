@@ -32,9 +32,15 @@ export async function POST(
     }
 
     // Rate limit: 3 crawls per site per day
-    const { allowed } = checkRateLimit(`crawl:${id}`, 3, 24 * 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`crawl:${id}`, 3, 24 * 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Maximum 3 crawls per site per day." }, { status: 429 })
+    }
+
+    // Global per-user rate limit: 10 crawls per day across all sites
+    const { allowed: userAllowed } = await checkRateLimit(`crawl-user:${user.id}`, 10, 24 * 60 * 60 * 1000)
+    if (!userAllowed) {
+      return NextResponse.json({ error: "Daily crawl limit exceeded. Maximum 10 crawls per day across all sites." }, { status: 429 })
     }
 
     const profileId = await effectiveProfileId(user.id, supabase)

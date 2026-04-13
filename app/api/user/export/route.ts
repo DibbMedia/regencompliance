@@ -14,7 +14,7 @@ export async function POST() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { allowed } = checkRateLimit(`export:${user.id}`, 5, 24 * 60 * 60 * 1000)
+  const { allowed } = await checkRateLimit(`export:${user.id}`, 5, 24 * 60 * 60 * 1000)
   if (!allowed) return NextResponse.json({ error: "Rate limit exceeded. Maximum 5 exports per day." }, { status: 429 })
 
   const serviceClient = createServiceClient()

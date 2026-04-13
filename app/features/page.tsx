@@ -29,6 +29,8 @@ import {
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { CheckoutButton } from "@/components/checkout-button"
+import { IS_LAUNCHED } from "@/lib/env"
 
 const scannerCapabilities = [
   "Website copy and landing pages",
@@ -435,10 +437,17 @@ export default function FeaturesPage() {
             Every feature, every rule, every rewrite is designed specifically for healthcare marketing compliance — regenerative medicine, med spas, dental, plastic surgery, dermatology, weight loss, and more. No generic tools. No guesswork.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-              Join the Waitlist
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {IS_LAUNCHED ? (
+              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+                Start Free Trial
+                <ArrowRight className="h-4 w-4" />
+              </CheckoutButton>
+            ) : (
+              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+                Join the Waitlist
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

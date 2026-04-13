@@ -126,6 +126,15 @@ export default function AdminTicketsPage() {
     ticketId: string,
     updates: { status?: string; priority?: string }
   ) {
+    const field = updates.status ? "status" : "priority"
+    const value = updates.status || updates.priority
+    if (
+      !window.confirm(
+        `Change ticket ${field} to "${value?.replace("_", " ")}"?`
+      )
+    )
+      return
+
     await fetch("/api/admin/tickets", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

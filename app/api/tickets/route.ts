@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { allowed } = checkRateLimit(`ticket:${user.id}`, 20, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`ticket:${user.id}`, 20, 60 * 60 * 1000)
     if (!allowed) return NextResponse.json({ error: "Rate limit exceeded." }, { status: 429 })
 
     const profileId = await effectiveProfileId(user.id, supabase)

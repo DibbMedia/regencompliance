@@ -24,7 +24,7 @@ export default function TermsPage() {
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl">
             Please read these terms carefully before using RegenCompliance. By accessing or using our Service, you agree to be bound by these terms.
           </p>
-          <p className="mt-4 text-sm text-white/40">Effective Date: April 7, 2026</p>
+          <p className="mt-4 text-sm text-white/40">Last Updated: April 2026</p>
         </div>
       </section>
 
@@ -123,6 +123,7 @@ export default function TermsPage() {
                   "Reverse engineering, decompiling, or attempting to extract the source code of the Service",
                   "Sharing your account credentials or allowing unauthorized third parties to access the Service through your account",
                   "Using the Service to build a competing product or service",
+                  "Submitting content containing Protected Health Information (PHI), patient data, or any personally identifiable health information — the Service is NOT HIPAA compliant",
                   "Submitting content that is illegal, abusive, or violates third-party rights",
                   "Attempting to bypass security measures, rate limits, or access restrictions",
                   "Reselling, sublicensing, or redistributing access to the Service",
@@ -249,7 +250,7 @@ export default function TermsPage() {
                 <p className="text-sm text-white/60 mt-1">Operating as RegenCompliance</p>
                 <p className="text-sm text-white/60 mt-1">
                   Email:{" "}
-                  <a href="mailto:isaac@dibbenterprizes.com" className="text-[#55E039] hover:underline">isaac@dibbenterprizes.com</a>
+                  <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>
                 </p>
                 <p className="text-sm text-white/60 mt-1">
                   Website:{" "}

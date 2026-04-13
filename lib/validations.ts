@@ -19,11 +19,40 @@ export const waitlistSchema = z.object({
   email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
 })
 
+/** Block private/internal IPs in a URL string */
+function isPrivateUrl(urlStr: string): boolean {
+  try {
+    const parsed = new URL(urlStr)
+    const h = parsed.hostname.toLowerCase()
+    if (
+      h === "localhost" ||
+      h === "[::1]" ||
+      h === "::1" ||
+      /^127\./.test(h) ||
+      /^10\./.test(h) ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(h) ||
+      /^192\.168\./.test(h) ||
+      /^169\.254\./.test(h) ||
+      /^0\./.test(h) ||
+      (h.startsWith("fc") && h.includes(":")) ||
+      (h.startsWith("fd") && h.includes(":"))
+    ) {
+      return true
+    }
+    return false
+  } catch {
+    return true
+  }
+}
+
 export const profileSchema = z.object({
   clinic_name: z.string().min(1).max(200).optional(),
-  logo_url: z.string().url().refine(
+  logo_url: z.string().url().max(2048, 'Logo URL must be under 2048 characters').refine(
     (url) => /^https?:\/\//i.test(url),
     { message: "Logo URL must use http or https protocol" }
+  ).refine(
+    (url) => !isPrivateUrl(url),
+    { message: "Logo URL must not point to a private or internal network" }
   ).optional(),
   treatments: z.array(z.string().max(100)).max(20, 'Maximum 20 treatments allowed').optional(),
   theme_preference: z.enum(['light', 'dark', 'system']).optional(),

@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     // Rate limit: 30 scans per user per hour
-    const { allowed } = checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }

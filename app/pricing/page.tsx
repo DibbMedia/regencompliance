@@ -24,6 +24,8 @@ import { useState } from "react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { CheckoutButton } from "@/components/checkout-button"
+import { IS_LAUNCHED } from "@/lib/env"
 
 const includedFeatures = [
   { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content — website pages, ads, emails, social posts, scripts — as many times as you need, no limits." },
@@ -70,14 +72,18 @@ export default function PricingPage() {
       {/* ============ HERO ============ */}
       <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6 text-center">
-          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">BETA LAUNCH — LIMITED SPOTS</p>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
+            {IS_LAUNCHED ? "FOUNDING MEMBER PRICING" : "BETA LAUNCH — LIMITED SPOTS"}
+          </p>
           <h1 className="text-3xl sm:text-4xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
             Lock in $297/mo for life.
             <br />
             <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">Rate never increases.</span>
           </h1>
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-            We are opening 25 founding member spots at $297/mo — locked in for life. Once they are gone, the only option is $497/mo.
+            {IS_LAUNCHED
+              ? "25 founding member spots at $297/mo — locked in for life. Once they are gone, standard pricing is $497/mo."
+              : "We are opening 25 founding member spots at $297/mo — locked in for life. Once they are gone, the only option is $497/mo."}
           </p>
         </div>
       </section>
@@ -92,7 +98,7 @@ export default function PricingPage() {
             <div className="absolute top-4 right-4">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
                 <Zap className="h-3 w-3" />
-                Pre-Release
+                {IS_LAUNCHED ? "Founding Rate" : "Pre-Release"}
               </span>
             </div>
             <p className="text-sm font-extrabold text-[#55E039]/70 mb-2">Founding Member</p>
@@ -101,14 +107,27 @@ export default function PricingPage() {
               <span className="text-lg font-normal text-white/40">/mo</span>
             </div>
             <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate — Never increases</p>
-            <span className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8">
-              Invite-only — Join the waitlist
-            </span>
-            <Link href="/waitlist" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
-              Join the Waitlist
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <p className="text-center text-xs text-white/40 mb-8">Pre-release access. Founding rate locked at $297/mo for life when invited.</p>
+            {!IS_LAUNCHED && (
+              <span className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8">
+                Invite-only — Join the waitlist
+              </span>
+            )}
+            {IS_LAUNCHED ? (
+              <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] py-3 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6 mt-6 disabled:opacity-70">
+                Subscribe Now
+                <ArrowRight className="h-4 w-4" />
+              </CheckoutButton>
+            ) : (
+              <Link href="/waitlist" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
+                Join the Waitlist
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+            <p className="text-center text-xs text-white/40 mb-8">
+              {IS_LAUNCHED
+                ? "Cancel anytime. Founding rate locked at $297/mo for life."
+                : "Pre-release access. Founding rate locked at $297/mo for life when invited."}
+            </p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
               <ul className="space-y-3">
@@ -354,19 +373,25 @@ export default function PricingPage() {
           </div>
           <div className="space-y-3">
             {pricingFaqs.map((faq, i) => (
-              <button
-                key={i}
-                onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${openFaq === i ? "border-[#55E039]/20 bg-white/[0.06]" : "border-white/10 hover:bg-white/[0.06]"}`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[15px] font-extrabold text-white pr-4">{faq.q}</span>
-                  <ChevronDown className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
-                </div>
+              <div key={i}>
+                <button
+                  id={`faq-btn-${i}`}
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  aria-expanded={openFaq === i}
+                  aria-controls={`faq-panel-${i}`}
+                  className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 ${openFaq === i ? "border-[#55E039]/20 bg-white/[0.06]" : "border-white/10 hover:bg-white/[0.06]"}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[15px] font-extrabold text-white pr-4">{faq.q}</span>
+                    <ChevronDown className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${openFaq === i ? "rotate-180" : ""}`} />
+                  </div>
+                </button>
                 {openFaq === i && (
-                  <p className="mt-4 text-sm text-white/60 leading-relaxed">{faq.a}</p>
+                  <div id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-btn-${i}`} className="px-6 pb-5">
+                    <p className="mt-4 text-sm text-white/60 leading-relaxed">{faq.a}</p>
+                  </div>
                 )}
-              </button>
+              </div>
             ))}
           </div>
         </div>
@@ -380,13 +405,22 @@ export default function PricingPage() {
             Protect your clinic today.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Pre-release access is invite-only. Join the waitlist to lock in the $297/mo founding rate when your invite is ready — standard launch pricing is $497/mo.
+            {IS_LAUNCHED
+              ? "Lock in the $297/mo founding rate now — standard launch pricing is $497/mo. 30-day money-back guarantee."
+              : "Pre-release access is invite-only. Join the waitlist to lock in the $297/mo founding rate when your invite is ready — standard launch pricing is $497/mo."}
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-2 sm:gap-4">
-            <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-              Join the Waitlist
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {IS_LAUNCHED ? (
+              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+                Subscribe Now
+                <ArrowRight className="h-4 w-4" />
+              </CheckoutButton>
+            ) : (
+              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+                Join the Waitlist
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
             <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-5 sm:px-8 text-[15px] font-bold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>

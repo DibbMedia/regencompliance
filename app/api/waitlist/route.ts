@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       "unknown"
 
     // 5 signups per IP per 10 minutes
-    const limit = checkRateLimit(`waitlist:${ip}`, 5, 10 * 60 * 1000)
+    const limit = await checkRateLimit(`waitlist:${ip}`, 5, 10 * 60 * 1000)
     if (!limit.allowed) {
       return NextResponse.json(
         { error: "Too many requests. Please try again in a few minutes." },

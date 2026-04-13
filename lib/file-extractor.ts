@@ -1,6 +1,6 @@
 import mammoth from "mammoth"
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const MAX_TEXT_LENGTH = 15000
 
 const ALLOWED_MIME_TYPES = new Set([
@@ -21,11 +21,17 @@ export function validateFile(
   mimeType: string
 ): { valid: boolean; error?: string; resolvedMime: string } {
   if (size > MAX_FILE_SIZE) {
-    return { valid: false, error: "File too large. Maximum size is 10MB.", resolvedMime: mimeType }
+    return { valid: false, error: "File too large. Maximum size is 5MB.", resolvedMime: mimeType }
+  }
+
+  // Validate file extension
+  const ext = filename.toLowerCase().match(/\.\w+$/)?.[0] ?? ""
+  const ALLOWED_EXTENSIONS = new Set([".txt", ".pdf", ".docx"])
+  if (!ALLOWED_EXTENSIONS.has(ext)) {
+    return { valid: false, error: "Unsupported file extension. Only .txt, .pdf, and .docx files are allowed.", resolvedMime: mimeType }
   }
 
   // Resolve MIME from extension as a fallback (browsers can be unreliable)
-  const ext = filename.toLowerCase().match(/\.\w+$/)?.[0] ?? ""
   const resolvedMime = ALLOWED_MIME_TYPES.has(mimeType) ? mimeType : EXTENSION_TO_MIME[ext] ?? mimeType
 
   if (!ALLOWED_MIME_TYPES.has(resolvedMime)) {
