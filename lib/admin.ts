@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 
-const FALLBACK_ADMIN_EMAIL = "isaac@dibbenterprizes.com"
+const ADMIN_EMAILS = [
+  "isaac@dibbenterprizes.com",
+  "oscar@regenportal.com",
+]
 
 export function getAdminEmail(): string {
-  return process.env.ADMIN_EMAIL || FALLBACK_ADMIN_EMAIL
+  return process.env.ADMIN_EMAIL || ADMIN_EMAILS[0]
 }
 
 /**
- * Check if a given email is the admin email. Server-only.
+ * Check if a given email is an admin email. Server-only.
  */
 export function isAdminEmail(email: string | undefined | null): boolean {
   if (!email) return false
-  return email === getAdminEmail()
+  const envAdmin = process.env.ADMIN_EMAIL
+  if (envAdmin && email === envAdmin) return true
+  return ADMIN_EMAILS.includes(email)
 }
 
 /**
