@@ -193,7 +193,7 @@ export async function POST(request: Request) {
                 const email = stripeCustomer.email
 
                 const { data: authData } = await supabase.auth.admin.listUsers()
-                const authUser = authData?.users?.find((u) => u.email === email)
+                const authUser = authData?.users?.find((u) => u.email?.toLowerCase() === email.toLowerCase())
 
                 if (authUser) {
                   console.log(`[Stripe Webhook] Found auth user [redacted:${authUser.id.slice(-4)}] by email=[redacted], linking stripe_customer_id`)
