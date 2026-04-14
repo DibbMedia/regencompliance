@@ -23,11 +23,15 @@ const pageTitles: Record<string, string> = {
   "/dashboard/scanner": "Compliance Scanner",
   "/dashboard/history": "Scan History",
   "/dashboard/library": "Compliance Library",
+  "/dashboard/sites": "Monitored Sites",
+  "/dashboard/templates": "Templates",
+  "/dashboard/badge": "Compliance Badge",
   "/dashboard/feed": "Compliance Feed",
   "/dashboard/notifications": "Notifications",
   "/dashboard/account": "Account & Billing",
   "/dashboard/account/team": "Team Members",
   "/dashboard/support": "Support",
+  "/dashboard/help": "Help Center",
 }
 
 interface DashboardHeaderProps {

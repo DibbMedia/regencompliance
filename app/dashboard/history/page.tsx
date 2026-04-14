@@ -105,7 +105,7 @@ export default function HistoryPage() {
           />
         </div>
         <Select value={contentType} onValueChange={(v) => { setContentType(v ?? "all"); setPage(1) }}>
-          <SelectTrigger className="w-[160px] bg-white/[0.03] border-white/10 text-white/70">
+          <SelectTrigger className="w-full sm:w-[160px] bg-white/[0.03] border-white/10 text-white/70">
             <SelectValue placeholder="Content Type" />
           </SelectTrigger>
           <SelectContent>

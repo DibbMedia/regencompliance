@@ -118,7 +118,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     trackApiUsage(supabaseForTracking, "00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
 
     const scanDuration = Date.now() - startTime
-    const responseText = response.content[0].type === "text" ? response.content[0].text : ""
+    const responseText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
 
     let scanResult
     try {

@@ -52,7 +52,7 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
     const supabase = createServiceClient()
     trackApiUsage(supabase, "00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-4-sonnet-20250514", response)
 
-    const rewrittenText = response.content[0].type === "text" ? response.content[0].text : ""
+    const rewrittenText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
 
     return NextResponse.json({ rewritten_text: rewrittenText })
   } catch (error) {

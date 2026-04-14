@@ -8,11 +8,15 @@ export async function GET(request: Request) {
   const health: Record<string, unknown> = {
     status: "ok",
     timestamp: new Date().toISOString(),
-    version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "dev",
   }
 
   if (deep) {
-    // Probe Supabase
+    // Deep probe requires cron secret to prevent info disclosure
+    const authHeader = request.headers.get("authorization")
+    if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     try {
       const supabase = createServiceClient()
       const start = Date.now()
@@ -20,25 +24,12 @@ export async function GET(request: Request) {
       health.supabase = {
         status: error ? "error" : "ok",
         latency_ms: Date.now() - start,
-        error: error?.message || null,
       }
-    } catch (e) {
-      health.supabase = { status: "error", error: e instanceof Error ? e.message : "unknown" }
+    } catch {
+      health.supabase = { status: "error" }
     }
 
-    // Probe Anthropic (just check env var exists, don't make a real call)
-    health.anthropic = {
-      status: process.env.ANTHROPIC_API_KEY ? "configured" : "missing",
-    }
-
-    // Probe Stripe
-    health.stripe = {
-      status: process.env.STRIPE_SECRET_KEY ? "configured" : "missing",
-    }
-
-    // Overall status
-    const allOk = health.supabase && (health.supabase as Record<string, unknown>).status === "ok"
-    health.status = allOk ? "ok" : "degraded"
+    health.status = health.supabase && (health.supabase as Record<string, unknown>).status === "ok" ? "ok" : "degraded"
   }
 
   return NextResponse.json(health)

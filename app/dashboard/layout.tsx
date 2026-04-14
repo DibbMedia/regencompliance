@@ -23,9 +23,13 @@ export default async function DashboardLayout({
     .from("profiles")
     .select("clinic_name, onboarding_complete, subscription_status")
     .eq("id", user.id)
-    .single()
+    .maybeSingle()
 
-  if (profile && !profile.onboarding_complete) {
+  if (!profile) {
+    redirect("/onboarding/clinic")
+  }
+
+  if (!profile.onboarding_complete) {
     redirect("/onboarding/clinic")
   }
 
@@ -34,7 +38,7 @@ export default async function DashboardLayout({
     .from("team_members")
     .select("role, profile_id")
     .eq("user_id", user.id)
-    .single()
+    .maybeSingle()
 
   const role = member?.role || "owner"
 

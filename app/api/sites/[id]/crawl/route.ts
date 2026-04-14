@@ -195,7 +195,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       })
 
       const scanDuration = Date.now() - startTime
-      const responseText = response.content[0].type === "text" ? response.content[0].text : ""
+      const responseText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
 
       let scanResult
       try {

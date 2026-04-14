@@ -92,7 +92,7 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
     // Track API cost (non-blocking)
     trackApiUsage(supabase, user.id, "/api/rewrite", "claude-4-sonnet-20250514", response)
 
-    const rewrittenText = response.content[0].type === "text" ? response.content[0].text : ""
+    const rewrittenText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
 
     // Update scan with rewrite
     await supabase
