@@ -90,8 +90,8 @@ export default function RootLayout({
       <body id="main-content" className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <TooltipProvider>
