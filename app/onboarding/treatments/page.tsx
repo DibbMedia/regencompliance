@@ -17,6 +17,8 @@ const TREATMENT_CATEGORIES = [
       { slug: "whartons_jelly", label: "Wharton's Jelly" },
       { slug: "prolotherapy", label: "Prolotherapy" },
       { slug: "peptide", label: "Peptide Therapy" },
+      { slug: "muse_cells", label: "Muse Cells" },
+      { slug: "umbilical_cord_blood", label: "Umbilical Cord Blood" },
     ],
   },
   {
@@ -53,7 +55,7 @@ const TREATMENT_CATEGORIES = [
   {
     label: "Other Specialties",
     treatments: [
-      { slug: "chiropractic", label: "Chiropractic" },
+      { slug: "longevity", label: "Longevity" },
       { slug: "physical_therapy", label: "Physical Therapy" },
       { slug: "functional_medicine", label: "Functional Medicine" },
       { slug: "hyperbaric", label: "Hyperbaric Oxygen (HBOT)" },
