@@ -344,7 +344,7 @@ export default function ScannerPage() {
             <HelpTooltip text="Paste any marketing content to check it against FDA/FTC compliance rules. Results are educational guidance, not legal advice." />
           </h2>
           <p className="text-white/60 mt-1">
-            Paste content, scan a URL, or upload a file to check against current FDA/FTC guidelines.
+            Check content against FDA/FTC guidelines. Paste text, scan a URL, or upload a file.
           </p>
         </div>
 
@@ -630,7 +630,7 @@ export default function ScannerPage() {
         )}
 
         <p className="text-xs text-white/30 italic text-center">
-          This tool provides educational compliance guidance only. It is not legal advice and does not guarantee regulatory compliance. Always consult qualified healthcare marketing counsel.
+          Educational guidance only — not legal advice. Consult healthcare marketing counsel before publishing.
         </p>
       </div>
 

@@ -101,7 +101,7 @@ function FlagCard({ flag, index }: { flag: ScanFlag; index: number }) {
           <span className="shrink-0 w-6 h-6 rounded-full bg-white/[0.06] flex items-center justify-center text-[10px] font-bold text-white/40">
             {index + 1}
           </span>
-          <p className="text-sm font-medium text-red-400 truncate">
+          <p className={cn("text-sm font-medium text-red-400", expanded ? "break-words" : "truncate")}>
             &quot;{flag.matched_text}&quot;
           </p>
         </div>

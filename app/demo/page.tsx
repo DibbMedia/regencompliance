@@ -198,7 +198,7 @@ export default function DemoPage() {
             <div>
               <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
               <p className="text-white/60">
-                Paste any marketing content to check against current FDA/FTC guidelines.
+                Check any marketing content against FDA/FTC guidelines.
               </p>
             </div>
 
