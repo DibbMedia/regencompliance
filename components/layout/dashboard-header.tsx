@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Bell, LogOut, Settings } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
@@ -43,7 +44,7 @@ export function DashboardHeader({ userEmail, clinicName, role }: DashboardHeader
   const title = pageTitles[pathname] || "Dashboard"
   const initials = clinicName?.slice(0, 2).toUpperCase() || userEmail?.slice(0, 2).toUpperCase() || "?"
 
-  const { data: unreadCount } = useSWR(
+  const { data: unreadCount, mutate: refreshUnread } = useSWR(
     "unread-notifications",
     async () => {
       const res = await fetch("/api/notifications/unread-count")
@@ -53,6 +54,12 @@ export function DashboardHeader({ userEmail, clinicName, role }: DashboardHeader
     },
     { refreshInterval: 60000 }
   )
+
+  useEffect(() => {
+    function handleUpdate() { refreshUnread() }
+    window.addEventListener("notifications-updated", handleUpdate)
+    return () => window.removeEventListener("notifications-updated", handleUpdate)
+  }, [refreshUnread])
 
   async function handleLogout() {
     await supabase.auth.signOut()

@@ -106,7 +106,7 @@ export default function NotificationsPage() {
         body: JSON.stringify({ ids: [n.id] }),
       })
       mutate(`/api/notifications?${params}`)
-      mutate("unread-notifications")
+      window.dispatchEvent(new CustomEvent("notifications-updated"))
     }
     if (n.action_url) {
       router.push(n.action_url)

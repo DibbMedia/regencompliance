@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { createServiceClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 
 export async function PATCH(request: Request) {
@@ -13,29 +14,80 @@ export async function PATCH(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
     const body = await request.json()
+    const service = createServiceClient()
 
     if (body.all) {
-      // Mark all unread notifications as read for this user (including broadcasts)
-      const { error } = await supabase
+      // 1. Mark personal notifications as read (RLS allows this)
+      await supabase
         .from("notifications")
         .update({ read: true })
         .eq("read", false)
-        .or(`profile_id.eq.${profileId},profile_id.is.null`)
+        .eq("profile_id", profileId)
 
-      if (error) {
-        console.error("Mark all read error:", error)
-        return NextResponse.json({ error: "Failed to mark notifications as read" }, { status: 500 })
+      // 2. Get all broadcast notifications not yet read by this user
+      const { data: broadcasts } = await service
+        .from("notifications")
+        .select("id")
+        .is("profile_id", null)
+
+      if (broadcasts && broadcasts.length > 0) {
+        // Get already-read broadcast IDs for this user
+        const { data: alreadyRead } = await supabase
+          .from("notification_reads")
+          .select("notification_id")
+          .eq("user_id", user.id)
+
+        const readSet = new Set((alreadyRead || []).map((r) => r.notification_id))
+        const unreadBroadcasts = broadcasts.filter((b) => !readSet.has(b.id))
+
+        if (unreadBroadcasts.length > 0) {
+          await supabase
+            .from("notification_reads")
+            .upsert(
+              unreadBroadcasts.map((b) => ({
+                notification_id: b.id,
+                user_id: user.id,
+              })),
+              { onConflict: "notification_id,user_id" }
+            )
+        }
       }
     } else if (body.ids && Array.isArray(body.ids)) {
-      const { error } = await supabase
+      // Fetch the specific notifications to separate personal from broadcast
+      const { data: notifications } = await service
         .from("notifications")
-        .update({ read: true })
+        .select("id, profile_id")
         .in("id", body.ids)
-        .or(`profile_id.eq.${profileId},profile_id.is.null`)
 
-      if (error) {
-        console.error("Mark read error:", error)
-        return NextResponse.json({ error: "Failed to mark notifications as read" }, { status: 500 })
+      if (notifications) {
+        const personalIds = notifications
+          .filter((n) => n.profile_id !== null)
+          .map((n) => n.id)
+        const broadcastIds = notifications
+          .filter((n) => n.profile_id === null)
+          .map((n) => n.id)
+
+        // Update personal notifications
+        if (personalIds.length > 0) {
+          await supabase
+            .from("notifications")
+            .update({ read: true })
+            .in("id", personalIds)
+            .eq("profile_id", profileId)
+        }
+
+        // Insert read receipts for broadcast notifications
+        if (broadcastIds.length > 0) {
+          await supabase
+            .from("notification_reads")
+            .upsert(
+              broadcastIds.map((id) => ({
+                notification_id: id,
+                user_id: user.id,
+              })),
+              { onConflict: "notification_id,user_id" }
+            )
+        }
       }
     }
 
