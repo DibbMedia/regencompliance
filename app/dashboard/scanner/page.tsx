@@ -334,9 +334,9 @@ export default function ScannerPage() {
   const charCount = text.length
 
   return (
-    <div className="p-4 sm:p-6 grid gap-4 sm:gap-6 lg:grid-cols-5">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto space-y-6">
       {/* Input Panel */}
-      <div className="lg:col-span-3 space-y-6">
+      <div className="space-y-6">
         <div>
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
           <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
@@ -597,7 +597,7 @@ export default function ScannerPage() {
             </div>
 
             <p className="text-sm text-white/40">
-              Enter a URL to automatically extract and scan the page content for compliance issues.
+              Scans this exact page only — not the full site.
             </p>
 
             {/* Scan URL Button */}
@@ -635,7 +635,7 @@ export default function ScannerPage() {
       </div>
 
       {/* Results Panel */}
-      <div className="lg:col-span-2 space-y-4">
+      <div className="space-y-4">
         {/* Empty State */}
         {!result && !scanning && (
           <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
@@ -666,30 +666,26 @@ export default function ScannerPage() {
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* URL / File Source Info */}
             {result.source_url && (
-              <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 flex items-center gap-3">
                 {result.source_url.startsWith("file://") ? (
-                  <div className="flex items-center gap-3">
-                    <FileText className="h-5 w-5 text-[#55E039] shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{result.source_url.replace("file://", "")}</p>
-                      {(result as ScanResult & { page_count?: number }).page_count && (
-                        <p className="text-xs text-white/40">{(result as ScanResult & { page_count?: number }).page_count} pages</p>
-                      )}
-                    </div>
-                  </div>
+                  <>
+                    <FileText className="h-4 w-4 text-[#55E039] shrink-0" />
+                    <p className="text-sm text-white/70 truncate">{result.source_url.replace("file://", "")}</p>
+                  </>
                 ) : (
                   <>
-                    {result.page_title && (
-                      <p className="text-sm font-medium text-white mb-1">{result.page_title}</p>
-                    )}
-                    <a
-                      href={result.source_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors truncate block"
-                    >
-                      {result.source_url}
-                    </a>
+                    <Globe className="h-4 w-4 text-[#55E039] shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-white/40 mb-0.5">Scanned page</p>
+                      <a
+                        href={result.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-[#55E039]/80 hover:text-[#55E039] transition-colors truncate block"
+                      >
+                        {result.page_title || result.source_url}
+                      </a>
+                    </div>
                   </>
                 )}
               </div>
@@ -825,13 +821,13 @@ export default function ScannerPage() {
                     </button>
                   ) : (
                     <>
-                      <div className="grid gap-3 md:grid-cols-2">
-                        <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-white/30 mb-2">Original</p>
+                      <div className="space-y-3">
+                        <div className="rounded-lg border border-red-500/10 bg-red-500/[0.04] p-4">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-red-400/60 mb-2">Before</p>
                           <p className="text-sm text-white/40 line-through leading-relaxed">{result.flags.map(f => f.matched_text).join(" ... ")}</p>
                         </div>
-                        <div className="rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] p-3">
-                          <p className="text-[10px] font-bold uppercase tracking-wider text-[#55E039] mb-2">Rewritten</p>
+                        <div className="rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] p-4">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-[#55E039] mb-2">After</p>
                           <p className="text-sm text-white/80 leading-relaxed">{result.rewritten_text}</p>
                         </div>
                       </div>
