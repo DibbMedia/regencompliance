@@ -2,89 +2,80 @@ import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
 
 export async function GET(request: Request) {
-  // One-time migration endpoint — delete after use
+  // One-time migration: convert broadcast notifications (profile_id=NULL) to per-user copies
   const secret = request.headers.get("x-migrate-secret")
-  if (secret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const supabase = createServiceClient()
 
-  // Step 1: Create the table using individual insert to test
-  // Supabase JS can't run DDL, so we use the SQL via fetch to the management API
-  // Instead, we'll use the Supabase SQL HTTP API
-  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  // Get all broadcast notifications
+  const { data: broadcasts, error: bErr } = await supabase
+    .from("notifications")
+    .select("*")
+    .is("profile_id", null)
 
-  const sql = `
-    CREATE TABLE IF NOT EXISTS notification_reads (
-      notification_id uuid REFERENCES notifications(id) ON DELETE CASCADE,
-      user_id uuid NOT NULL,
-      read_at timestamptz DEFAULT now(),
-      PRIMARY KEY (notification_id, user_id)
-    );
-
-    ALTER TABLE notification_reads ENABLE ROW LEVEL SECURITY;
-
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'notification_reads' AND policyname = 'Users can view own reads') THEN
-        EXECUTE 'CREATE POLICY "Users can view own reads" ON notification_reads FOR SELECT USING (user_id = auth.uid())';
-      END IF;
-      IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'notification_reads' AND policyname = 'Users can insert own reads') THEN
-        EXECUTE 'CREATE POLICY "Users can insert own reads" ON notification_reads FOR INSERT WITH CHECK (user_id = auth.uid())';
-      END IF;
-    END $$;
-
-    CREATE INDEX IF NOT EXISTS idx_notification_reads_user ON notification_reads(user_id);
-  `
-
-  // Use the Supabase pg-meta SQL endpoint
-  const res = await fetch(`${SUPABASE_URL}/pg/query`, {
-    method: "POST",
-    headers: {
-      "apikey": SERVICE_KEY,
-      "Authorization": `Bearer ${SERVICE_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ query: sql }),
-  })
-
-  if (!res.ok) {
-    // Fallback: try the older endpoint
-    const res2 = await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec_raw_query`, {
-      method: "POST",
-      headers: {
-        "apikey": SERVICE_KEY,
-        "Authorization": `Bearer ${SERVICE_KEY}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=representation",
-      },
-      body: JSON.stringify({ sql }),
-    })
-
-    if (!res2.ok) {
-      const text2 = await res2.text()
-      return NextResponse.json({
-        error: "Both migration methods failed",
-        pg_query_status: res.status,
-        pg_query_body: await res.text().catch(() => "n/a"),
-        rpc_status: res2.status,
-        rpc_body: text2.slice(0, 500),
-      }, { status: 500 })
-    }
-
-    return NextResponse.json({ success: true, method: "rpc" })
+  if (bErr) {
+    return NextResponse.json({ error: "Failed to fetch broadcasts", detail: bErr.message }, { status: 500 })
   }
 
-  const result = await res.json().catch(() => ({}))
+  if (!broadcasts || broadcasts.length === 0) {
+    return NextResponse.json({ success: true, message: "No broadcasts to migrate", converted: 0 })
+  }
 
-  // Verify table exists
-  const { data, error } = await supabase.from("notification_reads").select("*").limit(1)
+  // Get all profiles
+  const { data: profiles, error: pErr } = await supabase
+    .from("profiles")
+    .select("id")
+
+  if (pErr || !profiles) {
+    return NextResponse.json({ error: "Failed to fetch profiles", detail: pErr?.message }, { status: 500 })
+  }
+
+  // Create per-user copies of each broadcast
+  const rows = []
+  for (const b of broadcasts) {
+    for (const p of profiles) {
+      rows.push({
+        profile_id: p.id,
+        title: b.title,
+        body: b.body,
+        type: b.type,
+        action_url: b.action_url,
+        read: false,
+        created_at: b.created_at,
+      })
+    }
+  }
+
+  if (rows.length > 0) {
+    const { error: insertErr } = await supabase.from("notifications").insert(rows)
+    if (insertErr) {
+      return NextResponse.json({ error: "Failed to insert copies", detail: insertErr.message }, { status: 500 })
+    }
+  }
+
+  // Delete original broadcasts
+  const broadcastIds = broadcasts.map((b) => b.id)
+  const { error: delErr } = await supabase
+    .from("notifications")
+    .delete()
+    .in("id", broadcastIds)
+
+  if (delErr) {
+    return NextResponse.json({
+      success: true,
+      warning: "Copies created but failed to delete originals: " + delErr.message,
+      converted: rows.length,
+    })
+  }
 
   return NextResponse.json({
     success: true,
-    method: "pg_query",
-    result,
-    verification: error ? `Error: ${error.message}` : `Table exists, ${data?.length ?? 0} rows`,
+    broadcasts_found: broadcasts.length,
+    profiles_found: profiles.length,
+    copies_created: rows.length,
+    originals_deleted: broadcastIds.length,
   })
 }
