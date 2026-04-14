@@ -68,7 +68,7 @@ export async function POST(request: Request) {
       system: `You are a healthcare marketing compliance editor for regenerative medicine.
 Rewrite the content to be fully FDA/FTC compliant.
 
-[COMPLIANCE BIBLE GUIDANCE]
+[REGULATORY GUIDANCE]
 ${getComplianceBiblePrompt()}
 
 [REWRITE PROTOCOL]
@@ -77,8 +77,8 @@ ${getComplianceBibleRewriteGuidance()}
 Flagged phrases to replace: ${flagsSummary}
 
 Additional rules:
-- Swap all RED LIGHT phrases for GREEN LIGHT alternatives
-- For YELLOW LIGHT phrases, keep the content but add the required disclaimer nearby
+- Swap all high-risk phrases for approved alternatives
+- For medium-risk phrases, keep the content but add the required disclaimer nearby
 - If a specific modality is mentioned (stem cells, exosomes, PRP, peptides, IV therapy, BHRT), include the appropriate regulatory status note
 - Use patient experience language (many patients report..., may support..., some patients experience...)
 - Always include hedging (individual results may vary, results not guaranteed)

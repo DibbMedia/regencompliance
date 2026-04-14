@@ -214,7 +214,7 @@ export interface ExtractedRule {
 }
 
 const EXTRACTION_PROMPT = `You are a compliance analyst specializing in regenerative medicine marketing regulations.
-You use the TRAFFIC LIGHT classification system:
+You use the following risk classification system:
 
 RED LIGHT (high risk) — phrases/claims that are NEVER allowed:
 - Cure/treatment claims for unapproved therapies

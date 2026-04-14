@@ -447,15 +447,15 @@ export function getComplianceBiblePrompt(): string {
     .map((d) => `[${d.name}]: ${d.text}`)
     .join("\n")
 
-  return `=== REGEN COMPLIANCE BIBLE — TRAFFIC LIGHT SYSTEM ===
+  return `=== FDA/FTC REGULATORY RULES — RISK CLASSIFICATION ===
 
-RED LIGHT — NEVER ALLOWED (flag as HIGH risk):
+HIGH RISK — NEVER ALLOWED (flag as HIGH risk):
 ${redSection}
 
-YELLOW LIGHT — RESTRICTED (flag as MEDIUM risk if missing required disclaimers):
+MEDIUM RISK — RESTRICTED (flag as MEDIUM risk if missing required disclaimers):
 ${yellowSection}
 
-GREEN LIGHT — APPROVED PATTERNS (safe, suggest if missing where appropriate):
+APPROVED PATTERNS (safe, suggest if missing where appropriate):
 ${greenSection}
 
 MODALITY-SPECIFIC REGULATORY STATUS:
@@ -467,16 +467,16 @@ ${channelSection}
 REQUIRED DISCLAIMER TEMPLATES:
 ${disclaimerSection}
 
-=== END COMPLIANCE BIBLE ===`
+=== END REGULATORY RULES ===`
 }
 
 // ---------------------------------------------------------------------------
 // Rewrite-specific prompt guidance
 // ---------------------------------------------------------------------------
 export function getComplianceBibleRewriteGuidance(): string {
-  return `=== REWRITE PROTOCOL (from Compliance Bible) ===
-1. RED LIGHT phrases: Replace with GREEN LIGHT alternatives. Never keep cure/guarantee/FDA-misrep language.
-2. YELLOW LIGHT phrases: Keep the content but ADD the required disclaimer text nearby.
+  return `=== REWRITE PROTOCOL ===
+1. High-risk phrases: Replace with approved alternatives. Never keep cure/guarantee/FDA-misrepresentation language.
+2. Medium-risk phrases: Keep the content but ADD the required disclaimer text nearby.
 3. Always note regulatory status for any modality mentioned (stem cells, exosomes, PRP, peptides, etc.).
 4. Use patient experience language: "some patients report...", "may support...", "individual results vary".
 5. Never add claims not in the original — only make existing claims compliant.
