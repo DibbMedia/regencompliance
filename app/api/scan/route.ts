@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
       .order("created_at", { ascending: false })
       .limit(1)
-      .single()
+      .maybeSingle()
 
     if (cached) {
       return NextResponse.json({

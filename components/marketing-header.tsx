@@ -12,7 +12,7 @@ export function MarketingHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#55E039] focus:text-[#0a0a0a] focus:rounded-lg focus:font-bold focus:text-sm">Skip to content</a>
-      <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-2xl border-b border-white/10" />
+      <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-2xl border-b border-white/10 pointer-events-none" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">

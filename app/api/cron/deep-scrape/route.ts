@@ -54,7 +54,7 @@ function parseClaudeJson<T>(text: string): T | null {
 export async function GET(request: Request) {
   // 1. Auth check
   const authHeader = request.headers.get("authorization")
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
