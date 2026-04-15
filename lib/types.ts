@@ -49,6 +49,8 @@ export interface ScanFlag {
   risk_level: 'high' | 'medium' | 'low'
   reason: string
   alternative: string
+  context?: string
+  element_type?: string
 }
 
 export interface Scan {

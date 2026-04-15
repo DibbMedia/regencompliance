@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation"
 import useSWR from "swr"
-import { ArrowLeft, Download, RefreshCw, Copy, Check, ChevronDown, ChevronUp, Shield, Sparkles, AlertTriangle } from "lucide-react"
+import { ArrowLeft, Download, RefreshCw, Copy, Check, ChevronDown, ChevronUp, Shield, Sparkles, AlertTriangle, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import type { Scan, ScanFlag } from "@/lib/types"
@@ -80,7 +80,23 @@ function RiskBadge({ level }: { level: string }) {
   )
 }
 
-function FlagCard({ flag, index }: { flag: ScanFlag; index: number }) {
+function renderContextWithHighlight(context: string, match: string) {
+  if (!match) return context
+  const idx = context.toLowerCase().indexOf(match.toLowerCase())
+  if (idx === -1) return context
+  const before = context.slice(0, idx)
+  const hit = context.slice(idx, idx + match.length)
+  const after = context.slice(idx + match.length)
+  return (
+    <>
+      {before}
+      <span className="font-semibold text-red-300 bg-red-500/[0.12] rounded px-0.5">{hit}</span>
+      {after}
+    </>
+  )
+}
+
+function FlagCard({ flag, index, sourceUrl }: { flag: ScanFlag; index: number; sourceUrl?: string | null }) {
   const [expanded, setExpanded] = useState(true)
   const [copied, setCopied] = useState(false)
 
@@ -89,6 +105,8 @@ function FlagCard({ flag, index }: { flag: ScanFlag; index: number }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
+
+  const isUrlScan = !!sourceUrl && !sourceUrl.startsWith("file://")
 
   return (
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden hover:bg-white/[0.04] transition-all duration-200">
@@ -118,6 +136,27 @@ function FlagCard({ flag, index }: { flag: ScanFlag; index: number }) {
       {/* Expandable content */}
       {expanded && (
         <div className="px-4 pb-4 space-y-3 border-t border-white/[0.04] pt-3">
+          {isUrlScan && flag.element_type && (
+            <p className="text-xs text-white/40">
+              Found in &lt;{flag.element_type}&gt;
+            </p>
+          )}
+          {flag.context && (
+            <p className="text-sm text-white/70 leading-relaxed bg-white/[0.02] border border-white/[0.06] rounded-md px-3 py-2">
+              {renderContextWithHighlight(flag.context, flag.matched_text)}
+            </p>
+          )}
+          {isUrlScan && (
+            <a
+              href={`${sourceUrl}#:~:text=${encodeURIComponent(flag.matched_text)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors"
+            >
+              View on page
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
           <p className="text-sm text-white/50 leading-relaxed">{flag.reason}</p>
           <div className="flex items-center gap-2 bg-[#55E039]/[0.06] border border-[#55E039]/10 rounded-lg px-3 py-2.5">
             <Sparkles className="h-3.5 w-3.5 text-[#55E039] shrink-0" />
@@ -263,7 +302,7 @@ export default function ScanDetailPage() {
           </div>
           <div className="space-y-2">
             {flags.map((flag, i) => (
-              <FlagCard key={i} flag={flag} index={i} />
+              <FlagCard key={i} flag={flag} index={i} sourceUrl={(scan as Scan & { source_url?: string | null }).source_url} />
             ))}
           </div>
         </div>

@@ -95,7 +95,14 @@ export async function POST(request: Request) {
       .eq("is_active", true)
 
     const treatments = profile.treatments || []
-    const allRules = rules || []
+    // Scope rules to clinic's services: general rules (empty applies_to) always apply;
+    // treatment-specific rules only if they overlap. Fallback to all if treatments unset.
+    const allRules = (rules || []).filter((r) => {
+      const appliesTo = r.applies_to || []
+      if (appliesTo.length === 0) return true
+      if (treatments.length === 0) return true
+      return appliesTo.some((t: string) => treatments.includes(t))
+    })
     const rulesForPrompt = allRules.map((r) => ({
       id: r.id,
       phrase: r.banned_phrase,
@@ -141,9 +148,11 @@ Analyze submitted content. Return ONLY valid JSON:
     "banned_phrase": "the banned phrase or RED/medium-risk pattern it matches",
     "risk_level": "high|medium|low",
     "reason": "one sentence why it violates FDA/FTC, citing the specific FDA/FTC regulatory basis",
-    "alternative": "compliant rewrite of that phrase"
+    "alternative": "compliant rewrite of that phrase",
+    "context": "the full sentence containing the matched phrase"
   }]
 }
+For each flag, include the full sentence or short surrounding text (up to ~200 chars) that contains the matched phrase, so the user sees how it's used in context.
 Score: 100=clean, 80-99=minor issues, 60-79=medium risk, 40-59=high risk, 0-39=multiple high risk.
 Match partial phrases, synonyms, and intent — not just exact strings.
 Return empty flags array and score 100 if clean. No text outside JSON.`,

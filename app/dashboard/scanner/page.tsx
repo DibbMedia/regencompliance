@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
-import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2, Upload, X } from "lucide-react"
+import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2, Upload, X, ExternalLink } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { HelpTooltip } from "@/components/ui/help-tooltip"
@@ -43,6 +43,22 @@ function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function renderContextWithHighlight(context: string, match: string) {
+  if (!match) return context
+  const idx = context.toLowerCase().indexOf(match.toLowerCase())
+  if (idx === -1) return context
+  const before = context.slice(0, idx)
+  const hit = context.slice(idx, idx + match.length)
+  const after = context.slice(idx + match.length)
+  return (
+    <>
+      {before}
+      <span className="font-semibold text-red-300 bg-red-500/[0.12] rounded px-0.5">{hit}</span>
+      {after}
+    </>
+  )
 }
 
 function ScoreRing({ score, animate }: { score: number; animate: boolean }) {
@@ -749,6 +765,30 @@ export default function ScannerPage() {
                         </p>
                         <RiskBadge level={flag.risk_level} />
                       </div>
+                      {/* Element type subtitle (URL scans only) */}
+                      {result.source_url && flag.element_type && (
+                        <p className="text-xs text-white/40">
+                          Found in &lt;{flag.element_type}&gt;
+                        </p>
+                      )}
+                      {/* Context */}
+                      {flag.context && (
+                        <p className="text-sm text-white/70 leading-relaxed bg-white/[0.02] border border-white/[0.06] rounded-md px-3 py-2">
+                          {renderContextWithHighlight(flag.context, flag.matched_text)}
+                        </p>
+                      )}
+                      {/* View on page (URL scans only) */}
+                      {result.source_url && !result.source_url.startsWith("file://") && (
+                        <a
+                          href={`${result.source_url}#:~:text=${encodeURIComponent(flag.matched_text)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors"
+                        >
+                          View on page
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
                       {/* Reason */}
                       <p className="text-sm text-white/50 leading-relaxed">{flag.reason}</p>
                       {/* Alternative */}

@@ -40,6 +40,22 @@ interface DemoStatus {
   expired: boolean
 }
 
+function renderContextWithHighlight(context: string, match: string) {
+  if (!match) return context
+  const idx = context.toLowerCase().indexOf(match.toLowerCase())
+  if (idx === -1) return context
+  const before = context.slice(0, idx)
+  const hit = context.slice(idx, idx + match.length)
+  const after = context.slice(idx + match.length)
+  return (
+    <>
+      {before}
+      <span className="font-semibold text-red-300 bg-red-500/[0.12] rounded px-0.5">{hit}</span>
+      {after}
+    </>
+  )
+}
+
 function ScoreRing({ score }: { score: number }) {
   const color = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
   const bgColor = score >= 80 ? "stroke-[#55E039]" : score >= 50 ? "stroke-yellow-500" : "stroke-red-500"
@@ -192,9 +208,9 @@ export default function DemoPage() {
           </div>
         )}
 
-        <div className={`grid gap-6 md:grid-cols-2 lg:grid-cols-5 ${demoExpired ? "opacity-40 pointer-events-none" : ""}`}>
+        <div className={`space-y-6 ${demoExpired ? "opacity-40 pointer-events-none" : ""}`}>
           {/* Input Panel */}
-          <div className="md:col-span-1 lg:col-span-3 space-y-4">
+          <div className="space-y-4">
             <div>
               <h2 className="text-2xl font-bold text-white">Compliance Scanner</h2>
               <p className="text-white/60">
@@ -287,7 +303,7 @@ export default function DemoPage() {
           </div>
 
           {/* Results Panel */}
-          <div className="md:col-span-1 lg:col-span-2 space-y-4">
+          <div className="space-y-4">
             {!result && !scanning && (
               <div className="rounded-2xl bg-[#111111] border border-white/15 p-12 text-center">
                 <Shield className="h-12 w-12 mb-4 opacity-20 mx-auto text-white/40" />
@@ -356,6 +372,11 @@ export default function DemoPage() {
                             "text-blue-400 bg-blue-500/10"
                           }`}>{flag.risk_level}</span>
                         </div>
+                        {flag.context && (
+                          <p className="text-xs text-white/70 leading-relaxed bg-white/[0.02] border border-white/[0.06] rounded-md px-2.5 py-1.5">
+                            {renderContextWithHighlight(flag.context, flag.matched_text)}
+                          </p>
+                        )}
                         <p className="text-xs text-white/60">{flag.reason}</p>
                         <div className="bg-[#55E039]/5 border border-[#55E039]/10 rounded-lg p-2">
                           <p className="text-[10px] text-[#55E039]/50 uppercase tracking-wider font-semibold mb-1">Compliant Alternative</p>

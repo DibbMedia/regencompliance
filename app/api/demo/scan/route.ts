@@ -104,9 +104,11 @@ Analyze submitted content. Return ONLY valid JSON:
     "banned_phrase": "the type of violation",
     "risk_level": "high|medium|low",
     "reason": "one sentence why it violates FDA/FTC rules",
-    "alternative": "Subscribe for compliant alternatives"
+    "alternative": "Subscribe for compliant alternatives",
+    "context": "the full sentence containing the matched phrase"
   }]
 }
+For each flag, include the full sentence or short surrounding text (up to ~200 chars) that contains the matched phrase, so the user sees how it's used in context.
 Score: 100=clean, 80-99=minor issues, 60-79=medium risk, 40-59=high risk, 0-39=multiple high risk.
 Match partial phrases, synonyms, and intent — not just exact strings.
 Return empty flags array and score 100 if clean. No text outside JSON.`,

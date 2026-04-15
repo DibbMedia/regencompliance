@@ -83,10 +83,8 @@ function LoginContent() {
 
       if (error.message.includes("Invalid login")) {
         setFormError("Invalid email or password.")
-        toast.error("Invalid email or password.")
       } else {
         setFormError(error.message)
-        toast.error(error.message)
       }
       return
     }
@@ -144,10 +142,8 @@ function LoginContent() {
       setLoading(false)
       if (error.message.includes("already registered")) {
         setFormError("An account with this email already exists. Try logging in.")
-        toast.error("An account with this email already exists. Try logging in.")
       } else {
         setFormError(error.message)
-        toast.error(error.message)
       }
       return
     }
