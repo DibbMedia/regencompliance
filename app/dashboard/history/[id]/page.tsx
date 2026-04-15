@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import type { Scan, ScanFlag } from "@/lib/types"
 import Link from "next/link"
 import { ScoreExplainer } from "@/components/score-explainer"
+import { buildTextFragmentUrl } from "@/lib/text-fragment"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -148,7 +149,7 @@ function FlagCard({ flag, index, sourceUrl }: { flag: ScanFlag; index: number; s
           )}
           {isUrlScan && (
             <a
-              href={`${sourceUrl}#:~:text=${encodeURIComponent(flag.matched_text)}`}
+              href={buildTextFragmentUrl(sourceUrl, flag.matched_text, flag.banned_phrase)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors"

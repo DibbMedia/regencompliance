@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { ScanFlag } from "@/lib/types"
 import { ScoreExplainer } from "@/components/score-explainer"
+import { buildTextFragmentUrl } from "@/lib/text-fragment"
 
 const CONTENT_TYPES = [
   { value: "website_copy", label: "Website", icon: FileText },
@@ -780,7 +781,7 @@ export default function ScannerPage() {
                       {/* View on page (URL scans only) */}
                       {result.source_url && !result.source_url.startsWith("file://") && (
                         <a
-                          href={`${result.source_url}#:~:text=${encodeURIComponent(flag.matched_text)}`}
+                          href={buildTextFragmentUrl(result.source_url, flag.matched_text, flag.banned_phrase)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors"
