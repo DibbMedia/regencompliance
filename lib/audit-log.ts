@@ -1,4 +1,5 @@
 import { createServiceClient } from "@/lib/supabase/server"
+import { getClientIp } from "@/lib/ip"
 
 export interface AuditEntry {
   user_id?: string
@@ -44,7 +45,7 @@ export function logAudit(entry: AuditEntry): void {
  */
 export function getRequestMeta(request: Request): { ip: string; userAgent: string } {
   return {
-    ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown",
+    ip: getClientIp(request),
     userAgent: request.headers.get("user-agent") || "unknown",
   }
 }

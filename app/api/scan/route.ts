@@ -10,6 +10,7 @@ import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { trackApiUsage } from "@/lib/api-costs"
 import { hashContent } from "@/lib/scan-cache"
 import { captureError } from "@/lib/error-tracking"
+import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
 
 export async function POST(request: Request) {
   try {
@@ -20,10 +21,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Rate limit: 30 scans per user per hour
     const { allowed } = await checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
+    }
+
+    const { allowed: dayAllowed } = await checkRateLimit(`scan-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
+    if (!dayAllowed) {
+      return NextResponse.json({ error: "Daily scan limit reached. Please try again tomorrow." }, { status: 429 })
     }
 
     const profileId = await effectiveProfileId(user.id, supabase)
@@ -47,6 +52,11 @@ export async function POST(request: Request) {
     }
 
     const { text, content_type } = parsed.data
+
+    const phi = detectPhi(text)
+    if (phi.detected) {
+      return NextResponse.json({ error: PHI_ERROR_MESSAGE, phi_patterns: phi.patterns }, { status: 400 })
+    }
 
     // Check scan cache — skip Claude if identical content was scanned recently
     const contentHash = hashContent(text)
@@ -146,7 +156,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     trackApiUsage(supabase, user.id, "/api/scan", "claude-haiku-4-5-20251001", response)
 
     const scanDuration = Date.now() - startTime
-    const responseText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
+    const responseText = response.content.find((b) => b.type === "text")?.text ?? ""
 
     let scanResult
     try {
@@ -156,7 +166,8 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       }
       scanResult = JSON.parse(cleaned)
     } catch {
-      console.error("Failed to parse scan response:", responseText.slice(0, 500))
+      console.error("[scan] parse failure", { length: responseText.length, route: "/api/scan" })
+      captureError(new Error("scan parse failure"), { route: "/api/scan", length: responseText.length })
       return NextResponse.json(
         { error: "Compliance engine returned invalid response. Please try again." },
         { status: 503 }

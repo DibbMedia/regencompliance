@@ -78,7 +78,10 @@ export async function POST(request: Request) {
     // 6. Delete profile
     await serviceClient.from("profiles").delete().eq("id", user.id)
 
-    // 7. Delete auth user
+    if (userEmail) {
+      await serviceClient.from("audit_log").update({ user_email: null }).eq("user_email", userEmail)
+    }
+
     const { error: authDeleteError } = await serviceClient.auth.admin.deleteUser(user.id)
     if (authDeleteError) {
       console.error("[Delete] Auth user deletion failed:", authDeleteError)

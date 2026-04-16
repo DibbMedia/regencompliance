@@ -1,64 +1,60 @@
-/**
- * In-memory login attempt tracking for brute-force protection.
- * Locks accounts after 5 failed attempts within 15 minutes.
- */
-
-const attempts = new Map<string, { count: number; firstAt: number; lockedUntil: number }>()
+import { createServiceClient } from "@/lib/supabase/server"
 
 const MAX_ATTEMPTS = 5
-const WINDOW_MS = 15 * 60 * 1000  // 15 minutes
-const LOCKOUT_MS = 30 * 60 * 1000 // 30 minutes
+const WINDOW_MS = 15 * 60 * 1000
+const LOCKOUT_MS = 30 * 60 * 1000
 
-export function checkLoginAllowed(email: string): { allowed: boolean; remainingAttempts: number; lockedUntil?: number } {
-  const key = email.toLowerCase().trim()
-  const now = Date.now()
-  const entry = attempts.get(key)
-
-  if (!entry) {
-    return { allowed: true, remainingAttempts: MAX_ATTEMPTS }
-  }
-
-  // Check if locked
-  if (entry.lockedUntil > now) {
-    return { allowed: false, remainingAttempts: 0, lockedUntil: entry.lockedUntil }
-  }
-
-  // Reset if window expired
-  if (now - entry.firstAt > WINDOW_MS) {
-    attempts.delete(key)
-    return { allowed: true, remainingAttempts: MAX_ATTEMPTS }
-  }
-
-  return { allowed: true, remainingAttempts: MAX_ATTEMPTS - entry.count }
+function key(email: string): string {
+  return `login:${email.toLowerCase().trim()}`
 }
 
-export function recordFailedLogin(email: string): void {
-  const key = email.toLowerCase().trim()
-  const now = Date.now()
-  const entry = attempts.get(key)
+export async function checkLoginAllowed(email: string): Promise<{ allowed: boolean; remainingAttempts: number; lockedUntil?: number }> {
+  try {
+    const supabase = createServiceClient()
+    const { data } = await supabase
+      .from("rate_limits")
+      .select("count, expires_at")
+      .eq("key", key(email))
+      .maybeSingle()
 
-  if (!entry || now - entry.firstAt > WINDOW_MS) {
-    attempts.set(key, { count: 1, firstAt: now, lockedUntil: 0 })
-    return
-  }
+    if (!data) return { allowed: true, remainingAttempts: MAX_ATTEMPTS }
 
-  entry.count++
+    const count = Number(data.count ?? 0)
+    const expiresAt = new Date(data.expires_at as string).getTime()
 
-  if (entry.count >= MAX_ATTEMPTS) {
-    entry.lockedUntil = now + LOCKOUT_MS
-  }
-}
-
-export function clearLoginAttempts(email: string): void {
-  attempts.delete(email.toLowerCase().trim())
-}
-
-// Cleanup old entries every 10 minutes
-setInterval(() => {
-  const now = Date.now()
-  for (const [key, entry] of attempts) {
-    if (now - entry.firstAt > WINDOW_MS && entry.lockedUntil < now) {
-      attempts.delete(key)
+    if (count >= MAX_ATTEMPTS) {
+      return { allowed: false, remainingAttempts: 0, lockedUntil: expiresAt }
     }
+    return { allowed: true, remainingAttempts: Math.max(0, MAX_ATTEMPTS - count) }
+  } catch {
+    return { allowed: true, remainingAttempts: MAX_ATTEMPTS }
   }
-}, 10 * 60 * 1000)
+}
+
+export async function recordFailedLogin(email: string): Promise<void> {
+  try {
+    const supabase = createServiceClient()
+    const { data } = await supabase.rpc("increment_rate_limit", {
+      p_key: key(email),
+      p_window_ms: WINDOW_MS,
+    })
+    const count = typeof data === "number" ? data : Number(data ?? 0)
+    if (count >= MAX_ATTEMPTS) {
+      await supabase
+        .from("rate_limits")
+        .update({ expires_at: new Date(Date.now() + LOCKOUT_MS).toISOString() })
+        .eq("key", key(email))
+    }
+  } catch {
+    /* silent */
+  }
+}
+
+export async function clearLoginAttempts(email: string): Promise<void> {
+  try {
+    const supabase = createServiceClient()
+    await supabase.from("rate_limits").delete().eq("key", key(email))
+  } catch {
+    /* silent */
+  }
+}

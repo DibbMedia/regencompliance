@@ -21,7 +21,7 @@ interface AdminScan {
   compliance_score: number | null
   flag_count: number
   created_at: string
-  content_text?: string
+  original_text?: string
   flags?: Array<{
     banned_phrase?: string
     reason?: string
@@ -356,15 +356,15 @@ function ScanDetail({ scanId }: { scanId: string }) {
   return (
     <div className="py-5 space-y-4">
       {/* Content preview */}
-      {detail.content_text && (
+      {detail.original_text && (
         <div>
           <p className="text-[10px] font-bold text-[#55E039] uppercase tracking-[0.15em] mb-2">
             Content Preview
           </p>
           <div className="rounded-lg border border-white/10 bg-[#0a0a0a]/50 p-3 max-h-40 overflow-y-auto">
             <p className="text-xs text-white/60 whitespace-pre-wrap leading-relaxed">
-              {detail.content_text.slice(0, 1000)}
-              {detail.content_text.length > 1000 ? "..." : ""}
+              {detail.original_text.slice(0, 1000)}
+              {detail.original_text.length > 1000 ? "..." : ""}
             </p>
           </div>
         </div>

@@ -130,20 +130,21 @@ function LoginContent() {
   async function handleSignup(data: SignupInput) {
     setLoading(true)
     setFormError(null)
-    const { error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
+
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: data.email, password: data.password }),
     })
 
-    if (error) {
+    if (!res.ok) {
       setLoading(false)
-      if (error.message.includes("already registered")) {
+      const body = await res.json().catch(() => ({}))
+      const msg = body.error || "Signup failed. Please try again."
+      if (typeof msg === "string" && msg.toLowerCase().includes("already registered")) {
         setFormError("An account with this email already exists. Try logging in.")
       } else {
-        setFormError(error.message)
+        setFormError(msg)
       }
       return
     }

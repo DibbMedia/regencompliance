@@ -175,7 +175,7 @@ export default function PrivacyPage() {
                     <tr className="border-b border-white/[0.05]">
                       <td className="py-3 pr-4 font-mono text-xs text-[#55E039]/70">regen_demo</td>
                       <td className="py-3 pr-4">Demo session tracking for free compliance scans</td>
-                      <td className="py-3">Session</td>
+                      <td className="py-3">90 days</td>
                     </tr>
                     <tr className="border-b border-white/[0.05]">
                       <td className="py-3 pr-4 font-mono text-xs text-[#55E039]/70">sb-*</td>

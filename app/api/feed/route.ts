@@ -92,17 +92,17 @@ export async function GET() {
 
     const { data: recentRules } = await supabase
       .from("compliance_rules")
-      .select("id, title, description, created_at")
+      .select("id, banned_phrase, compliant_alternative, risk_level, category, created_at")
       .gte("created_at", thirtyDaysAgo.toISOString())
+      .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(10)
 
-    // Convert DB rules to feed items
     const ruleItems: FeedItem[] = (recentRules || []).map((rule) => ({
       id: `rule-${rule.id}`,
       category: "rule_update" as const,
-      title: `New Rule: ${rule.title}`,
-      body: rule.description || "A new compliance rule has been added to the library. Review it to ensure your marketing materials remain compliant.",
+      title: `New ${rule.risk_level}-risk rule: "${rule.banned_phrase}"`,
+      body: `Compliant alternative: "${rule.compliant_alternative}". Category: ${rule.category.replace(/_/g, " ")}.`,
       timestamp: rule.created_at,
     }))
 

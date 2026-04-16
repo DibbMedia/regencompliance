@@ -19,10 +19,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Rate limit: 30 rewrites per user per hour
     const { allowed } = await checkRateLimit(`rewrite:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
+    }
+
+    const { allowed: dayAllowed } = await checkRateLimit(`rewrite-day:${user.id}`, 100, 24 * 60 * 60 * 1000)
+    if (!dayAllowed) {
+      return NextResponse.json({ error: "Daily rewrite limit reached. Please try again tomorrow." }, { status: 429 })
     }
 
     const profileId = await effectiveProfileId(user.id, supabase)
@@ -62,7 +66,7 @@ export async function POST(request: Request) {
 
     // Claude Sonnet rewrite
     const response = await anthropic.messages.create({
-      model: "claude-4-sonnet-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       temperature: 0,
       system: `You are a healthcare marketing compliance editor for regenerative medicine.
@@ -90,9 +94,9 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
     })
 
     // Track API cost (non-blocking)
-    trackApiUsage(supabase, user.id, "/api/rewrite", "claude-4-sonnet-20250514", response)
+    trackApiUsage(supabase, user.id, "/api/rewrite", "claude-sonnet-4-5-20250929", response)
 
-    const rewrittenText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
+    const rewrittenText = response.content.find((b) => b.type === "text")?.text ?? ""
 
     // Update scan with rewrite
     await supabase

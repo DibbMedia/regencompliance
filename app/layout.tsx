@@ -12,6 +12,23 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
+// Stable string so the CSP sha256 hash in next.config.ts stays valid.
+const STRUCTURED_DATA_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "RegenCompliance",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "297",
+    priceCurrency: "USD",
+    description: "Beta rate - $297/mo locked in for life",
+  },
+  description: "FDA/FTC compliance scanner for healthcare practices",
+  url: "https://compliance.regenportal.com",
+})
+
 export const metadata: Metadata = {
   title: {
     default: "RegenCompliance — FDA/FTC Compliance Scanner for Healthcare Marketing",
@@ -67,24 +84,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              name: "RegenCompliance",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "Web",
-              offers: {
-                "@type": "Offer",
-                price: "297",
-                priceCurrency: "USD",
-                description: "Beta rate - $297/mo locked in for life",
-              },
-              description:
-                "FDA/FTC compliance scanner for healthcare practices",
-              url: "https://compliance.regenportal.com",
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: STRUCTURED_DATA_JSON }}
         />
       </head>
       <body id="main-content" className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>

@@ -1,44 +1,13 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
+import { checkRateLimit } from "@/lib/rate-limit"
+import { getClientIp } from "@/lib/ip"
 
 const BETA_SEAT_LIMIT = 25
 
-// Simple in-memory rate limiter: max 10 checkout sessions per IP per hour
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT_MAX = 10
-const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 hour
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now()
-  const entry = rateLimitMap.get(ip)
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
-    return true
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return false
-  }
-
-  entry.count++
-  return true
-}
-
-// Periodically clean stale entries to prevent memory leak
-setInterval(() => {
-  const now = Date.now()
-  for (const [key, value] of rateLimitMap) {
-    if (now > value.resetAt) {
-      rateLimitMap.delete(key)
-    }
-  }
-}, 10 * 60 * 1000)
-
 export async function POST(request: Request) {
   try {
-    // Origin / Referer validation
     const origin = request.headers.get("origin") || ""
     const referer = request.headers.get("referer") || ""
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || ""
@@ -52,18 +21,15 @@ export async function POST(request: Request) {
       }
     }
 
-    // Rate limiting by IP
-    const forwarded = request.headers.get("x-forwarded-for")
-    const ip = forwarded ? forwarded.split(",")[0].trim() : "unknown"
-
-    if (!checkRateLimit(ip)) {
+    const ip = getClientIp(request)
+    const { allowed } = await checkRateLimit(`checkout-beta:${ip}`, 10, 60 * 60 * 1000)
+    if (!allowed) {
       return NextResponse.json(
         { error: "Too many checkout requests. Please try again later." },
         { status: 429 }
       )
     }
 
-    // Check beta seat availability
     const supabase = createServiceClient()
     const { count, error: countError } = await supabase
       .from("profiles")
@@ -83,7 +49,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // Also count unclaimed beta purchases (reserved but not yet linked to a profile)
     const { count: pendingCount } = await supabase
       .from("beta_purchases")
       .select("id", { count: "exact", head: true })

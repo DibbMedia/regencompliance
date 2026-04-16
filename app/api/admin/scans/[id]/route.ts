@@ -22,7 +22,7 @@ export async function GET(
 
     const { data: scan, error } = await serviceClient
       .from("scans")
-      .select("id, profile_id, content_type, content_text, compliance_score, flag_count, flags, created_at")
+      .select("id, profile_id, content_type, original_text, compliance_score, flag_count, flags, created_at")
       .eq("id", scanId)
       .single()
 

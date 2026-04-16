@@ -8,6 +8,8 @@ import { scanSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { trackApiUsage } from "@/lib/api-costs"
 import { captureError } from "@/lib/error-tracking"
+import { getClientIp } from "@/lib/ip"
+import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
 
 const MAX_DEMO_SCANS = 3
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
@@ -43,8 +45,7 @@ function getDemoState(cookieValue: string | undefined): DemoCookie {
 
 export async function POST(request: Request) {
   try {
-    // IP-based rate limiting: max 5 demo scans per IP per day (hard backstop)
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
+    const ip = getClientIp(request)
     const { allowed: ipAllowed } = await checkRateLimit(`demo-ip:${ip}`, 5, 24 * 60 * 60 * 1000)
     if (!ipAllowed) {
       return NextResponse.json({
@@ -77,6 +78,12 @@ export async function POST(request: Request) {
     }
 
     const { text, content_type } = parsed.data
+
+    const phi = detectPhi(text)
+    if (phi.detected) {
+      return NextResponse.json({ error: PHI_ERROR_MESSAGE, phi_patterns: phi.patterns }, { status: 400 })
+    }
+
     const startTime = Date.now()
 
     // Claude Haiku scan — demo uses general FDA/FTC knowledge only (no proprietary rules or compliance bible)
@@ -120,18 +127,18 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     trackApiUsage(supabaseForTracking, "00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
 
     const scanDuration = Date.now() - startTime
-    const responseText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
+    const responseText = response.content.find((b) => b.type === "text")?.text ?? ""
 
     let scanResult
     try {
-      // Strip markdown code blocks if present
       let cleaned = responseText.trim()
       if (cleaned.startsWith("```")) {
         cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "")
       }
       scanResult = JSON.parse(cleaned)
     } catch {
-      console.error("Failed to parse scan response:", responseText.slice(0, 500))
+      console.error("[demo/scan] parse failure", { length: responseText.length, route: "/api/demo/scan" })
+      captureError(new Error("demo scan parse failure"), { route: "/api/demo/scan", length: responseText.length })
       return NextResponse.json(
         { error: "Compliance engine returned invalid response. Please try again." },
         { status: 503 }

@@ -11,6 +11,14 @@
     {
       "path": "/api/cron/site-monitor",
       "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/enrich-actions-auto",
+      "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/cron/purge-cancelled",
+      "schedule": "0 4 * * *"
     }
   ]
 }

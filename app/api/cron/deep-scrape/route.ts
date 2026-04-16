@@ -198,7 +198,7 @@ export async function GET(request: Request) {
           sourceMetrics.new_rules += insertedCount
           metrics.new_rules += insertedCount
 
-          if (insertedCount > 0) {
+          if (actionId) {
             await refreshActionRollup(actionId, supabase)
           }
         } catch (e) {
@@ -245,8 +245,9 @@ export async function GET(request: Request) {
           }))
 
           const response = await anthropic.messages.create({
-            model: "claude-sonnet-4-5-20250514",
+            model: "claude-sonnet-4-5-20250929",
             max_tokens: 4096,
+            temperature: 0,
             messages: [
               {
                 role: "user",
@@ -397,6 +398,7 @@ ${JSON.stringify(rulesForReview, null, 2)}`,
           const response = await anthropic.messages.create({
             model: "claude-haiku-4-5-20251001",
             max_tokens: 2048,
+            temperature: 0,
             messages: [
               {
                 role: "user",
@@ -498,6 +500,7 @@ ${JSON.stringify(pairsForReview, null, 2)}`,
           const response = await anthropic.messages.create({
             model: "claude-haiku-4-5-20251001",
             max_tokens: 2048,
+            temperature: 0,
             messages: [
               {
                 role: "user",

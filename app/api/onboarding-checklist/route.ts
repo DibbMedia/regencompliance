@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 
 interface ChecklistState {
   first_scan?: boolean
@@ -23,41 +24,37 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Fetch profile checklist state
+    const profileId = await effectiveProfileId(user.id, supabase)
+
     const { data: profile } = await supabase
       .from("profiles")
       .select("onboarding_checklist")
-      .eq("id", user.id)
+      .eq("id", profileId)
       .single()
 
     const checklist: ChecklistState = (profile?.onboarding_checklist as ChecklistState) || {}
 
-    // Auto-detect completions
     const { count: scanCount } = await supabase
       .from("scans")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
+      .eq("profile_id", profileId)
 
-    // Check if user has any rewrites
     const { count: rewriteCount } = await supabase
       .from("scans")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
+      .eq("profile_id", profileId)
       .not("rewritten_text", "is", null)
 
-    // Check monitored sites
     const { count: siteCount } = await supabase
       .from("monitored_sites")
       .select("id", { count: "exact", head: true })
-      .eq("profile_id", user.id)
+      .eq("profile_id", profileId)
 
-    // Check team members
     const { count: teamCount } = await supabase
       .from("team_members")
       .select("id", { count: "exact", head: true })
-      .eq("profile_id", user.id)
+      .eq("profile_id", profileId)
 
-    // Merge auto-detected with manually set
     const autoDetected = {
       first_scan: (scanCount ?? 0) > 0,
       review_score: (scanCount ?? 0) > 0,
@@ -98,24 +95,24 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const profileId = await effectiveProfileId(user.id, supabase)
+
     const body = await request.json()
 
-    // Fetch current checklist
     const { data: profile } = await supabase
       .from("profiles")
       .select("onboarding_checklist")
-      .eq("id", user.id)
+      .eq("id", profileId)
       .single()
 
     const current: ChecklistState = (profile?.onboarding_checklist as ChecklistState) || {}
 
-    // Merge updates
     const updated = { ...current, ...body }
 
     const { error } = await supabase
       .from("profiles")
       .update({ onboarding_checklist: updated })
-      .eq("id", user.id)
+      .eq("id", profileId)
 
     if (error) {
       console.error("Onboarding checklist update error:", error)

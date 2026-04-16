@@ -248,6 +248,9 @@ export default function DemoPage() {
                 {charCount}/5000
               </span>
             </div>
+            <p className="text-[11px] text-white/40 leading-relaxed">
+              By scanning you agree your text is sent to Anthropic (Claude) for analysis. Do not include patient information or PHI.
+            </p>
 
             <div className="flex gap-3">
               <button

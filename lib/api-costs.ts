@@ -16,9 +16,15 @@ export interface ApiUsageRecord {
 
 // Cost per million tokens in cents (approximate)
 const COSTS: Record<string, { input: number; output: number }> = {
-  "claude-haiku-4-5-20251001": { input: 100, output: 500 },       // $1/$5 per MTok
-  "claude-sonnet-4-5-20250514": { input: 300, output: 1500 },     // $3/$15 per MTok
-  "claude-4-sonnet-20250514": { input: 300, output: 1500 },
+  "claude-haiku-4-5-20251001": { input: 100, output: 500 },
+  "claude-haiku-4-5": { input: 100, output: 500 },
+  "claude-sonnet-4-20250514": { input: 300, output: 1500 },
+  "claude-sonnet-4-5-20250929": { input: 300, output: 1500 },
+  "claude-sonnet-4-5": { input: 300, output: 1500 },
+  "claude-sonnet-4-6": { input: 300, output: 1500 },
+  "claude-opus-4-5-20251101": { input: 1500, output: 7500 },
+  "claude-opus-4-5": { input: 1500, output: 7500 },
+  "claude-opus-4-6": { input: 1500, output: 7500 },
 }
 
 const DEFAULT_RATES = { input: 100, output: 500 }

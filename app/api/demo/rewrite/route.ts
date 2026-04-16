@@ -6,10 +6,17 @@ import { anthropic } from "@/lib/anthropic"
 import { createServiceClient } from "@/lib/supabase/server"
 import { trackApiUsage } from "@/lib/api-costs"
 import { captureError } from "@/lib/error-tracking"
+import { checkRateLimit } from "@/lib/rate-limit"
+import { getClientIp } from "@/lib/ip"
 
 export async function POST(request: Request) {
   try {
-    // Check demo cookie exists (must have done at least 1 scan)
+    const ip = getClientIp(request)
+    const { allowed } = await checkRateLimit(`demo-rewrite-ip:${ip}`, 5, 24 * 60 * 60 * 1000)
+    if (!allowed) {
+      return NextResponse.json({ error: "Demo limit reached. Sign up for unlimited rewrites." }, { status: 429 })
+    }
+
     const cookieStore = await cookies()
     const demoCookie = cookieStore.get("regen_demo")
     if (!demoCookie?.value) {
@@ -29,7 +36,7 @@ export async function POST(request: Request) {
 
     // Demo rewrite uses general FDA/FTC knowledge only — no proprietary compliance bible
     const response = await anthropic.messages.create({
-      model: "claude-4-sonnet-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       temperature: 0,
       system: `You are a healthcare marketing compliance editor.
@@ -50,9 +57,9 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
 
     // Track API cost (non-blocking)
     const supabase = createServiceClient()
-    trackApiUsage(supabase, "00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-4-sonnet-20250514", response)
+    trackApiUsage(supabase, "00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-sonnet-4-5-20250929", response)
 
-    const rewrittenText = response.content?.[0]?.type === "text" ? response.content[0].text : ""
+    const rewrittenText = response.content.find((b) => b.type === "text")?.text ?? ""
 
     return NextResponse.json({ rewritten_text: rewrittenText })
   } catch (error) {

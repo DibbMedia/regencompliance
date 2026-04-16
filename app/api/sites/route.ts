@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { discoverPages } from "@/lib/site-crawler"
+import { assertSafeUrl } from "@/lib/ssrf"
 
 // GET — list user's monitored sites with page counts and avg scores
 export async function GET() {
@@ -81,11 +82,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid domain format" }, { status: 400 })
     }
 
-    // Additional URL validation
     try {
       new URL(`https://${normalizedDomain}`)
     } catch {
       return NextResponse.json({ error: "Invalid domain" }, { status: 400 })
+    }
+
+    const ssrfCheck = await assertSafeUrl(`https://${normalizedDomain}`)
+    if (!ssrfCheck.ok) {
+      return NextResponse.json({ error: ssrfCheck.reason ?? "Domain blocked" }, { status: 400 })
     }
 
     // Check limit: max 5 sites per user

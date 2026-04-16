@@ -2,6 +2,7 @@ import * as cheerio from "cheerio"
 import { anthropic } from "@/lib/anthropic"
 import { createServiceClient } from "@/lib/supabase/server"
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { assertSafeUrl } from "@/lib/ssrf"
 
 // ---------------------------------------------------------------------------
 // 1. Source Configuration
@@ -103,25 +104,68 @@ export function isRegenRelated(text: string): boolean {
 // ---------------------------------------------------------------------------
 
 const DEFAULT_TIMEOUT_MS = 15_000
+const MAX_RESPONSE_BYTES = 2 * 1024 * 1024
+const MAX_REDIRECT_HOPS = 5
 
-/**
- * Fetch a URL with timeout and return a cheerio instance, or null on failure.
- */
-export async function fetchPage(
-  url: string,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS,
-): Promise<cheerio.CheerioAPI | null> {
-  try {
-    const res = await fetch(url, {
+async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | null> {
+  let current = url
+  for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
+    const gate = await assertSafeUrl(current)
+    if (!gate.ok) return null
+
+    const res = await fetch(current, {
       signal: AbortSignal.timeout(timeoutMs),
+      redirect: "manual",
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
         Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
       },
     })
+
+    if (res.status >= 300 && res.status < 400) {
+      const loc = res.headers.get("location")
+      if (!loc) return null
+      try { current = new URL(loc, current).toString() } catch { return null }
+      continue
+    }
+
     if (!res.ok) return null
-    const html = await res.text()
+
+    const declared = res.headers.get("content-length")
+    if (declared && Number(declared) > MAX_RESPONSE_BYTES) return null
+
+    const reader = res.body?.getReader()
+    if (!reader) {
+      const txt = await res.text()
+      return txt.length > MAX_RESPONSE_BYTES ? null : txt
+    }
+    const decoder = new TextDecoder()
+    let out = ""
+    let bytes = 0
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      bytes += value.byteLength
+      if (bytes > MAX_RESPONSE_BYTES) {
+        try { await reader.cancel() } catch { /* ignore */ }
+        return null
+      }
+      out += decoder.decode(value, { stream: true })
+    }
+    out += decoder.decode()
+    return out
+  }
+  return null
+}
+
+export async function fetchPage(
+  url: string,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<cheerio.CheerioAPI | null> {
+  try {
+    const html = await safeFetchHtml(url, timeoutMs)
+    if (!html) return null
     return cheerio.load(html)
   } catch {
     return null
@@ -285,7 +329,8 @@ export async function extractRulesFromText(
     if (!Array.isArray(parsed)) return []
 
     return parsed as ExtractedRule[]
-  } catch {
+  } catch (e) {
+    console.error("[extractRulesFromText] failed for", sourceName, e)
     return []
   }
 }
@@ -341,8 +386,8 @@ export async function isDuplicateRule(
     const answer = response.content[0]
     if (answer.type !== "text") return false
     return answer.text.trim().toUpperCase().startsWith("YES")
-  } catch {
-    // On error, assume not duplicate to avoid losing rules
+  } catch (e) {
+    console.error("[isDuplicateRule] failed:", e)
     return false
   }
 }
@@ -408,7 +453,8 @@ export async function extractActionMetadata(
       product_or_treatment: parsed.product_or_treatment ?? null,
       summary: parsed.summary,
     }
-  } catch {
+  } catch (e) {
+    console.error("[extractActionMetadata] failed for", sourceName, e)
     return null
   }
 }
@@ -487,7 +533,8 @@ export async function synthesizeSummaryFromRules(
     const summary = content.text.trim().replace(/^["']|["']$/g, "")
     if (summary.length < 20) return null
     return summary
-  } catch {
+  } catch (e) {
+    console.error("[synthesizeSummaryFromRules] failed:", e)
     return null
   }
 }

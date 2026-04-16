@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { isValidUUID } from "@/lib/validations"
 
 export async function GET(
   _request: Request,
@@ -11,6 +12,10 @@ export async function GET(
     const { serviceClient } = auth
 
     const { id: ticketId } = await params
+
+    if (!isValidUUID(ticketId)) {
+      return NextResponse.json({ error: "Invalid ticket ID format" }, { status: 400 })
+    }
 
     const { data: messages, error } = await serviceClient
       .from("ticket_messages")
@@ -50,6 +55,11 @@ export async function POST(
     const { serviceClient, user } = auth
 
     const { id: ticketId } = await params
+
+    if (!isValidUUID(ticketId)) {
+      return NextResponse.json({ error: "Invalid ticket ID format" }, { status: 400 })
+    }
+
     const body = await request.json()
     const { message } = body
 

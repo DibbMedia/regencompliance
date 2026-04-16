@@ -2,15 +2,13 @@ import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { waitlistSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { getClientIp } from "@/lib/ip"
 
 export const maxDuration = 10
 
 export async function POST(request: Request) {
   try {
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      "unknown"
+    const ip = getClientIp(request)
 
     // 5 signups per IP per 10 minutes
     const limit = await checkRateLimit(`waitlist:${ip}`, 5, 10 * 60 * 1000)

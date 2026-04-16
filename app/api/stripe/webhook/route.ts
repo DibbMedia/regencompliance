@@ -40,13 +40,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true, duplicate: true })
   }
 
-  // Record event as processed BEFORE handling to prevent race conditions
   const { error: insertError } = await supabase.from("webhook_events").insert({
     event_id: event.id,
     event_type: event.type,
   })
   if (insertError) {
+    if (insertError.code === "23505") {
+      console.log(`[Stripe Webhook] Duplicate event ${event.id} (race), skipping`)
+      return NextResponse.json({ received: true, duplicate: true })
+    }
     console.error("[Webhook] Failed to record event:", insertError)
+    return NextResponse.json({ error: "Failed to record webhook event" }, { status: 500 })
   }
 
   logAudit({ action: "stripe.webhook", resource_type: "stripe_event", resource_id: event.id, details: { event_type: event.type } })
@@ -272,7 +276,7 @@ export async function POST(request: Request) {
 
         const { data: updatedProfile } = await supabase
           .from("profiles")
-          .select("id")
+          .select("id, is_beta_subscriber")
           .eq("stripe_customer_id", customerId)
           .maybeSingle()
 
@@ -284,7 +288,17 @@ export async function POST(request: Request) {
         const status = subscription.status === "active" ? "active"
           : subscription.status === "past_due" ? "past_due"
           : subscription.status === "canceled" ? "cancelled"
-          : subscription.status
+          : null
+
+        if (!status) {
+          console.log(`[Stripe Webhook] Ignoring unmapped subscription status: ${subscription.status}`)
+          break
+        }
+
+        if (updatedProfile.is_beta_subscriber && status !== "active") {
+          console.log(`[Stripe Webhook] Beta subscriber — skipping demotion to ${status}`)
+          break
+        }
 
         await supabase
           .from("profiles")
@@ -306,12 +320,17 @@ export async function POST(request: Request) {
 
         const { data: deletedProfile } = await supabase
           .from("profiles")
-          .select("id")
+          .select("id, is_beta_subscriber")
           .eq("stripe_customer_id", customerId)
           .maybeSingle()
 
         if (!deletedProfile) {
           console.error(`[Stripe Webhook] customer.subscription.deleted: no profile for customer=[redacted:${customerId.slice(-4)}]`)
+          break
+        }
+
+        if (deletedProfile.is_beta_subscriber) {
+          console.log(`[Stripe Webhook] Beta subscriber — keeping seat after Stripe cancellation`)
           break
         }
 
@@ -401,8 +420,8 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     console.error("[Stripe Webhook] Handler error:", error)
-    // Return 200 so Stripe doesn't retry — the event was received but unprocessable
-    return NextResponse.json({ error: "Webhook handler failed" }, { status: 200 })
+    await supabase.from("webhook_events").delete().eq("event_id", event.id)
+    return NextResponse.json({ error: "Webhook handler failed" }, { status: 500 })
   }
 
   return NextResponse.json({ received: true })

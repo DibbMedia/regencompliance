@@ -81,7 +81,7 @@ export async function GET(request: Request) {
           )
           result.newRules += insertedCount
 
-          if (insertedCount > 0) {
+          if (actionId) {
             await refreshActionRollup(actionId, supabase)
           }
         } catch (e) {
