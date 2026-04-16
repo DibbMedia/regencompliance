@@ -73,6 +73,7 @@ export async function POST(request: Request) {
 
     const body = await request.json()
     let { banned_phrase, compliant_alternative, risk_level, category } = body
+    const { enforcement_action_id } = body
 
     if (!banned_phrase || !compliant_alternative) {
       return NextResponse.json(
@@ -131,6 +132,12 @@ export async function POST(request: Request) {
       )
     }
 
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    const linkedActionId =
+      typeof enforcement_action_id === "string" && uuidPattern.test(enforcement_action_id)
+        ? enforcement_action_id
+        : null
+
     const { data, error } = await serviceClient
       .from("compliance_rules")
       .insert({
@@ -138,6 +145,7 @@ export async function POST(request: Request) {
         compliant_alternative,
         risk_level: risk_level || "medium",
         category: category || "general",
+        enforcement_action_id: linkedActionId,
         is_active: true,
       })
       .select()

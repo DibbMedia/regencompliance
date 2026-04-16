@@ -348,11 +348,174 @@ export async function isDuplicateRule(
 }
 
 // ---------------------------------------------------------------------------
-// 6. Rule Insertion with Dedup
+// 5b. Enforcement Action Metadata Extraction
+// ---------------------------------------------------------------------------
+
+export interface ExtractedActionMetadata {
+  company_name: string | null
+  product_or_treatment: string | null
+  summary: string
+}
+
+const ACTION_METADATA_PROMPT = `You are summarizing a regulatory enforcement document for a public-facing
+compliance library. Read the document and return STRICT JSON with these fields:
+
+- "company_name": the primary company, clinic, or person being cited. If the
+  document is general guidance with no specific target, use null. Never invent.
+- "product_or_treatment": short phrase naming the product or treatment at issue
+  (e.g., "stem cell injections for arthritis", "exosome IV therapy"). Use null
+  if not applicable.
+- "summary": exactly 1-3 sentences in plain English explaining what happened —
+  who was cited, what they were marketing, and what the agency said. No quotes,
+  no markdown, no bullet points. Maximum 350 characters.
+
+Return ONLY a JSON object. No markdown fencing, no preamble.`
+
+/**
+ * Extract enforcement-action metadata (company, product, summary) from article text
+ * using Claude Haiku. One call per article.
+ */
+export async function extractActionMetadata(
+  text: string,
+  sourceName: string,
+): Promise<ExtractedActionMetadata | null> {
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 512,
+      messages: [
+        {
+          role: "user",
+          content: `Source: ${sourceName}\n\nDocument text:\n${text.slice(0, 12_000)}`,
+        },
+      ],
+      system: ACTION_METADATA_PROMPT,
+    })
+
+    const content = response.content[0]
+    if (content.type !== "text") return null
+
+    let jsonStr = content.text.trim()
+    if (jsonStr.startsWith("```")) {
+      jsonStr = jsonStr.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "")
+    }
+
+    const parsed = JSON.parse(jsonStr) as ExtractedActionMetadata
+    if (!parsed || typeof parsed.summary !== "string") return null
+
+    return {
+      company_name: parsed.company_name ?? null,
+      product_or_treatment: parsed.product_or_treatment ?? null,
+      summary: parsed.summary,
+    }
+  } catch {
+    return null
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 5c. Source Type → Agency Mapping
+// ---------------------------------------------------------------------------
+
+export function agencyForSourceType(type: ComplianceSource["type"]): string | null {
+  switch (type) {
+    case "fda_warning":
+    case "fda_483":
+      return "FDA"
+    case "ftc_press":
+    case "ftc_guidance":
+      return "FTC"
+    case "doj_fraud":
+      return "DOJ"
+    default:
+      return null
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 6. Enforcement Action Upsert
 // ---------------------------------------------------------------------------
 
 /**
- * Insert rules into Supabase, skipping duplicates.
+ * Look up an enforcement action by source_url. If missing, generate metadata
+ * from the article text and insert it. Returns the action id, or null on failure.
+ */
+export async function upsertEnforcementAction(
+  source: ComplianceSource,
+  url: string,
+  articleText: string,
+  articleDate: string,
+  supabase: SupabaseClient,
+): Promise<string | null> {
+  const { data: existing } = await supabase
+    .from("enforcement_actions")
+    .select("id")
+    .eq("source_url", url)
+    .maybeSingle()
+
+  if (existing?.id) return existing.id
+
+  const metadata = await extractActionMetadata(articleText, source.name)
+
+  const { data: inserted, error } = await supabase
+    .from("enforcement_actions")
+    .insert({
+      source_url: url,
+      source_type: source.type,
+      source_name: source.name,
+      source_date: articleDate,
+      agency: agencyForSourceType(source.type),
+      company_name: metadata?.company_name ?? null,
+      product_or_treatment: metadata?.product_or_treatment ?? null,
+      summary: metadata?.summary ?? null,
+      violation_categories: [],
+      rule_count: 0,
+    })
+    .select("id")
+    .single()
+
+  if (error || !inserted) {
+    console.error(`Failed to insert enforcement_action for ${url}:`, error)
+    return null
+  }
+
+  return inserted.id
+}
+
+/**
+ * Recompute violation_categories and rule_count for an enforcement action
+ * after its child rules have been inserted.
+ */
+export async function refreshActionRollup(
+  actionId: string,
+  supabase: SupabaseClient,
+): Promise<void> {
+  const { data: rules } = await supabase
+    .from("compliance_rules")
+    .select("category")
+    .eq("enforcement_action_id", actionId)
+    .eq("is_active", true)
+
+  const categories = Array.from(
+    new Set((rules ?? []).map((r: { category: string }) => r.category)),
+  )
+
+  await supabase
+    .from("enforcement_actions")
+    .update({
+      rule_count: rules?.length ?? 0,
+      violation_categories: categories,
+    })
+    .eq("id", actionId)
+}
+
+// ---------------------------------------------------------------------------
+// 7. Rule Insertion with Dedup
+// ---------------------------------------------------------------------------
+
+/**
+ * Insert rules into Supabase, skipping duplicates. Each rule is linked to the
+ * provided enforcement_action_id (nullable for manual entries).
  * Returns the count of newly inserted rules.
  */
 export async function insertRulesWithDedup(
@@ -361,6 +524,7 @@ export async function insertRulesWithDedup(
   sourceName: string,
   sourceDate: string,
   supabase: SupabaseClient,
+  enforcementActionId: string | null = null,
 ): Promise<number> {
   if (rules.length === 0) return 0
 
@@ -389,6 +553,7 @@ export async function insertRulesWithDedup(
       source_url: sourceUrl,
       source_name: sourceName,
       source_date: sourceDate,
+      enforcement_action_id: enforcementActionId,
       is_active: true,
     })
 

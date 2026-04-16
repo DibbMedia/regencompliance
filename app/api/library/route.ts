@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { libraryQuerySchema } from "@/lib/validations"
+import type { EnforcementActionWithRules } from "@/lib/types"
 
 export async function GET(request: Request) {
   try {
@@ -11,34 +13,75 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url)
-    const riskLevel = searchParams.get("risk_level")
-    const category = searchParams.get("category")
-    const treatment = searchParams.get("treatment")
-    const search = searchParams.get("search")
+    const parsed = libraryQuerySchema.safeParse({
+      risk_level: searchParams.get("risk_level") || undefined,
+      category: searchParams.get("category") || undefined,
+      treatment: searchParams.get("treatment") || undefined,
+      source_type: searchParams.get("source_type") || undefined,
+      search: searchParams.get("search") || undefined,
+    })
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0].message },
+        { status: 400 },
+      )
+    }
+    const { risk_level, category, treatment, source_type, search } = parsed.data
 
-    let query = supabase
-      .from("compliance_rules")
-      .select("*")
-      .eq("is_active", true)
-      .order("risk_level", { ascending: true })
-      .order("source_date", { ascending: false })
+    // Inner join: actions whose embedded rules survive the filters.
+    // Embedded select also pre-filtered to is_active rules only.
+    const buildBase = () => {
+      let q = supabase
+        .from("enforcement_actions")
+        .select("*, compliance_rules!inner(*)")
+        .eq("is_published", true)
+        .eq("compliance_rules.is_active", true)
 
-    if (riskLevel) query = query.eq("risk_level", riskLevel)
-    if (category) query = query.eq("category", category)
-    if (treatment) query = query.contains("applies_to", [treatment])
+      if (risk_level) q = q.eq("compliance_rules.risk_level", risk_level)
+      if (category) q = q.eq("compliance_rules.category", category)
+      if (treatment) q = q.contains("compliance_rules.applies_to", [treatment])
+      if (source_type) q = q.eq("source_type", source_type)
+
+      return q.order("source_date", { ascending: false, nullsFirst: false })
+    }
+
+    let actions: EnforcementActionWithRules[] = []
+
     if (search) {
-      const escapedSearch = search.replace(/%/g, '\\%').replace(/_/g, '\\_')
-      query = query.or(`banned_phrase.ilike.%${escapedSearch}%,compliant_alternative.ilike.%${escapedSearch}%`)
+      const escaped = search.replace(/%/g, "\\%").replace(/_/g, "\\_")
+      const pattern = `%${escaped}%`
+
+      // Query A: parent fields match (company_name, summary, source_name)
+      const { data: parentMatches } = await buildBase().or(
+        `company_name.ilike.${pattern},summary.ilike.${pattern},source_name.ilike.${pattern}`,
+      )
+
+      // Query B: child rule fields match (banned_phrase, compliant_alternative)
+      const { data: childMatches } = await buildBase().or(
+        `banned_phrase.ilike.${pattern},compliant_alternative.ilike.${pattern}`,
+        { referencedTable: "compliance_rules" },
+      )
+
+      const byId = new Map<string, EnforcementActionWithRules>()
+      for (const a of (parentMatches ?? []) as EnforcementActionWithRules[]) byId.set(a.id, a)
+      for (const a of (childMatches ?? []) as EnforcementActionWithRules[]) {
+        if (!byId.has(a.id)) byId.set(a.id, a)
+      }
+      actions = Array.from(byId.values()).sort((a, b) => {
+        if (!a.source_date) return 1
+        if (!b.source_date) return -1
+        return b.source_date.localeCompare(a.source_date)
+      })
+    } else {
+      const { data, error } = await buildBase()
+      if (error) {
+        console.error("Library fetch error:", error)
+        return NextResponse.json({ error: "Failed to fetch library" }, { status: 500 })
+      }
+      actions = (data ?? []) as EnforcementActionWithRules[]
     }
 
-    const { data: rules, error } = await query
-
-    if (error) {
-      console.error("Library fetch error:", error)
-      return NextResponse.json({ error: "Failed to fetch rules" }, { status: 500 })
-    }
-
-    return NextResponse.json({ rules: rules || [] })
+    return NextResponse.json({ actions })
   } catch (error) {
     console.error("Library error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

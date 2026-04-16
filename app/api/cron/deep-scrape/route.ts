@@ -10,6 +10,8 @@ import {
   extractArticleText,
   extractRulesFromText,
   insertRulesWithDedup,
+  upsertEnforcementAction,
+  refreshActionRollup,
   type ComplianceSource,
 } from "@/lib/compliance-scraper"
 
@@ -156,34 +158,49 @@ export async function GET(request: Request) {
 
       if (allLinks.length === 0) continue
 
-      // Filter out URLs already in the database
+      // Filter out URLs whose enforcement action already exists
       const { data: existingRows } = await supabase
-        .from("compliance_rules")
+        .from("enforcement_actions")
         .select("source_url")
         .in("source_url", allLinks)
 
       const existingUrls = new Set(existingRows?.map((r) => r.source_url) ?? [])
       const newLinks = allLinks.filter((url) => !existingUrls.has(url))
 
-      // Process each new link
+      // Process each new link: parent action first, then nested rules
       for (const url of newLinks) {
         try {
           const articleText = await extractArticleText(url, source.contentSelector)
           if (!articleText) continue
 
+          const today = new Date().toISOString().split("T")[0]
+
+          const actionId = await upsertEnforcementAction(
+            source,
+            url,
+            articleText,
+            today,
+            supabase,
+          )
+          if (!actionId) continue
+
           const rules = await extractRulesFromText(articleText, source.name, source.type)
           if (rules.length === 0) continue
 
-          const today = new Date().toISOString().split("T")[0]
           const insertedCount = await insertRulesWithDedup(
             rules,
             url,
             source.name,
             today,
             supabase,
+            actionId,
           )
           sourceMetrics.new_rules += insertedCount
           metrics.new_rules += insertedCount
+
+          if (insertedCount > 0) {
+            await refreshActionRollup(actionId, supabase)
+          }
         } catch (e) {
           const msg = e instanceof Error ? e.message : String(e)
           sourceMetrics.errors.push(`${url}: ${msg}`)

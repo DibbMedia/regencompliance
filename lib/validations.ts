@@ -81,6 +81,38 @@ export const adminRulePatchSchema = z.object({
   is_active: z.boolean(),
 })
 
+export const libraryQuerySchema = z.object({
+  risk_level: z.enum(['high', 'medium', 'low']).optional(),
+  category: z.enum(['health_claims', 'fda_approval', 'efficacy', 'safety']).optional(),
+  treatment: z.enum([
+    'stem_cell',
+    'prp',
+    'exosomes',
+    'bmac',
+    'whartons_jelly',
+    'prolotherapy',
+    'peptide',
+    'iv_therapy',
+    'hormone_therapy',
+    'bhrt',
+    'hbot',
+    'svf_adipose',
+  ]).optional(),
+  source_type: z.enum([
+    'fda_warning',
+    'fda_483',
+    'fda_cber',
+    'ftc_press',
+    'ftc_guidance',
+    'doj_fraud',
+    'manual',
+  ]).optional(),
+  // PostgREST OR uses comma/paren as delimiters — exclude them from accepted search.
+  search: z.string().max(100).regex(/^[a-zA-Z0-9 .'\-_/]*$/, 'Search contains invalid characters').optional(),
+})
+
+export type LibraryQueryInput = z.infer<typeof libraryQuerySchema>
+
 export const passwordSchema = z.string()
   .min(12, 'Password must be at least 12 characters')
   .regex(/[A-Z]/, 'Must contain at least one uppercase letter')
