@@ -22,7 +22,7 @@ const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/dashboard/scanner": "Compliance Scanner",
   "/dashboard/history": "Scan History",
-  "/dashboard/library": "Compliance Library",
+  "/dashboard/library": "Enforcement Actions",
   "/dashboard/sites": "Monitored Sites",
   "/dashboard/templates": "Templates",
   "/dashboard/badge": "Compliance Badge",

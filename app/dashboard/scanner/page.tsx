@@ -356,10 +356,10 @@ export default function ScannerPage() {
       <div className="space-y-6">
         <div>
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
-          <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-white inline-flex items-center gap-2">
             Compliance Scanner
             <HelpTooltip text="Paste any marketing content to check it against FDA/FTC compliance rules. Results are educational guidance, not legal advice." />
-          </h2>
+          </h1>
           <p className="text-white/60 mt-1">
             Check content against FDA/FTC guidelines. Paste text, scan a URL, or upload a file.
           </p>

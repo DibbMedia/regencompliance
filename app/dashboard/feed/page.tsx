@@ -131,11 +131,11 @@ export default function FeedPage() {
   )
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6">
       {/* Header */}
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Updates</p>
-        <h2 className="text-2xl font-bold text-white">Compliance Feed</h2>
+        <h1 className="text-3xl font-bold text-white">Compliance Feed</h1>
         <p className="text-sm text-white/40 mt-1">
           Stay updated on FDA/FTC enforcement news and rule changes that affect your clinic.
         </p>

@@ -166,7 +166,7 @@ export default function SitesPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -174,7 +174,7 @@ export default function SitesPage() {
             Site Monitoring
             <HelpTooltip text="Add your clinic website to receive weekly automated compliance scans with per-page scoring." />
           </p>
-          <h2 className="text-2xl font-bold text-white">Monitored Sites</h2>
+          <h1 className="text-3xl font-bold text-white">Monitored Sites</h1>
           <p className="text-white/60 mt-1">Monitor your clinic websites for compliance issues. Weekly automated scans.</p>
           <p className="text-xs text-white/30 italic mt-2">
             Automated compliance monitoring is educational guidance only, not a substitute for legal review.

@@ -414,6 +414,85 @@ export async function extractActionMetadata(
 }
 
 // ---------------------------------------------------------------------------
+// 5b-2. Rule-based Summary Fallback
+// ---------------------------------------------------------------------------
+
+export interface RuleDigestInput {
+  banned_phrase: string
+  compliant_alternative: string
+  category: string
+  risk_level: string
+  applies_to: string[]
+}
+
+const RULE_SUMMARY_PROMPT = `You are writing a 1-2 sentence summary for a public compliance library.
+You will receive a source agency/name plus the banned marketing phrases that were flagged.
+Based on those phrases, write a short plain-English summary of what the enforcement action appears to be about.
+
+Rules:
+- Exactly 1-2 sentences, maximum 280 characters total.
+- Third person, past tense (e.g., "Prime Sciences was cited for marketing...").
+- If no company name is known, refer to "the company" generically.
+- Describe the nature of the violation based on the phrases (e.g., unapproved treatment claims,
+  misleading efficacy statements, illegal sales of research-use products).
+- No quotation marks. No markdown. No bullet points. No "The FDA" boilerplate preamble.
+
+Return ONLY the summary text. No JSON, no extra commentary.`
+
+/**
+ * Synthesize a short summary from the company name + cited rules, for cases where
+ * we can't fetch the original letter (e.g., source_url is a generic listing page).
+ */
+export async function synthesizeSummaryFromRules(
+  companyName: string | null,
+  productOrTreatment: string | null,
+  agency: string | null,
+  sourceName: string,
+  rules: RuleDigestInput[],
+): Promise<string | null> {
+  if (rules.length === 0) return null
+
+  try {
+    const ruleLines = rules
+      .slice(0, 10)
+      .map((r, i) => `${i + 1}. [${r.risk_level}/${r.category}] "${r.banned_phrase}" → "${r.compliant_alternative}"`)
+      .join("\n")
+
+    const treatments = Array.from(
+      new Set(rules.flatMap((r) => r.applies_to).filter(Boolean)),
+    ).slice(0, 6)
+
+    const context = [
+      `Source: ${sourceName}${agency ? ` (${agency})` : ""}`,
+      companyName ? `Company: ${companyName}` : "Company: unknown",
+      productOrTreatment ? `Product/treatment: ${productOrTreatment}` : null,
+      treatments.length > 0 ? `Treatment types: ${treatments.join(", ")}` : null,
+      "",
+      "Cited phrases:",
+      ruleLines,
+    ]
+      .filter(Boolean)
+      .join("\n")
+
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 256,
+      messages: [{ role: "user", content: context }],
+      system: RULE_SUMMARY_PROMPT,
+    })
+
+    const content = response.content[0]
+    if (content.type !== "text") return null
+
+    const summary = content.text.trim().replace(/^["']|["']$/g, "")
+    if (summary.length < 20) return null
+    return summary
+  } catch {
+    return null
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 5c. Source Type → Agency Mapping
 // ---------------------------------------------------------------------------
 
@@ -484,7 +563,9 @@ export async function upsertEnforcementAction(
 
 /**
  * Recompute violation_categories and rule_count for an enforcement action
- * after its child rules have been inserted.
+ * after its child rules have been inserted. If the action is still missing a
+ * summary (e.g., source URL was a generic listing page), synthesize one from
+ * the newly-linked rules so the library UI always has readable text.
  */
 export async function refreshActionRollup(
   actionId: string,
@@ -492,7 +573,7 @@ export async function refreshActionRollup(
 ): Promise<void> {
   const { data: rules } = await supabase
     .from("compliance_rules")
-    .select("category")
+    .select("banned_phrase, compliant_alternative, category, risk_level, applies_to")
     .eq("enforcement_action_id", actionId)
     .eq("is_active", true)
 
@@ -500,12 +581,32 @@ export async function refreshActionRollup(
     new Set((rules ?? []).map((r: { category: string }) => r.category)),
   )
 
+  const update: Record<string, unknown> = {
+    rule_count: rules?.length ?? 0,
+    violation_categories: categories,
+  }
+
+  // Fill in a synthesized summary if this action still has none and has rules
+  const { data: action } = await supabase
+    .from("enforcement_actions")
+    .select("summary, company_name, product_or_treatment, agency, source_name")
+    .eq("id", actionId)
+    .maybeSingle()
+
+  if (action && !action.summary && rules && rules.length > 0) {
+    const summary = await synthesizeSummaryFromRules(
+      action.company_name as string | null,
+      action.product_or_treatment as string | null,
+      action.agency as string | null,
+      action.source_name as string,
+      rules,
+    )
+    if (summary) update.summary = summary
+  }
+
   await supabase
     .from("enforcement_actions")
-    .update({
-      rule_count: rules?.length ?? 0,
-      violation_categories: categories,
-    })
+    .update(update)
     .eq("id", actionId)
 }
 

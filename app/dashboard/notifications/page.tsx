@@ -122,11 +122,12 @@ export default function NotificationsPage() {
   ]
 
   return (
-    <div className="p-6 max-w-3xl space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Notifications</h1>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Updates</p>
+          <h1 className="text-3xl font-bold text-white">Notifications</h1>
           <p className="text-white/60 mt-1">Stay updated on compliance changes and alerts.</p>
         </div>
         <button

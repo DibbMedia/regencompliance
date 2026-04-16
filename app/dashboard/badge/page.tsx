@@ -95,16 +95,16 @@ export default function BadgePage() {
     : ""
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">
           Trust
         </p>
-        <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-white inline-flex items-center gap-2">
           Compliance Badge
           <HelpTooltip text="Add this badge to your website to show visitors your marketing compliance status." />
-        </h2>
+        </h1>
         <p className="text-white/60 mt-1">
           Display a verified compliance badge on your clinic website.
         </p>

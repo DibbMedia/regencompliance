@@ -13,6 +13,7 @@ import {
   Share2,
   ArrowRight,
   ChevronLeft,
+  Globe,
 } from "lucide-react"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
@@ -21,7 +22,6 @@ import { Badge } from "@/components/ui/badge"
 import { HelpTooltip } from "@/components/ui/help-tooltip"
 import {
   CONTENT_TEMPLATES,
-  TEMPLATE_CATEGORIES,
   type ContentTemplate,
   type TemplateCategory,
 } from "@/lib/content-templates"
@@ -33,7 +33,7 @@ const CATEGORY_STYLES: Record<
   service: {
     bg: "bg-[#55E039]/10 border-[#55E039]/20",
     text: "text-[#55E039]",
-    icon: FileText,
+    icon: Globe,
   },
   marketing: {
     bg: "bg-blue-500/10 border-blue-500/20",
@@ -48,30 +48,48 @@ const CATEGORY_STYLES: Record<
 }
 
 const CATEGORY_LABELS: Record<TemplateCategory, string> = {
-  service: "Service Page",
-  marketing: "Marketing",
-  ads: "Ads & Social",
+  service: "Website Pages",
+  marketing: "Marketing Materials",
+  ads: "Ads & Social Media",
 }
+
+const CATEGORY_DESCRIPTIONS: Record<TemplateCategory, string> = {
+  service: "Compliance-ready service pages for your clinic website.",
+  marketing: "Pre-written marketing copy for emails, landing pages, and brochures.",
+  ads: "Short-form ad copy and social post templates for Meta, Google, TikTok.",
+}
+
+const SECTION_ORDER: TemplateCategory[] = ["service", "marketing", "ads"]
 
 export default function TemplatesPage() {
   const router = useRouter()
   const [search, setSearch] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState<string>("all")
   const [selectedTemplate, setSelectedTemplate] =
     useState<ContentTemplate | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const filtered = useMemo(() => {
-    return CONTENT_TEMPLATES.filter((t) => {
-      const matchesCategory =
-        categoryFilter === "all" || t.category === categoryFilter
-      const matchesSearch =
-        !search ||
-        t.title.toLowerCase().includes(search.toLowerCase()) ||
-        t.description.toLowerCase().includes(search.toLowerCase())
-      return matchesCategory && matchesSearch
-    })
-  }, [search, categoryFilter])
+  const groupedTemplates = useMemo(() => {
+    const query = search.toLowerCase()
+    const groups = new Map<TemplateCategory, ContentTemplate[]>()
+    for (const t of CONTENT_TEMPLATES) {
+      if (
+        search &&
+        !t.title.toLowerCase().includes(query) &&
+        !t.description.toLowerCase().includes(query)
+      ) {
+        continue
+      }
+      const list = groups.get(t.category) ?? []
+      list.push(t)
+      groups.set(t.category, list)
+    }
+    return groups
+  }, [search])
+
+  const totalResults = useMemo(
+    () => Array.from(groupedTemplates.values()).reduce((a, b) => a + b.length, 0),
+    [groupedTemplates],
+  )
 
   async function copyContent(text: string) {
     try {
@@ -93,7 +111,7 @@ export default function TemplatesPage() {
   if (selectedTemplate) {
     const style = CATEGORY_STYLES[selectedTemplate.category]
     return (
-      <div className="p-6 space-y-6">
+      <div className="p-6 max-w-4xl mx-auto space-y-6">
         {/* Back */}
         <button
           onClick={() => setSelectedTemplate(null)}
@@ -117,9 +135,9 @@ export default function TemplatesPage() {
                 {selectedTemplate.wordCount} words
               </span>
             </div>
-            <h2 className="text-2xl font-bold text-white">
+            <h1 className="text-3xl font-bold text-white">
               {selectedTemplate.title}
-            </h2>
+            </h1>
             <p className="text-white/60 mt-1">
               {selectedTemplate.description}
             </p>
@@ -185,106 +203,109 @@ export default function TemplatesPage() {
     )
   }
 
-  // Grid view
+  // Sectioned view
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">
           Resources
         </p>
-        <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-white inline-flex items-center gap-2">
           Content Templates
           <HelpTooltip text="Pre-written, compliance-ready marketing copy templates for your clinic website and marketing materials." />
-        </h2>
+        </h1>
         <p className="text-white/60 mt-1">
-          Production-ready compliant copy for service pages, marketing
-          materials, and ads.
+          Production-ready compliant copy for service pages, marketing materials, and ads.
         </p>
         <p className="text-xs text-white/30 mt-2 font-medium">
           {CONTENT_TEMPLATES.length} templates available
         </p>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
-          <Input
-            placeholder="Search templates..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 bg-white/[0.03] border-white/10 text-white placeholder:text-white/30"
-          />
-          {search && (
-            <button
-              onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-        <div className="flex gap-2">
-          {TEMPLATE_CATEGORIES.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setCategoryFilter(cat.value)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                categoryFilter === cat.value
-                  ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20"
-                  : "bg-white/[0.03] text-white/40 border border-white/[0.06] hover:text-white/60 hover:bg-white/[0.06]"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+        <Input
+          placeholder="Search templates..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-10 bg-white/[0.03] border-white/10 text-white/80 placeholder:text-white/40 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
-      {/* Grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <FileText className="h-10 w-10 text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">
-            No templates found matching your search.
-          </p>
+      {/* Sections */}
+      {totalResults === 0 ? (
+        <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
+            <FileText className="h-8 w-8 text-white/20" />
+          </div>
+          <p className="text-white/50 font-medium mb-1">No templates match your search</p>
+          <p className="text-white/30 text-sm">Try a different keyword or clear the search.</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((template) => {
-            const style = CATEGORY_STYLES[template.category]
-            return (
-              <button
-                key={template.id}
-                onClick={() => setSelectedTemplate(template)}
-                className="group text-left rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-200"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <Badge
-                    variant="outline"
-                    className={`${style.bg} ${style.text} border text-[10px]`}
+        SECTION_ORDER.map((category) => {
+          const items = groupedTemplates.get(category)
+          if (!items || items.length === 0) return null
+          const style = CATEGORY_STYLES[category]
+          const Icon = style.icon
+          return (
+            <section key={category} className="space-y-4">
+              <div className="flex items-end justify-between gap-3 flex-wrap border-b border-white/[0.06] pb-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center border ${style.bg}`}>
+                      <Icon className={`h-3.5 w-3.5 ${style.text}`} />
+                    </div>
+                    <h2 className="text-xl font-bold text-white">
+                      {CATEGORY_LABELS[category]}
+                    </h2>
+                  </div>
+                  <p className="text-sm text-white/50">
+                    {CATEGORY_DESCRIPTIONS[category]}
+                  </p>
+                </div>
+                <span className="text-xs font-medium text-white/40 shrink-0">
+                  {items.length} template{items.length === 1 ? "" : "s"}
+                </span>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {items.map((template) => (
+                  <button
+                    key={template.id}
+                    onClick={() => setSelectedTemplate(template)}
+                    className="group text-left rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:bg-white/[0.06] hover:border-white/20 transition-all duration-200 flex flex-col"
                   >
-                    {CATEGORY_LABELS[template.category]}
-                  </Badge>
-                  <span className="text-[10px] text-white/25 font-medium">
-                    {template.wordCount} words
-                  </span>
-                </div>
-                <h3 className="text-sm font-bold text-white mb-1.5 group-hover:text-[#55E039] transition-colors">
-                  {template.title}
-                </h3>
-                <p className="text-xs text-white/40 leading-relaxed line-clamp-2">
-                  {template.description}
-                </p>
-                <div className="mt-4 flex items-center gap-1 text-[10px] text-white/25 group-hover:text-[#55E039]/60 transition-colors">
-                  View template
-                  <ArrowRight className="h-3 w-3" />
-                </div>
-              </button>
-            )
-          })}
-        </div>
+                    <div className="flex items-start justify-between mb-2 gap-2">
+                      <h3 className="text-sm font-bold text-white group-hover:text-[#55E039] transition-colors line-clamp-2">
+                        {template.title}
+                      </h3>
+                      <span className="text-[10px] text-white/40 font-medium shrink-0 mt-0.5">
+                        {template.wordCount}w
+                      </span>
+                    </div>
+                    <p className="text-xs text-white/50 leading-relaxed line-clamp-2 flex-1">
+                      {template.description}
+                    </p>
+                    <div className="mt-4 flex items-center gap-1 text-[10px] text-white/30 group-hover:text-[#55E039]/70 transition-colors">
+                      View template
+                      <ArrowRight className="h-3 w-3" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )
+        })
       )}
     </div>
   )

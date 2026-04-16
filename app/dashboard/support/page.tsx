@@ -286,11 +286,12 @@ export default function SupportPage() {
   ]
 
   return (
-    <div className="p-6 max-w-3xl space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Support</h1>
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Help</p>
+          <h1 className="text-3xl font-bold text-white">Support</h1>
           <p className="text-white/60 mt-1">
             Need help? Open a ticket and our team will respond as soon as possible.
           </p>

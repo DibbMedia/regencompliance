@@ -255,14 +255,14 @@ export default function HelpCenterPage() {
   })).filter((section) => section.items.length > 0)
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="space-y-4">
         <div>
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">
             Knowledge Base
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Help Center</h1>
+          <h1 className="text-3xl font-bold text-white">Help Center</h1>
           <p className="text-sm text-white/50 mt-1">
             Everything you need to know about compliance scanning and staying FDA/FTC safe.
           </p>

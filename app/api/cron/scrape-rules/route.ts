@@ -110,8 +110,8 @@ export async function GET(request: Request) {
       .join(", ")
 
     await createBroadcastNotification(
-      `Compliance Library Updated: ${totalNewRules} new rule(s) added`,
-      `New enforcement actions processed from ${sourceNames}. Review the latest rules in the Compliance Library.`,
+      `Enforcement Actions Updated: ${totalNewRules} new rule(s) added`,
+      `New enforcement actions processed from ${sourceNames}. Review the latest cited violations in Enforcement Actions.`,
       "rule_update",
       "/dashboard/library"
     )

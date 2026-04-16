@@ -64,8 +64,8 @@ const TASKS = [
   },
   {
     key: "explore_library",
-    title: "Explore the compliance library",
-    description: "Browse 300+ FDA/FTC compliance rules",
+    title: "Browse enforcement actions",
+    description: "Browse FDA/FTC enforcement actions and the phrases they flagged",
     href: "/dashboard/library",
     icon: BookOpen,
   },

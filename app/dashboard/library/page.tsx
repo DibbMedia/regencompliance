@@ -101,13 +101,13 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Reference</p>
-        <h2 className="text-2xl font-bold text-white inline-flex items-center gap-2">
-          Compliance Library
+        <h1 className="text-3xl font-bold text-white inline-flex items-center gap-2">
+          Enforcement Actions
           <HelpTooltip text="Browse FDA Warning Letters, FTC enforcement actions, and DOJ healthcare fraud announcements relevant to regenerative medicine. Each action lists the marketing claims that were cited as violations." />
-        </h2>
+        </h1>
         <p className="text-white/60 mt-1">
           Live feed of FDA / FTC / DOJ enforcement actions. Updated automatically.
         </p>

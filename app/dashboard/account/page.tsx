@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, ExternalLink, Shield, Crown, X, Plus, Users, CreditCard, AlertTriangle, Download, Trash2 } from "lucide-react"
+import { Loader2, ExternalLink, Shield, Crown, X, Plus, Users, CreditCard, AlertTriangle, Download, Trash2, Award, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -179,10 +179,11 @@ export default function AccountPage() {
   const hasStripeCustomer = !!profile.stripe_customer_id
 
   return (
-    <div className="p-6 max-w-3xl space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Account & Billing</h1>
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Account</p>
+        <h1 className="text-3xl font-bold text-white">Account & Billing</h1>
         <p className="text-white/60 mt-1">Manage your clinic profile, subscription, and team.</p>
       </div>
 
@@ -387,6 +388,30 @@ export default function AccountPage() {
           </div>
         </div>
       )}
+
+      {/* ── COMPLIANCE BADGE SECTION ── */}
+      <div className="space-y-4">
+        <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Compliance Badge</p>
+
+        <div className="bg-white/[0.03] border border-white/10 rounded-xl p-6 flex items-center justify-between hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-[#55E039]/10 flex items-center justify-center">
+              <Award className="h-5 w-5 text-[#55E039]" />
+            </div>
+            <div>
+              <h3 className="text-white font-bold">Verified Compliance Badge</h3>
+              <p className="text-white/50 text-sm">Display your compliance status on your clinic website</p>
+            </div>
+          </div>
+          <Link
+            href="/dashboard/badge"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] transition-all duration-200"
+          >
+            Manage Badge
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
 
       {/* ── DATA & PRIVACY ── */}
       {role === "owner" && (

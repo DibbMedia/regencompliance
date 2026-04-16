@@ -448,7 +448,7 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-white">
             Welcome back{data?.clinicName ? `, ${data.clinicName}` : ""}
           </h1>
           <p className="text-sm text-white/40 mt-1 flex items-center gap-2">
@@ -498,7 +498,7 @@ export default function DashboardPage() {
             className="hidden sm:inline-flex h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
           >
             <BookOpen className="h-4 w-4" />
-            Library
+            Actions
           </Link>
           <Link
             href="/dashboard/sites"

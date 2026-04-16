@@ -189,7 +189,7 @@ export default function ScanDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 space-y-4 max-w-3xl">
+      <div className="p-6 max-w-4xl mx-auto space-y-4">
         <div className="h-8 w-24 rounded-lg bg-white/[0.06] animate-pulse" />
         <div className="h-48 w-full rounded-xl bg-white/[0.03] animate-pulse" />
         <div className="h-32 w-full rounded-xl bg-white/[0.03] animate-pulse" />
@@ -213,7 +213,7 @@ export default function ScanDetailPage() {
   const score = scan.compliance_score ?? 0
 
   return (
-    <div className="p-6 space-y-6 max-w-3xl">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       {/* Back Navigation */}
       <button
         onClick={() => router.back()}
