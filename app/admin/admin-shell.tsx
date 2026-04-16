@@ -19,8 +19,16 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 import { ShieldPlus, Library } from "lucide-react"
 import type { AdminRole } from "@/lib/admin"
+import type { LucideIcon } from "lucide-react"
 
-const baseNavItems = [
+interface NavItem {
+  title: string
+  href: string
+  icon: LucideIcon
+  badgeKey?: "openTickets"
+}
+
+const baseNavItems: NavItem[] = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Users", href: "/admin/users", icon: Users },
   { title: "Waitlist", href: "/admin/waitlist", icon: ListChecks },
@@ -29,13 +37,13 @@ const baseNavItems = [
     title: "Tickets",
     href: "/admin/tickets",
     icon: MessageSquare,
-    badgeKey: "openTickets" as const,
+    badgeKey: "openTickets",
   },
   { title: "Rules", href: "/admin/rules", icon: BookOpen },
   { title: "Library", href: "/admin/library", icon: Library },
 ]
 
-const developerOnlyNavItems = [
+const developerOnlyNavItems: NavItem[] = [
   { title: "Admins", href: "/admin/admins", icon: ShieldPlus },
 ]
 
