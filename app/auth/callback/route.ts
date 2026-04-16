@@ -14,12 +14,11 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
-      // Handle team invite acceptance
       if (inviteToken) {
         const { data: { user } } = await supabase.auth.getUser()
         if (user) {
-          // Verify the authenticated user's email matches the invite and it hasn't expired
-          const { data: teamMember } = await supabase
+          const adminClient = createServiceClient()
+          const { data: teamMember } = await adminClient
             .from("team_members")
             .select("email, created_at")
             .eq("invite_token", inviteToken)
@@ -32,7 +31,6 @@ export async function GET(request: Request) {
             )
           }
 
-          // Check 72-hour expiry window
           const createdAt = new Date(teamMember.created_at).getTime()
           const seventyTwoHours = 72 * 60 * 60 * 1000
           if (Date.now() - createdAt > seventyTwoHours) {
@@ -41,7 +39,7 @@ export async function GET(request: Request) {
             )
           }
 
-          await supabase
+          await adminClient
             .from("team_members")
             .update({
               user_id: user.id,
