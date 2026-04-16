@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { isAdminEmail } from "@/lib/admin"
+import { getAdminRole } from "@/lib/admin"
 import { AdminShell } from "./admin-shell"
 
 export default async function AdminLayout({
@@ -13,9 +13,10 @@ export default async function AdminLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user || !isAdminEmail(user.email)) {
+  const role = await getAdminRole(user?.email)
+  if (!user || !role) {
     redirect("/dashboard")
   }
 
-  return <AdminShell>{children}</AdminShell>
+  return <AdminShell role={role}>{children}</AdminShell>
 }

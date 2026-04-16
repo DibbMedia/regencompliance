@@ -475,6 +475,27 @@ function TicketDetailPanel({
             Created {new Date(ticket.created_at).toLocaleString()}
           </span>
         </div>
+        <button
+          onClick={async (e) => {
+            e.stopPropagation()
+            if (!confirm(`Create a new user account for ${ticket.user_email}?`)) return
+            const r = await fetch("/api/admin/users", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: ticket.user_email, send_invite: true }),
+            })
+            const body = await r.json().catch(() => ({}))
+            if (!r.ok) {
+              alert(body.error ?? "Failed to create user")
+              return
+            }
+            alert("User created. Invite link logged to console.")
+            if (body.invite_url) console.log("Invite link:", body.invite_url)
+          }}
+          className="ml-auto inline-flex items-center gap-1 rounded-md border border-[#55E039]/30 bg-[#55E039]/10 px-2.5 py-1 text-xs text-[#55E039] hover:bg-[#55E039]/20"
+        >
+          Create user from ticket
+        </button>
       </div>
 
       {/* Status & Priority controls */}

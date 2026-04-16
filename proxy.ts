@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+const IMPERSONATE_COOKIE = "regen_impersonate"
+
 const publicPaths = ["/", "/login", "/auth/callback", "/demo", "/features", "/pricing", "/faq", "/waitlist", "/privacy", "/terms", "/forgot-password", "/auth/reset-password"]
 
 function buildCsp(nonce: string): string {
@@ -95,6 +97,37 @@ export async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = "/login"
     return applyCsp(NextResponse.redirect(url))
+  }
+
+  const impCookie = request.cookies.get(IMPERSONATE_COOKIE)?.value
+  if (impCookie && request.method !== "GET" && request.method !== "HEAD") {
+    const isAdminPath =
+      pathname.startsWith("/api/admin/") || pathname.startsWith("/admin/")
+    if (!isAdminPath) {
+      const { data: impSession } = await createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { cookies: { getAll: () => [], setAll: () => {} } },
+      )
+        .from("impersonation_sessions")
+        .select("admin_user_id, mode, expires_at")
+        .eq("id", impCookie)
+        .maybeSingle()
+
+      if (
+        impSession &&
+        impSession.admin_user_id === user.id &&
+        impSession.mode === "read" &&
+        new Date(impSession.expires_at as string).getTime() > Date.now()
+      ) {
+        return applyCsp(
+          NextResponse.json(
+            { error: "Read-only impersonation — mutations blocked. Stop impersonation to act as yourself." },
+            { status: 403 },
+          ),
+        )
+      }
+    }
   }
 
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding")) {

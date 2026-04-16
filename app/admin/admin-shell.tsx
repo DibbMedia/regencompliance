@@ -17,7 +17,10 @@ import {
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-const navItems = [
+import { ShieldPlus, Library } from "lucide-react"
+import type { AdminRole } from "@/lib/admin"
+
+const baseNavItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Users", href: "/admin/users", icon: Users },
   { title: "Waitlist", href: "/admin/waitlist", icon: ListChecks },
@@ -29,10 +32,16 @@ const navItems = [
     badgeKey: "openTickets" as const,
   },
   { title: "Rules", href: "/admin/rules", icon: BookOpen },
+  { title: "Library", href: "/admin/library", icon: Library },
 ]
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+const developerOnlyNavItems = [
+  { title: "Admins", href: "/admin/admins", icon: ShieldPlus },
+]
+
+export function AdminShell({ children, role }: { children: React.ReactNode; role: AdminRole }) {
   const pathname = usePathname()
+  const navItems = role === "developer" ? [...baseNavItems, ...developerOnlyNavItems] : baseNavItems
 
   const { data: stats } = useSWR("/api/admin/stats", fetcher, {
     refreshInterval: 60000,

@@ -162,3 +162,67 @@ export async function GET(request: Request) {
     )
   }
 }
+
+export async function POST(request: Request) {
+  const { verifyDeveloperAdmin } = await import("@/lib/admin")
+  const { logAudit, getRequestMeta } = await import("@/lib/audit-log")
+
+  const auth = await verifyDeveloperAdmin()
+  if ("error" in auth) return auth.error
+  const { user, serviceClient } = auth
+
+  const body = await request.json().catch(() => null)
+  if (!body?.email) {
+    return NextResponse.json({ error: "email required" }, { status: 400 })
+  }
+
+  const email = String(body.email).toLowerCase().trim()
+  const clinicName = body.clinic_name ? String(body.clinic_name).slice(0, 200) : null
+  const sendInvite = body.send_invite !== false
+
+  const { data: created, error: createErr } = await serviceClient.auth.admin.createUser({
+    email,
+    email_confirm: !sendInvite,
+    user_metadata: clinicName ? { clinic_name: clinicName } : {},
+  })
+
+  if (createErr || !created?.user) {
+    return NextResponse.json(
+      { error: createErr?.message ?? "Failed to create user" },
+      { status: 400 },
+    )
+  }
+
+  if (clinicName) {
+    await serviceClient
+      .from("profiles")
+      .update({ clinic_name: clinicName })
+      .eq("id", created.user.id)
+  }
+
+  let inviteUrl: string | null = null
+  if (sendInvite) {
+    const { data: linkData } = await serviceClient.auth.admin.generateLink({
+      type: "magiclink",
+      email,
+    })
+    inviteUrl = linkData?.properties?.action_link ?? null
+  }
+
+  const { ip, userAgent } = getRequestMeta(request)
+  logAudit({
+    user_id: user.id,
+    user_email: user.email,
+    action: "admin.user.create",
+    resource_type: "user",
+    resource_id: created.user.id,
+    details: { email, clinic_name: clinicName, sent_invite: sendInvite },
+    ip_address: ip,
+    user_agent: userAgent,
+  })
+
+  return NextResponse.json({
+    user: { id: created.user.id, email: created.user.email },
+    invite_url: inviteUrl,
+  })
+}

@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
+import { ImpersonationBanner } from "@/components/impersonation-banner"
 import { headers } from "next/headers"
 import "./globals.css"
 
@@ -96,6 +97,7 @@ export default async function RootLayout({
           forcedTheme="dark"
           disableTransitionOnChange
         >
+          <ImpersonationBanner />
           <TooltipProvider>
             {children}
           </TooltipProvider>
