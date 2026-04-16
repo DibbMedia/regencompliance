@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
+import { headers } from "next/headers"
 import "./globals.css"
 
 const poppins = Poppins({
@@ -12,7 +13,6 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
-// Stable string so the CSP sha256 hash in next.config.ts stays valid.
 const STRUCTURED_DATA_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -70,11 +70,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined
   return (
     <html
       lang="en"
@@ -83,6 +84,7 @@ export default function RootLayout({
     >
       <head>
         <script
+          nonce={nonce}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: STRUCTURED_DATA_JSON }}
         />
