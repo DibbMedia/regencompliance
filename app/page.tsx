@@ -88,19 +88,19 @@ export default function LandingPage() {
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
               FDA and FTC enforcement against healthcare practices hit a 25-year high — from regenerative medicine to med spas, dental, dermatology, and beyond. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
               {IS_LAUNCHED ? (
-                <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+                <CheckoutButton className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
                   Start Free Trial
                   <ArrowRight className="h-4 w-4" />
                 </CheckoutButton>
               ) : (
-                <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                <Link href="/waitlist" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
                   Join the Waitlist
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               )}
-              <Link href="/demo" className="inline-flex h-12 items-center gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
+              <Link href="/demo" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-6 sm:px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all">
                 Try Free Demo
                 <ArrowRight className="h-4 w-4 opacity-60" />
               </Link>
@@ -123,17 +123,17 @@ export default function LandingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-[#55E039]/[0.05] blur-[40px]" />
 
             {/* Browser Chrome */}
-            <div className="flex items-center border-b border-white/[0.06] px-5 py-3">
-              <div className="flex gap-2">
+            <div className="flex items-center border-b border-white/[0.06] px-3 sm:px-5 py-3 gap-2">
+              <div className="flex gap-2 shrink-0">
                 <div className="h-3 w-3 rounded-full bg-[#FF5F57]" />
                 <div className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
                 <div className="h-3 w-3 rounded-full bg-[#28C840]" />
               </div>
-              <div className="mx-auto flex h-7 items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-4 text-[11px] text-white/25 font-mono">
-                <Lock className="h-3 w-3 mr-1.5 text-[#28C840]" />
-                compliance.regenportal.com/dashboard/scanner
+              <div className="mx-auto flex h-7 min-w-0 max-w-full items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 sm:px-4 text-[10px] sm:text-[11px] text-white/25 font-mono">
+                <Lock className="h-3 w-3 mr-1.5 text-[#28C840] shrink-0" />
+                <span className="truncate">compliance.regenportal.com/dashboard/scanner</span>
               </div>
-              <div className="w-[52px]" />
+              <div className="hidden sm:block w-[52px] shrink-0" />
             </div>
 
             {/* App Content */}
@@ -150,14 +150,14 @@ export default function LandingPage() {
                       <span className="text-[10px] text-white/30">Paste content below to scan</span>
                     </div>
                   </div>
-                  <div className="flex gap-1.5">
+                  <div className="hidden sm:flex gap-1.5">
                     {["Website", "Social", "Ad", "Email"].map((t, i) => (
                       <span key={t} className={`text-[10px] px-2.5 py-1 rounded-md font-medium ${i === 0 ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20" : "text-white/30 hover:text-white/40 cursor-pointer"}`}>{t}</span>
                     ))}
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-5 text-[14px] text-white/60 leading-[2.2] mb-5" style={{ fontFamily: "var(--font-poppins), sans-serif" }}>
+                <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-4 sm:p-5 text-[13px] sm:text-[14px] text-white/60 leading-[1.8] sm:leading-[2.2] mb-5" style={{ fontFamily: "var(--font-poppins), sans-serif" }}>
                   <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/40">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
                   <div className="flex justify-end mt-2">
                     <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
@@ -172,7 +172,7 @@ export default function LandingPage() {
               </div>
 
               {/* Right: Results */}
-              <div className="md:col-span-2 p-6 sm:p-8 bg-[#0e0e0e]">
+              <div className="md:col-span-2 p-6 sm:p-8 bg-[#0e0e0e] border-t border-white/[0.06] md:border-t-0">
                 <div className="flex flex-col items-center mb-5">
                   <div className="relative">
                     <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
@@ -345,8 +345,8 @@ export default function LandingPage() {
             <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-[0_0_60px_rgba(85,224,57,0.1)]">
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-24 bg-[#55E039]/[0.08] blur-[50px]" />
-              <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-3 py-1 text-xs font-bold text-[#55E039]">
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-[#55E039]/15 border border-[#55E039]/25 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold text-[#55E039]">
                   <Zap className="h-3 w-3" />
                   {IS_LAUNCHED ? "Founding Rate" : "Pre-Release"}
                 </span>
@@ -397,8 +397,8 @@ export default function LandingPage() {
             {/* STANDARD PLAN — COMING SOON */}
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 relative overflow-hidden opacity-70">
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-              <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-bold text-white/40">
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-bold text-white/40">
                   Coming Soon
                 </span>
               </div>
@@ -473,19 +473,19 @@ export default function LandingPage() {
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             Your next Instagram post, website update, or patient email could trigger a federal investigation. It takes 30 seconds to check.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 sm:gap-4">
             {IS_LAUNCHED ? (
-              <CheckoutButton className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
+              <CheckoutButton className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
                 Start Free Trial
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+              <Link href="/waitlist" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
                 Join the Waitlist
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}
-            <Link href="/demo" className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
+            <Link href="/demo" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start rounded-xl border border-[#55E039]/20 bg-[#55E039]/[0.04] px-6 sm:px-8 text-[15px] font-semibold text-[#55E039] shadow-[0_0_20px_rgba(85,224,57,0.08)] hover:shadow-[0_0_30px_rgba(85,224,57,0.15)] hover:bg-[#55E039]/[0.08] transition-all">
               Try Demo First
             </Link>
           </div>

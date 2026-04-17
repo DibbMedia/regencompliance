@@ -252,7 +252,7 @@ export default function DemoPage() {
               By scanning you agree your text is sent to Anthropic (Claude) for analysis. Do not include patient information or PHI.
             </p>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleScan}
                 className="flex-1 inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-semibold shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
@@ -273,7 +273,7 @@ export default function DemoPage() {
               {!text && (
                 <button
                   onClick={loadSample}
-                  className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/30 px-6 text-sm font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
+                  className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start rounded-xl border border-[#55E039]/30 px-6 text-sm font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
                 >
                   Load Sample
                 </button>
@@ -341,7 +341,7 @@ export default function DemoPage() {
                     </span>
                   </div>
                   <p className="mt-3 text-sm text-white/70">{result.summary}</p>
-                  <div className="flex justify-center gap-4 mt-4 text-sm">
+                  <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-4 text-sm">
                     <span className="text-white/40">{result.flag_count} flags</span>
                     <span className="text-red-400">{result.high_risk_count} high</span>
                     <span className="text-yellow-400">{result.medium_risk_count} medium</span>
@@ -365,11 +365,11 @@ export default function DemoPage() {
                     </div>
                     {result.flags.map((flag, i) => (
                       <div key={i} className="rounded-xl border border-white/10 bg-[#0e0e0e] p-3 space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <code className="text-xs text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">
+                        <div className="flex items-start justify-between gap-2 min-w-0">
+                          <code className="text-xs text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded break-words min-w-0 flex-1">
                             &quot;{flag.matched_text}&quot;
                           </code>
-                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${
+                          <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${
                             flag.risk_level === "high" ? "text-red-400 bg-red-500/10" :
                             flag.risk_level === "medium" ? "text-yellow-400 bg-yellow-500/10" :
                             "text-blue-400 bg-blue-500/10"
