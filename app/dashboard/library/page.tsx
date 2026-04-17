@@ -133,7 +133,7 @@ export default function LibraryPage() {
           </div>
           <button
             onClick={dismissDisclaimer}
-            className="shrink-0 p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors self-start"
+            className="shrink-0 p-2.5 sm:p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors self-start"
           >
             <X className="h-4 w-4 text-white/30" />
           </button>

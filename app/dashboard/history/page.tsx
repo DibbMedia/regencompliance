@@ -203,7 +203,7 @@ export default function HistoryPage() {
               <button
                 disabled={page <= 1}
                 onClick={() => setPage(page - 1)}
-                className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-3 sm:p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
@@ -223,7 +223,7 @@ export default function HistoryPage() {
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
                     className={`
-                      w-9 h-9 rounded-lg text-sm font-medium transition-all duration-300
+                      w-11 h-11 sm:w-9 sm:h-9 rounded-lg text-sm font-medium transition-all duration-300
                       ${page === pageNum
                         ? "bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)]"
                         : "border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70"
@@ -237,7 +237,7 @@ export default function HistoryPage() {
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage(page + 1)}
-                className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-3 sm:p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/50 hover:bg-white/[0.06] hover:text-white/70 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

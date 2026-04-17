@@ -185,7 +185,7 @@ export default function FaqPage() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`inline-flex items-center gap-2 rounded-full text-xs sm:text-sm px-3 py-1.5 sm:px-5 sm:py-2.5 font-medium transition-all duration-300 ${
+                  className={`inline-flex items-center gap-2 rounded-full text-xs sm:text-sm px-3 py-1.5 sm:px-5 sm:py-2.5 min-h-[44px] sm:min-h-0 font-medium transition-all duration-300 ${
                     activeCategory === cat
                       ? "bg-[#55E039]/10 border border-[#55E039]/20 text-[#55E039]"
                       : "bg-white/[0.03] border border-white/10 text-white/60 hover:bg-white/[0.06] hover:text-white"

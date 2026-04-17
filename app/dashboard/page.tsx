@@ -481,14 +481,14 @@ export default function DashboardPage() {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href="/dashboard/scanner"
-            className="inline-flex h-9 px-3 text-xs sm:h-10 sm:px-5 sm:text-sm items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
+            className="inline-flex h-11 px-3 text-xs sm:h-10 sm:px-5 sm:text-sm items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] font-semibold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all"
           >
             <Shield className="h-4 w-4" />
             New Scan
           </Link>
           <Link
             href="/dashboard/history"
-            className="inline-flex h-9 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
+            className="inline-flex h-11 px-3 text-xs sm:h-10 sm:px-4 sm:text-sm items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
           >
             <Clock className="h-4 w-4" />
             History

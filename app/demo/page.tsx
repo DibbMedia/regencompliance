@@ -226,7 +226,7 @@ export default function DemoPage() {
                   role="radio"
                   aria-checked={contentType === t.value}
                   onClick={() => setContentType(t.value)}
-                  className={`rounded-full px-4 py-2 text-xs font-medium min-h-[40px] transition-all duration-300 ${
+                  className={`rounded-full px-4 py-2 text-xs font-medium min-h-[44px] sm:min-h-[40px] transition-all duration-300 ${
                     contentType === t.value
                       ? "bg-[#55E039]/15 border border-[#55E039]/30 text-[#55E039]"
                       : "bg-[#111111] border border-white/15 text-white/60 hover:bg-[#1a1a1a] hover:text-white"
@@ -386,7 +386,7 @@ export default function DemoPage() {
                           <div className="flex items-center gap-2">
                             <p className="text-xs text-[#55E039] flex-1">{flag.alternative}</p>
                             <button
-                              className="shrink-0 p-1 hover:bg-white/5 rounded"
+                              className="shrink-0 p-2.5 sm:p-1 hover:bg-white/5 rounded"
                               aria-label="Copy to clipboard"
                               onClick={() => copyToClipboard(flag.alternative, i)}
                             >

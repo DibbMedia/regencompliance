@@ -145,7 +145,7 @@ export default function NotificationsPage() {
           <button
             key={tab.value}
             onClick={() => { setFilter(tab.value); setPage(1) }}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 min-h-[44px] sm:min-h-0 rounded-md text-sm font-medium transition-all duration-200 ${
               filter === tab.value
                 ? "bg-[#55E039]/10 text-[#55E039]"
                 : "text-white/40 hover:text-white/60"
@@ -228,7 +228,7 @@ export default function NotificationsPage() {
           <button
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
-            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 min-h-[44px] sm:min-h-0 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -236,7 +236,7 @@ export default function NotificationsPage() {
           <button
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
-            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 min-h-[44px] sm:min-h-0 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>

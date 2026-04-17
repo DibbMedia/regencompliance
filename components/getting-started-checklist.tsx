@@ -169,13 +169,13 @@ export function GettingStartedChecklist({ initialChecklist }: GettingStartedChec
         <div className="flex items-center gap-1 ml-3">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
+            className="p-2.5 sm:p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
           >
             {collapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
           </button>
           <button
             onClick={handleDismiss}
-            className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
+            className="p-2.5 sm:p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.06] transition-all"
             title="Dismiss checklist"
           >
             <X className="h-4 w-4" />

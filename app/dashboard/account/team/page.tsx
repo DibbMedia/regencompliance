@@ -251,7 +251,7 @@ export default function TeamPage() {
                   {/* Remove */}
                   <AlertDialog>
                     <AlertDialogTrigger
-                      className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 disabled:opacity-50"
+                      className="shrink-0 w-11 h-11 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 disabled:opacity-50"
                       disabled={removing === m.id}
                     >
                       {removing === m.id ? (

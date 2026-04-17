@@ -79,7 +79,7 @@ export function DashboardHeader({ userEmail, clinicName, role }: DashboardHeader
         <Link
           href="/dashboard/notifications"
           className={cn(
-            "relative inline-flex h-8 w-8 items-center justify-center rounded-lg text-white/40 hover:text-white hover:bg-white/[0.04] transition-colors"
+            "relative inline-flex h-11 w-11 sm:h-8 sm:w-8 items-center justify-center rounded-lg text-white/40 hover:text-white hover:bg-white/[0.04] transition-colors"
           )}
         >
           <Bell className="h-4 w-4" />
@@ -92,7 +92,7 @@ export function DashboardHeader({ userEmail, clinicName, role }: DashboardHeader
 
         {/* User menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-white/[0.04] transition-colors outline-none">
+          <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-2.5 sm:py-1.5 hover:bg-white/[0.04] transition-colors outline-none">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.06] border border-white/10">
               <span className="text-[10px] font-bold text-white/70">{initials}</span>
             </div>
