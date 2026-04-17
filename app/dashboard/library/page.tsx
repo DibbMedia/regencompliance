@@ -221,7 +221,8 @@ export default function LibraryPage() {
           <p className="text-white/30 text-sm">Try adjusting your search or filter criteria.</p>
         </div>
       ) : (
-        <div className="rounded-xl border border-white/10 overflow-hidden">
+        <>
+        <div className="hidden md:block rounded-xl border border-white/10 overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -343,6 +344,78 @@ export default function LibraryPage() {
             </Table>
           </div>
         </div>
+
+        {/* Mobile card stack */}
+        <div className="md:hidden space-y-3">
+          {actions.map((action) => {
+            const agencyStyle =
+              (action.agency && AGENCY_STYLES[action.agency]) || {
+                badge: "bg-white/[0.04] text-white/40 border-white/10",
+                dot: "bg-white/20",
+              }
+            const sourceLabel = SOURCE_TYPE_LABELS[action.source_type] || action.source_name
+            const ruleCount = action.rule_count || action.compliance_rules?.length || 0
+            const categories = action.violation_categories?.length
+              ? action.violation_categories
+              : Array.from(new Set((action.compliance_rules ?? []).map((r) => r.category)))
+
+            return (
+              <Link
+                key={action.id}
+                href={`/dashboard/library/${action.id}`}
+                className="block rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300"
+              >
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${agencyStyle.badge}`}>
+                    {action.agency || "—"}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center min-w-[28px] px-2 py-0.5 rounded-md text-xs font-semibold bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20">
+                      {ruleCount}
+                    </span>
+                    <span className="text-[11px] text-white/40 whitespace-nowrap">
+                      {formatDate(action.source_date)}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 mb-1.5">
+                  <Building2 className="h-3.5 w-3.5 text-white/20 mt-0.5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-white/90 line-clamp-1">
+                      {action.company_name || sourceLabel}
+                    </p>
+                    <p className="text-[11px] text-white/40 mt-0.5 line-clamp-1">
+                      {action.product_or_treatment || sourceLabel}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-white/60 leading-relaxed line-clamp-2 mb-2">
+                  {action.summary || (
+                    <span className="text-white/40 italic">No summary available — open to view violations.</span>
+                  )}
+                </p>
+                {categories.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {categories.slice(0, 3).map((c) => (
+                      <span
+                        key={c}
+                        className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/40"
+                      >
+                        {CATEGORY_LABELS[c] || c.replace("_", " ")}
+                      </span>
+                    ))}
+                    {categories.length > 3 && (
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                        +{categories.length - 3}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </Link>
+            )
+          })}
+        </div>
+        </>
       )}
     </div>
   )
