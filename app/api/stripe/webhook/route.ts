@@ -5,6 +5,34 @@ import { sendEmail } from "@/lib/email"
 import { welcomeEmail, betaWelcomeEmail, paymentFailedEmail, subscriptionCancelledEmail } from "@/lib/email-templates"
 import { logAudit } from "@/lib/audit-log"
 import type Stripe from "stripe"
+import type { SupabaseClient } from "@supabase/supabase-js"
+
+async function findAuthUserIdByEmail(
+  supabase: SupabaseClient,
+  email: string,
+): Promise<string | null> {
+  const target = email.toLowerCase()
+  const PAGE_SIZE = 200
+  const MAX_PAGES = 25
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const { data, error } = await supabase.auth.admin.listUsers({
+      page,
+      perPage: PAGE_SIZE,
+    })
+    if (error) {
+      console.error("[Stripe Webhook] listUsers page error:", error)
+      return null
+    }
+    const users = data?.users ?? []
+    const hit = users.find((u) => u.email?.toLowerCase() === target)
+    if (hit) return hit.id
+    if (users.length < PAGE_SIZE) return null
+  }
+  console.warn(
+    `[Stripe Webhook] findAuthUserIdByEmail: exceeded MAX_PAGES=${MAX_PAGES} without match`,
+  )
+  return null
+}
 
 export async function POST(request: Request) {
   const body = await request.text()
@@ -21,6 +49,15 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error("Webhook signature verification failed:", err)
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 })
+  }
+
+  const REPLAY_MAX_AGE_SECONDS = 60 * 60
+  const eventAgeSeconds = Math.floor(Date.now() / 1000) - event.created
+  if (eventAgeSeconds > REPLAY_MAX_AGE_SECONDS) {
+    console.warn(
+      `[Stripe Webhook] Rejecting stale event ${event.id} (age=${eventAgeSeconds}s)`,
+    )
+    return NextResponse.json({ error: "Event too old" }, { status: 400 })
   }
 
   const supabase = createServiceClient()
@@ -106,15 +143,12 @@ export async function POST(request: Request) {
           // If not found, try to find by email via auth.users
           if (!betaProfile && customerEmail) {
             try {
-              const { data: authData } = await supabase.auth.admin.listUsers()
-              const matchedUser = authData?.users?.find(
-                (u) => u.email?.toLowerCase() === customerEmail
-              )
-              if (matchedUser) {
+              const matchedUserId = await findAuthUserIdByEmail(supabase, customerEmail)
+              if (matchedUserId) {
                 const { data: profileByUser } = await supabase
                   .from("profiles")
                   .select("id")
-                  .eq("id", matchedUser.id)
+                  .eq("id", matchedUserId)
                   .maybeSingle()
                 betaProfile = profileByUser
               }
@@ -196,21 +230,20 @@ export async function POST(request: Request) {
               if (!stripeCustomer.deleted && stripeCustomer.email) {
                 const email = stripeCustomer.email
 
-                const { data: authData } = await supabase.auth.admin.listUsers()
-                const authUser = authData?.users?.find((u) => u.email?.toLowerCase() === email.toLowerCase())
+                const authUserId = await findAuthUserIdByEmail(supabase, email)
 
-                if (authUser) {
-                  console.log(`[Stripe Webhook] Found auth user [redacted:${authUser.id.slice(-4)}] by email=[redacted], linking stripe_customer_id`)
+                if (authUserId) {
+                  console.log(`[Stripe Webhook] Found auth user [redacted:${authUserId.slice(-4)}] by email=[redacted], linking stripe_customer_id`)
 
                   await supabase
                     .from("profiles")
                     .update({ stripe_customer_id: customerId })
-                    .eq("id", authUser.id)
+                    .eq("id", authUserId)
 
                   const { data: linkedProfile } = await supabase
                     .from("profiles")
                     .select("id")
-                    .eq("id", authUser.id)
+                    .eq("id", authUserId)
                     .maybeSingle()
 
                   checkoutProfile = linkedProfile
