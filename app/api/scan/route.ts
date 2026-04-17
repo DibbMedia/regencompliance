@@ -25,12 +25,12 @@ export async function POST(request: Request) {
     const blocked = await requireWriteMode()
     if (blocked) return blocked
 
-    const { allowed } = await checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
+    const { allowed } = await checkRateLimit(`scan-text:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }
 
-    const { allowed: dayAllowed } = await checkRateLimit(`scan-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
+    const { allowed: dayAllowed } = await checkRateLimit(`scan-text-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
     if (!dayAllowed) {
       return NextResponse.json({ error: "Daily scan limit reached. Please try again tomorrow." }, { status: 429 })
     }

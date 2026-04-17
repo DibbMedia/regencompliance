@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }
 
-    const { allowed: dayAllowed } = await checkRateLimit(`scan-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
+    const { allowed: dayAllowed } = await checkRateLimit(`scan-file-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
     if (!dayAllowed) {
       return NextResponse.json({ error: "Daily scan limit reached. Please try again tomorrow." }, { status: 429 })
     }
@@ -57,14 +57,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
 
-    // Validate file
-    const { valid, error: validationError } = validateFile(file.size, file.name, file.type)
+    // Quick size pre-check to avoid buffering oversize uploads into memory
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: "File too large. Maximum size is 5MB." }, { status: 400 })
+    }
+
+    // Buffer once so validateFile can magic-byte check before extraction
+    const buffer = Buffer.from(await file.arrayBuffer())
+
+    const { valid, error: validationError } = validateFile(buffer, file.name, file.type)
     if (!valid) {
       return NextResponse.json({ error: validationError }, { status: 400 })
     }
 
-    // Extract text
-    const buffer = Buffer.from(await file.arrayBuffer())
     const extracted = await extractTextFromFile(buffer, file.name, file.type)
 
     if (!extracted || !extracted.text.trim()) {

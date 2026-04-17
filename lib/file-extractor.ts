@@ -15,27 +15,67 @@ const EXTENSION_TO_MIME: Record<string, string> = {
   ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 }
 
+const PDF_MAGIC = Buffer.from([0x25, 0x50, 0x44, 0x46, 0x2d])
+const ZIP_MAGIC = Buffer.from([0x50, 0x4b, 0x03, 0x04])
+
+function matchesMagic(buffer: Buffer, magic: Buffer): boolean {
+  if (buffer.length < magic.length) return false
+  for (let i = 0; i < magic.length; i++) {
+    if (buffer[i] !== magic[i]) return false
+  }
+  return true
+}
+
+function looksLikePlainText(buffer: Buffer): boolean {
+  if (buffer.length === 0) return true
+  const sample = buffer.subarray(0, Math.min(buffer.length, 4096))
+  let suspicious = 0
+  for (let i = 0; i < sample.length; i++) {
+    const b = sample[i]
+    if (b >= 0x20 && b <= 0x7e) continue
+    if (b === 0x09 || b === 0x0a || b === 0x0d || b === 0x0b || b === 0x0c) continue
+    if (b >= 0x80 && b <= 0xfd) continue
+    suspicious++
+  }
+  return suspicious / sample.length <= 0.1
+}
+
 export function validateFile(
-  size: number,
+  buffer: Buffer,
   filename: string,
   mimeType: string
 ): { valid: boolean; error?: string; resolvedMime: string } {
-  if (size > MAX_FILE_SIZE) {
+  if (buffer.length > MAX_FILE_SIZE) {
     return { valid: false, error: "File too large. Maximum size is 5MB.", resolvedMime: mimeType }
   }
 
-  // Validate file extension
   const ext = filename.toLowerCase().match(/\.\w+$/)?.[0] ?? ""
   const ALLOWED_EXTENSIONS = new Set([".txt", ".pdf", ".docx"])
   if (!ALLOWED_EXTENSIONS.has(ext)) {
     return { valid: false, error: "Unsupported file extension. Only .txt, .pdf, and .docx files are allowed.", resolvedMime: mimeType }
   }
 
-  // Resolve MIME from extension as a fallback (browsers can be unreliable)
   const resolvedMime = ALLOWED_MIME_TYPES.has(mimeType) ? mimeType : EXTENSION_TO_MIME[ext] ?? mimeType
 
   if (!ALLOWED_MIME_TYPES.has(resolvedMime)) {
     return { valid: false, error: "Unsupported file type. Please upload a .txt, .pdf, or .docx file.", resolvedMime }
+  }
+
+  let contentOk = false
+  if (ext === ".pdf") {
+    contentOk = matchesMagic(buffer, PDF_MAGIC)
+  } else if (ext === ".docx") {
+    contentOk = matchesMagic(buffer, ZIP_MAGIC)
+  } else if (ext === ".txt") {
+    contentOk = looksLikePlainText(buffer)
+  }
+
+  if (!contentOk) {
+    return {
+      valid: false,
+      error: "File content doesn't match extension — rejected for safety.",
+      resolvedMime,
+    }
   }
 
   return { valid: true, resolvedMime }
@@ -46,7 +86,7 @@ export async function extractTextFromFile(
   filename: string,
   mimeType: string
 ): Promise<{ text: string; pageCount?: number } | null> {
-  const { valid, resolvedMime } = validateFile(buffer.length, filename, mimeType)
+  const { valid, resolvedMime } = validateFile(buffer, filename, mimeType)
   if (!valid) return null
 
   try {

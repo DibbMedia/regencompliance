@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Rate limit exceeded. Please try again later." }, { status: 429 })
     }
 
-    const { allowed: dayAllowed } = await checkRateLimit(`scan-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
+    const { allowed: dayAllowed } = await checkRateLimit(`scan-url-day:${user.id}`, 200, 24 * 60 * 60 * 1000)
     if (!dayAllowed) {
       return NextResponse.json({ error: "Daily scan limit reached. Please try again tomorrow." }, { status: 429 })
     }
