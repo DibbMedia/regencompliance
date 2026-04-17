@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 import { stripe } from "@/lib/stripe"
 import { sendEmail } from "@/lib/email"
 import { accountDeletedEmail } from "@/lib/email-templates"
@@ -14,6 +15,9 @@ export async function POST(request: Request) {
     logAudit({ action: "account.delete.attempt", status: "failure", details: { reason: "unauthenticated" }, ip_address: ip, user_agent: userAgent })
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+
+  const blocked = await requireWriteMode()
+  if (blocked) return blocked
 
   // Require explicit confirmation
   let body: { confirm?: boolean }

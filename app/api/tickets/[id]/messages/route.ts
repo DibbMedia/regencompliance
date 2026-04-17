@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { requireWriteMode } from "@/lib/impersonation"
 import { ticketMessageSchema, isValidUUID } from "@/lib/validations"
 
 export async function POST(
@@ -19,6 +20,9 @@ export async function POST(
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     const profileId = await effectiveProfileId(user.id, supabase)
 

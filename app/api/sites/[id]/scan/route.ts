@@ -3,6 +3,7 @@ export const maxDuration = 300
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { requireWriteMode } from "@/lib/impersonation"
 import { anthropic } from "@/lib/anthropic"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
@@ -30,6 +31,9 @@ export async function POST(
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     // Rate limit: 3 crawls per site per day
     const { allowed } = await checkRateLimit(`crawl:${id}`, 3, 24 * 60 * 60 * 1000)

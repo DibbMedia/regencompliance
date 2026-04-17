@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 import { isValidUUID } from "@/lib/validations"
 
 export async function DELETE(
@@ -18,6 +19,9 @@ export async function DELETE(
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     // Verify this member belongs to the owner's profile
     const { data: member } = await supabase

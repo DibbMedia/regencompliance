@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 
 export async function POST() {
   try {
@@ -9,6 +10,9 @@ export async function POST() {
     if (!user || !user.email) {
       return NextResponse.json({ claimed: false }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     const serviceClient = createServiceClient()
     const userEmail = user.email.toLowerCase()

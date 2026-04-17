@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 import { inviteSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import crypto from "crypto"
@@ -18,6 +19,9 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     const body = await request.json()
     const parsed = inviteSchema.safeParse(body)

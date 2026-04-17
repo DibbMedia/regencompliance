@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 import { sendEmail } from "@/lib/email"
 import { dataExportEmail } from "@/lib/email-templates"
 import { checkRateLimit } from "@/lib/rate-limit"
@@ -13,6 +14,9 @@ export async function POST() {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
+
+  const blocked = await requireWriteMode()
+  if (blocked) return blocked
 
   const { allowed } = await checkRateLimit(`export:${user.id}`, 5, 24 * 60 * 60 * 1000)
   if (!allowed) return NextResponse.json({ error: "Rate limit exceeded. Maximum 5 exports per day." }, { status: 429 })

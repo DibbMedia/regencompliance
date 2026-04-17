@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
+import { requireWriteMode } from "@/lib/impersonation"
 import { stripe } from "@/lib/stripe"
 
 export async function POST() {
@@ -10,6 +11,9 @@ export async function POST() {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     const { data: profile } = await supabase
       .from("profiles")

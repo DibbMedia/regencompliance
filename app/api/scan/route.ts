@@ -3,6 +3,7 @@ export const maxDuration = 60
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { requireWriteMode } from "@/lib/impersonation"
 import { anthropic } from "@/lib/anthropic"
 import { scanSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
@@ -20,6 +21,9 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+
+    const blocked = await requireWriteMode()
+    if (blocked) return blocked
 
     const { allowed } = await checkRateLimit(`scan:${user.id}`, 30, 60 * 60 * 1000)
     if (!allowed) {

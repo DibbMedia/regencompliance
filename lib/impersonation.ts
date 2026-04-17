@@ -1,5 +1,7 @@
 import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
+import { getAdminRole } from "@/lib/admin"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 export const IMPERSONATE_COOKIE = "regen_impersonate"
@@ -38,6 +40,16 @@ export async function getActiveImpersonation(
   if (!data) return null
   if (new Date(data.expires_at).getTime() < Date.now()) return null
 
+  const role = await getAdminRole(data.admin_email)
+  if (!role) {
+    try {
+      await svc.from("impersonation_sessions").delete().eq("id", data.id)
+    } catch {
+      /* best-effort */
+    }
+    return null
+  }
+
   return {
     session_id: data.id,
     admin_user_id: data.admin_user_id,
@@ -47,6 +59,16 @@ export async function getActiveImpersonation(
     mode: data.mode as ImpersonationMode,
     expires_at: data.expires_at,
   }
+}
+
+export async function requireWriteMode(): Promise<NextResponse | null> {
+  const imp = await getActiveImpersonation()
+  if (!imp) return null
+  if (imp.mode === "write") return null
+  return NextResponse.json(
+    { error: "Read-only impersonation: write actions are disabled." },
+    { status: 403 },
+  )
 }
 
 export async function startImpersonation(opts: {
@@ -80,7 +102,7 @@ export async function startImpersonation(opts: {
   jar.set(IMPERSONATE_COOKIE, data.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "strict",
     path: "/",
     maxAge: Math.floor(SESSION_TTL_MS / 1000),
   })
