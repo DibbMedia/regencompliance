@@ -356,7 +356,7 @@ export default function ScannerPage() {
       <div className="space-y-6">
         <div>
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-2">Core Tool</p>
-          <h1 className="text-3xl font-bold text-white inline-flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white inline-flex items-center gap-2">
             Compliance Scanner
             <HelpTooltip text="Paste any marketing content to check it against FDA/FTC compliance rules. Results are educational guidance, not legal advice." />
           </h1>
@@ -372,7 +372,7 @@ export default function ScannerPage() {
             aria-selected={scanMode === "paste"}
             onClick={() => { setScanMode("paste"); setResult(null) }}
             className={`
-              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium
               transition-all duration-300
               ${scanMode === "paste"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
@@ -380,15 +380,16 @@ export default function ScannerPage() {
               }
             `}
           >
-            <FileText className="h-4 w-4" />
-            Paste Content
+            <FileText className="h-4 w-4 shrink-0" />
+            <span className="sm:hidden">Paste</span>
+            <span className="hidden sm:inline">Paste Content</span>
           </button>
           <button
             role="tab"
             aria-selected={scanMode === "url"}
             onClick={() => { setScanMode("url"); setResult(null) }}
             className={`
-              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium
               transition-all duration-300 border-l border-white/10
               ${scanMode === "url"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
@@ -396,15 +397,16 @@ export default function ScannerPage() {
               }
             `}
           >
-            <Globe className="h-4 w-4" />
-            Scan URL
+            <Globe className="h-4 w-4 shrink-0" />
+            <span className="sm:hidden">URL</span>
+            <span className="hidden sm:inline">Scan URL</span>
           </button>
           <button
             role="tab"
             aria-selected={scanMode === "file"}
             onClick={() => { setScanMode("file"); setResult(null) }}
             className={`
-              flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium
+              flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-3 text-xs sm:text-sm font-medium
               transition-all duration-300 border-l border-white/10
               ${scanMode === "file"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
@@ -412,8 +414,9 @@ export default function ScannerPage() {
               }
             `}
           >
-            <Upload className="h-4 w-4" />
-            Upload File
+            <Upload className="h-4 w-4 shrink-0" />
+            <span className="sm:hidden">File</span>
+            <span className="hidden sm:inline">Upload File</span>
           </button>
         </div>
 
@@ -492,7 +495,8 @@ export default function ScannerPage() {
                 </div>
                 <button
                   onClick={() => { setFile(null); if (fileInputRef.current) fileInputRef.current.value = "" }}
-                  className="ml-auto shrink-0 p-1.5 rounded-md text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors"
+                  aria-label="Remove file"
+                  className="ml-auto shrink-0 p-2.5 sm:p-1.5 rounded-md text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -562,7 +566,7 @@ export default function ScannerPage() {
                 value={text}
                 onChange={(e) => setText(e.target.value.slice(0, 5000))}
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
-                className="relative min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
+                className="relative min-h-[140px] sm:min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
               />
               <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
                 {charCount.toLocaleString()}/5,000
@@ -608,7 +612,7 @@ export default function ScannerPage() {
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://yourclinic.com/services/stem-cell-therapy"
                   onKeyDown={(e) => { if (e.key === "Enter" && url.trim()) handleUrlScan() }}
-                  className="pl-11 py-6 bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300 text-base"
+                  className="pl-11 py-5 sm:py-6 bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300 text-base"
                 />
               </div>
             </div>
@@ -720,7 +724,7 @@ export default function ScannerPage() {
               <p className="mt-4 text-sm text-center text-white/60 leading-relaxed max-w-xs">
                 {result.summary}
               </p>
-              <div className="flex gap-3 mt-4 text-xs font-medium">
+              <div className="flex flex-wrap justify-center gap-x-3 gap-y-2 mt-4 text-xs font-medium">
                 <span className="flex items-center gap-1.5 text-white/50">
                   <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
                   {result.flag_count} flags
@@ -784,7 +788,7 @@ export default function ScannerPage() {
                           href={buildTextFragmentUrl(result.source_url, flag.matched_text, flag.banned_phrase)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-[#55E039] hover:text-[#55E039]/80 transition-colors py-1.5 sm:py-0 -my-1.5 sm:my-0"
                         >
                           View on page
                           <ExternalLink className="h-3 w-3" />
@@ -799,7 +803,7 @@ export default function ScannerPage() {
                           {flag.alternative}
                         </p>
                         <button
-                          className="shrink-0 p-1.5 rounded-md hover:bg-[#55E039]/10 transition-colors"
+                          className="shrink-0 p-2.5 sm:p-1.5 rounded-md hover:bg-[#55E039]/10 transition-colors"
                           aria-label="Copy to clipboard"
                           onClick={() => copyToClipboard(flag.alternative, i)}
                         >
@@ -872,7 +876,7 @@ export default function ScannerPage() {
                           <p className="text-sm text-white/80 leading-relaxed">{result.rewritten_text}</p>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <button
                           className="flex-1 py-2.5 rounded-lg text-sm font-medium border border-white/10 bg-white/[0.03] text-white/70 hover:bg-white/[0.06] transition-all duration-300 flex items-center justify-center gap-2"
                           aria-label="Copy to clipboard"
@@ -891,7 +895,7 @@ export default function ScannerPage() {
                           )}
                         </button>
                         <button
-                          className="py-2.5 px-4 rounded-lg text-sm font-medium border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] hover:bg-[#55E039]/[0.08] transition-all duration-300 flex items-center gap-2"
+                          className="py-2.5 px-4 rounded-lg text-sm font-medium border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] hover:bg-[#55E039]/[0.08] transition-all duration-300 flex items-center justify-center gap-2"
                           onClick={handleRescan}
                         >
                           <RefreshCw className="h-3.5 w-3.5" />
