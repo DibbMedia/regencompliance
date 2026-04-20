@@ -76,13 +76,22 @@ export default function ResetPasswordPage() {
   async function handleSubmit(data: ResetPasswordInput) {
     setLoading(true)
     const { error } = await supabase.auth.updateUser({ password: data.password })
-    setLoading(false)
 
     if (error) {
+      setLoading(false)
       toast.error(error.message || "Failed to reset password. Please try again.")
       return
     }
 
+    // Revoke every other active session (other browsers/devices) — the old
+    // password is no longer valid anywhere. Best-effort; don't block on failure.
+    try {
+      await supabase.auth.signOut({ scope: "others" })
+    } catch {
+      /* non-fatal */
+    }
+
+    setLoading(false)
     setSuccess(true)
     toast.success("Password updated successfully!")
     setTimeout(() => router.push("/login"), 3000)
