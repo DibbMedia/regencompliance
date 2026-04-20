@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
+import { enforceOrigin } from "@/lib/security/origin"
 
 const IMPERSONATE_COOKIE = "regen_impersonate"
 
@@ -59,6 +60,11 @@ export async function proxy(request: NextRequest) {
     pathname === "/api/waitlist"
   ) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
+  }
+
+  if (pathname.startsWith("/api/")) {
+    const originBlock = enforceOrigin(request)
+    if (originBlock) return applyCsp(originBlock)
   }
 
   let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })

@@ -5,7 +5,7 @@ import { getAdminRole } from "@/lib/admin"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 export const IMPERSONATE_COOKIE = "regen_impersonate"
-const SESSION_TTL_MS = 4 * 60 * 60 * 1000
+const SESSION_TTL_MS = 30 * 60 * 1000
 
 export type ImpersonationMode = "read" | "write"
 
