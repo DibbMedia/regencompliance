@@ -671,7 +671,7 @@ export default function ScannerPage() {
       </div>
 
       {/* Results Panel */}
-      <div className="space-y-4">
+      <div className="space-y-4" aria-live="polite" aria-label="Scan results">
         {/* Empty State */}
         {!result && !scanning && (
           <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">

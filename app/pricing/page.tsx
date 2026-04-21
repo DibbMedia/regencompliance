@@ -175,7 +175,11 @@ function RoiCalculator() {
           </label>
         </div>
 
-        <div className="rounded-2xl bg-[#0a0a0a]/50 border border-white/10 p-6 flex flex-col gap-4">
+        <div
+          className="rounded-2xl bg-[#0a0a0a]/50 border border-white/10 p-6 flex flex-col gap-4"
+          aria-live="polite"
+          aria-label="ROI calculator results"
+        >
           <div className="flex items-baseline justify-between border-b border-white/[0.06] pb-4">
             <span className="text-xs font-bold text-white/70 uppercase tracking-[0.15em]">Attorney review annually</span>
             <span className="text-2xl font-extrabold text-red-300 tabular-nums">{formatUSD(annualAttorneyCost)}</span>
