@@ -14,21 +14,6 @@ import BannedWordsBody, {
 import AuditFrameworkBody, {
   meta as auditFrameworkMeta,
 } from "./posts/healthcare-website-compliance-audit-framework"
-import MedSpaBody, {
-  meta as medSpaMeta,
-} from "./posts/med-spa-marketing-compliance-risk"
-import StemCellBody, {
-  meta as stemCellMeta,
-} from "./posts/stem-cell-marketing-costly-phrases"
-import Glp1Body, {
-  meta as glp1Meta,
-} from "./posts/glp-1-semaglutide-marketing-compliance"
-import BeforeAfterBody, {
-  meta as beforeAfterMeta,
-} from "./posts/before-after-photos-compliance"
-import TestimonialBody, {
-  meta as testimonialMeta,
-} from "./posts/healthcare-testimonial-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -36,11 +21,6 @@ export const POSTS: BlogPostModule[] = [
   { meta: structureFunctionMeta, Body: StructureFunctionBody },
   { meta: bannedWordsMeta, Body: BannedWordsBody },
   { meta: auditFrameworkMeta, Body: AuditFrameworkBody },
-  { meta: medSpaMeta, Body: MedSpaBody },
-  { meta: stemCellMeta, Body: StemCellBody },
-  { meta: glp1Meta, Body: Glp1Body },
-  { meta: beforeAfterMeta, Body: BeforeAfterBody },
-  { meta: testimonialMeta, Body: TestimonialBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
