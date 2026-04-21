@@ -52,6 +52,7 @@ export default async function BlogPostPage({
   const { Body, meta } = post
   const related = getRelated(slug)
 
+  const canonical = `https://compliance.regenportal.com/blog/${meta.slug}`
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -65,11 +66,33 @@ export default async function BlogPostPage({
       name: "RegenCompliance",
       url: "https://compliance.regenportal.com",
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://compliance.regenportal.com/blog/${meta.slug}`,
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     keywords: meta.keywords.join(", "),
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://compliance.regenportal.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://compliance.regenportal.com/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: meta.title,
+        item: canonical,
+      },
+    ],
   }
 
   return (
@@ -77,6 +100,10 @@ export default async function BlogPostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <BlogPostLayout meta={meta} related={related}>
         <Body />
