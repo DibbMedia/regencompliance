@@ -1,30 +1,9 @@
 import { ImageResponse } from "next/og"
-import { getPostBySlug, POSTS } from "@/lib/blog/registry"
+import { getPostBySlug } from "@/lib/blog/registry"
 
 export const alt = "RegenCompliance blog post"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
-
-export async function generateImageMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-  const post = getPostBySlug(slug)
-  return [
-    {
-      id: slug,
-      size,
-      alt: post?.meta.title ?? alt,
-      contentType,
-    },
-  ]
-}
-
-export async function generateStaticParams() {
-  return POSTS.map((p) => ({ slug: p.meta.slug }))
-}
 
 export default async function Image({
   params,
