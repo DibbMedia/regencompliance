@@ -63,8 +63,8 @@ function ScoreRing({ score }: { score: number | null }) {
           <circle cx="50" cy="50" r="45" fill="none" strokeWidth="6" className="stroke-white/[0.06]" />
         </svg>
         <div className="absolute flex flex-col items-center">
-          <span className="text-xl sm:text-2xl font-bold text-white/30">--</span>
-          <span className="text-[9px] font-medium text-white/20 uppercase tracking-widest">No Data</span>
+          <span className="text-xl sm:text-2xl font-bold text-white/55">--</span>
+          <span className="text-[9px] font-medium text-white/50 uppercase tracking-widest">No Data</span>
         </div>
       </div>
     )
@@ -189,10 +189,10 @@ export default function SiteDetailPage() {
     return (
       <div className="p-6 flex flex-col items-center justify-center py-20">
         <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
-          <AlertTriangle className="h-8 w-8 text-white/20" />
+          <AlertTriangle className="h-8 w-8 text-white/35" />
         </div>
-        <p className="text-white/50 font-medium">Site not found</p>
-        <p className="text-white/30 text-sm mt-1">This site may have been removed.</p>
+        <p className="text-white/80 font-medium">Site not found</p>
+        <p className="text-white/60 text-sm mt-1">This site may have been removed.</p>
         <Link
           href="/dashboard/sites"
           className="mt-4 inline-flex items-center gap-2 text-sm text-[#55E039] hover:text-[#55E039]/80 transition-colors"
@@ -246,7 +246,7 @@ export default function SiteDetailPage() {
       {/* Back Navigation */}
       <Link
         href="/dashboard/sites"
-        className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors duration-200"
+        className="inline-flex items-center gap-1.5 text-sm text-white/65 hover:text-white transition-colors duration-200"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Sites
@@ -269,18 +269,18 @@ export default function SiteDetailPage() {
               href={`https://${site.domain}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm text-white/40 hover:text-[#55E039] transition-colors"
+              className="inline-flex items-center gap-1 text-sm text-white/65 hover:text-[#55E039] transition-colors"
             >
               <Globe className="h-3.5 w-3.5" />
               {site.domain}
               <ExternalLink className="h-3 w-3" />
             </a>
             {site.last_crawl_at && (
-              <p className="text-xs text-white/30 mt-2">
+              <p className="text-xs text-white/60 mt-2">
                 Last scanned {timeAgo(site.last_crawl_at)} &middot; {formatDate(site.last_crawl_at)}
               </p>
             )}
-            <p className="text-xs text-white/30 italic mt-2">
+            <p className="text-xs text-white/55 italic mt-2">
               Automated compliance monitoring is educational guidance only, not a substitute for legal review.
             </p>
           </div>
@@ -330,7 +330,7 @@ export default function SiteDetailPage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Remove Site?</h3>
-                <p className="text-sm text-white/40">This will delete all scan history for this site.</p>
+                <p className="text-sm text-white/65">This will delete all scan history for this site.</p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -369,7 +369,7 @@ export default function SiteDetailPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-400/10">
               <BarChart3 className="h-4 w-4 text-blue-400" />
             </div>
-            <span className="text-[10px] font-bold text-white/30 uppercase tracking-wider">Total Pages</span>
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Total Pages</span>
           </div>
           <p className="text-xl font-bold text-white">{totalPages}</p>
         </div>
@@ -382,7 +382,7 @@ export default function SiteDetailPage() {
                 avgScore !== null && avgScore >= 80 ? "text-[#55E039]" : avgScore !== null && avgScore >= 50 ? "text-yellow-400" : "text-white/40"
               }`} />
             </div>
-            <span className="text-[10px] font-bold text-white/30 uppercase tracking-wider">Avg Score</span>
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Avg Score</span>
           </div>
           <p className="text-xl font-bold text-white">{avgScore !== null ? avgScore : "--"}</p>
         </div>
@@ -391,7 +391,7 @@ export default function SiteDetailPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-400/10">
               <AlertTriangle className="h-4 w-4 text-red-400" />
             </div>
-            <span className="text-[10px] font-bold text-white/30 uppercase tracking-wider">With Issues</span>
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">With Issues</span>
           </div>
           <p className="text-xl font-bold text-white">{issuePages}</p>
         </div>
@@ -400,7 +400,7 @@ export default function SiteDetailPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10">
               <CheckCircle2 className="h-4 w-4 text-[#55E039]" />
             </div>
-            <span className="text-[10px] font-bold text-white/30 uppercase tracking-wider">Clean</span>
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Clean</span>
           </div>
           <p className="text-xl font-bold text-white">{cleanPages}</p>
         </div>
@@ -409,16 +409,16 @@ export default function SiteDetailPage() {
       {/* Sort and Filter */}
       <div className="flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center rounded-xl border border-white/10 bg-white/[0.03] p-3 overflow-x-auto">
         <div className="flex items-center gap-2">
-          <ArrowUpDown className="h-4 w-4 text-white/30" />
-          <span className="text-xs text-white/30">Sort:</span>
+          <ArrowUpDown className="h-4 w-4 text-white/55" />
+          <span className="text-xs text-white/60">Sort:</span>
           {(["score", "recent", "alpha"] as SortKey[]).map((key) => (
             <button
               key={key}
               onClick={() => setSortBy(key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/50 ${
                 sortBy === key
                   ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20"
-                  : "bg-white/[0.02] border border-white/[0.06] text-white/40 hover:text-white/60 hover:bg-white/[0.04]"
+                  : "bg-white/[0.02] border border-white/[0.06] text-white/70 hover:text-white hover:bg-white/[0.06]"
               }`}
             >
               {key === "score" ? "Score" : key === "recent" ? "Recent" : "A-Z"}
@@ -427,16 +427,16 @@ export default function SiteDetailPage() {
         </div>
         <div className="w-px h-6 bg-white/[0.06]" />
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-white/30" />
-          <span className="text-xs text-white/30">Filter:</span>
+          <Filter className="h-4 w-4 text-white/55" />
+          <span className="text-xs text-white/60">Filter:</span>
           {(["all", "flagged", "clean"] as FilterKey[]).map((key) => (
             <button
               key={key}
               onClick={() => setFilterBy(key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/50 ${
                 filterBy === key
                   ? "bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20"
-                  : "bg-white/[0.02] border border-white/[0.06] text-white/40 hover:text-white/60 hover:bg-white/[0.04]"
+                  : "bg-white/[0.02] border border-white/[0.06] text-white/70 hover:text-white hover:bg-white/[0.06]"
               }`}
             >
               {key === "all" ? "All" : key === "flagged" ? "Flagged" : "Clean"}
@@ -449,12 +449,12 @@ export default function SiteDetailPage() {
       {filteredPages.length === 0 ? (
         <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-12 px-6 text-center">
           <div className="w-14 h-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-4">
-            <FileSearch className="h-7 w-7 text-white/20" />
+            <FileSearch className="h-7 w-7 text-white/35" />
           </div>
-          <p className="text-white/50 font-medium mb-1">
+          <p className="text-white/80 font-medium mb-1">
             {pages.length === 0 ? "No pages scanned yet" : "No pages match this filter"}
           </p>
-          <p className="text-white/30 text-sm">
+          <p className="text-white/60 text-sm">
             {pages.length === 0
               ? "Click \"Scan All Pages\" to start scanning this site."
               : "Try adjusting your filter criteria."}
@@ -505,7 +505,7 @@ function PageRow({ page, truncatedUrl }: { page: SitePage; truncatedUrl: string 
         {page.title && (
           <p className="text-sm font-medium text-white truncate mb-0.5">{page.title}</p>
         )}
-        <p className="text-xs text-white/40 truncate" title={page.url}>
+        <p className="text-xs text-white/65 truncate" title={page.url}>
           {truncatedUrl}
         </p>
       </div>
@@ -535,16 +535,16 @@ function PageRow({ page, truncatedUrl }: { page: SitePage; truncatedUrl: string 
       {/* Date */}
       <div className="shrink-0 text-right hidden sm:block">
         {page.last_scanned_at ? (
-          <p className="text-xs text-white/30">{timeAgo(page.last_scanned_at)}</p>
+          <p className="text-xs text-white/55">{timeAgo(page.last_scanned_at)}</p>
         ) : (
-          <p className="text-xs text-white/20">Not scanned</p>
+          <p className="text-xs text-white/45">Not scanned</p>
         )}
       </div>
 
       {/* Status indicator */}
       {page.last_scan_id && (
         <div className="shrink-0">
-          <span className="p-2 rounded-lg text-white/20 group-hover:text-[#55E039] group-hover:bg-[#55E039]/[0.06] transition-all duration-300 inline-flex">
+          <span className="p-2 rounded-lg text-white/45 group-hover:text-[#55E039] group-hover:bg-[#55E039]/[0.06] transition-all duration-300 inline-flex">
             <ExternalLink className="h-4 w-4" />
           </span>
         </div>

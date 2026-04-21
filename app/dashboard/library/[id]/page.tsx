@@ -74,7 +74,7 @@ export default function LibraryDetailPage({
       <div>
         <Link
           href="/dashboard/library"
-          className="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-[#55E039] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-white/65 hover:text-[#55E039] transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to Enforcement Actions
@@ -93,10 +93,10 @@ export default function LibraryDetailPage({
       ) : error || !action ? (
         <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
-            <AlertTriangle className="h-8 w-8 text-white/20" />
+            <AlertTriangle className="h-8 w-8 text-white/35" />
           </div>
-          <p className="text-white/50 font-medium mb-1">Enforcement action not found</p>
-          <p className="text-white/30 text-sm">
+          <p className="text-white/80 font-medium mb-1">Enforcement action not found</p>
+          <p className="text-white/60 text-sm">
             The action you&apos;re looking for may have been removed or is not yet published.
           </p>
         </div>
@@ -129,13 +129,13 @@ export default function LibraryDetailPage({
                 {action.company_name || action.source_name}
               </h1>
               {action.product_or_treatment && (
-                <p className="text-sm text-white/50">{action.product_or_treatment}</p>
+                <p className="text-sm text-white/70">{action.product_or_treatment}</p>
               )}
             </div>
 
             {action.summary ? (
               <div className="rounded-lg bg-white/[0.02] border border-white/[0.06] p-4">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-white/30 mb-2">Summary</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-white/55 mb-2">Summary</p>
                 <p className="text-sm text-white/75 leading-relaxed">{action.summary}</p>
               </div>
             ) : (
@@ -157,7 +157,7 @@ export default function LibraryDetailPage({
                 <ExternalLink className="h-3.5 w-3.5" />
                 View source document
               </a>
-              <span className="text-xs text-white/40 inline-flex items-center gap-1">
+              <span className="text-xs text-white/60 inline-flex items-center gap-1">
                 <FileText className="h-3.5 w-3.5" />
                 {action.compliance_rules?.length || 0} cited violation{(action.compliance_rules?.length || 0) === 1 ? "" : "s"}
               </span>
@@ -192,13 +192,13 @@ export default function LibraryDetailPage({
                           {rule.applies_to.slice(0, 4).map((t) => (
                             <span
                               key={t}
-                              className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/40"
+                              className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/65"
                             >
                               {t.replace("_", " ")}
                             </span>
                           ))}
                           {rule.applies_to.length > 4 && (
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/55">
                               +{rule.applies_to.length - 4}
                             </span>
                           )}

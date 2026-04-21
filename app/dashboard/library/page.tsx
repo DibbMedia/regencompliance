@@ -112,7 +112,7 @@ export default function LibraryPage() {
           Live feed of FDA / FTC / DOJ enforcement actions. Updated automatically.
         </p>
         {actions.length > 0 && (
-          <p className="text-xs text-white/30 mt-2 font-medium">
+          <p className="text-xs text-white/55 mt-2 font-medium">
             {actions.length} enforcement action{actions.length === 1 ? "" : "s"} tracked
           </p>
         )}
@@ -126,16 +126,17 @@ export default function LibraryPage() {
           </div>
           <div className="flex-1">
             <p className="text-sm font-medium text-yellow-500 mb-0.5">Educational Reference Only</p>
-            <p className="text-sm text-white/50 leading-relaxed">
+            <p className="text-sm text-white/70 leading-relaxed">
               Always have final content reviewed by a qualified healthcare marketing attorney.
               This library does not constitute legal advice.
             </p>
           </div>
           <button
             onClick={dismissDisclaimer}
-            className="shrink-0 p-2.5 sm:p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors self-start"
+            aria-label="Dismiss disclaimer"
+            className="shrink-0 p-2.5 sm:p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/60"
           >
-            <X className="h-4 w-4 text-white/30" />
+            <X className="h-4 w-4 text-white/55" />
           </button>
         </div>
       )}
@@ -215,10 +216,10 @@ export default function LibraryPage() {
       ) : actions.length === 0 ? (
         <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
-            <BookOpen className="h-8 w-8 text-white/20" />
+            <BookOpen className="h-8 w-8 text-white/35" />
           </div>
-          <p className="text-white/50 font-medium mb-1">No enforcement actions match your filters</p>
-          <p className="text-white/30 text-sm">Try adjusting your search or filter criteria.</p>
+          <p className="text-white/80 font-medium mb-1">No enforcement actions match your filters</p>
+          <p className="text-white/60 text-sm">Try adjusting your search or filter criteria.</p>
         </div>
       ) : (
         <>
@@ -227,13 +228,13 @@ export default function LibraryPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-white/[0.06] hover:bg-transparent">
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[90px]">Agency</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[110px]">Date</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 min-w-[180px]">Company / Source</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 min-w-[280px]">Summary</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 min-w-[160px]">Violations</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[80px] text-center">Rules</TableHead>
-                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/30 w-[90px] text-right pr-4">Source</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 w-[90px]">Agency</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 w-[110px]">Date</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 min-w-[180px]">Company / Source</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 min-w-[280px]">Summary</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 min-w-[160px]">Violations</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 w-[80px] text-center">Rules</TableHead>
+                  <TableHead className="text-[10px] font-bold uppercase tracking-wider text-white/55 w-[90px] text-right pr-4">Source</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -277,7 +278,7 @@ export default function LibraryPage() {
                               <p className="text-sm font-medium text-white/90 group-hover/link:text-[#55E039] transition-colors line-clamp-1">
                                 {action.company_name || sourceLabel}
                               </p>
-                              <p className="text-[11px] text-white/40 mt-0.5 line-clamp-1">
+                              <p className="text-[11px] text-white/60 mt-0.5 line-clamp-1">
                                 {action.product_or_treatment || sourceLabel}
                               </p>
                             </div>
@@ -299,13 +300,13 @@ export default function LibraryPage() {
                           {categories.slice(0, 3).map((c) => (
                             <span
                               key={c}
-                              className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/40"
+                              className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/65"
                             >
                               {CATEGORY_LABELS[c] || c.replace("_", " ")}
                             </span>
                           ))}
                           {categories.length > 3 && (
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/55">
                               +{categories.length - 3}
                             </span>
                           )}
@@ -324,14 +325,14 @@ export default function LibraryPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 text-xs text-white/40 hover:text-[#55E039] transition-colors"
+                          className="inline-flex items-center gap-1 text-xs text-white/60 hover:text-[#55E039] transition-colors"
                           title="Open source document"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
                         <Link
                           href={`/dashboard/library/${action.id}`}
-                          className="inline-flex items-center gap-1 text-xs text-white/30 hover:text-[#55E039] transition-colors ml-2"
+                          className="inline-flex items-center gap-1 text-xs text-white/55 hover:text-[#55E039] transition-colors ml-2"
                           title="Open detail"
                         >
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -373,7 +374,7 @@ export default function LibraryPage() {
                     <span className="inline-flex items-center justify-center min-w-[28px] px-2 py-0.5 rounded-md text-xs font-semibold bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20">
                       {ruleCount}
                     </span>
-                    <span className="text-[11px] text-white/40 whitespace-nowrap">
+                    <span className="text-[11px] text-white/60 whitespace-nowrap">
                       {formatDate(action.source_date)}
                     </span>
                   </div>
@@ -384,7 +385,7 @@ export default function LibraryPage() {
                     <p className="text-sm font-medium text-white/90 line-clamp-1">
                       {action.company_name || sourceLabel}
                     </p>
-                    <p className="text-[11px] text-white/40 mt-0.5 line-clamp-1">
+                    <p className="text-[11px] text-white/60 mt-0.5 line-clamp-1">
                       {action.product_or_treatment || sourceLabel}
                     </p>
                   </div>
@@ -399,13 +400,13 @@ export default function LibraryPage() {
                     {categories.slice(0, 3).map((c) => (
                       <span
                         key={c}
-                        className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/40"
+                        className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/65"
                       >
                         {CATEGORY_LABELS[c] || c.replace("_", " ")}
                       </span>
                     ))}
                     {categories.length > 3 && (
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/30">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-medium border border-white/[0.06] bg-white/[0.02] text-white/55">
                         +{categories.length - 3}
                       </span>
                     )}

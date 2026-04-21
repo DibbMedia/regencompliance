@@ -341,7 +341,7 @@ export default function SupportPage() {
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   onClick={() => setDialogOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] hover:text-white/80 transition-all"
+                  className="px-4 py-2 rounded-lg border border-white/10 text-white/75 text-sm hover:bg-white/[0.06] hover:text-white transition-all"
                 >
                   Cancel
                 </button>
@@ -371,10 +371,10 @@ export default function SupportPage() {
           <button
             key={tab.value}
             onClick={() => { setFilter(tab.value); setPage(1) }}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/50 ${
               filter === tab.value
                 ? "bg-[#55E039]/10 text-[#55E039]"
-                : "text-white/40 hover:text-white/60"
+                : "text-white/70 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
             {tab.label}
@@ -395,10 +395,10 @@ export default function SupportPage() {
         ) : tickets.length === 0 ? (
           <div className="bg-white/[0.03] border border-white/10 rounded-xl p-12 flex flex-col items-center text-center">
             <div className="w-16 h-16 rounded-full bg-white/[0.06] flex items-center justify-center mb-4">
-              <LifeBuoy className="h-8 w-8 text-white/20" />
+              <LifeBuoy className="h-8 w-8 text-white/35" />
             </div>
-            <p className="text-white/70 font-medium">No support tickets yet</p>
-            <p className="text-white/40 text-sm mt-1">Click &ldquo;New Ticket&rdquo; to get in touch with our support team</p>
+            <p className="text-white/80 font-medium">No support tickets yet</p>
+            <p className="text-white/60 text-sm mt-1">Click &ldquo;New Ticket&rdquo; to get in touch with our support team</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -415,15 +415,15 @@ export default function SupportPage() {
           <button
             disabled={page <= 1}
             onClick={() => setPage(page - 1)}
-            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/75 text-sm hover:bg-white/[0.06] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Previous
           </button>
-          <span className="text-sm text-white/40">Page {page} of {totalPages}</span>
+          <span className="text-sm text-white/65">Page {page} of {totalPages}</span>
           <button
             disabled={page >= totalPages}
             onClick={() => setPage(page + 1)}
-            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/60 text-sm hover:bg-white/[0.06] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 rounded-lg border border-white/10 text-white/75 text-sm hover:bg-white/[0.06] hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
