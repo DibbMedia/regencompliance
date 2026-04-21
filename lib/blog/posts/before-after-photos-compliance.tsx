@@ -275,25 +275,25 @@ export default function Body() {
       </P>
       <OL>
         <LI>
-          <Strong>Procedure described in appearance terms</strong> (not
+          <Strong>Procedure described in appearance terms</Strong> (not
           condition terms).
         </LI>
         <LI>
-          <Strong>Time elapsed</strong> between the two photos.
+          <Strong>Time elapsed</Strong> between the two photos.
         </LI>
         <LI>
-          <Strong>Concurrent treatments</strong> (diet, exercise, adjunct
+          <Strong>Concurrent treatments</Strong> (diet, exercise, adjunct
           therapies).
         </LI>
         <LI>
-          <Strong>Individual results vary</strong> disclaimer.
+          <Strong>Individual results vary</Strong> disclaimer.
         </LI>
         <LI>
-          <Strong>Typical experience disclosure</strong> (either per-photo or
+          <Strong>Typical experience disclosure</Strong> (either per-photo or
           per-gallery header).
         </LI>
         <LI>
-          <Strong>Material connection disclosure</strong> if the patient
+          <Strong>Material connection disclosure</Strong> if the patient
           received compensation.
         </LI>
       </OL>
@@ -320,16 +320,16 @@ export default function Body() {
           you don&rsquo;t have it, take the photo down immediately.
         </LI>
         <LI>
-          <Strong>Replace condition-language captions</strong> (acne,
+          <Strong>Replace condition-language captions</Strong> (acne,
           rosacea, alopecia) with appearance-language captions (skin
           texture, redness, hair density).
         </LI>
         <LI>
-          <Strong>Add a gallery-header disclosure</strong> if your gallery
+          <Strong>Add a gallery-header disclosure</Strong> if your gallery
           pages don&rsquo;t have one.
         </LI>
         <LI>
-          <Strong>Update your testimonial-solicitation workflow</strong> to
+          <Strong>Update your testimonial-solicitation workflow</Strong> to
           capture consent, concurrent treatments, and time elapsed at the
           same moment you capture the photo. See{" "}
           <Link
