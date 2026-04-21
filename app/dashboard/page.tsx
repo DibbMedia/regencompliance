@@ -110,6 +110,30 @@ function formatContentType(type: string) {
   return type.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
 }
 
+const SAMPLE_SCANS = [
+  {
+    slug: "stem-cell",
+    specialty: "Regen Med",
+    badgeLabel: "High risk",
+    badgeClass: "text-red-400 bg-red-500/10 border-red-500/20",
+    text: "Our FDA-approved stem cell therapy cures arthritis and heals damaged joints permanently. Patients experience guaranteed results with no side effects. Thousands have been cured through our proven regenerative protocols.",
+  },
+  {
+    slug: "med-spa",
+    specialty: "Med Spa",
+    badgeLabel: "Med risk",
+    badgeClass: "text-amber-300 bg-amber-500/10 border-amber-500/20",
+    text: "Our groundbreaking Botox treatment eliminates wrinkles and reverses the signs of aging. Clinically proven to deliver a younger, more radiant appearance — risk-free and guaranteed.",
+  },
+  {
+    slug: "weight-loss",
+    specialty: "Weight Loss",
+    badgeLabel: "High risk",
+    badgeClass: "text-red-400 bg-red-500/10 border-red-500/20",
+    text: "Our semaglutide weight loss program is guaranteed to eliminate obesity and reverse diabetes. Lose up to 30 pounds in 30 days with our FDA-approved formulation. Zero side effects, real results.",
+  },
+] as const
+
 function formatDate(dateStr: string) {
   const d = new Date(dateStr)
   const now = new Date()
@@ -700,7 +724,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <h2 className="text-xl font-bold text-white mb-2">Get started with your first scan</h2>
-            <p className="text-sm text-white/40 max-w-md mx-auto mb-8">
+            <p className="text-sm text-white/65 max-w-md mx-auto mb-8">
               Paste any marketing content — website copy, social posts, ad text, emails — and get instant FDA/FTC compliance analysis with actionable suggestions.
             </p>
 
@@ -710,21 +734,21 @@ export default function DashboardPage() {
                   <span className="text-sm font-bold text-[#55E039]">1</span>
                 </div>
                 <p className="text-sm font-medium text-white">Paste Content</p>
-                <p className="text-xs text-white/40 mt-1">Copy any marketing text into the scanner</p>
+                <p className="text-xs text-white/65 mt-1">Copy any marketing text into the scanner</p>
               </div>
               <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
                   <span className="text-sm font-bold text-[#55E039]">2</span>
                 </div>
                 <p className="text-sm font-medium text-white">Get Analysis</p>
-                <p className="text-xs text-white/40 mt-1">AI checks against current FDA/FTC rules</p>
+                <p className="text-xs text-white/65 mt-1">AI checks against current FDA/FTC rules</p>
               </div>
               <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-left">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#55E039]/10 mb-3">
                   <span className="text-sm font-bold text-[#55E039]">3</span>
                 </div>
                 <p className="text-sm font-medium text-white">Fix & Publish</p>
-                <p className="text-xs text-white/40 mt-1">Use AI rewrite to make content compliant</p>
+                <p className="text-xs text-white/65 mt-1">Use AI rewrite to make content compliant</p>
               </div>
             </div>
 
@@ -738,8 +762,41 @@ export default function DashboardPage() {
             </Link>
           </div>
 
+          {/* Sample scans — zero-friction first click */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">
+                Or try a sample
+              </p>
+              <span className="text-[10px] text-white/50">No setup — one click scans real example copy</span>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {SAMPLE_SCANS.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/dashboard/scanner?prefill=${encodeURIComponent(s.text)}`}
+                  className="group rounded-xl border border-white/10 bg-white/[0.03] p-5 text-left hover:bg-white/[0.06] hover:border-[#55E039]/25 transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${s.badgeClass}`}>
+                      {s.badgeLabel}
+                    </span>
+                    <span className="text-[10px] text-white/55 uppercase tracking-wider font-semibold">{s.specialty}</span>
+                  </div>
+                  <p className="text-sm text-white/85 leading-relaxed line-clamp-3 mb-4">
+                    &ldquo;{s.text}&rdquo;
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#55E039] group-hover:text-[#6FF055] transition-colors">
+                    Scan this
+                    <ArrowRight className="h-3 w-3" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* Disclaimer */}
-          <p className="text-xs text-white/30 italic">
+          <p className="text-xs text-white/55 italic">
             Compliance scores are educational guidance only and do not constitute legal advice. Always consult qualified healthcare marketing counsel for regulatory decisions.
           </p>
         </>

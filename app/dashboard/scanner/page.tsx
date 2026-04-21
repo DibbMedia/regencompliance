@@ -131,12 +131,27 @@ export default function ScannerPage() {
   }, [searchParams])
 
   useEffect(() => {
+    // Prefill from ?prefill= query (templates + dashboard sample scans use this)
+    const prefill = searchParams.get("prefill")
+    if (prefill) {
+      try {
+        const decoded = decodeURIComponent(prefill)
+        if (decoded.trim()) {
+          setText(decoded.slice(0, 5000))
+          setScanMode("paste")
+          return
+        }
+      } catch {
+        /* ignore malformed prefill */
+      }
+    }
+
     const rescanText = sessionStorage.getItem("rescan_text")
     if (rescanText) {
       setText(rescanText)
       sessionStorage.removeItem("rescan_text")
     }
-  }, [])
+  }, [searchParams])
 
   useEffect(() => {
     if (result) {
