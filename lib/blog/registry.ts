@@ -29,6 +29,12 @@ import BeforeAfterBody, {
 import TestimonialBody, {
   meta as testimonialMeta,
 } from "./posts/healthcare-testimonial-compliance"
+import InstagramTiktokBody, {
+  meta as instagramTiktokMeta,
+} from "./posts/instagram-tiktok-healthcare-ads-compliance"
+import DentalBody, {
+  meta as dentalMeta,
+} from "./posts/dental-longevity-claims-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -41,6 +47,8 @@ export const POSTS: BlogPostModule[] = [
   { meta: glp1Meta, Body: Glp1Body },
   { meta: beforeAfterMeta, Body: BeforeAfterBody },
   { meta: testimonialMeta, Body: TestimonialBody },
+  { meta: instagramTiktokMeta, Body: InstagramTiktokBody },
+  { meta: dentalMeta, Body: DentalBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
