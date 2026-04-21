@@ -24,7 +24,7 @@ export default function TermsPage() {
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl">
             Please read these terms carefully before using RegenCompliance. By accessing or using our Service, you agree to be bound by these terms.
           </p>
-          <p className="mt-4 text-sm text-white/40">Last Updated: April 2026</p>
+          <p className="mt-4 text-sm text-white/60">Last Updated: April 2026</p>
         </div>
       </section>
 

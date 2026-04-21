@@ -219,15 +219,15 @@ function TicketRow({ ticket }: { ticket: Ticket }) {
               {priorityLabels[ticket.priority] || ticket.priority}
             </Badge>
           </div>
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/60">
             Created {formatDate(ticket.created_at)} &middot; Updated {timeAgo(ticket.updated_at)}
           </p>
         </div>
         <div className="shrink-0 ml-3">
           {expanded ? (
-            <ChevronUp className="h-4 w-4 text-white/30" />
+            <ChevronUp className="h-4 w-4 text-white/55" />
           ) : (
-            <ChevronDown className="h-4 w-4 text-white/30" />
+            <ChevronDown className="h-4 w-4 text-white/55" />
           )}
         </div>
       </div>

@@ -308,7 +308,7 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <h3 className="text-white font-bold">RegenCompliance Pro</h3>
-                    <p className="text-white/50 text-sm">$497/month</p>
+                    <p className="text-white/70 text-sm">$497/month</p>
                   </div>
                 </div>
                 <Badge className="bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20">Active</Badge>
@@ -335,12 +335,12 @@ export default function AccountPage() {
                 </div>
                 <div>
                   <h3 className="text-white font-bold">RegenCompliance Pro</h3>
-                  <p className="text-white/50 text-sm">Full compliance scanning, alerts, and team access</p>
+                  <p className="text-white/70 text-sm">Full compliance scanning, alerts, and team access</p>
                 </div>
               </div>
               <div className="flex items-baseline gap-1">
                 <span className="text-2xl sm:text-3xl font-bold text-white">$497</span>
-                <span className="text-white/40">/month</span>
+                <span className="text-white/65">/month</span>
               </div>
               <button
                 onClick={handleCheckout}
@@ -376,7 +376,7 @@ export default function AccountPage() {
               </div>
               <div>
                 <h3 className="text-white font-bold">Team Members</h3>
-                <p className="text-white/50 text-sm">Manage access for your clinic staff</p>
+                <p className="text-white/70 text-sm">Manage access for your clinic staff</p>
               </div>
             </div>
             <Link
@@ -400,7 +400,7 @@ export default function AccountPage() {
             </div>
             <div>
               <h3 className="text-white font-bold">Verified Compliance Badge</h3>
-              <p className="text-white/50 text-sm">Display your compliance status on your clinic website</p>
+              <p className="text-white/70 text-sm">Display your compliance status on your clinic website</p>
             </div>
           </div>
           <Link
@@ -425,7 +425,7 @@ export default function AccountPage() {
               </div>
               <div>
                 <h3 className="text-white font-bold">Export My Data</h3>
-                <p className="text-white/50 text-sm">Download all your data as a JSON file (GDPR compliant)</p>
+                <p className="text-white/70 text-sm">Download all your data as a JSON file (GDPR compliant)</p>
               </div>
             </div>
             <button
@@ -453,7 +453,7 @@ export default function AccountPage() {
                 </div>
                 <div>
                   <h3 className="text-white font-bold">Cancel Subscription</h3>
-                  <p className="text-white/50 text-sm">This will cancel your subscription at the end of the current billing period</p>
+                  <p className="text-white/70 text-sm">This will cancel your subscription at the end of the current billing period</p>
                 </div>
               </div>
               <button
