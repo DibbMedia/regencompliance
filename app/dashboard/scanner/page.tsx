@@ -376,7 +376,7 @@ export default function ScannerPage() {
               transition-all duration-300
               ${scanMode === "paste"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
-                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+                : "text-white/65 hover:text-white hover:bg-white/[0.04]"
               }
             `}
           >
@@ -393,7 +393,7 @@ export default function ScannerPage() {
               transition-all duration-300 border-l border-white/10
               ${scanMode === "url"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
-                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+                : "text-white/65 hover:text-white hover:bg-white/[0.04]"
               }
             `}
           >
@@ -410,7 +410,7 @@ export default function ScannerPage() {
               transition-all duration-300 border-l border-white/10
               ${scanMode === "file"
                 ? "bg-[#55E039]/10 text-[#55E039] border-b-2 border-[#55E039]"
-                : "text-white/40 hover:text-white/60 hover:bg-white/[0.03]"
+                : "text-white/65 hover:text-white hover:bg-white/[0.04]"
               }
             `}
           >
@@ -478,11 +478,11 @@ export default function ScannerPage() {
                     <Upload className={`h-7 w-7 transition-colors duration-300 ${dragging ? "text-[#55E039]" : "text-white/30"}`} />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white/70">
+                    <p className="text-sm font-medium text-white/80">
                       <span className="hidden sm:inline">Drop your file here or </span>
-                      <span className="text-[#55E039] hover:text-[#55E039]/80">click to browse</span>
+                      <span className="text-[#55E039] hover:text-[#6FF055]">click to browse</span>
                     </p>
-                    <p className="text-xs text-white/30 mt-1">.docx, .pdf, or .txt — max 10MB</p>
+                    <p className="text-xs text-white/55 mt-1">.docx, .pdf, or .txt — max 10MB</p>
                   </div>
                 </div>
               </div>

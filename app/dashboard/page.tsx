@@ -88,10 +88,10 @@ function StatCard({
         <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${colorMap[color]}`}>
           <Icon className="h-4 w-4" />
         </div>
-        <span className="text-xs font-medium text-white/40 uppercase tracking-wide">{label}</span>
+        <span className="text-xs font-semibold text-white/65 uppercase tracking-wide">{label}</span>
       </div>
       <p className="text-2xl font-bold text-white">{value}</p>
-      {sub && <p className="text-xs text-white/40 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-white/60 mt-1">{sub}</p>}
     </div>
   )
 }

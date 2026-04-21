@@ -221,8 +221,8 @@ function LoginContent() {
                 aria-selected={mode === "login"}
                 onClick={() => { setMode("login"); setFormError(null) }}
                 disabled={isFormDisabled}
-                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-                  mode === "login" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
+                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${
+                  mode === "login" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/65 hover:text-white hover:bg-white/[0.04]"
                 }`}
               >
                 Log In
@@ -232,8 +232,8 @@ function LoginContent() {
                 aria-selected={mode === "signup"}
                 onClick={() => { setMode("signup"); setFormError(null) }}
                 disabled={isFormDisabled}
-                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-                  mode === "signup" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/40 hover:text-white/60"
+                className={`flex-1 py-2 text-sm font-medium rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${
+                  mode === "signup" ? "bg-[#55E039] text-[#0a0a0a] shadow-md" : "text-white/65 hover:text-white hover:bg-white/[0.04]"
                 }`}
               >
                 Sign Up
