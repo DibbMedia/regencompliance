@@ -8,11 +8,19 @@ import FtcSettlementBody, {
 import StructureFunctionBody, {
   meta as structureFunctionMeta,
 } from "./posts/structure-function-vs-disease-claims"
+import BannedWordsBody, {
+  meta as bannedWordsMeta,
+} from "./posts/banned-words-healthcare-marketing-2026"
+import AuditFrameworkBody, {
+  meta as auditFrameworkMeta,
+} from "./posts/healthcare-website-compliance-audit-framework"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
   { meta: ftcSettlementMeta, Body: FtcSettlementBody },
   { meta: structureFunctionMeta, Body: StructureFunctionBody },
+  { meta: bannedWordsMeta, Body: BannedWordsBody },
+  { meta: auditFrameworkMeta, Body: AuditFrameworkBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(

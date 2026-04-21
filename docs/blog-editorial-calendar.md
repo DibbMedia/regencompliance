@@ -15,52 +15,21 @@ Each post ships with:
 - Related-posts carousel
 - CTA strip to `/demo` and `/waitlist` (or `/pricing` once `IS_LAUNCHED`)
 
-## Posts live (3)
+## Posts live (5)
 
 | Slug | Primary keyword | Angle | Reading |
 | --- | --- | --- | --- |
 | `fda-warning-letters-25-year-high` | FDA warning letters 2024 | Enforcement trend piece, top of funnel | 9 min |
 | `ftc-stem-cell-settlement-social-media` | FTC stem cell settlement | Case-study-driven social-post risk breakdown | 8 min |
 | `structure-function-vs-disease-claims` | structure function claims FDA | Evergreen foundational | 11 min |
+| `banned-words-healthcare-marketing-2026` | banned words FDA healthcare marketing | Listicle, highly shareable reference | 10 min |
+| `healthcare-website-compliance-audit-framework` | healthcare website compliance audit | Tactical 5-step playbook | 11 min |
 
-## Next 9 posts — queued outlines
+## Next 7 posts — queued outlines
 
 Follow the same file pattern: `lib/blog/posts/<slug>.tsx` exporting `meta`
 and `default Body()`. Register by appending the import to
 `lib/blog/registry.ts`. Sitemap picks it up automatically.
-
-### 4. `banned-words-healthcare-marketing-2026`
-- **Title:** The 7 Banned Words That Trigger FDA Warning Letters in Healthcare Marketing (Updated 2026)
-- **Primary keyword:** banned words FDA healthcare marketing
-- **Angle:** listicle, highly shareable, linkable reference
-- **Outline:**
-  1. How FDA &ldquo;trigger words&rdquo; work (intended-use mechanics, briefly)
-  2. Word 1: cure / cures / curing
-  3. Word 2: heal / heals / healing
-  4. Word 3: treat / treats (for named conditions)
-  5. Word 4: reverse / reverses (especially aging, disease)
-  6. Word 5: guaranteed / guarantee
-  7. Word 6: FDA-approved (when actually FDA-registered)
-  8. Word 7: proven (without substantiation)
-  9. Bonus: 5 adjacent phrases that drag you into the same violation
-  10. What to do: rewrite-at-source style guide + pre-publish scan
-- **Target length:** 1600–1800 words
-- **Internal links:** → `structure-function-vs-disease-claims`, `/demo`
-
-### 5. `healthcare-website-compliance-audit-framework`
-- **Title:** How to Audit Your Healthcare Website for FDA/FTC Compliance: The 5-Step Framework
-- **Primary keyword:** healthcare website compliance audit
-- **Angle:** tactical how-to, gets bookmarked by operations leads
-- **Outline:**
-  1. Why an annual audit is the wrong frequency in 2026
-  2. Step 1 — Inventory (site pages, posts, ads, emails, captions, scripts)
-  3. Step 2 — Triage by pageviews (audit the top 10 before the tail)
-  4. Step 3 — Claim-category scan (disease, implied-approval, guarantee, testimonial)
-  5. Step 4 — Rewrite-at-source updates to style guide
-  6. Step 5 — Archive retirement + 301 redirects for removed pages
-  7. Timeline: a 2-week clinic sprint with named roles
-- **Target length:** 2000–2200 words
-- **Internal links:** → `fda-warning-letters-25-year-high`, `banned-words-healthcare-marketing-2026`, `/features`
 
 ### 6. `med-spa-marketing-compliance-risk`
 - **Title:** Med Spa Marketing: 12 Phrases That Put Your Clinic at Risk (and the Compliant Alternatives)
