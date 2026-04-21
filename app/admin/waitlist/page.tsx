@@ -108,7 +108,7 @@ export default function AdminWaitlistPage() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Waitlist</h1>
-          <p className="text-sm text-white/65 mt-1">
+          <p className="text-sm text-white/40 mt-1">
             Pre-release signups awaiting an invite
           </p>
         </div>
@@ -172,11 +172,11 @@ export default function AdminWaitlistPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 text-left">
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white/65">Name</th>
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white/65">Email</th>
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white/65">Source</th>
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white/65">Joined</th>
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white/65 w-8" />
+              <th className="px-4 py-3 text-xs font-medium text-white/40">Name</th>
+              <th className="px-4 py-3 text-xs font-medium text-white/40">Email</th>
+              <th className="px-4 py-3 text-xs font-medium text-white/40">Source</th>
+              <th className="px-4 py-3 text-xs font-medium text-white/40">Joined</th>
+              <th className="px-4 py-3 text-xs font-medium text-white/40 w-8" />
             </tr>
           </thead>
           <tbody>
@@ -190,8 +190,8 @@ export default function AdminWaitlistPage() {
               ))
             ) : entries.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-12 text-center text-white/70">
-                  <Mail className="h-8 w-8 mx-auto mb-2 text-white/35" />
+                <td colSpan={5} className="px-4 py-12 text-center text-white/40">
+                  <Mail className="h-8 w-8 mx-auto mb-2 text-white/20" />
                   No waitlist signups yet.
                 </td>
               </tr>
@@ -210,10 +210,10 @@ export default function AdminWaitlistPage() {
                       {entry.email}
                     </a>
                   </td>
-                  <td className="px-4 py-3 text-white/65 text-xs">
+                  <td className="px-4 py-3 text-white/50 text-xs">
                     {entry.source || "—"}
                   </td>
-                  <td className="px-4 py-3 text-white/65 text-xs">
+                  <td className="px-4 py-3 text-white/50 text-xs">
                     {formatDate(entry.created_at)}
                   </td>
                   <td className="px-4 py-3">
@@ -221,7 +221,7 @@ export default function AdminWaitlistPage() {
                       onClick={() => handleDelete(entry.id, entry.email)}
                       disabled={deleting === entry.id}
                       aria-label={`Remove ${entry.email}`}
-                      className="text-white/55 hover:text-red-400 transition-colors disabled:opacity-30 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60"
+                      className="text-white/30 hover:text-red-400 transition-colors disabled:opacity-30"
                     >
                       {deleting === entry.id ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -240,7 +240,7 @@ export default function AdminWaitlistPage() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <span className="text-sm text-white/65">
+          <span className="text-sm text-white/40">
             Page {page} of {totalPages}
           </span>
           <div className="flex gap-2">

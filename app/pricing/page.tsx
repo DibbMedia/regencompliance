@@ -19,7 +19,6 @@ import {
   Scale,
   TrendingDown,
   Zap,
-  Calculator,
 } from "lucide-react"
 import { useState } from "react"
 import { MarketingHeader } from "@/components/marketing-header"
@@ -54,159 +53,13 @@ const comparisonRows = [
 
 const pricingFaqs = [
   { q: "Is there a contract or commitment?", a: "No. RegenCompliance is month-to-month. You can cancel at any time from your account settings with one click. No cancellation fees, no penalty, no questions asked. Your access continues through the end of your current billing period." },
-  { q: "Does this replace my healthcare marketing attorney?", a: "No. RegenCompliance is an educational compliance tool, not a law firm, and it does not constitute legal advice. We strongly recommend final content review by qualified healthcare marketing counsel. What RegenCompliance does is catch the violations before they reach your attorney, so the attorney's time is spent on judgment calls rather than pattern-matching language that any pre-publish scanner can flag. Most clinics using both see their legal review costs drop substantially." },
-  { q: "Who sees my scanned content? Is it shared with humans?", a: "No human on our team accesses your scan content during normal operation. Scans run through automated AI analysis only. Content is encrypted at rest and in transit, stored in your account for your audit trail, and visible only to you and your team seats. Our staff can only access scan content during an explicit support request that you initiate — and even then, access is logged and requires documented authorization. We do not share, sell, or otherwise distribute your content." },
-  { q: "Is my content used to train AI models?", a: "No. Your scanned content is not used to train any AI models — ours or third-party providers'. We use Anthropic's Claude for scan analysis, and we use their API with the 'no-training' setting enabled for all requests. Your content is processed for the scan, results are returned to you, and nothing from your account feeds into model training anywhere." },
   { q: "Can I try it before I buy?", a: "Yes. We offer a free demo scanner on our website that lets you paste in sample content and see a compliance report. The demo uses a subset of our full ruleset, but it gives you a clear picture of how the scanner works and the quality of the analysis." },
-  { q: "What payment methods do you accept?", a: "We accept all major credit cards (Visa, Mastercard, American Express, Discover) through Stripe, our payment processor. All transactions are secured with bank-level encryption. We do not store your payment details on our servers." },
+  { q: "What payment methods do you accept?", a: "We accept all major credit cards (Visa, Mastercard, American Express, Discover) through Stripe, our payment processor. All transactions are secured with bank-level encryption." },
   { q: "Do you offer discounts for multiple clinics?", a: "We are building multi-location support. If you operate multiple clinic locations, contact us to discuss volume pricing. Each subscription covers one clinic account with 3 team seats." },
   { q: "What happens to my data if I cancel?", a: "Your scan history and audit trail remain accessible for 30 days after cancellation. You can export all reports as PDF or CSV before your account is deactivated. After 30 days, data is permanently deleted per our privacy policy." },
-  { q: "Is the subscription tax deductible?", a: "In most cases, yes. RegenCompliance is a business software expense for regulatory compliance. Consult your accountant, but compliance software is typically a deductible business expense under IRS guidelines." },
+  { q: "Is the $497/month tax deductible?", a: "In most cases, yes. RegenCompliance is a business software expense for regulatory compliance. Consult your accountant, but compliance software is typically a deductible business expense under IRS guidelines." },
   { q: "How does the money-back guarantee work?", a: "If you are not satisfied within your first 30 days, contact us for a full refund. No fine print. We want you to use the tool enough to see the value — if you do not find it valuable after running scans on your actual content, we will refund every penny." },
 ]
-
-function RoiCalculator() {
-  const [pages, setPages] = useState(25)
-  const [postsPerMonth, setPostsPerMonth] = useState(20)
-  const [attorneyRate, setAttorneyRate] = useState(500)
-
-  // Time estimates per unit
-  const HRS_PER_PAGE = 0.5 // 30 min of legal review per page
-  const HRS_PER_POST = 0.25 // 15 min per post/ad
-  const ANNUAL_REGEN = 297 * 12 // $3,564
-
-  const annualPostsReviewed = postsPerMonth * 12
-  const totalHours = pages * HRS_PER_PAGE + annualPostsReviewed * HRS_PER_POST
-  const annualAttorneyCost = Math.round(totalHours * attorneyRate)
-  const annualSavings = Math.max(0, annualAttorneyCost - ANNUAL_REGEN)
-  const roiMultiple = annualAttorneyCost > 0
-    ? +(annualAttorneyCost / ANNUAL_REGEN).toFixed(1)
-    : 0
-  const breakEvenDays = annualAttorneyCost > 0
-    ? Math.max(1, Math.round((ANNUAL_REGEN / annualAttorneyCost) * 365))
-    : 365
-
-  function formatUSD(n: number) {
-    return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })
-  }
-
-  return (
-    <div className="rounded-3xl bg-gradient-to-br from-[#55E039]/[0.04] via-white/[0.02] to-white/[0.02] border border-white/10 overflow-hidden">
-      <div className="p-6 sm:p-8 border-b border-white/[0.06]">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="h-10 w-10 rounded-xl bg-[#55E039]/10 border border-[#55E039]/20 flex items-center justify-center">
-            <Calculator className="h-5 w-5 text-[#55E039]" aria-hidden />
-          </div>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]">ROI Calculator</p>
-            <h3 className="text-xl font-extrabold text-white tracking-tight">
-              What would pre-publish legal review cost instead?
-            </h3>
-          </div>
-        </div>
-        <p className="text-sm text-white/65 leading-relaxed max-w-2xl">
-          Adjust the inputs to match your clinic. The math below is the annual cost of having a healthcare marketing attorney pre-review every page and post at their hourly rate &mdash; vs. RegenCompliance at founding-rate pricing.
-        </p>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2 p-6 sm:p-8">
-        <div className="space-y-5">
-          <label className="block">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-white">Marketing pages on your site</span>
-              <span className="text-sm font-bold text-[#55E039] tabular-nums">{pages}</span>
-            </div>
-            <input
-              type="range"
-              min={5}
-              max={200}
-              step={5}
-              value={pages}
-              onChange={(e) => setPages(Number(e.target.value))}
-              className="w-full accent-[#55E039]"
-              aria-label="Marketing pages on your site"
-            />
-            <div className="flex justify-between text-[11px] text-white/55 mt-1">
-              <span>5</span>
-              <span>200</span>
-            </div>
-          </label>
-
-          <label className="block">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-white">Social posts + ads per month</span>
-              <span className="text-sm font-bold text-[#55E039] tabular-nums">{postsPerMonth}</span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={100}
-              step={5}
-              value={postsPerMonth}
-              onChange={(e) => setPostsPerMonth(Number(e.target.value))}
-              className="w-full accent-[#55E039]"
-              aria-label="Social posts and ads per month"
-            />
-            <div className="flex justify-between text-[11px] text-white/55 mt-1">
-              <span>0</span>
-              <span>100</span>
-            </div>
-          </label>
-
-          <label className="block">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-white">Attorney hourly rate</span>
-              <span className="text-sm font-bold text-[#55E039] tabular-nums">${attorneyRate}/hr</span>
-            </div>
-            <input
-              type="range"
-              min={250}
-              max={900}
-              step={25}
-              value={attorneyRate}
-              onChange={(e) => setAttorneyRate(Number(e.target.value))}
-              className="w-full accent-[#55E039]"
-              aria-label="Attorney hourly rate"
-            />
-            <div className="flex justify-between text-[11px] text-white/55 mt-1">
-              <span>$250</span>
-              <span>$900</span>
-            </div>
-          </label>
-        </div>
-
-        <div
-          className="rounded-2xl bg-[#0a0a0a]/50 border border-white/10 p-6 flex flex-col gap-4"
-          aria-live="polite"
-          aria-label="ROI calculator results"
-        >
-          <div className="flex items-baseline justify-between border-b border-white/[0.06] pb-4">
-            <span className="text-xs font-bold text-white/70 uppercase tracking-[0.15em]">Attorney review annually</span>
-            <span className="text-2xl font-extrabold text-red-300 tabular-nums">{formatUSD(annualAttorneyCost)}</span>
-          </div>
-          <div className="flex items-baseline justify-between border-b border-white/[0.06] pb-4">
-            <span className="text-xs font-bold text-white/70 uppercase tracking-[0.15em]">RegenCompliance annually</span>
-            <span className="text-2xl font-extrabold text-[#55E039] tabular-nums">{formatUSD(ANNUAL_REGEN)}</span>
-          </div>
-          <div className="flex items-baseline justify-between border-b border-white/[0.06] pb-4">
-            <span className="text-xs font-bold text-white/70 uppercase tracking-[0.15em]">Annual savings</span>
-            <span className="text-2xl font-extrabold text-white tabular-nums">{formatUSD(annualSavings)}</span>
-          </div>
-          <div className="flex items-baseline justify-between">
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-white/70 uppercase tracking-[0.15em]">ROI vs. attorney</span>
-              <span className="text-[11px] text-white/55 mt-0.5">Break-even at day {breakEvenDays}</span>
-            </div>
-            <span className="text-3xl font-extrabold text-[#55E039] tabular-nums">{roiMultiple}&times;</span>
-          </div>
-          <p className="text-[11px] text-white/55 leading-relaxed pt-2 border-t border-white/[0.06]">
-            Estimates assume 30 min of legal review per page and 15 min per post. Actual figures vary by attorney, content type, and review cadence. RegenCompliance does not replace final legal review &mdash; it makes that review faster and cheaper by catching pattern-matchable violations before they reach your counsel.
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -507,22 +360,6 @@ export default function PricingPage() {
               We can offer this guarantee because the data speaks for itself. The average first scan on a healthcare practice&apos;s website finds 12 to 25 compliance violations. Most practice owners are shocked at how much risk is sitting on their homepage right now. We want you to experience that moment yourself, risk-free.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* ============ ROI CALCULATOR ============ */}
-      <section className="relative py-16">
-        <div className="relative mx-auto max-w-5xl px-6">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Do the math</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-              Calculate your ROI.
-            </h2>
-            <p className="mt-4 text-base text-white/70 max-w-xl mx-auto leading-relaxed">
-              Drag the sliders to your clinic&rsquo;s numbers. The right-side output updates in real time.
-            </p>
-          </div>
-          <RoiCalculator />
         </div>
       </section>
 
