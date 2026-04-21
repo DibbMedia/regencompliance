@@ -50,7 +50,7 @@ export function ImpersonationBanner() {
       <span className="rounded-md border border-yellow-500/30 bg-yellow-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-yellow-300">
         {active.mode === "write" ? "Full write" : "Read only"}
       </span>
-      <span className="ml-auto text-xs text-yellow-200/60">
+      <span className="ml-auto text-xs text-yellow-100/80">
         expires {new Date(active.expires_at).toLocaleTimeString()}
       </span>
       <button

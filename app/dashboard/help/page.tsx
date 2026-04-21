@@ -209,7 +209,7 @@ function AccordionItem({
           {item.question}
         </span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-white/30 transition-transform duration-200 ${
+          className={`h-4 w-4 shrink-0 text-white/60 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -263,7 +263,7 @@ export default function HelpCenterPage() {
             Knowledge Base
           </p>
           <h1 className="text-3xl font-bold text-white">Help Center</h1>
-          <p className="text-sm text-white/50 mt-1">
+          <p className="text-sm text-white/70 mt-1">
             Everything you need to know about compliance scanning and staying FDA/FTC safe.
           </p>
         </div>
@@ -284,9 +284,9 @@ export default function HelpCenterPage() {
       {/* FAQ Sections */}
       {filteredSections.length === 0 ? (
         <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 text-center">
-          <Search className="h-8 w-8 text-white/15 mb-4" />
-          <p className="text-white/50 font-medium">No results found</p>
-          <p className="text-sm text-white/30 mt-1">
+          <Search className="h-8 w-8 text-white/35 mb-4" />
+          <p className="text-white/80 font-medium">No results found</p>
+          <p className="text-sm text-white/60 mt-1">
             Try a different search term or browse the sections below.
           </p>
         </div>
@@ -322,7 +322,7 @@ export default function HelpCenterPage() {
 
       {/* Footer note */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 text-center">
-        <p className="text-sm text-white/40">
+        <p className="text-sm text-white/65">
           Still have questions?{" "}
           <a
             href="/dashboard/support"

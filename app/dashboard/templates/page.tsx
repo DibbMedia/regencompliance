@@ -115,7 +115,7 @@ export default function TemplatesPage() {
         {/* Back */}
         <button
           onClick={() => setSelectedTemplate(null)}
-          className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-white/65 hover:text-white transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
           Back to Templates
@@ -131,7 +131,7 @@ export default function TemplatesPage() {
               >
                 {CATEGORY_LABELS[selectedTemplate.category]}
               </Badge>
-              <span className="text-xs text-white/30">
+              <span className="text-xs text-white/55">
                 {selectedTemplate.wordCount} words
               </span>
             </div>
@@ -218,7 +218,7 @@ export default function TemplatesPage() {
         <p className="text-white/60 mt-1">
           Production-ready compliant copy for service pages, marketing materials, and ads.
         </p>
-        <p className="text-xs text-white/30 mt-2 font-medium">
+        <p className="text-xs text-white/55 mt-2 font-medium">
           {CONTENT_TEMPLATES.length} templates available
         </p>
       </div>
@@ -235,7 +235,8 @@ export default function TemplatesPage() {
         {search && (
           <button
             onClick={() => setSearch("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70"
+            aria-label="Clear search"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/60"
           >
             <X className="h-4 w-4" />
           </button>
@@ -246,10 +247,10 @@ export default function TemplatesPage() {
       {totalResults === 0 ? (
         <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] flex flex-col items-center justify-center py-16 px-6 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
-            <FileText className="h-8 w-8 text-white/20" />
+            <FileText className="h-8 w-8 text-white/35" />
           </div>
-          <p className="text-white/50 font-medium mb-1">No templates match your search</p>
-          <p className="text-white/30 text-sm">Try a different keyword or clear the search.</p>
+          <p className="text-white/80 font-medium mb-1">No templates match your search</p>
+          <p className="text-white/60 text-sm">Try a different keyword or clear the search.</p>
         </div>
       ) : (
         SECTION_ORDER.map((category) => {
@@ -269,11 +270,11 @@ export default function TemplatesPage() {
                       {CATEGORY_LABELS[category]}
                     </h2>
                   </div>
-                  <p className="text-sm text-white/50">
+                  <p className="text-sm text-white/65">
                     {CATEGORY_DESCRIPTIONS[category]}
                   </p>
                 </div>
-                <span className="text-xs font-medium text-white/40 shrink-0">
+                <span className="text-xs font-medium text-white/60 shrink-0">
                   {items.length} template{items.length === 1 ? "" : "s"}
                 </span>
               </div>
@@ -293,10 +294,10 @@ export default function TemplatesPage() {
                         {template.wordCount}w
                       </span>
                     </div>
-                    <p className="text-xs text-white/50 leading-relaxed line-clamp-2 flex-1">
+                    <p className="text-xs text-white/65 leading-relaxed line-clamp-2 flex-1">
                       {template.description}
                     </p>
-                    <div className="mt-4 flex items-center gap-1 text-[10px] text-white/30 group-hover:text-[#55E039]/70 transition-colors">
+                    <div className="mt-4 flex items-center gap-1 text-[10px] text-white/55 group-hover:text-[#55E039] transition-colors">
                       View template
                       <ArrowRight className="h-3 w-3" />
                     </div>

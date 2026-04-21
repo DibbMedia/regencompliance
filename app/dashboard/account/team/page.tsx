@@ -119,7 +119,7 @@ export default function TeamPage() {
           <DialogContent className="bg-[#141414] border-white/10">
             <DialogHeader>
               <DialogTitle className="text-white">Invite Team Member</DialogTitle>
-              <DialogDescription className="text-white/50">
+              <DialogDescription className="text-white/70">
                 Generate a magic link to invite a team member. No email is sent automatically.
               </DialogDescription>
             </DialogHeader>
@@ -155,7 +155,7 @@ export default function TeamPage() {
                       {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     </button>
                   </div>
-                  <p className="text-xs text-white/40">
+                  <p className="text-xs text-white/60">
                     Send this link directly. Expires in 7 days.
                   </p>
                 </div>
@@ -177,7 +177,7 @@ export default function TeamPage() {
               </div>
               <div>
                 <h3 className="text-white font-bold">{seatCount} of {maxSeats} seats used</h3>
-                <p className="text-white/50 text-sm">{maxSeats - seatCount} seat{maxSeats - seatCount !== 1 ? "s" : ""} remaining</p>
+                <p className="text-white/65 text-sm">{maxSeats - seatCount} seat{maxSeats - seatCount !== 1 ? "s" : ""} remaining</p>
               </div>
             </div>
           </div>
@@ -198,10 +198,10 @@ export default function TeamPage() {
         {members.length === 0 ? (
           <div className="bg-white/[0.03] border border-white/10 rounded-xl p-12 flex flex-col items-center text-center">
             <div className="w-16 h-16 rounded-full bg-white/[0.06] flex items-center justify-center mb-4">
-              <Users className="h-8 w-8 text-white/20" />
+              <Users className="h-8 w-8 text-white/35" />
             </div>
-            <p className="text-white/70 font-medium">No team members yet</p>
-            <p className="text-white/40 text-sm mt-1">Invite your first team member to get started</p>
+            <p className="text-white/80 font-medium">No team members yet</p>
+            <p className="text-white/60 text-sm mt-1">Invite your first team member to get started</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -251,7 +251,8 @@ export default function TeamPage() {
                   {/* Remove */}
                   <AlertDialog>
                     <AlertDialogTrigger
-                      className="shrink-0 w-11 h-11 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 disabled:opacity-50"
+                      aria-label={`Remove ${m.email}`}
+                      className="shrink-0 w-11 h-11 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-white/55 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60"
                       disabled={removing === m.id}
                     >
                       {removing === m.id ? (
@@ -263,8 +264,8 @@ export default function TeamPage() {
                     <AlertDialogContent className="bg-[#141414] border-white/10">
                       <AlertDialogHeader>
                         <AlertDialogTitle className="text-white">Remove team member?</AlertDialogTitle>
-                        <AlertDialogDescription className="text-white/50">
-                          This will revoke access for <strong className="text-white/70">{m.email}</strong>. They will no longer be able to access your clinic&apos;s compliance data.
+                        <AlertDialogDescription className="text-white/70">
+                          This will revoke access for <strong className="text-white">{m.email}</strong>. They will no longer be able to access your clinic&apos;s compliance data.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

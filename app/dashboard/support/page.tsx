@@ -152,11 +152,11 @@ function TicketThread({ ticketId, status }: { ticketId: string; status: string }
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <span className={`font-semibold text-xs ${
-                  msg.is_admin ? "text-white/50" : "text-[#55E039]"
+                  msg.is_admin ? "text-white/70" : "text-[#55E039]"
                 }`}>
                   {msg.is_admin ? "Support Team" : "You"}
                 </span>
-                <span className="text-xs text-white/30">
+                <span className="text-xs text-white/55">
                   {formatDate(msg.created_at)}
                 </span>
               </div>

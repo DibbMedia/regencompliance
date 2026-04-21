@@ -224,7 +224,7 @@ export default function FeaturesPage() {
                 {libraryStats.map((stat) => (
                   <div key={stat.label} className="rounded-xl bg-white/[0.03] border border-white/10 p-4 text-center">
                     <p className="text-2xl font-extrabold text-[#55E039]">{stat.value}</p>
-                    <p className="text-xs text-white/40 mt-1">{stat.label}</p>
+                    <p className="text-xs text-white/65 mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>

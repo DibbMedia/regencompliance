@@ -199,7 +199,7 @@ export default function AccountPage() {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-white font-bold text-lg truncate">{clinicName || "Your Clinic"}</h3>
-              <p className="text-white/50 text-sm">{email}</p>
+              <p className="text-white/65 text-sm">{email}</p>
             </div>
             {saving && <Loader2 className="h-4 w-4 animate-spin text-[#55E039] shrink-0" />}
           </div>
@@ -236,7 +236,7 @@ export default function AccountPage() {
                       "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border",
                       selected
                         ? "bg-[#55E039]/10 border-[#55E039]/30 text-[#55E039] shadow-[0_0_10px_rgba(85,224,57,0.1)]"
-                        : "bg-white/[0.03] border-white/10 text-white/50 hover:border-white/20 hover:text-white/70",
+                        : "bg-white/[0.03] border-white/10 text-white/70 hover:border-white/20 hover:text-white",
                       role === "member" && "opacity-50 cursor-not-allowed"
                     )}
                   >
@@ -277,7 +277,7 @@ export default function AccountPage() {
                         Founding Member
                       </Badge>
                     </div>
-                    <p className="text-white/50 text-sm mt-0.5">Your rate is locked at $297/mo for life — it will never increase</p>
+                    <p className="text-white/70 text-sm mt-0.5">Your rate is locked at $297/mo for life — it will never increase</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#55E039]/[0.06] rounded-lg border border-[#55E039]/10">

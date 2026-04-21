@@ -150,33 +150,33 @@ export default function BadgePage() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3">
               <div className="rounded-lg bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-                <p className="text-xs text-white/40 mb-1">Avg Score</p>
+                <p className="text-xs text-white/65 mb-1">Avg Score</p>
                 <p className={`text-lg font-bold ${scoreColor}`}>
                   {badge.avg_score}%
                 </p>
               </div>
               <div className="rounded-lg bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-                <p className="text-xs text-white/40 mb-1">Total Scans</p>
+                <p className="text-xs text-white/65 mb-1">Total Scans</p>
                 <p className="text-lg font-bold text-white">
                   {badge.total_scans}
                 </p>
               </div>
               <div className="rounded-lg bg-white/[0.03] border border-white/[0.06] p-3 text-center">
-                <p className="text-xs text-white/40 mb-1">Last Scan</p>
+                <p className="text-xs text-white/65 mb-1">Last Scan</p>
                 <p className="text-xs font-bold text-white mt-1">{lastScan}</p>
               </div>
             </div>
 
             {/* Refresh */}
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-white/30">
+              <p className="text-xs text-white/55">
                 Member since {memberSince}
               </p>
               <Button
                 onClick={fetchBadge}
                 variant="ghost"
                 size="sm"
-                className="text-white/40 hover:text-white h-7 text-xs"
+                className="text-white/65 hover:text-white h-7 text-xs"
               >
                 <RefreshCw className="h-3 w-3 mr-1.5" />
                 Refresh

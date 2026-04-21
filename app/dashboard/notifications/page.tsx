@@ -206,7 +206,7 @@ export default function NotificationsPage() {
                         <p className={`text-sm font-medium ${!n.read ? "text-white" : "text-white/70"}`}>
                           {n.title}
                         </p>
-                        <p className="text-sm text-white/50 line-clamp-2 mt-0.5">{n.body}</p>
+                        <p className="text-sm text-white/70 line-clamp-2 mt-0.5">{n.body}</p>
                       </div>
 
                       {/* Timestamp */}

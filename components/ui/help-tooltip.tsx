@@ -19,7 +19,7 @@ export function HelpTooltip({ text, children }: HelpTooltipProps) {
         onFocus={() => setVisible(true)}
         onBlur={() => setVisible(false)}
         onClick={() => setVisible((v) => !v)}
-        className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white/40 text-xs hover:bg-white/[0.1] hover:text-white/60 transition-all cursor-help shrink-0"
+        className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/[0.06] border border-white/10 text-white/70 text-xs hover:bg-white/[0.1] hover:text-white transition-all cursor-help shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#55E039]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         aria-label="Help"
       >
         ?

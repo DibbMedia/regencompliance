@@ -158,7 +158,7 @@ function FlagCard({ flag, index, sourceUrl }: { flag: ScanFlag; index: number; s
               <ExternalLink className="h-3 w-3" />
             </a>
           )}
-          <p className="text-sm text-white/50 leading-relaxed">{flag.reason}</p>
+          <p className="text-sm text-white/70 leading-relaxed">{flag.reason}</p>
           <div className="flex items-center gap-2 bg-[#55E039]/[0.06] border border-[#55E039]/10 rounded-lg px-3 py-2.5">
             <Sparkles className="h-3.5 w-3.5 text-[#55E039] shrink-0" />
             <p className="text-sm text-[#55E039] flex-1 leading-relaxed">
@@ -201,10 +201,10 @@ export default function ScanDetailPage() {
     return (
       <div className="p-6 flex flex-col items-center justify-center py-20">
         <div className="w-16 h-16 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-5">
-          <AlertTriangle className="h-8 w-8 text-white/20" />
+          <AlertTriangle className="h-8 w-8 text-white/35" />
         </div>
-        <p className="text-white/50 font-medium">Scan not found</p>
-        <p className="text-white/30 text-sm mt-1">This scan may have been deleted.</p>
+        <p className="text-white/80 font-medium">Scan not found</p>
+        <p className="text-white/60 text-sm mt-1">This scan may have been deleted.</p>
       </div>
     )
   }
@@ -217,7 +217,7 @@ export default function ScanDetailPage() {
       {/* Back Navigation */}
       <button
         onClick={() => router.back()}
-        className="inline-flex items-center gap-1.5 text-sm text-white/40 hover:text-white/70 transition-colors duration-200"
+        className="inline-flex items-center gap-1.5 text-sm text-white/65 hover:text-white transition-colors duration-200"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to History
@@ -236,7 +236,7 @@ export default function ScanDetailPage() {
                 {scan.content_type.replace("_", " ")}
               </span>
               {scan.scan_duration_ms && (
-                <span className="text-[10px] text-white/25 font-medium">{scan.scan_duration_ms}ms</span>
+                <span className="text-[10px] text-white/50 font-medium">{scan.scan_duration_ms}ms</span>
               )}
             </div>
             <p className="text-sm text-white/70">
@@ -254,7 +254,7 @@ export default function ScanDetailPage() {
             </p>
             {flags.length > 0 && (
               <div className="flex gap-3 mt-2 text-xs font-medium">
-                <span className="text-white/40">{flags.length} flag{flags.length !== 1 ? "s" : ""}</span>
+                <span className="text-white/60">{flags.length} flag{flags.length !== 1 ? "s" : ""}</span>
                 {flags.filter(f => f.risk_level === "high").length > 0 && (
                   <span className="text-red-400">{flags.filter(f => f.risk_level === "high").length} high</span>
                 )}
@@ -299,7 +299,7 @@ export default function ScanDetailPage() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Flagged Content</p>
-            <span className="text-xs text-white/30">({flags.length})</span>
+            <span className="text-xs text-white/55">({flags.length})</span>
           </div>
           <div className="space-y-2">
             {flags.map((flag, i) => (
@@ -316,7 +316,7 @@ export default function ScanDetailPage() {
             <Shield className="h-7 w-7 text-[#55E039]" />
           </div>
           <p className="font-bold text-white">No compliance issues found</p>
-          <p className="text-sm text-white/50 mt-1">This content appeared safe to publish at the time of scanning.</p>
+          <p className="text-sm text-white/70 mt-1">This content appeared safe to publish at the time of scanning.</p>
         </div>
       )}
 
@@ -347,7 +347,7 @@ export default function ScanDetailPage() {
       )}
 
       {/* Disclaimer */}
-      <p className="text-xs text-white/30 italic text-center">
+      <p className="text-xs text-white/55 italic text-center">
         This tool provides educational compliance guidance only. It is not legal advice and does not guarantee regulatory compliance. Always consult qualified healthcare marketing counsel.
       </p>
     </div>

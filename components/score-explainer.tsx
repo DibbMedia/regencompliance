@@ -16,6 +16,6 @@ export function ScoreExplainer({ score }: { score: number }) {
   }
 
   return (
-    <p className="text-xs text-white/40 italic">{label}</p>
+    <p className="text-xs text-white/65 italic">{label}</p>
   )
 }

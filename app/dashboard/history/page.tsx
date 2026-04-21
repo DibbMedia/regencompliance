@@ -172,7 +172,7 @@ export default function HistoryPage() {
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-white/50 truncate leading-relaxed">
+                      <p className="text-sm text-white/70 truncate leading-relaxed">
                         {scan.original_text.slice(0, 120)}
                       </p>
                     </div>
@@ -183,7 +183,7 @@ export default function HistoryPage() {
                         <p className="text-xs font-medium text-white/40" title={new Date(scan.created_at).toLocaleString()}>
                           {timeAgo(scan.created_at)}
                         </p>
-                        <p className="text-[10px] text-white/25">{formatDate(scan.created_at)}</p>
+                        <p className="text-[10px] text-white/50">{formatDate(scan.created_at)}</p>
                       </div>
                       <div className="flex gap-1">
                         <span className="p-2 rounded-lg text-white/30 group-hover:text-[#55E039] group-hover:bg-[#55E039]/[0.06] transition-all duration-300">

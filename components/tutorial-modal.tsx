@@ -179,14 +179,14 @@ export function TutorialModal({ onComplete }: TutorialModalProps) {
             {step > 0 ? (
               <button
                 onClick={handleBack}
-                className="px-4 py-2 rounded-xl text-sm font-medium text-white/50 hover:text-white hover:bg-white/[0.06] transition-all"
+                className="px-4 py-2 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.06] transition-all"
               >
                 Back
               </button>
             ) : (
               <button
                 onClick={finish}
-                className="text-sm text-white/30 hover:text-white/50 transition-colors"
+                className="text-sm text-white/55 hover:text-white transition-colors"
               >
                 Skip Tutorial
               </button>

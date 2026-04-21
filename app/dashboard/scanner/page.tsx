@@ -568,7 +568,7 @@ export default function ScannerPage() {
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
                 className="relative min-h-[140px] sm:min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
               />
-              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
+              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400 font-semibold" : "text-white/60"}`}>
                 {charCount.toLocaleString()}/5,000
               </span>
             </div>
@@ -617,7 +617,7 @@ export default function ScannerPage() {
               </div>
             </div>
 
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-white/60">
               Scans this exact page only — not the full site.
             </p>
 
@@ -650,7 +650,7 @@ export default function ScannerPage() {
           </>
         )}
 
-        <p className="text-xs text-white/30 italic text-center">
+        <p className="text-xs text-white/55 italic text-center">
           Educational guidance only — not legal advice. Consult healthcare marketing counsel before publishing.
         </p>
       </div>
@@ -663,8 +663,8 @@ export default function ScannerPage() {
             <div className="w-16 h-16 rounded-2xl bg-[#55E039]/[0.06] flex items-center justify-center mb-5">
               <Shield className="h-8 w-8 text-[#55E039]/30" />
             </div>
-            <p className="text-white/50 font-medium mb-1">Ready to Scan</p>
-            <p className="text-white/30 text-sm">Paste your content and hit scan to check compliance.</p>
+            <p className="text-white/80 font-medium mb-1">Ready to Scan</p>
+            <p className="text-white/60 text-sm">Paste your content and hit scan to check compliance.</p>
           </div>
         )}
 
@@ -676,8 +676,8 @@ export default function ScannerPage() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#55E039]/10 rounded-full blur-3xl animate-pulse" />
             <div className="relative z-10 flex flex-col items-center">
               <div className="w-14 h-14 rounded-full border-2 border-[#55E039]/20 border-t-[#55E039] animate-spin mb-5" />
-              <p className="text-white/70 font-medium">Analyzing content...</p>
-              <p className="text-white/30 text-xs mt-1">Checking FDA/FTC compliance rules</p>
+              <p className="text-white/80 font-medium">Analyzing content...</p>
+              <p className="text-white/60 text-xs mt-1">Checking FDA/FTC compliance rules</p>
             </div>
           </div>
         )}
@@ -772,7 +772,7 @@ export default function ScannerPage() {
                       </div>
                       {/* Element type subtitle (URL scans only) */}
                       {result.source_url && flag.element_type && (
-                        <p className="text-xs text-white/40">
+                        <p className="text-xs text-white/60">
                           Found in &lt;{flag.element_type}&gt;
                         </p>
                       )}
@@ -795,7 +795,7 @@ export default function ScannerPage() {
                         </a>
                       )}
                       {/* Reason */}
-                      <p className="text-sm text-white/50 leading-relaxed">{flag.reason}</p>
+                      <p className="text-sm text-white/70 leading-relaxed">{flag.reason}</p>
                       {/* Alternative */}
                       <div className="flex items-center gap-2 bg-[#55E039]/[0.06] border border-[#55E039]/10 rounded-lg px-3 py-2.5">
                         <Sparkles className="h-3.5 w-3.5 text-[#55E039] shrink-0" />
@@ -824,10 +824,10 @@ export default function ScannerPage() {
                   <CheckCircle2 className="h-7 w-7 text-[#55E039]" />
                 </div>
                 <p className="font-bold text-white">No compliance issues found</p>
-                <p className="text-sm text-white/50 mt-1">
+                <p className="text-sm text-white/70 mt-1">
                   This content appears safe to publish.
                 </p>
-                <p className="text-xs text-white/30 mt-3">
+                <p className="text-xs text-white/55 mt-3">
                   Always review with qualified healthcare marketing counsel before publishing.
                 </p>
               </div>

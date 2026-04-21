@@ -195,13 +195,13 @@ function TopViolationsWidget({
             key={i}
             className="flex items-center gap-3 text-sm"
           >
-            <span className="text-white/20 text-xs w-4 shrink-0 tabular-nums">
+            <span className="text-white/45 text-xs w-4 shrink-0 tabular-nums">
               {i + 1}.
             </span>
-            <span className="text-white/70 truncate flex-1 text-xs">
+            <span className="text-white/80 truncate flex-1 text-xs">
               {flag.banned_phrase}
             </span>
-            <span className="text-white/30 text-xs tabular-nums shrink-0">
+            <span className="text-white/55 text-xs tabular-nums shrink-0">
               {flag.count}x
             </span>
             <span
@@ -216,7 +216,7 @@ function TopViolationsWidget({
       </div>
       <Link
         href="/dashboard/history"
-        className="inline-flex items-center gap-1 text-xs text-white/30 hover:text-[#55E039] transition-colors mt-4"
+        className="inline-flex items-center gap-1 text-xs text-white/60 hover:text-[#55E039] transition-colors mt-4"
       >
         View all in history <ArrowRight className="h-3 w-3" />
       </Link>

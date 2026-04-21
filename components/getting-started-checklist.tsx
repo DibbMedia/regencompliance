@@ -251,7 +251,7 @@ export function GettingStartedChecklist({ initialChecklist }: GettingStartedChec
                   >
                     {task.title}
                   </p>
-                  <p className="text-xs text-white/30 truncate">{task.description}</p>
+                  <p className="text-xs text-white/55 truncate">{task.description}</p>
                 </div>
               </Link>
             )

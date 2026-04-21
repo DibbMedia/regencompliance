@@ -303,8 +303,8 @@ export default function SitesPage() {
                     </p>
                     <StatusBadge status={site.is_active ? "monitoring" : "paused"} />
                   </div>
-                  <p className="text-xs text-white/40 truncate">{site.domain}</p>
-                  <div className="flex gap-3 mt-1.5 text-xs text-white/30">
+                  <p className="text-xs text-white/65 truncate">{site.domain}</p>
+                  <div className="flex gap-3 mt-1.5 text-xs text-white/55">
                     <span>{site.total_pages} page{site.total_pages !== 1 ? "s" : ""}</span>
                     {site.last_crawl_at && (
                       <span>Scanned {timeAgo(site.last_crawl_at)}</span>
@@ -317,7 +317,7 @@ export default function SitesPage() {
                   <button
                     onClick={() => handleToggleStatus(site.id, site.is_active)}
                     disabled={togglingId === site.id}
-                    className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-all duration-300 disabled:opacity-50"
+                    className="p-2 rounded-lg border border-white/10 bg-white/[0.03] text-white/65 hover:text-white hover:bg-white/[0.06] transition-all duration-300 disabled:opacity-50"
                     title={site.is_active ? "Pause monitoring" : "Resume monitoring"}
                   >
                     {togglingId === site.id ? (
@@ -331,7 +331,7 @@ export default function SitesPage() {
                   <button
                     onClick={() => handleScanNow(site.id)}
                     disabled={scanningId === site.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 bg-white/[0.03] text-xs font-medium text-white/50 hover:text-white hover:bg-white/[0.06] transition-all duration-300 disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/10 bg-white/[0.03] text-xs font-medium text-white/75 hover:text-white hover:bg-white/[0.06] transition-all duration-300 disabled:opacity-50"
                   >
                     {scanningId === site.id ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />

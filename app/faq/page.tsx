@@ -212,7 +212,7 @@ export default function FaqPage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-extrabold tracking-tight">{category.title}</h2>
-                  <p className="text-sm text-white/40">{category.faqs.length} questions</p>
+                  <p className="text-sm text-white/60">{category.faqs.length} questions</p>
                 </div>
               </div>
 
@@ -237,7 +237,7 @@ export default function FaqPage() {
                         <div className="flex items-center justify-between">
                           <span className="text-[15px] font-semibold text-white pr-4">{faq.q}</span>
                           <ChevronDown
-                            className={`h-4 w-4 text-white/40 shrink-0 transition-transform duration-300 ${
+                            className={`h-4 w-4 text-white/60 shrink-0 transition-transform duration-300 ${
                               isOpen ? "rotate-180" : ""
                             }`}
                           />
