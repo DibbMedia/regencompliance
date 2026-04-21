@@ -140,18 +140,6 @@ const faqCategories: FaqCategory[] = [
 
 const ALL_FILTER = "All"
 
-const FAQ_JSONLD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqCategories.flatMap((cat) =>
-    cat.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  ),
-})
-
 export default function FaqPage() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
   const [activeCategory, setActiveCategory] = useState<string>(ALL_FILTER)
@@ -168,10 +156,6 @@ export default function FaqPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: FAQ_JSONLD }}
-      />
       <MarketingBg />
       <MarketingHeader />
 
