@@ -152,31 +152,31 @@ export default function PricingPage() {
           </div>
 
           {/* STANDARD PLAN — COMING SOON */}
-          <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 relative overflow-hidden opacity-70">
+          <div className="rounded-2xl bg-white/[0.02] border border-white/10 p-10 relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             <div className="absolute top-4 right-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs font-bold text-white/40">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.06] border border-white/15 px-3 py-1 text-xs font-bold text-white/70">
                 Coming Soon
               </span>
             </div>
-            <p className="text-sm font-extrabold text-white/40 mb-2">Professional</p>
+            <p className="text-sm font-extrabold text-white/60 mb-2">Professional</p>
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="text-6xl font-extrabold tracking-tight text-white/40">$497</p>
-              <span className="text-xl font-normal text-white/30">/mo</span>
+              <p className="text-6xl font-extrabold tracking-tight text-white/60">$497</p>
+              <span className="text-xl font-normal text-white/50">/mo</span>
             </div>
-            <p className="text-sm text-white/30 mb-8">Available after beta period ends.</p>
-            <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/30 cursor-not-allowed select-none mb-6">
+            <p className="text-sm text-white/60 mb-8">Available after beta period ends.</p>
+            <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/55 cursor-not-allowed select-none mb-6">
               Coming Soon
             </div>
-            <p className="text-center text-xs text-white/20 mb-8">Lock in $297/mo now — saves $200/mo when standard launches.</p>
+            <p className="text-center text-xs text-white/55 mb-8">Lock in $297/mo now — save $200/mo when standard launches.</p>
             <div className="pt-6 border-t border-white/[0.06]">
-              <p className="text-sm font-extrabold text-white/30 mb-4">Everything included:</p>
+              <p className="text-sm font-extrabold text-white/70 mb-4">Everything included:</p>
               <ul className="space-y-3">
                 {includedFeatures.map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-white/20 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-5 w-5 text-white/40 shrink-0 mt-0.5" />
                     <div>
-                      <span className="text-[15px] text-white/30 font-medium">{item.title}</span>
+                      <span className="text-[15px] text-white/65 font-medium">{item.title}</span>
                       <p className="text-xs text-white/20 mt-0.5 leading-relaxed">{item.desc}</p>
                     </div>
                   </li>

@@ -21,14 +21,15 @@ export function MarketingHeader() {
             </div>
             <span className="text-[15px] font-bold tracking-tight text-white">RegenCompliance</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/features" className="text-[13px] text-white/60 hover:text-white transition-colors">Features</Link>
-            <Link href="/pricing" className="text-[13px] text-white/60 hover:text-white transition-colors">Pricing</Link>
-            <Link href="/faq" className="text-[13px] text-white/60 hover:text-white transition-colors">FAQ</Link>
-            <Link href="/demo" className="text-[13px] text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Try Demo</Link>
+          <nav className="hidden md:flex items-center gap-7">
+            <Link href="/features" className="text-sm text-white/75 hover:text-white transition-colors">Features</Link>
+            <Link href="/pricing" className="text-sm text-white/75 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/blog" className="text-sm text-white/75 hover:text-white transition-colors">Blog</Link>
+            <Link href="/faq" className="text-sm text-white/75 hover:text-white transition-colors">FAQ</Link>
+            <Link href="/demo" className="text-sm text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Try Demo</Link>
           </nav>
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-[13px] text-white/60 hover:text-white transition-colors px-4 py-2">Log In</Link>
+            <Link href="/login" className="text-sm text-white/75 hover:text-white transition-colors px-4 py-2">Log In</Link>
             {IS_LAUNCHED ? (
               <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
                 Get Started
@@ -50,11 +51,12 @@ export function MarketingHeader() {
         </div>
         {mobileMenu && (
           <div className="md:hidden border-t border-white/10 py-4 space-y-1 bg-[#0a0a0a]/90 backdrop-blur-xl -mx-6 px-6">
-            <Link href="/features" className="block text-sm text-white/60 hover:text-white py-2.5">Features</Link>
-            <Link href="/pricing" className="block text-sm text-white/60 hover:text-white py-2.5">Pricing</Link>
-            <Link href="/faq" className="block text-sm text-white/60 hover:text-white py-2.5">FAQ</Link>
+            <Link href="/features" className="block text-sm text-white/75 hover:text-white py-2.5">Features</Link>
+            <Link href="/pricing" className="block text-sm text-white/75 hover:text-white py-2.5">Pricing</Link>
+            <Link href="/blog" className="block text-sm text-white/75 hover:text-white py-2.5">Blog</Link>
+            <Link href="/faq" className="block text-sm text-white/75 hover:text-white py-2.5">FAQ</Link>
             <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5">Try Demo</Link>
-            <Link href="/login" className="block text-sm text-white/60 py-2.5">Log In</Link>
+            <Link href="/login" className="block text-sm text-white/75 py-2.5">Log In</Link>
             {IS_LAUNCHED ? (
               <Link href="/pricing" className="block text-sm text-[#55E039] font-bold py-2.5">Get Started →</Link>
             ) : (

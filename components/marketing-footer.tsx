@@ -20,24 +20,25 @@ export function MarketingFooter() {
           <div>
             <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-4">Product</p>
             <div className="space-y-2.5">
-              <Link href="/features" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Features</Link>
-              <Link href="/pricing" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Pricing</Link>
-              <Link href="/faq" className="block text-sm text-white/60 hover:text-white/70 transition-colors">FAQ</Link>
-              <Link href="/demo" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Demo</Link>
-              <Link href="/login" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Log In</Link>
+              <Link href="/features" className="block text-sm text-white/70 hover:text-white transition-colors">Features</Link>
+              <Link href="/pricing" className="block text-sm text-white/70 hover:text-white transition-colors">Pricing</Link>
+              <Link href="/demo" className="block text-sm text-white/70 hover:text-white transition-colors">Demo</Link>
+              <Link href="/blog" className="block text-sm text-white/70 hover:text-white transition-colors">Blog</Link>
+              <Link href="/faq" className="block text-sm text-white/70 hover:text-white transition-colors">FAQ</Link>
+              <Link href="/login" className="block text-sm text-white/70 hover:text-white transition-colors">Log In</Link>
             </div>
           </div>
           <div>
             <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-4">Legal</p>
             <div className="space-y-2.5">
-              <Link href="/privacy" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Terms of Service</Link>
-              <a href="mailto:support@regencompliance.com" className="block text-sm text-white/60 hover:text-white/70 transition-colors">Contact</a>
+              <Link href="/privacy" className="block text-sm text-white/70 hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="block text-sm text-white/70 hover:text-white transition-colors">Terms of Service</Link>
+              <a href="mailto:support@regencompliance.com" className="block text-sm text-white/70 hover:text-white transition-colors">Contact</a>
             </div>
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-white/[0.06]">
-          <p className="text-[11px] text-white/20 leading-relaxed text-center">
+          <p className="text-[11px] text-white/50 leading-relaxed text-center">
             RegenCompliance is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. &copy; 2026 RegenCompliance. All rights reserved.
           </p>
         </div>

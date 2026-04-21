@@ -51,22 +51,24 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
   )
 
   const scoreColor =
-    avgScore !== null && avgScore >= 80
-      ? "text-[#55E039]"
-      : avgScore !== null && avgScore >= 60
-        ? "text-yellow-400"
-        : "text-red-400"
+    avgScore === null
+      ? "text-white/60"
+      : avgScore >= 80
+        ? "text-[#55E039]"
+        : avgScore >= 70
+          ? "text-yellow-400"
+          : "text-red-400"
 
   const scoreRange =
-    avgScore !== null
-      ? avgScore >= 90
+    avgScore === null
+      ? "N/A"
+      : avgScore >= 90
         ? "Excellent (90-100)"
         : avgScore >= 80
           ? "Good (80-89)"
           : avgScore >= 70
             ? "Fair (70-79)"
-            : "Needs Improvement"
-      : "N/A"
+            : "Needs Improvement (<70)"
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">

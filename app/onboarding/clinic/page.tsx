@@ -85,7 +85,7 @@ export default function OnboardingClinicPage() {
       <div>
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Step 1 of 2</span>
-          <span className="text-xs text-white/30">Clinic Setup</span>
+          <span className="text-xs text-white/55">Clinic Setup</span>
         </div>
         <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
           <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-[#55E039] to-[#3BB82A] transition-all duration-500" />

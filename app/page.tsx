@@ -147,7 +147,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <span className="text-sm font-bold text-white block">Compliance Scanner</span>
-                      <span className="text-[10px] text-white/30">Paste content below to scan</span>
+                      <span className="text-[11px] text-white/55">Paste content below to scan</span>
                     </div>
                   </div>
                   <div className="hidden sm:flex gap-1.5">
@@ -160,7 +160,7 @@ export default function LandingPage() {
                 <div className="rounded-xl bg-[#0a0a0a] border border-white/10 p-4 sm:p-5 text-[13px] sm:text-[14px] text-white/60 leading-[1.8] sm:leading-[2.2] mb-5" style={{ fontFamily: "var(--font-poppins), sans-serif" }}>
                   <span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">Our stem cell therapy cures arthritis</span>{" "}and{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">heals damaged tissue</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">FDA-approved stem cells</span>.{" "}Patients experience{" "}<span className="bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded-md border border-red-500/30 font-medium">guaranteed results</span>{" "}with{" "}<span className="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md border border-amber-500/30 font-medium">no side effects</span>. Our{" "}<span className="text-white/40">clinic has helped thousands of patients recover from chronic conditions using advanced regenerative protocols.</span>
                   <div className="flex justify-end mt-2">
-                    <span className="text-[10px] text-white/20">312 / 5,000 characters</span>
+                    <span className="text-[11px] text-white/50">312 / 5,000 characters</span>
                   </div>
                 </div>
 
@@ -168,7 +168,7 @@ export default function LandingPage() {
                   <Scan className="h-4 w-4 mr-2" />
                   Scan for Compliance Issues
                 </Link>
-                <p className="text-[10px] text-white/20 text-center mt-3">Educational guidance only. Not legal or regulatory advice.</p>
+                <p className="text-[11px] text-white/50 text-center mt-3">Educational guidance only. Not legal or regulatory advice.</p>
               </div>
 
               {/* Right: Results */}

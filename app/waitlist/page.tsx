@@ -162,7 +162,7 @@ export default function WaitlistPage() {
                         </>
                       )}
                     </button>
-                    <p className="text-center text-[11px] text-white/40">
+                    <p className="text-center text-[11px] text-white/60">
                       No spam. We&apos;ll only email you when your invite is ready.
                     </p>
                   </form>

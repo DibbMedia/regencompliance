@@ -244,7 +244,7 @@ export default function DemoPage() {
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
                 className="w-full min-h-[200px] resize-y rounded-2xl bg-[#111111] border border-white/15 text-white placeholder:text-white/40 px-5 py-4 text-sm focus:outline-none focus:border-[#55E039]/40 focus:bg-[#131313] transition-colors"
               />
-              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs ${charCount >= 4500 ? "text-red-400" : "text-white/30"}`}>
+              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs ${charCount >= 4500 ? "text-red-400 font-semibold" : "text-white/60"}`}>
                 {charCount}/5000
               </span>
             </div>
