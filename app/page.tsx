@@ -264,6 +264,113 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== COST COMPARISON ===== */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Cost of compliance</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              How much does getting this wrong actually cost?
+            </h2>
+            <p className="mt-4 text-base text-white/70 max-w-2xl mx-auto leading-relaxed">
+              Most clinics compare RegenCompliance to doing nothing. The real comparison is against every other way you could solve this problem.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.02]">
+            <table className="w-full text-left min-w-[640px]">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/[0.03]">
+                  <th className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">Approach</th>
+                  <th className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">Typical cost</th>
+                  <th className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">Turnaround</th>
+                  <th className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/70">Rule freshness</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/[0.06]">
+                <tr>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-bold text-red-300">Responding to a warning letter</p>
+                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Attorney, CMO response filing, evidence package. Everything you&rsquo;re paying for after the fact.</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-red-300">$50K&ndash;$150K</p>
+                    <p className="text-[11px] text-white/55 mt-1">Per letter</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-white/85">15 business days</p>
+                    <p className="text-[11px] text-white/55 mt-1">Federally mandated</p>
+                  </td>
+                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
+                    Reactive only
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-bold text-white/85">Full healthcare marketing attorney review</p>
+                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Pre-publish review of every marketing asset by outside counsel billed hourly.</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-white/85">$400&ndash;$800/hr</p>
+                    <p className="text-[11px] text-white/55 mt-1">$25K+/yr at 30 hrs</p>
+                  </td>
+                  <td className="px-5 py-4 align-top text-[15px] text-white/80">3&ndash;7 days</td>
+                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
+                    Quarterly guidance updates
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-bold text-white/85">In-house compliance manager</p>
+                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Full-time hire with healthcare-marketing regulatory background.</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-white/85">$90K&ndash;$150K/yr</p>
+                    <p className="text-[11px] text-white/55 mt-1">Plus benefits</p>
+                  </td>
+                  <td className="px-5 py-4 align-top text-[15px] text-white/80">Same-day</td>
+                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
+                    As good as the hire
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-bold text-white/85">Generic AI writing tool</p>
+                    <p className="text-xs text-white/60 mt-1 leading-relaxed">ChatGPT, Jasper, Copy.ai &mdash; helpful for copy, zero healthcare regulatory knowledge.</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-white/85">$20&ndash;$100/mo</p>
+                    <p className="text-[11px] text-white/55 mt-1">Plus human review</p>
+                  </td>
+                  <td className="px-5 py-4 align-top text-[15px] text-white/80">Instant</td>
+                  <td className="px-5 py-4 align-top text-[13px] text-amber-300">
+                    Writes violations by default
+                  </td>
+                </tr>
+                <tr className="bg-[#55E039]/[0.04]">
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-bold text-[#55E039]">RegenCompliance</p>
+                    <p className="text-xs text-white/70 mt-1 leading-relaxed">Pre-publish scan against live FDA/FTC enforcement data. AI rewrites included.</p>
+                  </td>
+                  <td className="px-5 py-4 align-top">
+                    <p className="text-[15px] font-semibold text-[#55E039]">$297/mo</p>
+                    <p className="text-[11px] text-white/70 mt-1">Founding rate, locked in</p>
+                  </td>
+                  <td className="px-5 py-4 align-top text-[15px] font-semibold text-[#55E039]">30 seconds</td>
+                  <td className="px-5 py-4 align-top text-[13px] text-[#55E039]">
+                    Daily automated updates
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-6 text-center text-sm text-white/60 max-w-2xl mx-auto leading-relaxed">
+            One warning-letter response costs more than 14 years of the founding rate. That&rsquo;s the math that makes the decision for most clinic owners.
+          </p>
+        </div>
+      </section>
+
       {/* ===== HOW IT WORKS ===== */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-6xl px-6">
