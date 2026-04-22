@@ -8,6 +8,33 @@ import { COMPETITORS } from "@/lib/compare/registry"
 
 const canonical = "https://compliance.regenportal.com/compare"
 
+const HUB_FAQS = [
+  {
+    q: "Which tool should I choose first?",
+    a: "Depends on what's missing today. If you already have a marketing writer or agency producing copy, RegenCompliance is the gap — the compliance check between their output and publishing. If you're a solo-owner clinic writing everything yourself, pair a drafting tool (ChatGPT or Jasper) with RegenCompliance. The most common end state is two tools: one that generates copy fast, one that checks it against FDA/FTC rules before it goes live.",
+  },
+  {
+    q: "Do I need multiple tools or can one do everything?",
+    a: "No single tool does drafting, compliance, grammar, and legal judgment at a best-in-class level. The practices that get this right typically run three to four tools in sequence — a drafting tool, a grammar tool, a compliance scanner, and a healthcare marketing attorney for edge cases. The combined monthly cost is still a small fraction of what one FDA warning letter response costs.",
+  },
+  {
+    q: "Is RegenCompliance trying to replace my healthcare marketing attorney?",
+    a: "No. We handle the pattern-matching work that attorneys cannot feasibly do per-item at their billing rate. The attorney continues to handle judgment calls, warning-letter responses, and novel-treatment questions. Clinics that pair both typically reduce routine legal review spend and use those hours on strategic questions.",
+  },
+  {
+    q: "How often does the underlying rule set change?",
+    a: "Daily. The FDA issues warning letters weekly and the FTC publishes enforcement actions continuously. Our ingestion pipeline adds new enforcement into the rule set within 24 hours of publication. This is the specific reason purpose-built tools outperform general AI on compliance — general models update on generational cycles, enforcement evolves in real time.",
+  },
+  {
+    q: "What makes these comparisons 'honest' vs. sales pitches?",
+    a: "Every comparison page leads with where the competitor wins. ChatGPT really is better for drafting from scratch. Grammarly really is better for grammar. A healthcare attorney really is irreplaceable for warning-letter response. If we pretended otherwise, we'd lose credibility on the part we actually do better — the day-to-day FDA/FTC compliance check.",
+  },
+  {
+    q: "Can I try the tool before committing?",
+    a: "Yes. The /demo scanner is free and requires no card — paste any marketing content and see a compliance report in 30 seconds. Founding-member signup still has 30-day money-back guarantee on top of that.",
+  },
+]
+
 export const metadata: Metadata = {
   title: "Healthcare Marketing Compliance Tools Compared — RegenCompliance vs Alternatives",
   description:
@@ -59,6 +86,16 @@ export default function ComparePage() {
     })),
   }
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: HUB_FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
       <script
@@ -68,6 +105,10 @@ export default function ComparePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <MarketingBg />
       <MarketingHeader />
@@ -164,6 +205,35 @@ export default function ComparePage() {
                   <ArrowRight className="h-3 w-3" />
                 </span>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ FAQ ============ */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-3xl px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
+              Common questions
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Before you pick a tool
+            </h2>
+          </div>
+          <div className="space-y-3">
+            {HUB_FAQS.map((faq, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
+              >
+                <h3 className="text-[15px] sm:text-base font-semibold text-white mb-3">
+                  {faq.q}
+                </h3>
+                <p className="text-sm sm:text-[15px] text-white/70 leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
             ))}
           </div>
         </div>

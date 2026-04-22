@@ -12,6 +12,11 @@ export interface BlogPostMeta {
   tags: string[]
   author: { name: string; role?: string }
   heroLabel?: string
+  /**
+   * Optional extra JSON-LD schema blocks (HowTo, FAQPage, etc.) rendered
+   * in <head> alongside the default Article + BreadcrumbList schemas.
+   */
+  extraSchemas?: Array<Record<string, unknown>>
 }
 
 export interface BlogPostModule {

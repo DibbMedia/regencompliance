@@ -36,6 +36,61 @@ export const meta: BlogPostMeta = {
   tags: ["Compliance audit", "Framework", "Tactical"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
   heroLabel: "5-step playbook",
+  extraSchemas: [
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: "How to Audit a Healthcare Website for FDA/FTC Compliance in Two Weeks",
+      description:
+        "A tactical 5-step framework for auditing a healthcare practice website for FDA/FTC compliance violations — inventory, triage, claim-category scan, rewrite at source, archive retirement.",
+      totalTime: "P14D",
+      step: [
+        {
+          "@type": "HowToStep",
+          position: 1,
+          name: "Full marketing-surface inventory",
+          text: "Pull every marketing surface into one sheet — website pages (via sitemap or crawl), social media posts and highlights, paid ads (active and paused), email templates and automations, sales scripts, intake forms, and third-party listings like Google Business, Yelp, Healthgrades, Zocdoc.",
+          url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-1-inventory",
+        },
+        {
+          "@type": "HowToStep",
+          position: 2,
+          name: "Pageview-weighted triage",
+          text: "Rank the inventory by pageviews and impressions. Top-traffic assets get reviewed first. Target the top 20% of traffic-weighted surfaces for the initial pass — this typically captures 80%+ of enforcement exposure.",
+          url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-2-triage",
+        },
+        {
+          "@type": "HowToStep",
+          position: 3,
+          name: "Claim-category scan",
+          text: "Run each prioritized asset through a compliance scanner (or manual checklist) scanning for the high-frequency claim categories: disease claims, structure-function overreach, FDA-approved misuse, guarantee language, testimonial-disclosure gaps, before/after typical-experience issues, and specialty-specific patterns.",
+          url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-3-scan",
+        },
+        {
+          "@type": "HowToStep",
+          position: 4,
+          name: "Rewrite at source",
+          text: "Update your style guide and content sources with compliant language — not just the audit output. The goal is preventing the same violations from reappearing in future content, not just removing them once.",
+          url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-4-rewrite",
+        },
+        {
+          "@type": "HowToStep",
+          position: 5,
+          name: "Archive retirement",
+          text: "Old pages, old social posts, and old ads that aren't worth updating should be deprecated, delisted, or removed. Regulators read your active public surface — if it exists and is findable, it's in scope.",
+          url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-5-archive",
+        },
+      ],
+      tool: [
+        {
+          "@type": "HowToTool",
+          name: "Compliance scanner (RegenCompliance or equivalent)",
+        },
+        { "@type": "HowToTool", name: "Site analytics (GA4, Vercel Analytics, etc.)" },
+        { "@type": "HowToTool", name: "CMS or content export access" },
+      ],
+    },
+  ],
 }
 
 export default function Body() {
