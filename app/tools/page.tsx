@@ -16,6 +16,33 @@ import { TOOLS } from "@/lib/tools/registry"
 
 const canonical = "https://compliance.regenportal.com/tools"
 
+const HUB_FAQS = [
+  {
+    q: "Do I have to pick one tool or do I get all of them?",
+    a: "All five tools are included in every RegenCompliance subscription. No per-tool pricing, no add-on tiers. The founding rate is $297/mo for everything; the standard rate is $497/mo for everything.",
+  },
+  {
+    q: "Which tool should I start with?",
+    a: "The scanner is the front door. Most practices run their existing marketing through it first, see flagged phrases and scores, then use the AI rewriter to fix what was flagged. The audit trail captures everything automatically; the library and alerts are references you come back to.",
+  },
+  {
+    q: "Do the tools work together or can I use them independently?",
+    a: "They work as a system but also independently. You can use the scanner alone if you want; the audit trail captures every scan automatically; the rewriter activates from scanner flags. Most practices use all five within their first month.",
+  },
+  {
+    q: "Is there a free version of any tool?",
+    a: "The free demo at /demo runs the scanner on content you paste. No card required. Gives you a real sense of what the scanner does, with some limits on the free tier. The rewriter and full platform require a subscription.",
+  },
+  {
+    q: "Which tools require setup vs work out of the box?",
+    a: "Scanner, AI rewriter, and audit trail work out of the box. The compliance library is browsable immediately. Enforcement alerts require a one-time profile configuration (your specialty, states, service lines) so alerts calibrate to your practice.",
+  },
+  {
+    q: "Can my marketing agency use the tools on my account?",
+    a: "Yes. Add them as a team seat (3 included with founding plan). They can run scans, generate rewrites, and contribute to the audit trail. Decisions are logged per-user so accountability is preserved.",
+  },
+]
+
 const TOOL_ICON_MAP: Record<string, typeof Scan> = {
   scanner: Scan,
   "ai-rewriter": Sparkles,
@@ -75,6 +102,16 @@ export default function ToolsIndexPage() {
     })),
   }
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: HUB_FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
       <script
@@ -84,6 +121,10 @@ export default function ToolsIndexPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <MarketingBg />
       <MarketingHeader />
@@ -167,6 +208,35 @@ export default function ToolsIndexPage() {
                 across every tool.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ FAQ ============ */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-3xl px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
+              Common questions
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              About the tools
+            </h2>
+          </div>
+          <div className="space-y-3">
+            {HUB_FAQS.map((faq, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
+              >
+                <h3 className="text-[15px] sm:text-base font-semibold text-white mb-3">
+                  {faq.q}
+                </h3>
+                <p className="text-sm sm:text-[15px] text-white/70 leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

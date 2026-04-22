@@ -6,6 +6,7 @@ import {
   getCompetitorBySlug,
   getRelatedCompetitors,
 } from "@/lib/compare/registry"
+import { getPostsBySlugs } from "@/lib/blog/registry"
 
 export async function generateStaticParams() {
   return COMPETITORS.map((c) => ({ competitor: c.slug }))
@@ -50,6 +51,7 @@ export default async function CompetitorPage({
   if (!meta) notFound()
 
   const related = getRelatedCompetitors(competitor)
+  const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
   const canonical = `https://compliance.regenportal.com/vs/${meta.slug}`
 
   const faqSchema = {
@@ -119,7 +121,7 @@ export default async function CompetitorPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
-      <CompareLayout meta={meta} related={related} />
+      <CompareLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>
   )
 }

@@ -59,8 +59,50 @@ const PRINCIPLES = [
 ]
 
 export default function AboutPage() {
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About RegenCompliance",
+    description:
+      "About the RegenCompliance team, why we built FDA/FTC compliance software for healthcare practices, and the principles behind the product.",
+    url: canonical,
+    mainEntity: {
+      "@type": "Organization",
+      name: "RegenCompliance",
+      parentOrganization: { "@type": "Organization", name: "Dibb Media" },
+      url: "https://compliance.regenportal.com",
+    },
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://compliance.regenportal.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "About",
+        item: canonical,
+      },
+    ],
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <MarketingBg />
       <MarketingHeader />
 

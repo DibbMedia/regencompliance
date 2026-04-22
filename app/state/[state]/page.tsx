@@ -15,6 +15,7 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { STATES, getStateBySlug, getRelatedStates } from "@/lib/state/data"
+import { SPECIALTIES } from "@/lib/specialty/registry"
 
 export async function generateStaticParams() {
   return STATES.map((s) => ({ state: s.slug }))
@@ -257,6 +258,41 @@ export default async function StatePage({
                 <CheckCircle2 className="h-4 w-4 text-[#55E039] shrink-0 mt-1" aria-hidden />
                 <span className="text-sm text-white/80 leading-relaxed">{sc}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ SPECIALTIES ============ */}
+      <section className="relative py-14">
+        <div className="relative mx-auto max-w-5xl px-6">
+          <div className="text-center mb-8">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039] mb-3">
+              By specialty in {meta.state}
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Specialty-specific compliance guides
+            </h2>
+            <p className="mt-3 text-sm text-white/60 max-w-xl mx-auto leading-relaxed">
+              Specialty rules stack on top of state rules. Find the
+              specialty-specific framework that applies to your practice.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {SPECIALTIES.slice(0, 6).map((s) => (
+              <Link
+                key={s.slug}
+                href={`/for/${s.slug}`}
+                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+              >
+                <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
+                  {s.specialty}
+                </h3>
+                <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                  See playbook
+                  <ArrowRight className="h-3 w-3" />
+                </span>
+              </Link>
             ))}
           </div>
         </div>

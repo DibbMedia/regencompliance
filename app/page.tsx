@@ -391,6 +391,49 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/how-it-works"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors"
+            >
+              See the full walkthrough
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TOOLS PREVIEW ===== */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Inside the platform</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Five tools. One subscription.</h2>
+            <p className="mt-4 text-base text-white/60 max-w-2xl mx-auto">Purpose-built for FDA/FTC healthcare marketing compliance. Every tool included at the founding rate.</p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { href: "/tools/scanner", title: "Compliance Scanner", desc: "0-100 score with flagged phrases, risk levels, rule citations in 30 seconds." },
+              { href: "/tools/ai-rewriter", title: "AI Compliant Rewriter", desc: "Flagged phrases become compliant alternatives. Preserves voice; explains reasoning." },
+              { href: "/tools/audit-trail", title: "Audit Trail + PDF Export", desc: "Every scan logged. Regulatory evidence built as a byproduct of normal use." },
+              { href: "/tools/compliance-library", title: "300+ Rule Library", desc: "Every rule sourced from real enforcement. Searchable, daily-updated database." },
+              { href: "/tools/enforcement-alerts", title: "Enforcement Alerts", desc: "Real-time notifications when new FDA/FTC/state enforcement affects your specialty." },
+              { href: "/tools", title: "See all five tools", desc: "Deep dives on each tool, how they work together, what's included." },
+            ].map((t) => (
+              <Link
+                key={t.href}
+                href={t.href}
+                className="group rounded-2xl bg-white/[0.03] border border-white/10 p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all duration-300"
+              >
+                <h3 className="text-base font-bold text-white group-hover:text-[#55E039] transition-colors">{t.title}</h3>
+                <p className="mt-2 text-sm text-white/60 leading-relaxed">{t.desc}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                  Learn more
+                  <ChevronRight className="h-3 w-3" />
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

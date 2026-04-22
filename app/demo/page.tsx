@@ -169,8 +169,49 @@ export default function DemoPage() {
   const demoExpired = demoStatus?.expired ?? false
   const scansLeft = demoStatus ? demoStatus.max_scans - demoStatus.scans_used : null
 
+  const webPageSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "RegenCompliance Free Demo",
+    description:
+      "Free compliance scanner demo. Paste any healthcare marketing content and get an instant FDA/FTC compliance report with flagged phrases, risk levels, and compliant rewrites.",
+    url: "https://compliance.regenportal.com/demo",
+    about: {
+      "@type": "SoftwareApplication",
+      name: "RegenCompliance",
+      applicationCategory: "BusinessApplication",
+    },
+  })
+
+  const breadcrumbSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://compliance.regenportal.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Demo",
+        item: "https://compliance.regenportal.com/demo",
+      },
+    ],
+  })
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: webPageSchema }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbSchema }}
+      />
       <MarketingBg />
       <MarketingHeader />
 

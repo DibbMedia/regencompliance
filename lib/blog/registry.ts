@@ -340,3 +340,15 @@ export function getRelated(slug: string, limit = 3) {
       excerpt: p.meta.excerpt,
     }))
 }
+
+export function getPostsBySlugs(slugs: string[] | undefined) {
+  if (!slugs || slugs.length === 0) return []
+  return slugs
+    .map((s) => POSTS.find((p) => p.meta.slug === s))
+    .filter((p): p is NonNullable<typeof p> => p !== undefined)
+    .map((p) => ({
+      slug: p.meta.slug,
+      title: p.meta.title,
+      excerpt: p.meta.excerpt,
+    }))
+}

@@ -6,6 +6,7 @@ import {
   getSpecialtyBySlug,
   getRelatedSpecialties,
 } from "@/lib/specialty/registry"
+import { getPostsBySlugs } from "@/lib/blog/registry"
 
 export async function generateStaticParams() {
   return SPECIALTIES.map((s) => ({ specialty: s.slug }))
@@ -50,6 +51,7 @@ export default async function SpecialtyPage({
   if (!meta) notFound()
 
   const related = getRelatedSpecialties(specialty)
+  const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
   const canonical = `https://compliance.regenportal.com/for/${meta.slug}`
 
   const faqSchema = {
@@ -121,7 +123,7 @@ export default async function SpecialtyPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
-      <SpecialtyLayout meta={meta} related={related} />
+      <SpecialtyLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>
   )
 }

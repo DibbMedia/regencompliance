@@ -211,8 +211,87 @@ function RoiCalculator() {
 export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
+  const pricingFaqSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: pricingFaqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  })
+
+  const pricingProductSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "RegenCompliance",
+    description:
+      "FDA/FTC compliance scanning software for healthcare practices. Scanner, AI rewriter, audit trail, rule library, and enforcement alerts.",
+    brand: { "@type": "Brand", name: "RegenCompliance" },
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Founding member",
+        price: "297",
+        priceCurrency: "USD",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "297",
+          priceCurrency: "USD",
+          billingIncrement: 1,
+          unitCode: "MON",
+          referenceQuantity: {
+            "@type": "QuantitativeValue",
+            value: 1,
+            unitCode: "MON",
+          },
+        },
+        description: "Locked for life — rate never increases.",
+      },
+      {
+        "@type": "Offer",
+        name: "Professional",
+        price: "497",
+        priceCurrency: "USD",
+        description: "Standard pricing after beta period ends.",
+        availability: "https://schema.org/PreOrder",
+      },
+    ],
+  })
+
+  const breadcrumbSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://compliance.regenportal.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Pricing",
+        item: "https://compliance.regenportal.com/pricing",
+      },
+    ],
+  })
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: pricingFaqSchema }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: pricingProductSchema }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbSchema }}
+      />
       <MarketingBg />
       <MarketingHeader />
 

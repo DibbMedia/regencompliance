@@ -21,6 +21,10 @@ import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 import type { ToolMeta } from "@/lib/tools/types"
+import {
+  RelatedBlogLinks,
+  type RelatedBlogPost,
+} from "@/components/blog/related-blog-links"
 
 const TOOL_ICON_MAP: Record<string, typeof Scan> = {
   scanner: Scan,
@@ -38,9 +42,11 @@ function ToolIcon({ slug, className }: { slug: string; className?: string }) {
 export function ToolLayout({
   meta,
   related,
+  relatedPosts = [],
 }: {
   meta: ToolMeta
   related: ToolMeta[]
+  relatedPosts?: RelatedBlogPost[]
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -414,6 +420,12 @@ export function ToolLayout({
           </div>
         </section>
       )}
+
+      <RelatedBlogLinks
+        posts={relatedPosts}
+        heading="Further reading"
+        subheading={`Blog posts that cover ${meta.name.toLowerCase()} in real-world healthcare compliance scenarios.`}
+      />
 
       <MarketingFooter />
     </div>

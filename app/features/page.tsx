@@ -69,8 +69,49 @@ const auditFeatures = [
 ]
 
 export default function FeaturesPage() {
+  const breadcrumbSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://compliance.regenportal.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Features",
+        item: "https://compliance.regenportal.com/features",
+      },
+    ],
+  })
+
+  const webPageSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "RegenCompliance Features",
+    description:
+      "Full feature breakdown for RegenCompliance — compliance scanner, AI rewriter, audit trail, 300+ rule library, enforcement alerts, and team collaboration.",
+    url: "https://compliance.regenportal.com/features",
+    about: {
+      "@type": "SoftwareApplication",
+      name: "RegenCompliance",
+      applicationCategory: "BusinessApplication",
+    },
+  })
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbSchema }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: webPageSchema }}
+      />
       <MarketingBg />
       <MarketingHeader />
 

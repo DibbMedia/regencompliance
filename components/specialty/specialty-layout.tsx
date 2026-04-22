@@ -21,6 +21,10 @@ import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 import type { SpecialtyMeta } from "@/lib/specialty/types"
+import {
+  RelatedBlogLinks,
+  type RelatedBlogPost,
+} from "@/components/blog/related-blog-links"
 
 function riskBadge(level: "HIGH" | "MEDIUM" | "LOW") {
   if (level === "HIGH") {
@@ -47,9 +51,11 @@ function riskBadge(level: "HIGH" | "MEDIUM" | "LOW") {
 export function SpecialtyLayout({
   meta,
   related,
+  relatedPosts = [],
 }: {
   meta: SpecialtyMeta
   related: SpecialtyMeta[]
+  relatedPosts?: RelatedBlogPost[]
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -337,6 +343,79 @@ export function SpecialtyLayout({
         </div>
       </section>
 
+      {/* ============ TOOLS FOR THIS SPECIALTY ============ */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-5xl px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
+              Tools in the platform
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              What you actually get for {meta.specialty.toLowerCase()}
+            </h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link
+              href="/tools/scanner"
+              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+            >
+              <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
+                Compliance Scanner
+              </h3>
+              <p className="mt-2 text-sm text-white/65 leading-relaxed">
+                {meta.specialty}-specific rule calibration. Flags disease
+                claims, FDA misuse, and specialty-specific patterns.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                Learn more
+                <ArrowRight className="h-3 w-3" />
+              </span>
+            </Link>
+            <Link
+              href="/tools/ai-rewriter"
+              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+            >
+              <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
+                AI Compliant Rewriter
+              </h3>
+              <p className="mt-2 text-sm text-white/65 leading-relaxed">
+                Turn flagged {meta.specialty.toLowerCase()} claims into
+                compliant alternatives that preserve your voice.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                Learn more
+                <ArrowRight className="h-3 w-3" />
+              </span>
+            </Link>
+            <Link
+              href="/tools/audit-trail"
+              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+            >
+              <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
+                Audit Trail + PDF Export
+              </h3>
+              <p className="mt-2 text-sm text-white/65 leading-relaxed">
+                Permanent evidence of your pre-publish compliance review.
+                Regulatory-ready format.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                Learn more
+                <ArrowRight className="h-3 w-3" />
+              </span>
+            </Link>
+          </div>
+          <div className="mt-8 text-center">
+            <Link
+              href="/tools"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors"
+            >
+              See all five tools
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ============ FAQ ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-2xl px-6">
@@ -477,6 +556,12 @@ export function SpecialtyLayout({
           </div>
         </section>
       )}
+
+      <RelatedBlogLinks
+        posts={relatedPosts}
+        heading="Further reading"
+        subheading={`Blog posts covering enforcement, claim categories, and tactical playbooks specifically relevant to ${meta.specialty.toLowerCase()}.`}
+      />
 
       <MarketingFooter />
     </div>

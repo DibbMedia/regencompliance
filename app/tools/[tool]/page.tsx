@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ToolLayout } from "@/components/tools/tool-layout"
 import { TOOLS, getToolBySlug, getRelatedTools } from "@/lib/tools/registry"
+import { getPostsBySlugs } from "@/lib/blog/registry"
 
 export async function generateStaticParams() {
   return TOOLS.map((t) => ({ tool: t.slug }))
@@ -46,6 +47,7 @@ export default async function ToolPage({
   if (!meta) notFound()
 
   const related = getRelatedTools(tool)
+  const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
   const canonical = `https://compliance.regenportal.com/tools/${meta.slug}`
 
   const faqSchema = {
@@ -111,7 +113,7 @@ export default async function ToolPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareFeatureSchema) }}
       />
-      <ToolLayout meta={meta} related={related} />
+      <ToolLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>
   )
 }

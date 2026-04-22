@@ -20,6 +20,10 @@ import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 import type { CompetitorMeta } from "@/lib/compare/types"
+import {
+  RelatedBlogLinks,
+  type RelatedBlogPost,
+} from "@/components/blog/related-blog-links"
 
 function renderCell(value: true | false | string) {
   if (value === true) {
@@ -34,9 +38,11 @@ function renderCell(value: true | false | string) {
 export function CompareLayout({
   meta,
   related,
+  relatedPosts = [],
 }: {
   meta: CompetitorMeta
   related: CompetitorMeta[]
+  relatedPosts?: RelatedBlogPost[]
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -512,6 +518,12 @@ export function CompareLayout({
           </div>
         </section>
       )}
+
+      <RelatedBlogLinks
+        posts={relatedPosts}
+        heading="Further reading"
+        subheading={`Blog posts that go deeper on topics covered in this comparison — enforcement patterns, specialty considerations, and tactical implementation.`}
+      />
 
       <MarketingFooter />
     </div>
