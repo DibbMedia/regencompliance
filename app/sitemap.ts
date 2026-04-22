@@ -3,10 +3,18 @@ import { POSTS_SORTED } from "@/lib/blog/registry"
 import { COMPETITORS } from "@/lib/compare/registry"
 import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
+import { POSTS_PER_PAGE } from "@/components/blog/blog-index"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://compliance.regenportal.com"
   const now = new Date()
+
+  // Blog pagination (page 1 lives at /blog, pages 2..N at /blog/page/[n])
+  const [, ...restPosts] = POSTS_SORTED
+  const totalBlogPages = Math.max(
+    1,
+    Math.ceil(restPosts.length / POSTS_PER_PAGE),
+  )
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -117,11 +125,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
+  const blogPaginationRoutes: MetadataRoute.Sitemap = []
+  for (let p = 2; p <= totalBlogPages; p++) {
+    blogPaginationRoutes.push({
+      url: `${baseUrl}/blog/page/${p}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })
+  }
+
   return [
     ...staticRoutes,
     ...blogRoutes,
     ...compareRoutes,
     ...specialtyRoutes,
     ...stateRoutes,
+    ...blogPaginationRoutes,
   ]
 }
