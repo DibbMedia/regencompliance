@@ -71,6 +71,27 @@ import WarningLetterResponseBody, {
 import SocialMediaAuditBody, {
   meta as socialMediaAuditMeta,
 } from "./posts/healthcare-social-media-compliance-audit"
+import ExosomeBody, {
+  meta as exosomeMeta,
+} from "./posts/exosome-marketing-compliance"
+import PrpBody, {
+  meta as prpMeta,
+} from "./posts/prp-injection-marketing-compliance"
+import BodyContouringBody, {
+  meta as bodyContouringMeta,
+} from "./posts/body-contouring-marketing-compliance"
+import HrtBody, {
+  meta as hrtMeta,
+} from "./posts/hormone-replacement-therapy-marketing-compliance"
+import KetamineBody, {
+  meta as ketamineMeta,
+} from "./posts/ketamine-clinic-marketing-compliance"
+import PeptideBody, {
+  meta as peptideMeta,
+} from "./posts/peptide-therapy-marketing-compliance"
+import HairRestorationBody, {
+  meta as hairRestorationMeta,
+} from "./posts/hair-restoration-marketing-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -97,6 +118,13 @@ export const POSTS: BlogPostModule[] = [
   { meta: googleAdsMeta, Body: GoogleAdsBody },
   { meta: warningLetterResponseMeta, Body: WarningLetterResponseBody },
   { meta: socialMediaAuditMeta, Body: SocialMediaAuditBody },
+  { meta: exosomeMeta, Body: ExosomeBody },
+  { meta: prpMeta, Body: PrpBody },
+  { meta: bodyContouringMeta, Body: BodyContouringBody },
+  { meta: hrtMeta, Body: HrtBody },
+  { meta: ketamineMeta, Body: KetamineBody },
+  { meta: peptideMeta, Body: PeptideBody },
+  { meta: hairRestorationMeta, Body: HairRestorationBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
