@@ -179,6 +179,30 @@ import TelehealthBody, {
 import AcupunctureBody, {
   meta as acupunctureMeta,
 } from "./posts/acupuncture-marketing-compliance"
+import PhysicalTherapyBody, {
+  meta as physicalTherapyMeta,
+} from "./posts/physical-therapy-marketing-compliance"
+import PodiatryBody, {
+  meta as podiatryMeta,
+} from "./posts/podiatry-marketing-compliance"
+import OptometryBody, {
+  meta as optometryMeta,
+} from "./posts/optometry-marketing-compliance"
+import EntBody, {
+  meta as entMeta,
+} from "./posts/ent-marketing-compliance"
+import OphthalmologyBody, {
+  meta as ophthalmologyMeta,
+} from "./posts/ophthalmology-marketing-compliance"
+import OralSurgeryBody, {
+  meta as oralSurgeryMeta,
+} from "./posts/oral-surgery-marketing-compliance"
+import NaturopathicBody, {
+  meta as naturopathicMeta,
+} from "./posts/naturopathic-medicine-marketing-compliance"
+import EmailMarketingBody, {
+  meta as emailMarketingMeta,
+} from "./posts/healthcare-email-marketing-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -241,6 +265,14 @@ export const POSTS: BlogPostModule[] = [
   { meta: pediatricMeta, Body: PediatricBody },
   { meta: telehealthMeta, Body: TelehealthBody },
   { meta: acupunctureMeta, Body: AcupunctureBody },
+  { meta: physicalTherapyMeta, Body: PhysicalTherapyBody },
+  { meta: podiatryMeta, Body: PodiatryBody },
+  { meta: optometryMeta, Body: OptometryBody },
+  { meta: entMeta, Body: EntBody },
+  { meta: ophthalmologyMeta, Body: OphthalmologyBody },
+  { meta: oralSurgeryMeta, Body: OralSurgeryBody },
+  { meta: naturopathicMeta, Body: NaturopathicBody },
+  { meta: emailMarketingMeta, Body: EmailMarketingBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
