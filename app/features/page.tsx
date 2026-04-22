@@ -152,9 +152,13 @@ export default function FeaturesPage() {
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 Unlike generic grammar tools or basic keyword checkers, our scanner understands context. It knows the difference between a patient testimonial that crosses the line into an implied health claim and one that stays within compliant boundaries. It flags phrases like &quot;FDA-approved stem cells&quot; (there are no FDA-approved stem cell products for most orthopedic or aesthetic uses), &quot;cures arthritis,&quot; and &quot;reverses aging&quot; while explaining exactly why each phrase creates regulatory risk.
               </p>
-              <p className="text-base text-white/70 leading-relaxed mb-8">
+              <p className="text-base text-white/70 leading-relaxed mb-6">
                 Each scan produces a detailed compliance report with a numeric score from 0 to 100, a severity breakdown of all flagged items (high, medium, low risk), and specific citations to the FDA warning letter or FTC enforcement action that makes each phrase problematic. You see exactly what regulators would see, before they see it.
               </p>
+              <Link href="/tools/scanner" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors mb-4">
+                See the full scanner breakdown
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
               <h3 className="text-lg font-extrabold text-white mb-6">What You Can Scan</h3>
@@ -227,9 +231,13 @@ export default function FeaturesPage() {
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 The rewriter is not a generic AI text generator. It has been specifically trained on FDA and FTC enforcement language, compliant marketing examples from leading healthcare practices across all specialties, and the nuanced difference between a health claim, a structure/function claim, and a patient experience statement. It understands that &quot;heals damaged tissue&quot; is a drug claim that requires FDA approval, while &quot;may support the body&apos;s natural healing processes&quot; is a structure/function claim that carries significantly less regulatory risk.
               </p>
-              <p className="text-base text-white/70 leading-relaxed mb-8">
+              <p className="text-base text-white/70 leading-relaxed mb-6">
                 Every rewrite comes with an explanation of why the original language was problematic and what specific regulatory principle the new language satisfies. This means your marketing team does not just get compliant copy — they learn the compliance reasoning behind each change. Over time, your team writes fewer violations because they understand the underlying rules, not just the individual corrections.
               </p>
+              <Link href="/tools/ai-rewriter" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
+                See the full rewriter breakdown
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
         </div>
@@ -255,9 +263,13 @@ export default function FeaturesPage() {
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 The library is organized by treatment type (PRP, stem cells, exosomes, peptides, prolotherapy, BMAC, Wharton&apos;s jelly, dermal fillers, weight loss treatments, dental implants, chiropractic, IV therapy), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
               </p>
-              <p className="text-base text-white/70 leading-relaxed mb-8">
+              <p className="text-base text-white/70 leading-relaxed mb-6">
                 Think of it as a living compliance manual written specifically for your industry. Healthcare attorneys charge $500 to $1,000 per hour to review marketing content. The compliance library gives your team the same reference knowledge that those attorneys use, accessible instantly and updated automatically as new enforcement actions are published.
               </p>
+              <Link href="/tools/compliance-library" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
+                See the full library breakdown
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
               <h3 className="text-lg font-extrabold text-white mb-6">Library by the Numbers</h3>
@@ -346,9 +358,13 @@ export default function FeaturesPage() {
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 RegenCompliance solves this with automated daily monitoring. Every morning, our system checks FDA.gov for new warning letters, FTC.gov for new enforcement actions and press releases, and state medical board websites for updated advertising guidance. When a new enforcement action is relevant to healthcare marketing, we extract the specific language violations and add them to the compliance database within 24 hours.
               </p>
-              <p className="text-base text-white/70 leading-relaxed mb-8">
+              <p className="text-base text-white/70 leading-relaxed mb-6">
                 This means the language that got a clinic in Florida a warning letter on Monday is already in your scanner&apos;s ruleset by Tuesday. You do not have to track enforcement actions yourself. You do not have to wait for your attorney to email you about new developments. The system handles it automatically, and every scan you run always uses the most current compliance data available.
               </p>
+              <Link href="/tools/enforcement-alerts" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
+                See the full enforcement-alerts breakdown
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
         </div>
@@ -374,9 +390,13 @@ export default function FeaturesPage() {
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 If the FDA or FTC ever contacts your clinic about marketing content, the first thing your attorney will ask for is documentation showing that you had a compliance review process. RegenCompliance provides that documentation automatically. Every scan generates a compliance report that can be exported as a PDF for legal review or as a CSV for internal record-keeping.
               </p>
-              <p className="text-base text-white/70 leading-relaxed mb-8">
+              <p className="text-base text-white/70 leading-relaxed mb-6">
                 The audit trail also tracks your compliance score over time, giving you a clear picture of whether your marketing content is improving or degrading. This is valuable for clinic owners who delegate marketing to staff or agencies — you can verify that content is being checked before it goes live, and you can identify patterns in the types of violations your team tends to make.
               </p>
+              <Link href="/tools/audit-trail" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
+                See the full audit-trail breakdown
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] transition-all duration-300">
               <h3 className="text-lg font-extrabold text-white mb-6">Audit Trail Includes</h3>

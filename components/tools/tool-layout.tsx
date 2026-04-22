@@ -256,6 +256,56 @@ export function ToolLayout({
         </div>
       </section>
 
+      {/* ============ WHO USES THIS ============ */}
+      <section className="relative py-14">
+        <div className="relative mx-auto max-w-5xl px-6">
+          <div className="text-center mb-8">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039] mb-3">
+              Who uses {meta.name.toLowerCase()}
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Calibrated by specialty
+            </h2>
+            <p className="mt-3 text-sm text-white/60 max-w-xl mx-auto leading-relaxed">
+              Each specialty has its own rule set and claim categories. Pick
+              yours to see how {meta.name.toLowerCase()} applies.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Link href="/for/med-spas" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">Med Spas</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+            <Link href="/for/weight-loss-clinics" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">Weight Loss Clinics</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+            <Link href="/for/regen-clinics" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">Regen Clinics</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+            <Link href="/for/dental-practices" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">Dental Practices</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+            <Link href="/for/aesthetic-practices" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">Aesthetic Practices</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+            <Link href="/for/iv-therapy" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">IV Therapy Clinics</span>
+              <ArrowRight className="inline-block h-3 w-3 ml-1 text-[#55E039]" />
+            </Link>
+          </div>
+          <div className="mt-6 text-center">
+            <Link href="/for" className="inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+              See all specialties
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ============ WHAT IT ISNT ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-3xl px-6">

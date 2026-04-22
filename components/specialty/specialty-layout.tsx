@@ -343,6 +343,42 @@ export function SpecialtyLayout({
         </div>
       </section>
 
+      {/* ============ COMPARE vs ALTERNATIVES ============ */}
+      <section className="relative py-14">
+        <div className="relative mx-auto max-w-4xl px-6">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10">
+            <div className="text-center mb-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039] mb-3">
+                Evaluating alternatives?
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                How RegenCompliance compares for {meta.specialty.toLowerCase()}
+              </h2>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Link href="/vs/chatgpt" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+                <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs ChatGPT</span>
+              </Link>
+              <Link href="/vs/jasper" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+                <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Jasper</span>
+              </Link>
+              <Link href="/vs/healthcare-attorney" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+                <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Healthcare Attorney</span>
+              </Link>
+              <Link href="/vs/manual-audit" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+                <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Manual Agency Audit</span>
+              </Link>
+            </div>
+            <div className="mt-5 text-center">
+              <Link href="/compare" className="inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
+                See all comparisons
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ============ TOOLS FOR THIS SPECIALTY ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-5xl px-6">

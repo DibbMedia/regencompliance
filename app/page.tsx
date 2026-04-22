@@ -628,6 +628,51 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== EXPLORE ===== */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-6xl px-6">
+          <div className="text-center mb-10">
+            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">Explore</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The full RegenCompliance site</h2>
+            <p className="mt-4 text-base text-white/60 max-w-2xl mx-auto">Deep dives on specialties, comparisons against every alternative, state-specific rules, and a 30-term regulatory glossary.</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Link href="/for" className="group rounded-2xl bg-white/[0.03] border border-white/10 p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#55E039]/80 mb-2">By specialty</p>
+              <h3 className="text-lg font-bold text-white group-hover:text-[#55E039] transition-colors">For clinics</h3>
+              <p className="mt-2 text-sm text-white/60 leading-relaxed">6 specialty playbooks: med spas, weight loss, regen, dental, aesthetic, IV therapy.</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]"><ArrowRight className="h-3 w-3" /></span>
+            </Link>
+            <Link href="/compare" className="group rounded-2xl bg-white/[0.03] border border-white/10 p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#55E039]/80 mb-2">Head-to-head</p>
+              <h3 className="text-lg font-bold text-white group-hover:text-[#55E039] transition-colors">Compare</h3>
+              <p className="mt-2 text-sm text-white/60 leading-relaxed">Honest comparisons vs ChatGPT, Jasper, Grammarly, attorneys, manual audits.</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]"><ArrowRight className="h-3 w-3" /></span>
+            </Link>
+            <Link href="/state" className="group rounded-2xl bg-white/[0.03] border border-white/10 p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#55E039]/80 mb-2">State by state</p>
+              <h3 className="text-lg font-bold text-white group-hover:text-[#55E039] transition-colors">State rules</h3>
+              <p className="mt-2 text-sm text-white/60 leading-relaxed">Medical board and state AG enforcement guides for 10 states.</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]"><ArrowRight className="h-3 w-3" /></span>
+            </Link>
+            <Link href="/glossary" className="group rounded-2xl bg-white/[0.03] border border-white/10 p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#55E039]/80 mb-2">Reference</p>
+              <h3 className="text-lg font-bold text-white group-hover:text-[#55E039] transition-colors">Glossary</h3>
+              <p className="mt-2 text-sm text-white/60 leading-relaxed">30 FDA/FTC terms with DefinedTerm schema and cross-links.</p>
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]"><ArrowRight className="h-3 w-3" /></span>
+            </Link>
+          </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+            <Link href="/how-it-works" className="text-white/70 hover:text-[#55E039] transition-colors">How it works</Link>
+            <Link href="/security" className="text-white/70 hover:text-[#55E039] transition-colors">Security</Link>
+            <Link href="/about" className="text-white/70 hover:text-[#55E039] transition-colors">About</Link>
+            <Link href="/tools" className="text-white/70 hover:text-[#55E039] transition-colors">Tools</Link>
+            <Link href="/blog" className="text-white/70 hover:text-[#55E039] transition-colors">Blog</Link>
+            <Link href="/faq" className="text-white/70 hover:text-[#55E039] transition-colors">FAQ</Link>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#55E039]/[0.03] to-transparent" />
