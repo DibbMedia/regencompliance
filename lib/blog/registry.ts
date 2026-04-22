@@ -203,6 +203,42 @@ import NaturopathicBody, {
 import EmailMarketingBody, {
   meta as emailMarketingMeta,
 } from "./posts/healthcare-email-marketing-compliance"
+import AgencySelectionBody, {
+  meta as agencySelectionMeta,
+} from "./posts/healthcare-marketing-agency-selection-compliance"
+import AdCopyTestingBody, {
+  meta as adCopyTestingMeta,
+} from "./posts/healthcare-ad-copy-testing-compliance"
+import IntakeAuditBody, {
+  meta as intakeAuditMeta,
+} from "./posts/patient-intake-form-compliance-audit"
+import PracticeLaunchBody, {
+  meta as practiceLaunchMeta,
+} from "./posts/new-practice-launch-compliance-checklist"
+import LinkedInBody, {
+  meta as linkedInMeta,
+} from "./posts/linkedin-b2b-healthcare-marketing-compliance"
+import PodcastBody, {
+  meta as podcastMeta,
+} from "./posts/podcast-marketing-healthcare-rules"
+import MostCitedBody, {
+  meta as mostCitedMeta,
+} from "./posts/most-cited-phrases-fda-warning-letters"
+import ViolationAnalysisBody, {
+  meta as violationAnalysisMeta,
+} from "./posts/healthcare-marketing-violation-analysis-100-sites"
+import TeethStraighteningBody, {
+  meta as teethStraighteningMeta,
+} from "./posts/ftc-teeth-straightening-enforcement"
+import HomeopathicBody, {
+  meta as homeopathicMeta,
+} from "./posts/fda-homeopathic-product-enforcement"
+import PackagePricingBody, {
+  meta as packagePricingMeta,
+} from "./posts/state-ag-med-spa-package-pricing-enforcement"
+import MidwiferyBody, {
+  meta as midwiferyMeta,
+} from "./posts/midwifery-doula-marketing-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -273,6 +309,18 @@ export const POSTS: BlogPostModule[] = [
   { meta: oralSurgeryMeta, Body: OralSurgeryBody },
   { meta: naturopathicMeta, Body: NaturopathicBody },
   { meta: emailMarketingMeta, Body: EmailMarketingBody },
+  { meta: agencySelectionMeta, Body: AgencySelectionBody },
+  { meta: adCopyTestingMeta, Body: AdCopyTestingBody },
+  { meta: intakeAuditMeta, Body: IntakeAuditBody },
+  { meta: practiceLaunchMeta, Body: PracticeLaunchBody },
+  { meta: linkedInMeta, Body: LinkedInBody },
+  { meta: podcastMeta, Body: PodcastBody },
+  { meta: mostCitedMeta, Body: MostCitedBody },
+  { meta: violationAnalysisMeta, Body: ViolationAnalysisBody },
+  { meta: teethStraighteningMeta, Body: TeethStraighteningBody },
+  { meta: homeopathicMeta, Body: HomeopathicBody },
+  { meta: packagePricingMeta, Body: PackagePricingBody },
+  { meta: midwiferyMeta, Body: MidwiferyBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
