@@ -131,6 +131,36 @@ import KimeraBody, {
 import MedSpaEnforcementBody, {
   meta as medSpaEnforcementMeta,
 } from "./posts/ftc-med-spa-enforcement-patterns-2024-2026"
+import ChiropracticBody, {
+  meta as chiropracticMeta,
+} from "./posts/chiropractic-marketing-compliance"
+import DermatologyBody, {
+  meta as dermatologyMeta,
+} from "./posts/dermatology-marketing-compliance"
+import FunctionalMedicineBody, {
+  meta as functionalMedicineMeta,
+} from "./posts/functional-medicine-marketing-compliance"
+import PlasticSurgeryBody, {
+  meta as plasticSurgeryMeta,
+} from "./posts/plastic-surgery-marketing-compliance"
+import DentalImplantBody, {
+  meta as dentalImplantMeta,
+} from "./posts/dental-implant-marketing-compliance"
+import MentalHealthBody, {
+  meta as mentalHealthMeta,
+} from "./posts/mental-health-practice-marketing-compliance"
+import FertilityBody, {
+  meta as fertilityMeta,
+} from "./posts/fertility-clinic-marketing-compliance"
+import TikTokDeepBody, {
+  meta as tikTokDeepMeta,
+} from "./posts/tiktok-healthcare-ads-deep-dive"
+import YouTubeBody, {
+  meta as youTubeMeta,
+} from "./posts/youtube-healthcare-advertising-rules"
+import AddictionBody, {
+  meta as addictionMeta,
+} from "./posts/addiction-treatment-marketing-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -177,6 +207,16 @@ export const POSTS: BlogPostModule[] = [
   { meta: enforcementTrends2026Meta, Body: EnforcementTrends2026Body },
   { meta: kimeraMeta, Body: KimeraBody },
   { meta: medSpaEnforcementMeta, Body: MedSpaEnforcementBody },
+  { meta: chiropracticMeta, Body: ChiropracticBody },
+  { meta: dermatologyMeta, Body: DermatologyBody },
+  { meta: functionalMedicineMeta, Body: FunctionalMedicineBody },
+  { meta: plasticSurgeryMeta, Body: PlasticSurgeryBody },
+  { meta: dentalImplantMeta, Body: DentalImplantBody },
+  { meta: mentalHealthMeta, Body: MentalHealthBody },
+  { meta: fertilityMeta, Body: FertilityBody },
+  { meta: tikTokDeepMeta, Body: TikTokDeepBody },
+  { meta: youTubeMeta, Body: YouTubeBody },
+  { meta: addictionMeta, Body: AddictionBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
