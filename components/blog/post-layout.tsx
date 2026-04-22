@@ -8,6 +8,7 @@ import { IS_LAUNCHED } from "@/lib/env"
 import type { BlogPostMeta } from "@/lib/blog/types"
 import type { ReactNode } from "react"
 import { getProductLinksForTags } from "@/lib/blog/tag-mapping"
+import { NewsletterCapture } from "@/components/blog/newsletter-capture"
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -164,6 +165,9 @@ export function BlogPostLayout({
             </section>
           )
         })()}
+
+        {/* Newsletter capture */}
+        <NewsletterCapture sourceSlug={meta.slug} />
 
         {/* Related posts */}
         {related && related.length > 0 && (

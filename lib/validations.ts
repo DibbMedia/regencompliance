@@ -19,6 +19,12 @@ export const waitlistSchema = z.object({
   email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
 })
 
+export const newsletterSchema = z.object({
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+  source: z.string().trim().max(40).optional(),
+  sourceSlug: z.string().trim().max(200).optional(),
+})
+
 /** Block private/internal IPs in a URL string */
 function isPrivateUrl(urlStr: string): boolean {
   try {
@@ -144,6 +150,7 @@ export type ScanInput = z.infer<typeof scanSchema>
 export type RewriteInput = z.infer<typeof rewriteSchema>
 export type InviteInput = z.infer<typeof inviteSchema>
 export type WaitlistInput = z.infer<typeof waitlistSchema>
+export type NewsletterInput = z.infer<typeof newsletterSchema>
 export type ProfileInput = z.infer<typeof profileSchema>
 export type TicketCreateInput = z.infer<typeof ticketCreateSchema>
 export type TicketMessageInput = z.infer<typeof ticketMessageSchema>
