@@ -35,6 +35,42 @@ import InstagramTiktokBody, {
 import DentalBody, {
   meta as dentalMeta,
 } from "./posts/dental-longevity-claims-compliance"
+import WellbeingBody, {
+  meta as wellbeingMeta,
+} from "./posts/wellbeing-corporation-ftc-settlement-deep-dive"
+import HctPCampaignBody, {
+  meta as hctPCampaignMeta,
+} from "./posts/fda-hct-p-warning-letter-campaign"
+import JennyCraigBody, {
+  meta as jennyCraigMeta,
+} from "./posts/jenny-craig-ftc-weight-loss-precedent"
+import PomWonderfulBody, {
+  meta as pomWonderfulMeta,
+} from "./posts/pom-wonderful-ftc-substantiation-standard"
+import BotoxBody, {
+  meta as botoxMeta,
+} from "./posts/botox-advertising-compliance"
+import OzempicBody, {
+  meta as ozempicMeta,
+} from "./posts/ozempic-wegovy-brand-name-advertising"
+import FdaApprovedVsClearedBody, {
+  meta as fdaApprovedVsClearedMeta,
+} from "./posts/fda-approved-vs-fda-cleared-aesthetic-devices"
+import NadPlusBody, {
+  meta as nadPlusMeta,
+} from "./posts/nad-plus-marketing-compliance"
+import MetaAdsBody, {
+  meta as metaAdsMeta,
+} from "./posts/meta-ads-healthcare-compliance-policy"
+import GoogleAdsBody, {
+  meta as googleAdsMeta,
+} from "./posts/google-ads-healthcare-advertising-policy"
+import WarningLetterResponseBody, {
+  meta as warningLetterResponseMeta,
+} from "./posts/how-to-respond-to-fda-warning-letter"
+import SocialMediaAuditBody, {
+  meta as socialMediaAuditMeta,
+} from "./posts/healthcare-social-media-compliance-audit"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -49,6 +85,18 @@ export const POSTS: BlogPostModule[] = [
   { meta: testimonialMeta, Body: TestimonialBody },
   { meta: instagramTiktokMeta, Body: InstagramTiktokBody },
   { meta: dentalMeta, Body: DentalBody },
+  { meta: wellbeingMeta, Body: WellbeingBody },
+  { meta: hctPCampaignMeta, Body: HctPCampaignBody },
+  { meta: jennyCraigMeta, Body: JennyCraigBody },
+  { meta: pomWonderfulMeta, Body: PomWonderfulBody },
+  { meta: botoxMeta, Body: BotoxBody },
+  { meta: ozempicMeta, Body: OzempicBody },
+  { meta: fdaApprovedVsClearedMeta, Body: FdaApprovedVsClearedBody },
+  { meta: nadPlusMeta, Body: NadPlusBody },
+  { meta: metaAdsMeta, Body: MetaAdsBody },
+  { meta: googleAdsMeta, Body: GoogleAdsBody },
+  { meta: warningLetterResponseMeta, Body: WarningLetterResponseBody },
+  { meta: socialMediaAuditMeta, Body: SocialMediaAuditBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
