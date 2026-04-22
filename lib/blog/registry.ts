@@ -161,6 +161,24 @@ import YouTubeBody, {
 import AddictionBody, {
   meta as addictionMeta,
 } from "./posts/addiction-treatment-marketing-compliance"
+import OrthodonticBody, {
+  meta as orthodonticMeta,
+} from "./posts/orthodontic-clear-aligner-marketing-compliance"
+import SportsMedicineBody, {
+  meta as sportsMedicineMeta,
+} from "./posts/sports-medicine-marketing-compliance"
+import SleepDentistryBody, {
+  meta as sleepDentistryMeta,
+} from "./posts/sleep-dentistry-marketing-compliance"
+import PediatricBody, {
+  meta as pediatricMeta,
+} from "./posts/pediatric-practice-marketing-compliance"
+import TelehealthBody, {
+  meta as telehealthMeta,
+} from "./posts/telehealth-marketing-compliance-overview"
+import AcupunctureBody, {
+  meta as acupunctureMeta,
+} from "./posts/acupuncture-marketing-compliance"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -217,6 +235,12 @@ export const POSTS: BlogPostModule[] = [
   { meta: tikTokDeepMeta, Body: TikTokDeepBody },
   { meta: youTubeMeta, Body: YouTubeBody },
   { meta: addictionMeta, Body: AddictionBody },
+  { meta: orthodonticMeta, Body: OrthodonticBody },
+  { meta: sportsMedicineMeta, Body: SportsMedicineBody },
+  { meta: sleepDentistryMeta, Body: SleepDentistryBody },
+  { meta: pediatricMeta, Body: PediatricBody },
+  { meta: telehealthMeta, Body: TelehealthBody },
+  { meta: acupunctureMeta, Body: AcupunctureBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
