@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, Calendar, Clock, Shield } from "lucide-react"
+import { ArrowLeft, ArrowRight, Calendar, Clock, Shield, Sparkles } from "lucide-react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
@@ -7,6 +7,7 @@ import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 import type { BlogPostMeta } from "@/lib/blog/types"
 import type { ReactNode } from "react"
+import { getProductLinksForTags } from "@/lib/blog/tag-mapping"
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -126,6 +127,43 @@ export function BlogPostLayout({
             </div>
           </div>
         </section>
+
+        {/* Related in the platform (tag-based product links) */}
+        {(() => {
+          const productLinks = getProductLinksForTags(meta.tags)
+          if (productLinks.length === 0) return null
+          return (
+            <section className="py-12">
+              <div className="mx-auto max-w-5xl px-6">
+                <div className="flex items-center gap-2 mb-6">
+                  <Sparkles className="h-4 w-4 text-[#55E039]/80" aria-hidden />
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]">
+                    Related in the platform
+                  </p>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {productLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+                    >
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] text-[#55E039]/80 mb-2">
+                        {link.kind}
+                      </span>
+                      <p className="text-sm font-semibold text-white leading-snug group-hover:text-[#55E039] transition-colors">
+                        {link.label}
+                      </p>
+                      <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#55E039]">
+                        <ArrowRight className="h-3 w-3" />
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )
+        })()}
 
         {/* Related posts */}
         {related && related.length > 0 && (
