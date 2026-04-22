@@ -3,6 +3,7 @@ import { POSTS_SORTED } from "@/lib/blog/registry"
 import { COMPETITORS } from "@/lib/compare/registry"
 import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
+import { TOOLS } from "@/lib/tools/registry"
 import { POSTS_PER_PAGE } from "@/components/blog/blog-index"
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -78,6 +79,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/how-it-works`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/security`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/tools`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/login`,
       lastModified: now,
       changeFrequency: "yearly",
@@ -135,6 +160,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   }
 
+  const toolRoutes: MetadataRoute.Sitemap = TOOLS.map((t) => ({
+    url: `${baseUrl}/tools/${t.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }))
+
   return [
     ...staticRoutes,
     ...blogRoutes,
@@ -142,5 +174,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...specialtyRoutes,
     ...stateRoutes,
     ...blogPaginationRoutes,
+    ...toolRoutes,
   ]
 }

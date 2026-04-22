@@ -4,6 +4,7 @@ import { COMPETITORS } from "@/lib/compare/registry"
 import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
 import { GLOSSARY } from "@/lib/glossary/terms"
+import { TOOLS } from "@/lib/tools/registry"
 
 const baseUrl = "https://compliance.regenportal.com"
 
@@ -33,10 +34,20 @@ function buildLlmsTxt(): string {
 
   lines.push("## Core product pages")
   lines.push(`- [Home](${baseUrl}): Overview, demo scanner preview, founding pricing`)
+  lines.push(`- [How it works](${baseUrl}/how-it-works): End-to-end walkthrough of the scan/rewrite/audit flow`)
+  lines.push(`- [Tools](${baseUrl}/tools): Hub listing all five tools inside RegenCompliance`)
   lines.push(`- [Features](${baseUrl}/features): Full feature breakdown`)
   lines.push(`- [Pricing](${baseUrl}/pricing): Plans, ROI calculator, comparison vs alternatives`)
   lines.push(`- [Demo](${baseUrl}/demo): Free sample scan — paste content, see compliance report`)
+  lines.push(`- [Security](${baseUrl}/security): Data handling, AI no-training, encryption, infrastructure`)
+  lines.push(`- [About](${baseUrl}/about): Company, principles, Dibb Media context`)
   lines.push(`- [FAQ](${baseUrl}/faq): Product and pricing FAQs`)
+  lines.push("")
+
+  lines.push("## Individual tool pages")
+  for (const t of TOOLS) {
+    lines.push(`- [${t.name}](${baseUrl}/tools/${t.slug}): ${t.description}`)
+  }
   lines.push("")
 
   lines.push("## Specialty-specific compliance pages")

@@ -20,6 +20,8 @@ export function MarketingFooter() {
           <div>
             <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-4">Product</p>
             <div className="space-y-2.5">
+              <Link href="/tools" className="block text-sm text-white/70 hover:text-white transition-colors">Tools</Link>
+              <Link href="/how-it-works" className="block text-sm text-white/70 hover:text-white transition-colors">How it works</Link>
               <Link href="/features" className="block text-sm text-white/70 hover:text-white transition-colors">Features</Link>
               <Link href="/pricing" className="block text-sm text-white/70 hover:text-white transition-colors">Pricing</Link>
               <Link href="/demo" className="block text-sm text-white/70 hover:text-white transition-colors">Demo</Link>
@@ -58,6 +60,8 @@ export function MarketingFooter() {
               <Link href="/blog" className="text-sm text-white/70 hover:text-white transition-colors">Blog</Link>
               <Link href="/glossary" className="text-sm text-white/70 hover:text-white transition-colors">Glossary</Link>
               <Link href="/state" className="text-sm text-white/70 hover:text-white transition-colors">State rules</Link>
+              <Link href="/security" className="text-sm text-white/70 hover:text-white transition-colors">Security</Link>
+              <Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors">About</Link>
             </div>
           </div>
           <div>
