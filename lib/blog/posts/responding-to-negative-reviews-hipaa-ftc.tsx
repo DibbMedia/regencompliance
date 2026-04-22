@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Responding to Negative Patient Reviews: The HIPAA and FTC Rules That Determine What You Can Actually Say",
   description:
-    "Healthcare practices face unique constraints when responding to negative reviews — HIPAA limits disclosing PHI, FTC limits suppressing honest reviews, and state medical boards add a professional-conduct layer. Here's how to respond compliantly.",
+    "Healthcare practices face unique constraints when responding to negative reviews - HIPAA limits disclosing PHI, FTC limits suppressing honest reviews, and state medical boards add a professional-conduct layer. Here's how to respond compliantly.",
   excerpt:
     "Every healthcare practice wants to respond to negative reviews. HIPAA, the FTC Consumer Review Fairness Act, and state medical board rules all restrict how. Here's the framework for responding legally without making the situation worse.",
   date: "2026-04-22",
@@ -95,7 +95,7 @@ export default function Body() {
       <H3>Review gating in violation of FTC rules</H3>
       <P>
         The FTC has specifically enforced against &ldquo;review
-        gating&rdquo; &mdash; practices that ask for feedback
+        gating&rdquo; - practices that ask for feedback
         privately first and only solicit public reviews from
         satisfied patients. This is deceptive review-solicitation
         practice and carries FTC exposure.
@@ -105,7 +105,7 @@ export default function Body() {
 
       <H3>Generic empathetic responses</H3>
       <P>
-        Respond to negative reviews generically &mdash; acknowledging
+        Respond to negative reviews generically - acknowledging
         that patient experience matters, inviting private contact,
         and avoiding any specific-patient detail. This is the
         standard-of-practice response that most healthcare
@@ -113,9 +113,9 @@ export default function Body() {
       </P>
 
       <BeforeAfter
-        bad="(No response at all — looks inattentive)"
-        good="We appreciate every piece of patient feedback and take all concerns seriously. We cannot discuss individual patient experiences publicly due to privacy rules, but if you'd like to discuss your concerns directly, please reach out to us at [office contact]. — [Practice Name] Team"
-        reason="The generic response acknowledges the reviewer, explains your privacy-driven silence, and offers a path for direct conversation — without any HIPAA-implicating specifics."
+        bad="(No response at all - looks inattentive)"
+        good="We appreciate every piece of patient feedback and take all concerns seriously. We cannot discuss individual patient experiences publicly due to privacy rules, but if you'd like to discuss your concerns directly, please reach out to us at [office contact]. - [Practice Name] Team"
+        reason="The generic response acknowledges the reviewer, explains your privacy-driven silence, and offers a path for direct conversation - without any HIPAA-implicating specifics."
       />
 
       <H3>Private outreach to resolve</H3>
@@ -150,7 +150,7 @@ export default function Body() {
       <H3>Google Reviews</H3>
       <P>
         Google Reviews are the most-visible platform. Google&rsquo;s
-        removal criteria are narrow &mdash; fake reviews, conflicts
+        removal criteria are narrow - fake reviews, conflicts
         of interest, off-topic reviews, illegal content. Most
         negative-but-opinion reviews will not be removed by appeal.
       </P>
@@ -268,11 +268,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "HIPAA prohibits specific-patient detail in public review responses — even confirming the reviewer was a patient.",
+          "HIPAA prohibits specific-patient detail in public review responses - even confirming the reviewer was a patient.",
           "The FTC Consumer Review Fairness Act prohibits contract clauses and retaliation that suppress honest reviews.",
           "Review gating (soliciting public reviews only from satisfied patients) is a specific FTC enforcement pattern.",
           "Generic empathetic responses that invite private contact are the standard compliant approach.",
-          "High-volume consistent review solicitation is the best reputation-resilience strategy — individual negatives matter less in context.",
+          "High-volume consistent review solicitation is the best reputation-resilience strategy - individual negatives matter less in context.",
         ]}
       />
     </>

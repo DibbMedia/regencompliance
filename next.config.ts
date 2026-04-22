@@ -39,7 +39,7 @@ try {
     })
   }
 } catch {
-  // @sentry/nextjs not installed — skip Sentry build integration
+  // @sentry/nextjs not installed - skip Sentry build integration
 }
 
 export default finalConfig

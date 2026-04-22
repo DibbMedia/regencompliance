@@ -3,7 +3,7 @@
  *
  * Sums today's `api_usage.estimated_cost_cents` across the whole platform
  * and throws if it exceeds AI_SPEND_DAILY_CAP_CENTS. Disabled if the env
- * var is unset or non-positive — opt-in.
+ * var is unset or non-positive - opt-in.
  *
  * Called from `lib/anthropic.ts`, so every `anthropic.messages.create`
  * call gets checked. No per-route wiring required.

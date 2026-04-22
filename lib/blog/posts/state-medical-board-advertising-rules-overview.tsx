@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "State Medical Board Advertising Rules: The 50-State Overview Every Multi-State Practice Needs",
   description:
-    "State medical boards layer specific physician advertising rules on top of federal FDA and FTC rules. Here's an overview of the patterns across states — supervision language, specialty claims, credentials, and the variations that matter.",
+    "State medical boards layer specific physician advertising rules on top of federal FDA and FTC rules. Here's an overview of the patterns across states - supervision language, specialty claims, credentials, and the variations that matter.",
   excerpt:
     "Your FDA- and FTC-compliant ad can still violate state medical board rules. Here's the overview of state-level physician advertising regulations every multi-state or telehealth practice needs to understand.",
   date: "2026-04-22",
@@ -41,7 +41,7 @@ export default function Body() {
     <>
       <Lead>
         Federal FDA and FTC rules are nationwide. State medical board
-        advertising rules are state-by-state &mdash; and they matter.
+        advertising rules are state-by-state - and they matter.
         An ad that clears FDA and FTC review can still violate a
         state medical board&rsquo;s physician advertising rules,
         which can result in license discipline independent of any
@@ -305,7 +305,7 @@ export default function Body() {
 
       <H3>Do I need separate compliance review for each state?</H3>
       <P>
-        For multi-state practices, yes &mdash; either separate review
+        For multi-state practices, yes - either separate review
         per state or review against the strictest relevant standard.
         Telehealth practices specifically need to track state
         licensure and advertising rules across each state they
@@ -331,11 +331,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "State medical boards layer advertising rules on top of federal FDA and FTC rules — both apply.",
+          "State medical boards layer advertising rules on top of federal FDA and FTC rules - both apply.",
           "California, Texas, Florida, New York are notably strict and actively enforce; other states vary.",
           "Supervision language, specialty claims, and 'board-certified' terminology are the most common state-board enforcement patterns.",
           "Multi-state and telehealth practices should build to the strictest relevant state standard rather than managing per-state variants.",
-          "State medical board discipline affects licensure across states via NPDB reporting — state-level exposure carries broad professional consequences.",
+          "State medical board discipline affects licensure across states via NPDB reporting - state-level exposure carries broad professional consequences.",
         ]}
       />
     </>

@@ -291,7 +291,7 @@ export default function ScanDetailPage() {
         </div>
       </div>
 
-      {/* Original Text — collapsed by default */}
+      {/* Original Text - collapsed by default */}
       <OriginalContentCard text={scan.original_text} />
 
       {/* Flags */}

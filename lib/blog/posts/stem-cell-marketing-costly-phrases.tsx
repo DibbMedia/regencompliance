@@ -45,8 +45,8 @@ export default function Body() {
     <>
       <Lead>
         Of the 200+ FDA warning letters sent to healthcare practices in 2024,
-        regenerative medicine clinics &mdash; stem cell, exosome, PRP, BMAC,
-        Wharton&rsquo;s jelly, peptide therapy &mdash; were the single
+        regenerative medicine clinics - stem cell, exosome, PRP, BMAC,
+        Wharton&rsquo;s jelly, peptide therapy - were the single
         highest-density target. After reading a large sample of those letters
         and the parallel FTC settlements, five phrases show up in almost every
         case file. These are the five to remove first.
@@ -172,7 +172,7 @@ export default function Body() {
         &ldquo;My pain is completely gone.&rdquo; &ldquo;This changed my
         life.&rdquo; Published as testimonials on the clinic&rsquo;s site or
         social feed without typical-experience disclosure, each one is an
-        FTC Endorsement Guides violation &mdash; and a de facto cure claim.
+        FTC Endorsement Guides violation - and a de facto cure claim.
       </P>
       <P>
         The clinic is responsible for the claim made in a testimonial it
@@ -180,8 +180,8 @@ export default function Body() {
         transfer the regulatory risk to the patient.
       </P>
       <BeforeAfter
-        bad="'Before stem cells, I couldn't walk. Now I run 5 miles a day.' — Real patient"
-        good="'After treatment I found I had more energy and could do more of the activities I enjoy.' — Patient experience, individual results vary, not typical of all patients."
+        bad="'Before stem cells, I couldn't walk. Now I run 5 miles a day.' - Real patient"
+        good="'After treatment I found I had more energy and could do more of the activities I enjoy.' - Patient experience, individual results vary, not typical of all patients."
         reason="Solicit patient stories in subjective-experience terms. Include typical-experience disclosure on every featured outcome. Keep substantiation files (the patient's actual outcome data) with the testimonial."
       />
 
@@ -256,7 +256,7 @@ export default function Body() {
           in legal fees before any penalty is assessed. A regenerative-medicine
           FTC settlement can run into seven or eight figures. RegenCompliance
           is built on a ruleset derived directly from those enforcement
-          actions &mdash; the trigger patterns are already in the scanner.{" "}
+          actions - the trigger patterns are already in the scanner.{" "}
           <Link
             href="/demo"
             className="text-[#55E039] font-semibold hover:underline underline-offset-2"

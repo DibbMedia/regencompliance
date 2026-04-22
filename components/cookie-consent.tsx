@@ -20,7 +20,7 @@ export function CookieConsent() {
       return
     }
 
-    // No consent recorded — show banner
+    // No consent recorded - show banner
     setVisible(true)
   }, [])
 

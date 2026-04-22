@@ -40,12 +40,12 @@ export async function generateMetadata({
 
   const canonical = `https://compliance.regenportal.com/blog/page/${pageNum}`
   return {
-    title: `Blog — Page ${pageNum}`,
+    title: `Blog - Page ${pageNum}`,
     description:
       "Plain-English breakdowns of FDA warning letters, FTC enforcement actions, and healthcare marketing compliance.",
     alternates: { canonical },
     openGraph: {
-      title: `RegenCompliance Blog — Page ${pageNum}`,
+      title: `RegenCompliance Blog - Page ${pageNum}`,
       description:
         "Plain-English breakdowns of FDA warning letters, FTC enforcement actions, and healthcare marketing compliance.",
       url: canonical,

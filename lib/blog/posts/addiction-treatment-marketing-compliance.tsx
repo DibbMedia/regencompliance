@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "Addiction Treatment Marketing Compliance: LegitScript, Patient Brokering Laws, and the Specific Rules This Category Operates Under",
   description:
-    "Addiction treatment marketing operates under some of the strictest healthcare advertising rules — LegitScript certification, federal and state patient brokering laws, Google Ads restrictions, and TCPA considerations.",
+    "Addiction treatment marketing operates under some of the strictest healthcare advertising rules - LegitScript certification, federal and state patient brokering laws, Google Ads restrictions, and TCPA considerations.",
   excerpt:
     "If you market addiction treatment, recovery, or sober living services, you're in one of the most heavily regulated healthcare marketing categories. Here's the complete framework.",
   date: "2026-04-22",
@@ -85,7 +85,7 @@ export default function Body() {
       <P>
         Certification takes weeks to months, requires documentation,
         and has annual renewal. Without it, Google Ads for addiction
-        treatment is not available &mdash; which eliminates one of
+        treatment is not available - which eliminates one of
         the primary patient acquisition channels for this category.
       </P>
 
@@ -251,7 +251,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Treatment approach framing.</Strong> Describe the
-          care approach, the team, the facility &mdash; not
+          care approach, the team, the facility - not
           outcome promises.
         </LI>
         <LI>
@@ -317,9 +317,9 @@ export default function Body() {
         items={[
           "Addiction treatment marketing operates under the strictest healthcare advertising framework, with criminal-exposure considerations under EKRA and state patient brokering laws.",
           "LegitScript certification is required for Google Ads and serves as an industry quality signal.",
-          "Marketing compensation structures (per-lead, per-patient, affiliate programs) need EKRA review — criminal penalties are real.",
+          "Marketing compensation structures (per-lead, per-patient, affiliate programs) need EKRA review - criminal penalties are real.",
           "Helpline-lookalike marketing, scare-based conversion, and guarantee language are specific enforcement patterns.",
-          "This category specifically requires dedicated healthcare regulatory counsel experienced with addiction treatment — not general healthcare marketing counsel.",
+          "This category specifically requires dedicated healthcare regulatory counsel experienced with addiction treatment - not general healthcare marketing counsel.",
         ]}
       />
     </>

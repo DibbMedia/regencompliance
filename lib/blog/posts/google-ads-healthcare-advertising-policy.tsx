@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "Google Ads for Healthcare Practices: Policy Certification, Restricted Categories, and What Actually Runs",
   description:
-    "Google Ads has one of the strictest healthcare advertising policies of any major platform — including required certifications, restricted treatment categories, and specific claim prohibitions. Here's the full playbook for getting healthcare practice ads to run consistently.",
+    "Google Ads has one of the strictest healthcare advertising policies of any major platform - including required certifications, restricted treatment categories, and specific claim prohibitions. Here's the full playbook for getting healthcare practice ads to run consistently.",
   excerpt:
     "Google Ads requires certifications for some healthcare categories, outright prohibits others, and enforces specific claim restrictions across all of them. Here's what the policy actually says and how to structure Google Ads campaigns that clear review and convert reliably.",
   date: "2026-04-22",
@@ -75,7 +75,7 @@ export default function Body() {
       <H3>LegitScript certification</H3>
       <P>
         Google requires LegitScript certification for advertisers in
-        certain healthcare categories &mdash; most prominently
+        certain healthcare categories - most prominently
         addiction treatment services. LegitScript is a third-party
         certification provider that verifies healthcare advertisers
         meet specific standards. Certification takes weeks, requires
@@ -133,7 +133,7 @@ export default function Body() {
         Direct-to-consumer prescription drug advertising is allowed in
         the US but with specific format requirements mirroring FDA
         rules. Google enforces these format requirements at the ad
-        level &mdash; meaning fair balance, risk disclosure, and other
+        level - meaning fair balance, risk disclosure, and other
         elements are required in the ad copy itself.
       </P>
 
@@ -223,7 +223,7 @@ export default function Body() {
 
       <H2 id="landing-page-requirements">Landing page requirements</H2>
       <P>
-        Google doesn&rsquo;t just review ads &mdash; it reviews the
+        Google doesn&rsquo;t just review ads - it reviews the
         landing page the ad points to. Policy violations on the landing
         page can disqualify the ad. Common landing page issues:
       </P>
@@ -278,7 +278,7 @@ export default function Body() {
       <P>
         &ldquo;Board-certified providers,&rdquo; &ldquo;advanced
         training in [specialty],&rdquo; &ldquo;serving [location]
-        since [year]&rdquo; &mdash; differentiation without specific
+        since [year]&rdquo; - differentiation without specific
         outcome claims. Particularly effective for higher-ticket
         aesthetic and surgical services.
       </P>
@@ -373,9 +373,9 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Google Ads has the most detailed healthcare advertising policy of major platforms — including LegitScript certification for certain categories.",
+          "Google Ads has the most detailed healthcare advertising policy of major platforms - including LegitScript certification for certain categories.",
           "Weight-loss, unproven treatments, and certain regenerative medicine categories face the strongest restrictions.",
-          "Landing page review is part of ad review — ad-copy compliance is not enough if the landing page has violations.",
+          "Landing page review is part of ad review - ad-copy compliance is not enough if the landing page has violations.",
           "Practice-service and consultation-booking ad structures clear review reliably and convert well.",
           "Keep high-risk and low-risk service categories in separate campaigns to isolate account-history impact.",
         ]}

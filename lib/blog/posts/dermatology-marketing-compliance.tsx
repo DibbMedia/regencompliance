@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Dermatology practices combine medical dermatology, cosmetic dermatology, and increasingly med-spa-adjacent services. Each creates its own compliance considerations. Here's the full framework.",
   excerpt:
-    "Dermatology marketing spans medical dermatology, cosmetic procedures, skin cancer screening, and retail skincare — each with its own compliance rules. Here's the full playbook.",
+    "Dermatology marketing spans medical dermatology, cosmetic procedures, skin cancer screening, and retail skincare - each with its own compliance rules. Here's the full playbook.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -57,7 +57,7 @@ export default function Body() {
       <BeforeAfter
         bad="Our treatments cure psoriasis, eczema, and acne permanently."
         good="Our practice evaluates and treats psoriasis, eczema, and acne with evidence-based medical protocols. Treatment response varies by individual; ongoing management is typical for chronic conditions."
-        reason="Specific disease cure claims cross FDA disease-claim rules. Medical dermatology practices legitimately treat these conditions — marketing should describe evidence-based treatment without claiming cures."
+        reason="Specific disease cure claims cross FDA disease-claim rules. Medical dermatology practices legitimately treat these conditions - marketing should describe evidence-based treatment without claiming cures."
       />
 
       <H3>Skin cancer screening marketing</H3>
@@ -86,7 +86,7 @@ export default function Body() {
       <H2 id="cosmetic-dermatology">Cosmetic dermatology marketing</H2>
       <P>
         Cosmetic dermatology shares most of the med spa compliance
-        framework &mdash; before/after imagery rules, injectable
+        framework - before/after imagery rules, injectable
         brand-name rules, device FDA-cleared/approved distinctions,
         typical-experience disclosure. See our med spa compliance
         post for the detailed framework that applies.
@@ -230,7 +230,7 @@ export default function Body() {
       <H3>Does physician endorsement of products create material connection?</H3>
       <P>
         If the physician has a financial interest in the product,
-        yes &mdash; and the relationship should be disclosed in the
+        yes - and the relationship should be disclosed in the
         endorsement. This is common in private-label situations and
         is sometimes missed in disclosure practice.
       </P>
@@ -263,9 +263,9 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Dermatology marketing combines medical, cosmetic, retail skincare, and teledermatology — each with its own compliance framework.",
+          "Dermatology marketing combines medical, cosmetic, retail skincare, and teledermatology - each with its own compliance framework.",
           "Specific disease cure claims for dermatologic conditions trigger FDA drug-claim rules even though dermatologists legitimately treat these conditions.",
-          "'Medical-grade' and 'cosmeceutical' are not defined regulatory terms — using them implies endorsement that doesn't exist.",
+          "'Medical-grade' and 'cosmeceutical' are not defined regulatory terms - using them implies endorsement that doesn't exist.",
           "Skin cancer screening marketing faces FTC and state AG scrutiny around detection claims and scare-based conversion tactics.",
           "Private-label skincare and supplement lines add DSHEA and cosmetic-drug boundary considerations to core dermatology marketing.",
         ]}

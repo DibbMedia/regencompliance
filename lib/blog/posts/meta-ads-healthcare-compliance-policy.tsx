@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
   description:
     "Meta (Facebook and Instagram) adds platform-specific healthcare advertising rules on top of FDA and FTC requirements. Here's what Meta's actual policy says, how it's enforced, and what it means for aesthetic, weight-loss, regen, and other healthcare practice advertisers.",
   excerpt:
-    "Your Meta ads must meet FDA rules, FTC rules, AND Meta's own healthcare advertising policy — three layers, not one. Here's the full playbook for what Meta actually enforces, how to avoid account-level issues, and how to structure ads that run reliably.",
+    "Your Meta ads must meet FDA rules, FTC rules, AND Meta's own healthcare advertising policy - three layers, not one. Here's the full playbook for what Meta actually enforces, how to avoid account-level issues, and how to structure ads that run reliably.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -43,7 +43,7 @@ export default function Body() {
       <Lead>
         Meta (Facebook and Instagram) is the highest-volume paid
         advertising channel for most healthcare practice categories
-        &mdash; med spas, weight loss, dental, aesthetic surgery, and
+        - med spas, weight loss, dental, aesthetic surgery, and
         regen medicine all have significant Meta ad spend. Running
         Meta ads successfully in healthcare requires clearing three
         regulatory layers: FDA rules on claims and device advertising,
@@ -132,7 +132,7 @@ export default function Body() {
       <H3>Specific outcome numbers</H3>
       <P>
         &ldquo;Lost 40 pounds in 3 months,&rdquo; &ldquo;reduce wrinkles
-        by 50%,&rdquo; &ldquo;3x more effective&rdquo; &mdash; specific
+        by 50%,&rdquo; &ldquo;3x more effective&rdquo; - specific
         numerical outcome claims are frequently flagged. Meta&rsquo;s
         review systems catch these both algorithmically and via
         human review escalation.
@@ -175,8 +175,8 @@ export default function Body() {
       <H2 id="account-level-risk">Account-level risk and how to manage it</H2>
       <P>
         Individual ad disapprovals are manageable. Account-level
-        restrictions &mdash; which happen when a pattern of policy
-        violations accumulates &mdash; are operationally serious.
+        restrictions - which happen when a pattern of policy
+        violations accumulates - are operationally serious.
         Ads Manager will start showing lower delivery, campaign
         restrictions, or outright account pauses.
       </P>
@@ -299,7 +299,7 @@ export default function Body() {
 
       <H2 id="targeting-rules">Targeting rules that changed</H2>
       <P>
-        Meta removed health-status-based ad targeting in 2022 &mdash;
+        Meta removed health-status-based ad targeting in 2022 -
         advertisers can no longer target users based on health
         conditions, weight-related categories, or other sensitive
         health attributes. This changed how healthcare advertising
@@ -312,7 +312,7 @@ export default function Body() {
         Lookalike audiences built from customer lists are still
         permitted and are the primary way most sophisticated
         healthcare advertisers find audiences. Uploading customer
-        lists to Meta has its own HIPAA and FTC considerations &mdash;
+        lists to Meta has its own HIPAA and FTC considerations -
         most healthcare practices use hashed customer identifiers
         rather than direct PII and work with a marketing agency
         experienced with HIPAA-adjacent workflows.
@@ -341,7 +341,7 @@ export default function Body() {
       <P>
         Restrictions range from reduced delivery to complete ad
         account suspension. Recovery options depend on the severity
-        &mdash; single-campaign pauses resolve via appeal; account
+        - single-campaign pauses resolve via appeal; account
         suspensions typically require going through Meta&rsquo;s
         Business support channels. Severe repeat patterns can result
         in permanent account action that requires opening a new
@@ -353,7 +353,7 @@ export default function Body() {
         Yes, if they actually know the policy. Not all healthcare
         marketing agencies are familiar with the platform layer on
         top of FDA/FTC. Ask potential agencies how they handle
-        specific policy situations &mdash; the answers are
+        specific policy situations - the answers are
         revealing.
       </P>
 
@@ -371,16 +371,16 @@ export default function Body() {
         Meta updates its policies periodically, with healthcare-
         relevant changes occurring multiple times per year. Staying
         current requires monitoring the Ads Manager policy pages
-        directly &mdash; third-party summaries lag behind.
+        directly - third-party summaries lag behind.
       </P>
 
       <KeyTakeaways
         items={[
-          "Meta policy is a separate compliance layer on top of FDA and FTC rules — not the same, and not a substitute.",
+          "Meta policy is a separate compliance layer on top of FDA and FTC rules - not the same, and not a substitute.",
           "Weight loss has the most-restrictive Meta policies; aesthetic surgery and med spa less so but still specific rules apply.",
-          "Ad account history matters — a pattern of violations affects future ad delivery even on compliant ads.",
+          "Ad account history matters - a pattern of violations affects future ad delivery even on compliant ads.",
           "Service-forward framing with consultation-conversion CTAs runs reliably and converts as well as aggressive ad copy.",
-          "Meta removed health-status-based targeting in 2022 — strategy has shifted to lookalikes and broader targeting with precise creative.",
+          "Meta removed health-status-based targeting in 2022 - strategy has shifted to lookalikes and broader targeting with precise creative.",
         ]}
       />
     </>

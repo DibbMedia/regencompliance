@@ -219,7 +219,7 @@ export default function DemoPage() {
       <div className="relative pt-20 pb-2">
         <div className="mx-auto max-w-6xl px-6 flex justify-center">
           <Badge variant="outline" className="border-[#55E039]/30 text-[#55E039] bg-[#55E039]/5 text-sm px-4 py-1.5">
-            Demo Mode {scansLeft !== null && `— ${scansLeft} scan${scansLeft === 1 ? "" : "s"} left`}
+            Demo Mode {scansLeft !== null && `- ${scansLeft} scan${scansLeft === 1 ? "" : "s"} left`}
           </Badge>
         </div>
       </div>
@@ -378,7 +378,7 @@ export default function DemoPage() {
                       result.compliance_score >= 50 ? "text-yellow-400 bg-yellow-500/10 border border-yellow-500/20" :
                       "text-red-400 bg-red-500/10 border border-red-500/20"
                     }`}>
-                      {result.compliance_score >= 80 ? "Low Risk" : result.compliance_score >= 50 ? "Medium Risk" : "High Risk — Do Not Publish"}
+                      {result.compliance_score >= 80 ? "Low Risk" : result.compliance_score >= 50 ? "Medium Risk" : "High Risk - Do Not Publish"}
                     </span>
                   </div>
                   <p className="mt-3 text-sm text-white/70">{result.summary}</p>

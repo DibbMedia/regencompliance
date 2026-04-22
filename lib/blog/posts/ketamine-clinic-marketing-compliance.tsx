@@ -55,7 +55,7 @@ export default function Body() {
 
       <H2 id="regulatory-baseline">The regulatory baseline</H2>
       <P>
-        Ketamine is an FDA-approved anesthetic &mdash; that&rsquo;s
+        Ketamine is an FDA-approved anesthetic - that&rsquo;s
         its on-label indication. Esketamine (Spravato) is FDA-approved
         for treatment-resistant depression with specific protocols.
         Most ketamine clinic use is therefore off-label: intravenous
@@ -97,7 +97,7 @@ export default function Body() {
       <BeforeAfter
         bad="70% of patients see relief from depression within hours."
         good="Published studies of IV ketamine in treatment-resistant depression have shown variable response rates depending on study design and patient population. Individual outcomes vary significantly and depend on many factors."
-        reason="Specific outcome percentages require substantiation meeting the FTC standard — which most practice-level substantiation files do not meet. Citing the underlying research with appropriate qualifications is compliant."
+        reason="Specific outcome percentages require substantiation meeting the FTC standard - which most practice-level substantiation files do not meet. Citing the underlying research with appropriate qualifications is compliant."
       />
 
       <H3>Pattern 3: &ldquo;FDA-approved ketamine therapy&rdquo;</H3>
@@ -109,14 +109,14 @@ export default function Body() {
 
       <H3>Pattern 4: Suicidality and crisis marketing</H3>
       <BeforeAfter
-        bad="Ketamine rapidly reduces suicidal ideation — get help now."
+        bad="Ketamine rapidly reduces suicidal ideation - get help now."
         good="(Remove suicidality-specific marketing claims. Crisis-targeted marketing of off-label psychiatric treatment raises heightened FDA and FTC concerns; crisis intervention is outside the scope of clinic marketing.)"
         reason="Marketing targeting patients in suicidal crisis raises both consumer-protection heightened-scrutiny issues and specific FDA concerns about off-label psychiatric marketing. This is a category where removal is safer than restructuring."
       />
 
       <H3>Pattern 5: At-home ketamine marketing</H3>
       <BeforeAfter
-        bad="At-home ketamine treatment — convenient, affordable, effective."
+        bad="At-home ketamine treatment - convenient, affordable, effective."
         good="(This entire category faces heightened FDA and DEA scrutiny. Telehealth ketamine prescribing for home use has been specifically warned against by the FDA; marketing should involve healthcare counsel familiar with current Ryan Haight Act and FDA guidance.)"
         reason="At-home ketamine marketing is currently one of the highest-risk healthcare marketing categories. The FDA has issued specific warnings; the DEA has investigated specific operations. Aggressive marketing in this category is not advisable."
       />
@@ -153,7 +153,7 @@ export default function Body() {
       <H3>Evidence honesty</H3>
       <P>
         The evidence for IV ketamine in various psychiatric indications
-        is genuinely developing &mdash; some stronger than others.
+        is genuinely developing - some stronger than others.
         Honest framing acknowledges this: &ldquo;Clinical research on
         IV ketamine for treatment-resistant conditions continues. We
         offer this as an option for patients who have not responded to
@@ -164,7 +164,7 @@ export default function Body() {
       <P>
         &ldquo;We coordinate with your primary mental health provider
         and incorporate IV ketamine into your broader treatment plan&rdquo;
-        &mdash; this framing reflects the standard of care many
+        - this framing reflects the standard of care many
         responsible ketamine clinics follow and is compliance-safer
         than standalone-treatment framing.
       </P>
@@ -254,7 +254,7 @@ export default function Body() {
       <P>
         Practice-forward framing: describe the clinical team,
         the evaluation process, the treatment environment, and the
-        integration with broader mental health care &mdash; without
+        integration with broader mental health care - without
         specific indication claims or outcome numbers in public
         marketing. Conversions happen at consultation, where the
         more-detailed clinical conversation appropriately occurs.
@@ -263,7 +263,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "Ketamine's FDA-approved indication is as an anesthetic; most ketamine clinic use is off-label and cannot be marketed with specific FDA-approved framing for psychiatric indications.",
-          "The FDA has specifically warned against unapproved ketamine marketing patterns — this is a current enforcement focus.",
+          "The FDA has specifically warned against unapproved ketamine marketing patterns - this is a current enforcement focus.",
           "Controlled-substance status adds DEA and Ryan Haight Act considerations on top of FDA/FTC rules.",
           "Candidacy-forward and evaluation-forward marketing is both clinically appropriate and compliance-safer than indication-forward marketing.",
           "At-home ketamine marketing and crisis-targeted marketing are particularly high-risk and should involve counsel review before running.",

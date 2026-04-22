@@ -567,7 +567,7 @@ export function CompareLayout({
       <RelatedBlogLinks
         posts={relatedPosts}
         heading="Further reading"
-        subheading={`Blog posts that go deeper on topics covered in this comparison — enforcement patterns, specialty considerations, and tactical implementation.`}
+        subheading={`Blog posts that go deeper on topics covered in this comparison - enforcement patterns, specialty considerations, and tactical implementation.`}
       />
 
       <MarketingFooter />

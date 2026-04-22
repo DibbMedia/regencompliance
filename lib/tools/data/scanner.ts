@@ -4,14 +4,14 @@ export const meta: ToolMeta = {
   slug: "scanner",
   name: "Compliance Scanner",
   category: "Core tool",
-  title: "Compliance Scanner — FDA/FTC Violation Detection in 30 Seconds | RegenCompliance",
+  title: "Compliance Scanner - FDA/FTC Violation Detection in 30 Seconds | RegenCompliance",
   description:
-    "Paste any marketing content — website copy, social post, ad, email, script — and get a 0-100 compliance score with every flagged phrase, risk level, rule citation, and compliant alternative in under 30 seconds.",
+    "Paste any marketing content - website copy, social post, ad, email, script - and get a 0-100 compliance score with every flagged phrase, risk level, rule citation, and compliant alternative in under 30 seconds.",
   heroBadge: "Core tool",
   heroTagline:
     "Paste any healthcare marketing content. Get a 0-100 compliance score with flagged phrases, risk ratings, rule citations, and compliant rewrites in 30 seconds.",
   shortVerdict:
-    "The scanner is the front door. Every piece of healthcare marketing should run through it before publishing — and every piece already published should be audited against it.",
+    "The scanner is the front door. Every piece of healthcare marketing should run through it before publishing - and every piece already published should be audited against it.",
   whatItIs:
     "The compliance scanner is an AI-powered rule engine that reads your marketing content, identifies phrases matching FDA warning letter and FTC enforcement patterns, assigns a 0-100 compliance score, and surfaces specific compliant alternatives for each flagged phrase. It runs on Anthropic's Claude (Haiku for speed, Sonnet for rewrites) with our curated rule set of 300+ active patterns sourced from actual enforcement actions.",
   capabilities: [
@@ -21,7 +21,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Phrase-level flagging with rule citations",
-      body: "Each flagged phrase includes the specific rule category, the source authority (FDA, FTC, state board), and why the phrase triggered the flag. Not just 'problem here' — here's the specific rule and the specific evidence base.",
+      body: "Each flagged phrase includes the specific rule category, the source authority (FDA, FTC, state board), and why the phrase triggered the flag. Not just 'problem here' - here's the specific rule and the specific evidence base.",
     },
     {
       title: "Risk level per flag (HIGH/MEDIUM/LOW)",
@@ -33,7 +33,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Specialty-specific rule sets",
-      body: "Rules calibrate to your specialty — med spa scans use different patterns than weight loss scans. Same engine, specialty-appropriate detection.",
+      body: "Rules calibrate to your specialty - med spa scans use different patterns than weight loss scans. Same engine, specialty-appropriate detection.",
     },
     {
       title: "Multiple input types",
@@ -43,7 +43,7 @@ export const meta: ToolMeta = {
   howItWorks: [
     {
       title: "1. Submit content",
-      body: "Paste marketing copy into the scanner, upload a file, or enter a URL to scan. The scanner accepts website copy, social posts, ad creative, emails, scripts, landing pages — any text-based marketing surface.",
+      body: "Paste marketing copy into the scanner, upload a file, or enter a URL to scan. The scanner accepts website copy, social posts, ad creative, emails, scripts, landing pages - any text-based marketing surface.",
     },
     {
       title: "2. AI analysis against rule set",
@@ -81,7 +81,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Competitor marketing analysis",
-      body: "Scan competitor content to understand where they're exposed. Not as a weapon — as a benchmarking tool for your own compliance posture.",
+      body: "Scan competitor content to understand where they're exposed. Not as a weapon - as a benchmarking tool for your own compliance posture.",
     },
     {
       title: "Agency output review",
@@ -89,8 +89,8 @@ export const meta: ToolMeta = {
     },
   ],
   included: [
-    "Unlimited scans — no per-scan fees, no monthly limit",
-    "All content types — text, file upload, URL",
+    "Unlimited scans - no per-scan fees, no monthly limit",
+    "All content types - text, file upload, URL",
     "300+ active rules, updated daily",
     "Specialty-specific rule calibration",
     "Compliant alternative suggestions per flag",
@@ -99,15 +99,15 @@ export const meta: ToolMeta = {
     "3 team seats",
   ],
   whatItIsnt: [
-    "Not legal advice — the scanner provides educational compliance guidance based on a rule set; a healthcare marketing attorney should review close-call items and all regulatory responses.",
-    "Not a content generator — the scanner analyzes and rewrites existing content; for creating new content from scratch, use a drafting tool like ChatGPT or Jasper, then scan before publishing.",
-    "Not a grammar or style tool — it doesn't flag comma splices or passive voice; use Grammarly or similar for grammar.",
-    "Not a guarantee — compliance is a judgment call at the edges; the scanner reduces risk dramatically but does not eliminate it.",
+    "Not legal advice - the scanner provides educational compliance guidance based on a rule set; a healthcare marketing attorney should review close-call items and all regulatory responses.",
+    "Not a content generator - the scanner analyzes and rewrites existing content; for creating new content from scratch, use a drafting tool like ChatGPT or Jasper, then scan before publishing.",
+    "Not a grammar or style tool - it doesn't flag comma splices or passive voice; use Grammarly or similar for grammar.",
+    "Not a guarantee - compliance is a judgment call at the edges; the scanner reduces risk dramatically but does not eliminate it.",
   ],
   faqs: [
     {
       q: "How accurate is the scanner?",
-      a: "For pattern-matchable violations (disease claims, FDA-approved misuse, guarantees, safety absolutes), accuracy is very high because these are the specific patterns the rule set is trained on. For judgment-call items (close-call context-dependent claims), accuracy is lower and we err on the side of false positives — it's better to over-flag and let a human accept than to under-flag and miss something that causes a warning letter.",
+      a: "For pattern-matchable violations (disease claims, FDA-approved misuse, guarantees, safety absolutes), accuracy is very high because these are the specific patterns the rule set is trained on. For judgment-call items (close-call context-dependent claims), accuracy is lower and we err on the side of false positives - it's better to over-flag and let a human accept than to under-flag and miss something that causes a warning letter.",
     },
     {
       q: "Does the scanner use my content to train AI?",
@@ -123,7 +123,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "Can I integrate the scanner into my CMS or marketing platform?",
-      a: "API-to-API scanning is on the roadmap. Currently the scanner runs through our web app. If you have a specific integration need, reach out — we're building this for teams that want pre-publish scanning inside their existing content workflow.",
+      a: "API-to-API scanning is on the roadmap. Currently the scanner runs through our web app. If you have a specific integration need, reach out - we're building this for teams that want pre-publish scanning inside their existing content workflow.",
     },
     {
       q: "Does the scanner catch platform policy issues (Meta, Google)?",

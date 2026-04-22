@@ -25,7 +25,7 @@ const COMMITMENTS = [
   {
     icon: Eye,
     title: "Zero patient data",
-    body: "RegenCompliance analyzes marketing content only — website copy, social posts, ads, scripts. We never receive, process, or store PHI. Zero HIPAA implications because we never touch patient records in the first place.",
+    body: "RegenCompliance analyzes marketing content only - website copy, social posts, ads, scripts. We never receive, process, or store PHI. Zero HIPAA implications because we never touch patient records in the first place.",
   },
   {
     icon: Lock,
@@ -65,15 +65,15 @@ const POLICIES = [
   },
   {
     title: "Authentication",
-    body: "Account access via Supabase auth — email + password with bcrypt hashing, plus OAuth support where enabled. Password reset requires email verification. Sessions use secure HTTP-only cookies with appropriate expiration.",
+    body: "Account access via Supabase auth - email + password with bcrypt hashing, plus OAuth support where enabled. Password reset requires email verification. Sessions use secure HTTP-only cookies with appropriate expiration.",
   },
   {
     title: "Access controls",
-    body: "Your account data is accessible only to authenticated users with valid session tokens for accounts they belong to. Row-level security at the database enforces this — even a bug in application code cannot return data from one account to another.",
+    body: "Your account data is accessible only to authenticated users with valid session tokens for accounts they belong to. Row-level security at the database enforces this - even a bug in application code cannot return data from one account to another.",
   },
   {
     title: "Payment processing",
-    body: "Payments processed by Stripe (PCI DSS Level 1). We never see, store, or process raw card data. Our Stripe integration uses restricted API keys with minimum necessary permissions — Checkout, Customers, Subscriptions, Prices, Products, Billing Portal only.",
+    body: "Payments processed by Stripe (PCI DSS Level 1). We never see, store, or process raw card data. Our Stripe integration uses restricted API keys with minimum necessary permissions - Checkout, Customers, Subscriptions, Prices, Products, Billing Portal only.",
   },
   {
     title: "Incident response",
@@ -92,7 +92,7 @@ const POLICIES = [
 const FAQS = [
   {
     q: "Are you HIPAA-compliant?",
-    a: "RegenCompliance doesn't receive or process PHI — we handle marketing content only. That means HIPAA technically doesn't apply to our core operations. We operate with SOC-aligned security posture (encryption, access controls, audit logging, incident response) that would satisfy most HIPAA technical requirements if PHI were involved. For practices that want written assurance, we can discuss a Business Associate Agreement (BAA) for specific use cases.",
+    a: "RegenCompliance doesn't receive or process PHI - we handle marketing content only. That means HIPAA technically doesn't apply to our core operations. We operate with SOC-aligned security posture (encryption, access controls, audit logging, incident response) that would satisfy most HIPAA technical requirements if PHI were involved. For practices that want written assurance, we can discuss a Business Associate Agreement (BAA) for specific use cases.",
   },
   {
     q: "Do you have SOC 2?",
@@ -100,7 +100,7 @@ const FAQS = [
   },
   {
     q: "What happens to my content if I cancel?",
-    a: "Scan history remains accessible for 30 days post-cancellation — you can export everything as PDF or CSV during that window. After 30 days, content is permanently deleted. On-demand deletion is available at any time during or after your subscription.",
+    a: "Scan history remains accessible for 30 days post-cancellation - you can export everything as PDF or CSV during that window. After 30 days, content is permanently deleted. On-demand deletion is available at any time during or after your subscription.",
   },
   {
     q: "Can your staff read my scans?",
@@ -108,15 +108,15 @@ const FAQS = [
   },
   {
     q: "What AI provider do you use and can I opt out?",
-    a: "Anthropic's Claude. Currently we run everything through Anthropic. If you have specific requirements around AI provider choice (e.g., you're required to use a specific provider for your own regulatory reasons), contact us — we can discuss. AI provider diversity is on our roadmap.",
+    a: "Anthropic's Claude. Currently we run everything through Anthropic. If you have specific requirements around AI provider choice (e.g., you're required to use a specific provider for your own regulatory reasons), contact us - we can discuss. AI provider diversity is on our roadmap.",
   },
   {
     q: "Are my scans used to improve your models or rule set?",
-    a: "Aggregated patterns (anonymized, with no content visible) may inform rule set improvements — e.g., if scans across many practices show a specific phrase is being flagged inconsistently, we may review our rule category. But individual scan content is never used for this; the 'patterns' are counts and categories, not text. Your specific content is yours.",
+    a: "Aggregated patterns (anonymized, with no content visible) may inform rule set improvements - e.g., if scans across many practices show a specific phrase is being flagged inconsistently, we may review our rule category. But individual scan content is never used for this; the 'patterns' are counts and categories, not text. Your specific content is yours.",
   },
   {
     q: "What about international data residency?",
-    a: "Our infrastructure is US-hosted. Customers outside the US may have specific data residency requirements we can't currently meet. If you're outside the US and need EU or specific-region hosting, contact us — we're evaluating multi-region support.",
+    a: "Our infrastructure is US-hosted. Customers outside the US may have specific data residency requirements we can't currently meet. If you're outside the US and need EU or specific-region hosting, contact us - we're evaluating multi-region support.",
   },
   {
     q: "How do you handle security research and vulnerability reports?",
@@ -166,7 +166,7 @@ export default function SecurityClient() {
           </h1>
           <p className="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
             Healthcare practices ask about data handling first. Here&rsquo;s
-            the plain-English answer — infrastructure, AI training, access
+            the plain-English answer - infrastructure, AI training, access
             controls, encryption, and retention. No surprises.
           </p>
         </div>
@@ -251,7 +251,7 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Vercel</span> — frontend
+                  <span className="font-bold text-white">Vercel</span> - frontend
                   and API hosting. SOC 2 Type II compliant. Edge network with
                   DDoS protection.
                 </span>
@@ -262,7 +262,7 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Supabase</span> —
+                  <span className="font-bold text-white">Supabase</span> -
                   managed PostgreSQL database, authentication, and file storage.
                   SOC 2 Type II compliant. Row-level security enforced at the
                   database layer.
@@ -275,7 +275,7 @@ export default function SecurityClient() {
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
                   <span className="font-bold text-white">Anthropic Claude</span>{" "}
-                  — AI processing. No-training setting enabled on every API
+                  - AI processing. No-training setting enabled on every API
                   request. Enterprise AI provider with documented security
                   practices.
                 </span>
@@ -286,7 +286,7 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Stripe</span> — payment
+                  <span className="font-bold text-white">Stripe</span> - payment
                   processing. PCI DSS Level 1. Restricted API keys with minimum
                   necessary permissions.
                 </span>
@@ -297,7 +297,7 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Sentry</span> — error
+                  <span className="font-bold text-white">Sentry</span> - error
                   monitoring. Scrubbed of PII before ingestion. SOC 2 Type II
                   compliant.
                 </span>

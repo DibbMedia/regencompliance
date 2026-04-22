@@ -5,18 +5,18 @@ export const meta: SpecialtyMeta = {
   specialty: "Regenerative Medicine Clinics",
   specialtyLong: "Regenerative Medicine Practices (stem cell, PRP, exosome)",
   title:
-    "FDA/FTC Compliance Software for Regenerative Medicine Clinics — RegenCompliance",
+    "FDA/FTC Compliance Software for Regenerative Medicine Clinics - RegenCompliance",
   description:
-    "Purpose-built compliance scanning for stem cell, PRP, and exosome clinics. The regen-medicine rule set — built from the exact FDA warning letters and FTC settlements that have defined 25 years of enforcement in this space.",
+    "Purpose-built compliance scanning for stem cell, PRP, and exosome clinics. The regen-medicine rule set - built from the exact FDA warning letters and FTC settlements that have defined 25 years of enforcement in this space.",
   heroBadge: "For regen clinics",
   heroTagline:
     "Regenerative medicine is where this compliance category was born. More FDA warning letters have been issued for stem cell and regen marketing than for any other healthcare vertical.",
   riskSummary:
-    "Regenerative medicine is the specialty that built the current FDA enforcement playbook on healthcare marketing. The Wellbeing Corporation $5.15M FTC settlement, the Kimera Labs case, the ongoing FDA CBER attention on HCT/P products — every major enforcement action in this category has set precedent that shapes how every regen clinic's marketing is evaluated. Our rule set started with this specialty. If RegenCompliance exists, it is because of how much enforcement happens in regenerative medicine. We are built first for regen clinics.",
+    "Regenerative medicine is the specialty that built the current FDA enforcement playbook on healthcare marketing. The Wellbeing Corporation $5.15M FTC settlement, the Kimera Labs case, the ongoing FDA CBER attention on HCT/P products - every major enforcement action in this category has set precedent that shapes how every regen clinic's marketing is evaluated. Our rule set started with this specialty. If RegenCompliance exists, it is because of how much enforcement happens in regenerative medicine. We are built first for regen clinics.",
   enforcementExamples: [
     {
       title: "FTC $5.15M settlement over social-media stem cell marketing",
-      body: "The Wellbeing Corporation settlement is the single most-cited FTC action in healthcare compliance training. A single Instagram post — claiming stem cells could cure arthritis, heal spinal cord injury, and reverse aging — triggered the investigation. The settlement included restitution, a 20-year compliance monitoring order, and a permanent bar on similar claims.",
+      body: "The Wellbeing Corporation settlement is the single most-cited FTC action in healthcare compliance training. A single Instagram post - claiming stem cells could cure arthritis, heal spinal cord injury, and reverse aging - triggered the investigation. The settlement included restitution, a 20-year compliance monitoring order, and a permanent bar on similar claims.",
     },
     {
       title: "FDA warning letters on 'FDA-approved stem cell' language",
@@ -24,11 +24,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       title: "FDA CBER actions on HCT/P marketing outside the 361 pathway",
-      body: "HCT/P products are regulated under CBER with a specific pathway for minimal-manipulation, homologous-use products. Marketing products outside this pathway as 'minimally manipulated' or 'homologous use' — or making therapeutic claims that push the product into the 351 (drug/biologic) pathway — has produced warning letters to clinics and lab partners.",
+      body: "HCT/P products are regulated under CBER with a specific pathway for minimal-manipulation, homologous-use products. Marketing products outside this pathway as 'minimally manipulated' or 'homologous use' - or making therapeutic claims that push the product into the 351 (drug/biologic) pathway - has produced warning letters to clinics and lab partners.",
     },
     {
       title: "FTC actions on exosome marketing",
-      body: "Exosome marketing has drawn particular FTC attention. Claims that exosomes 'repair,' 'regenerate,' or 'heal' tissue — standard language in exosome marketing a few years ago — are now specific enforcement targets.",
+      body: "Exosome marketing has drawn particular FTC attention. Claims that exosomes 'repair,' 'regenerate,' or 'heal' tissue - standard language in exosome marketing a few years ago - are now specific enforcement targets.",
     },
     {
       title: "State AG actions on regen clinic consumer protection",
@@ -44,7 +44,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       phrase: "Cures arthritis",
-      why: "Disease cure claim — direct FDA enforcement target going back to the 2010s.",
+      why: "Disease cure claim - direct FDA enforcement target going back to the 2010s.",
       alternative: "May support joint comfort and function for some patients",
       risk: "HIGH",
     },
@@ -99,7 +99,7 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Treats spinal cord injury",
       why: "Direct disease/condition treatment claim on HCT/P products is an FDA target.",
-      alternative: "(Remove entirely — no compliant reframe for direct spinal-cord-injury treatment claims)",
+      alternative: "(Remove entirely - no compliant reframe for direct spinal-cord-injury treatment claims)",
       risk: "HIGH",
     },
     {
@@ -112,11 +112,11 @@ export const meta: SpecialtyMeta = {
   commonCatches: [
     {
       title: "Stem cell service page claims beyond the 361 pathway",
-      body: "Many regen clinic service pages describe treatments using language that would push the product into the 351 (drug/biologic) pathway. Our scanner is specifically trained on the pathway distinctions — it flags language that implies the regulatory category you are not operating under.",
+      body: "Many regen clinic service pages describe treatments using language that would push the product into the 351 (drug/biologic) pathway. Our scanner is specifically trained on the pathway distinctions - it flags language that implies the regulatory category you are not operating under.",
     },
     {
       title: "Testimonials describing disease-specific outcomes",
-      body: "Testimonials that name specific conditions ('my arthritis is gone,' 'I can walk again after my stem cell treatment') carry the disease claim into your marketing via the endorsement. Our scanner catches this pattern — which is what triggered several recent enforcement actions.",
+      body: "Testimonials that name specific conditions ('my arthritis is gone,' 'I can walk again after my stem cell treatment') carry the disease claim into your marketing via the endorsement. Our scanner catches this pattern - which is what triggered several recent enforcement actions.",
     },
     {
       title: "Social media content from staff personal accounts",
@@ -134,14 +134,14 @@ export const meta: SpecialtyMeta = {
   caseStudy: {
     title: "A typical first scan on a regenerative medicine clinic homepage",
     before:
-      "Our revolutionary stem cell therapy cures arthritis and heals damaged tissue using FDA-approved stem cells. Exosomes repair damaged cells with 100% safe, no side effects — guaranteed results to regrow cartilage and reverse aging. Works for all patients — a proven alternative to surgery for spinal cord injury, joint pain, and chronic conditions.",
+      "Our revolutionary stem cell therapy cures arthritis and heals damaged tissue using FDA-approved stem cells. Exosomes repair damaged cells with 100% safe, no side effects - guaranteed results to regrow cartilage and reverse aging. Works for all patients - a proven alternative to surgery for spinal cord injury, joint pain, and chronic conditions.",
     after:
       "Our regenerative medicine offerings are performed in an FDA-registered facility using HCT/P materials under the 361 pathway. Some patients report improvement in joint comfort and function in the treated area; outcomes vary and candidacy is discussed during every consultation. Adverse events are rare but possible and are reviewed at consultation. A non-surgical option some patients choose to explore before considering surgery. Clinical studies continue to inform our protocols; results depend on many factors specific to each patient.",
     outcome:
-      "Score went from 8 to 89 across 14 flagged phrases. PDF audit trail generated covering every rewrite. Every core service offering preserved — language reframed to match the 361 regulatory pathway and current FTC enforcement patterns.",
+      "Score went from 8 to 89 across 14 flagged phrases. PDF audit trail generated covering every rewrite. Every core service offering preserved - language reframed to match the 361 regulatory pathway and current FTC enforcement patterns.",
   },
   uniqueValue:
-    "Regenerative medicine is the specialty that defined this category of enforcement. More rules in our rule set come from stem cell, PRP, and exosome warning letters than from any other specialty. If you run a regen clinic, this is not a generic compliance tool you are getting — it is a compliance tool that was primarily built around your specialty, with every major enforcement action in your space already encoded as a rule.",
+    "Regenerative medicine is the specialty that defined this category of enforcement. More rules in our rule set come from stem cell, PRP, and exosome warning letters than from any other specialty. If you run a regen clinic, this is not a generic compliance tool you are getting - it is a compliance tool that was primarily built around your specialty, with every major enforcement action in your space already encoded as a rule.",
   whoThisIsFor: [
     "Stem cell and HCT/P regenerative clinics",
     "PRP injection practices",
@@ -155,7 +155,7 @@ export const meta: SpecialtyMeta = {
   faqs: [
     {
       q: "What is the 361 vs 351 regulatory pathway?",
-      a: "Under FDA rules, HCT/P products that meet specific criteria (minimal manipulation, homologous use, no systemic effect, and a few others) fall under the 361 pathway, which does not require FDA pre-market approval. Products that fail any criterion fall under the 351 pathway, which regulates them as drugs or biologics requiring full approval. Your marketing language signals which pathway you are operating under — and claims appropriate for 351 products (treating specific diseases, systemic effects) are often what trigger enforcement on 361-pathway clinics.",
+      a: "Under FDA rules, HCT/P products that meet specific criteria (minimal manipulation, homologous use, no systemic effect, and a few others) fall under the 361 pathway, which does not require FDA pre-market approval. Products that fail any criterion fall under the 351 pathway, which regulates them as drugs or biologics requiring full approval. Your marketing language signals which pathway you are operating under - and claims appropriate for 351 products (treating specific diseases, systemic effects) are often what trigger enforcement on 361-pathway clinics.",
     },
     {
       q: "Does the scanner understand 361 vs 351 distinctions?",
@@ -163,11 +163,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "What about exosome marketing?",
-      a: "Exosomes are a current FTC enforcement priority. The scanner is trained on the specific exosome claims under active enforcement — 'repair,' 'regenerate,' 'heal,' 'restore,' and the combinations that have generated FTC action. Compliant alternatives preserve scientific accuracy while avoiding the specific claim patterns.",
+      a: "Exosomes are a current FTC enforcement priority. The scanner is trained on the specific exosome claims under active enforcement - 'repair,' 'regenerate,' 'heal,' 'restore,' and the combinations that have generated FTC action. Compliant alternatives preserve scientific accuracy while avoiding the specific claim patterns.",
     },
     {
       q: "Can I still discuss clinical studies in my marketing?",
-      a: "Yes, with accuracy about what the studies actually show. 'Clinical studies on [protocol] in patients with [condition] have shown [specific endpoint]' is compliant when true. 'Proven to work,' 'clinically proven,' and similar shorthand is not — our scanner catches the shorthand and suggests the accurate framing.",
+      a: "Yes, with accuracy about what the studies actually show. 'Clinical studies on [protocol] in patients with [condition] have shown [specific endpoint]' is compliant when true. 'Proven to work,' 'clinically proven,' and similar shorthand is not - our scanner catches the shorthand and suggests the accurate framing.",
     },
     {
       q: "How do I handle testimonials with disease-specific outcomes?",
@@ -175,11 +175,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "What about educational content explaining what stem cells are?",
-      a: "Genuinely educational content — describing biology, mechanism, research history — is generally fine when clearly separated from your service offerings. Problems arise when educational content is used as marketing for your specific treatments (implying the general science justifies specific treatment claims). Our scanner catches the education-bleeding-into-marketing pattern and suggests structural separation.",
+      a: "Genuinely educational content - describing biology, mechanism, research history - is generally fine when clearly separated from your service offerings. Problems arise when educational content is used as marketing for your specific treatments (implying the general science justifies specific treatment claims). Our scanner catches the education-bleeding-into-marketing pattern and suggests structural separation.",
     },
     {
       q: "Do regen clinics still need a healthcare marketing attorney?",
-      a: "Yes — this specialty needs attorney involvement more than most. Pathway questions, specific-indication advice, and response to any regulatory contact require counsel. Our scanner handles the volume work; the attorney handles the judgment calls. Most regen clinics using both have counsel review the initial scanner-cleaned version of major assets, then rely on the scanner for day-to-day review.",
+      a: "Yes - this specialty needs attorney involvement more than most. Pathway questions, specific-indication advice, and response to any regulatory contact require counsel. Our scanner handles the volume work; the attorney handles the judgment calls. Most regen clinics using both have counsel review the initial scanner-cleaned version of major assets, then rely on the scanner for day-to-day review.",
     },
     {
       q: "Is RegenCompliance affiliated with any specific regen medicine association or supplier?",

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Functional Medicine Marketing Compliance: Root-Cause Claims, Lab Testing Marketing, and the Scope-of-Practice Lines",
   description:
-    "Functional medicine marketing operates in a complex regulatory position — root-cause and integrative framing often crosses into disease-claim territory, while specialized lab testing and supplement sales add more compliance layers.",
+    "Functional medicine marketing operates in a complex regulatory position - root-cause and integrative framing often crosses into disease-claim territory, while specialized lab testing and supplement sales add more compliance layers.",
   excerpt:
     "Functional medicine marketing combines integrative framing, lab testing, supplement sales, and often hormone or peptide services. Each creates compliance considerations. Here's the full framework.",
   date: "2026-04-22",
@@ -239,7 +239,7 @@ export default function Body() {
       <P>
         Yes, with accuracy. Name the tests, describe what they
         measure, and describe how the results inform clinical
-        decisions &mdash; without overclaiming the clinical utility
+        decisions - without overclaiming the clinical utility
         of specific tests for specific conditions.
       </P>
 

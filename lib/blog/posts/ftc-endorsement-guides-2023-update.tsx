@@ -17,11 +17,11 @@ import {
 export const meta: BlogPostMeta = {
   slug: "ftc-endorsement-guides-2023-update",
   title:
-    "The FTC Endorsement Guides 2023 Update: What Actually Changed — and What It Means for Healthcare Marketing",
+    "The FTC Endorsement Guides 2023 Update: What Actually Changed - and What It Means for Healthcare Marketing",
   description:
-    "The FTC updated its Endorsement Guides in 2023, tightening several areas that matter to healthcare practices — social media disclosure standards, incentivized review rules, and liability for endorser statements.",
+    "The FTC updated its Endorsement Guides in 2023, tightening several areas that matter to healthcare practices - social media disclosure standards, incentivized review rules, and liability for endorser statements.",
   excerpt:
-    "The 2023 FTC Endorsement Guides update isn't just a refresh — it materially changes what healthcare practices can do with testimonials, influencer partnerships, and review solicitation. Here's the plain-English breakdown.",
+    "The 2023 FTC Endorsement Guides update isn't just a refresh - it materially changes what healthcare practices can do with testimonials, influencer partnerships, and review solicitation. Here's the plain-English breakdown.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -42,7 +42,7 @@ export default function Body() {
       <Lead>
         The FTC updated its Endorsement Guides in 2023, the first
         major revision in over a decade. The update tightened several
-        areas that specifically affect healthcare practices &mdash;
+        areas that specifically affect healthcare practices -
         social media disclosure standards, incentivized review rules,
         liability for endorser statements, and specific rules on
         consumer reviews. This is the plain-English breakdown of what
@@ -67,12 +67,12 @@ export default function Body() {
       <H3>Change 1: Clear and conspicuous standard tightened</H3>
       <P>
         The 2023 update specifies that disclosures must be
-        &ldquo;clear and conspicuous&rdquo; &mdash; and provides
+        &ldquo;clear and conspicuous&rdquo; - and provides
         explicit guidance on what that means in different media.
         Fine-print disclosures, disclosures only in video
         descriptions (rather than the video itself), disclosures
         behind &ldquo;more&rdquo; clicks, and disclosures in
-        non-English when the ad is in English &mdash; all explicitly
+        non-English when the ad is in English - all explicitly
         addressed.
       </P>
       <P>
@@ -85,7 +85,7 @@ export default function Body() {
       <H3>Change 2: Social media specifics</H3>
       <P>
         The update addressed social-specific disclosure issues
-        directly &mdash; Instagram Story disclosures, TikTok video
+        directly - Instagram Story disclosures, TikTok video
         disclosures, YouTube disclosures, live-stream disclosures.
         The principle is consistent across platforms: the disclosure
         must appear where and when the endorsement is seen, not
@@ -110,7 +110,7 @@ export default function Body() {
       </P>
       <P>
         For healthcare: many practices gate reviews in some form
-        &mdash; asking about experience via email, following up on
+        - asking about experience via email, following up on
         positive responses with review requests, not following up
         similarly on negatives. This practice is now explicitly
         flagged.
@@ -179,7 +179,7 @@ export default function Body() {
       <H3>Update influencer contracts</H3>
       <P>
         If you work with influencers, update contract language to
-        reflect the 2023 standards &mdash; disclosure requirements
+        reflect the 2023 standards - disclosure requirements
         in specific formats, liability allocation, and review
         processes for content. Most pre-2023 influencer contracts
         are inadequate.
@@ -205,14 +205,14 @@ export default function Body() {
       <P>
         Social media managers and content producers need updated
         training on the 2023 standards. What was compliant in 2020
-        isn&rsquo;t necessarily compliant now &mdash; and most staff
+        isn&rsquo;t necessarily compliant now - and most staff
         training hasn&rsquo;t been updated.
       </P>
 
       <Callout variant="info" title="The most practical single change">
         If you do one thing: stop treating &ldquo;results may
         vary&rdquo; as adequate disclosure. The 2023 standard is
-        stricter &mdash; you need to disclose what typical results
+        stricter - you need to disclose what typical results
         actually look like, not just that results vary individually.
         That single shift addresses the single most-common
         disclosure failure in healthcare marketing.
@@ -251,7 +251,7 @@ export default function Body() {
       <H3>What about testimonials we gathered years ago?</H3>
       <P>
         Continuing to use older testimonials in current marketing is
-        using them now &mdash; the 2023 standards apply to current
+        using them now - the 2023 standards apply to current
         use, not just to when the testimonial was gathered. Retire
         testimonials that can&rsquo;t be properly framed under
         current standards.
@@ -287,8 +287,8 @@ export default function Body() {
         items={[
           "The 2023 FTC Endorsement Guides update tightens disclosure standards, especially for social media and video content.",
           "Review-gating (soliciting public reviews only from satisfied patients) is now explicitly deceptive.",
-          "'Results may vary' is insufficient disclosure — typical-experience requirements need actual typical-outcome language.",
-          "Endorsers themselves can be liable, not just the brand — influencer contracts should reflect this.",
+          "'Results may vary' is insufficient disclosure - typical-experience requirements need actual typical-outcome language.",
+          "Endorsers themselves can be liable, not just the brand - influencer contracts should reflect this.",
           "Fake or AI-generated testimonials and stock-image before/afters are explicitly flagged as deceptive.",
         ]}
       />

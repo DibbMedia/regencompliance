@@ -56,7 +56,7 @@ export async function GET(request: Request) {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         // ─── CLAIM BETA PURCHASE (non-blocking) ───
-        // Fire and forget — don't slow down the redirect
+        // Fire and forget - don't slow down the redirect
         claimBetaPurchase(user.id, user.email).catch((err) =>
           console.error("Beta claim check failed (non-blocking):", err)
         )
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
   return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }
 
-/** Non-blocking beta purchase claim — runs after redirect is issued */
+/** Non-blocking beta purchase claim - runs after redirect is issued */
 async function claimBetaPurchase(userId: string, email: string | undefined) {
   const serviceClient = createServiceClient()
   const userEmail = email?.toLowerCase()

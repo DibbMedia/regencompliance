@@ -98,7 +98,7 @@ export function BlogPostLayout({
                   Scan your clinic&apos;s content before regulators do.
                 </h2>
                 <p className="mt-4 text-base sm:text-lg text-white/75 leading-relaxed max-w-xl">
-                  RegenCompliance checks every word of your marketing against live FDA and FTC enforcement data &mdash; and rewrites violations automatically. A 30-second scan can save a $50,000&ndash;$5M regulatory response.
+                  RegenCompliance checks every word of your marketing against live FDA and FTC enforcement data - and rewrites violations automatically. A 30-second scan can save a $50,000&ndash;$5M regulatory response.
                 </p>
                 <div className="mt-7 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
                   {IS_LAUNCHED ? (

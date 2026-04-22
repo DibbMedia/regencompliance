@@ -214,10 +214,10 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Laser toenail fungus marketing is the highest-volume and highest-exposure podiatry marketing category — FDA-cleared vs approved matters.",
+          "Laser toenail fungus marketing is the highest-volume and highest-exposure podiatry marketing category - FDA-cleared vs approved matters.",
           "Custom orthotic marketing should reflect what's actually custom vs modified-prefabricated.",
-          "Diabetic foot care marketing to vulnerable populations faces heightened FTC scrutiny — avoid fear-based conversion.",
-          "State podiatric board scope-of-practice varies — marketing should match authorized practice.",
+          "Diabetic foot care marketing to vulnerable populations faces heightened FTC scrutiny - avoid fear-based conversion.",
+          "State podiatric board scope-of-practice varies - marketing should match authorized practice.",
           "Minimally invasive surgery comparative claims need substantiation from published literature.",
         ]}
       />

@@ -50,7 +50,7 @@ function parseClaudeJson<T>(text: string): T | null {
 }
 
 // ---------------------------------------------------------------------------
-// GET handler — monthly deep scrape
+// GET handler - monthly deep scrape
 // ---------------------------------------------------------------------------
 
 export async function GET(request: Request) {
@@ -75,7 +75,7 @@ export async function GET(request: Request) {
   }
 
   // =========================================================================
-  // 2. Deep Archive Crawl — 15 links per source
+  // 2. Deep Archive Crawl - 15 links per source
   // =========================================================================
 
   for (const source of COMPLIANCE_SOURCES) {
@@ -137,7 +137,7 @@ export async function GET(request: Request) {
           }
         }
       }
-      // DOJ and other sources — just increase link count
+      // DOJ and other sources - just increase link count
       else {
         try {
           const links = await extractRegenLinks(source, 15)
@@ -215,7 +215,7 @@ export async function GET(request: Request) {
   }
 
   // =========================================================================
-  // 3. Rule Quality Review — Claude Sonnet reviews batches of 20
+  // 3. Rule Quality Review - Claude Sonnet reviews batches of 20
   // =========================================================================
 
   try {
@@ -314,7 +314,7 @@ ${JSON.stringify(rulesForReview, null, 2)}`,
               }
             }
 
-            // Don't deactivate automatically — just log the recommendation
+            // Don't deactivate automatically - just log the recommendation
             if (!review.should_remain_active) {
               console.log(
                 `[deep-scrape] Quality review recommends deactivating rule ${rule.id}: ${review.reason}`,
@@ -473,7 +473,7 @@ ${JSON.stringify(pairsForReview, null, 2)}`,
   }
 
   // =========================================================================
-  // 5. Treatment Assignment — fill empty applies_to
+  // 5. Treatment Assignment - fill empty applies_to
   // =========================================================================
 
   try {
@@ -570,7 +570,7 @@ ${JSON.stringify(rulesForAssignment, null, 2)}`,
   }
 
   // =========================================================================
-  // 6. Feed Content Generation — SKIPPED
+  // 6. Feed Content Generation - SKIPPED
   // ComplianceRule type has no title/description columns.
   // Feed content can be generated from banned_phrase + source_name.
   // =========================================================================
@@ -591,7 +591,7 @@ ${JSON.stringify(rulesForAssignment, null, 2)}`,
       parts.push(`${metrics.treatments_assigned} rule(s) assigned treatments`)
 
     const summary =
-      parts.length > 0 ? parts.join(", ") : "No changes needed — library is up to date"
+      parts.length > 0 ? parts.join(", ") : "No changes needed - library is up to date"
 
     await createBroadcastNotification(
       "Monthly Deep Scrape Complete",

@@ -175,7 +175,7 @@ export default function Body() {
       <H3>8. Consumer review policies</H3>
       <UL>
         <LI>
-          No-negative-review clauses are prohibited under CRFA &mdash;
+          No-negative-review clauses are prohibited under CRFA -
           audit for and remove.
         </LI>
         <LI>
@@ -315,7 +315,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Patient intake forms accumulate gaps over time — periodic audit catches what has drifted.",
+          "Patient intake forms accumulate gaps over time - periodic audit catches what has drifted.",
           "HIPAA authorization, marketing authorization, photo authorization, and treatment consent should be separate documents, not bundled.",
           "No-negative-review clauses violate the Consumer Review Fairness Act and should be removed.",
           "SMS consent requires TCPA-specific express written consent language, not buried blanket consent.",

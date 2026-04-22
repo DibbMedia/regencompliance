@@ -4,16 +4,16 @@ export const meta: ToolMeta = {
   slug: "audit-trail",
   name: "Audit Trail & PDF Export",
   category: "Compliance evidence",
-  title: "Audit Trail & PDF Export — Regulatory Evidence of Pre-Publish Compliance | RegenCompliance",
+  title: "Audit Trail & PDF Export - Regulatory Evidence of Pre-Publish Compliance | RegenCompliance",
   description:
     "Every scan is a permanent timestamped record of pre-publish compliance review. Export as PDF for legal files or CSV for analysis. Evidence of compliance program when regulators ask.",
   heroBadge: "Compliance evidence",
   heroTagline:
-    "Every scan is logged. Every flagged phrase is recorded. Every decision is documented. Export as PDF for your legal file — the evidence of a functioning compliance program is built automatically.",
+    "Every scan is logged. Every flagged phrase is recorded. Every decision is documented. Export as PDF for your legal file - the evidence of a functioning compliance program is built automatically.",
   shortVerdict:
     "The difference between 'we meant to check' and 'we did check, here's the record.' That distinction matters in any regulatory interaction.",
   whatItIs:
-    "The audit trail captures every scan performed through RegenCompliance — timestamp, user, content scanned, compliance score, flagged phrases, rule citations, rewrites accepted, and decisions made. It persists in your account permanently, exportable as PDF or CSV. When regulators ask for evidence of compliance diligence, the audit trail is that evidence.",
+    "The audit trail captures every scan performed through RegenCompliance - timestamp, user, content scanned, compliance score, flagged phrases, rule citations, rewrites accepted, and decisions made. It persists in your account permanently, exportable as PDF or CSV. When regulators ask for evidence of compliance diligence, the audit trail is that evidence.",
   capabilities: [
     {
       title: "Permanent timestamped record of every scan",
@@ -43,11 +43,11 @@ export const meta: ToolMeta = {
   howItWorks: [
     {
       title: "1. Every scan automatically logs",
-      body: "No separate step required. When a scan runs, the full record captures automatically — content, flags, rewrites, decisions, user, timestamp. Nothing manual.",
+      body: "No separate step required. When a scan runs, the full record captures automatically - content, flags, rewrites, decisions, user, timestamp. Nothing manual.",
     },
     {
       title: "2. Browse your scan history",
-      body: "Dashboard shows all scans sortable by date, score, user, content type. Click into any scan to see full detail — original content, flags, rewrites accepted, final content.",
+      body: "Dashboard shows all scans sortable by date, score, user, content type. Click into any scan to see full detail - original content, flags, rewrites accepted, final content.",
     },
     {
       title: "3. Export as needed",
@@ -59,7 +59,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "5. Produce compliance documentation on demand",
-      body: "If you need to demonstrate a compliance program — to an insurance carrier, an investor, a regulator — the audit trail is the documentation. No separate documentation to create or maintain.",
+      body: "If you need to demonstrate a compliance program - to an insurance carrier, an investor, a regulator - the audit trail is the documentation. No separate documentation to create or maintain.",
     },
   ],
   useCases: [
@@ -99,10 +99,10 @@ export const meta: ToolMeta = {
     "Regulatory documentation templates",
   ],
   whatItIsnt: [
-    "Not a replacement for formal HIPAA audit log requirements — the audit trail documents compliance-program activity, not PHI access. HIPAA-specific audit logging for PHI is handled separately in your EHR and practice management systems.",
-    "Not legal advice — the audit trail is factual documentation; an attorney interprets what the documentation demonstrates in a specific regulatory context.",
-    "Not attorney-client privileged — scan records are business records. For privileged compliance discussion, work with counsel directly.",
-    "Not auto-shared with any regulator — you control when and how the audit trail is used in any regulatory interaction.",
+    "Not a replacement for formal HIPAA audit log requirements - the audit trail documents compliance-program activity, not PHI access. HIPAA-specific audit logging for PHI is handled separately in your EHR and practice management systems.",
+    "Not legal advice - the audit trail is factual documentation; an attorney interprets what the documentation demonstrates in a specific regulatory context.",
+    "Not attorney-client privileged - scan records are business records. For privileged compliance discussion, work with counsel directly.",
+    "Not auto-shared with any regulator - you control when and how the audit trail is used in any regulatory interaction.",
   ],
   faqs: [
     {
@@ -111,7 +111,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "Is the audit trail legally admissible?",
-      a: "The audit trail is a business record — timestamped, consistent, contemporaneously created. Whether it's treated as admissible evidence in a specific proceeding depends on the proceeding's rules of evidence and how it's introduced. That's a question for your attorney. In practical terms, clinics with the audit trail have documented evidence of pre-publish compliance; clinics without it don't.",
+      a: "The audit trail is a business record - timestamped, consistent, contemporaneously created. Whether it's treated as admissible evidence in a specific proceeding depends on the proceeding's rules of evidence and how it's introduced. That's a question for your attorney. In practical terms, clinics with the audit trail have documented evidence of pre-publish compliance; clinics without it don't.",
     },
     {
       q: "Can regulators access my audit trail?",
@@ -119,7 +119,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "What's the difference between the PDF and CSV export?",
-      a: "PDF is formatted for legal/regulatory use — professional layout, organized by scan, includes rule citations and context. Best for inclusion in legal files or regulatory responses. CSV is structured data for analysis — spreadsheet-friendly, good for trend analysis, not as presentation-ready.",
+      a: "PDF is formatted for legal/regulatory use - professional layout, organized by scan, includes rule citations and context. Best for inclusion in legal files or regulatory responses. CSV is structured data for analysis - spreadsheet-friendly, good for trend analysis, not as presentation-ready.",
     },
     {
       q: "Can my attorney see my audit trail?",
@@ -127,7 +127,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "Does the audit trail include PHI?",
-      a: "Only if you include PHI in the content you scan. Most healthcare marketing content doesn't contain PHI — it's marketing copy, not patient records. We recommend not including PHI in scanned content unless specifically necessary; most marketing compliance questions don't require it.",
+      a: "Only if you include PHI in the content you scan. Most healthcare marketing content doesn't contain PHI - it's marketing copy, not patient records. We recommend not including PHI in scanned content unless specifically necessary; most marketing compliance questions don't require it.",
     },
     {
       q: "Can I bulk export everything at once?",

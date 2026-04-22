@@ -201,7 +201,7 @@ export default function Body() {
 
       <H3>How should doulas represent their role?</H3>
       <P>
-        Accurately &mdash; doulas provide emotional, informational,
+        Accurately - doulas provide emotional, informational,
         and physical support during pregnancy, birth, and
         postpartum. Marketing should accurately represent the
         non-clinical nature of doula support.
@@ -210,7 +210,7 @@ export default function Body() {
       <H3>What about VBAC marketing?</H3>
       <P>
         VBAC (vaginal birth after cesarean) marketing needs to
-        reflect the nuanced clinical reality &mdash; VBAC is
+        reflect the nuanced clinical reality - VBAC is
         appropriate for some patients with specific histories, not
         universal. Marketing as appropriate-for-all creates
         exposure.

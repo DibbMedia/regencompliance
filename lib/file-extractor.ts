@@ -73,7 +73,7 @@ export function validateFile(
   if (!contentOk) {
     return {
       valid: false,
-      error: "File content doesn't match extension — rejected for safety.",
+      error: "File content doesn't match extension - rejected for safety.",
       resolvedMime,
     }
   }

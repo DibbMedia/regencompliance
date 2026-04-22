@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       .map((f: { matched_text: string; risk_level: string }) => `"${f.matched_text}" (${f.risk_level} risk)`)
       .join("; ")
 
-    // Demo rewrite uses general FDA/FTC knowledge only — no proprietary compliance bible
+    // Demo rewrite uses general FDA/FTC knowledge only - no proprietary compliance bible
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,

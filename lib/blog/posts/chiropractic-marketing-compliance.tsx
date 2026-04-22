@@ -20,9 +20,9 @@ export const meta: BlogPostMeta = {
   title:
     "Chiropractic Marketing Compliance: State Board Rules, FTC Enforcement, and the Claim Categories Practices Keep Missing",
   description:
-    "Chiropractic marketing has its own compliance pattern — state chiropractic boards with varying rules, FTC scrutiny of specific-condition claims, and common FDA-adjacent issues with device and supplement marketing.",
+    "Chiropractic marketing has its own compliance pattern - state chiropractic boards with varying rules, FTC scrutiny of specific-condition claims, and common FDA-adjacent issues with device and supplement marketing.",
   excerpt:
-    "Chiropractic practices face a specific compliance pattern different from general medical marketing. Here's what state chiropractic boards and the FTC are targeting — and what to fix.",
+    "Chiropractic practices face a specific compliance pattern different from general medical marketing. Here's what state chiropractic boards and the FTC are targeting - and what to fix.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -100,14 +100,14 @@ export default function Body() {
 
       <H3>Pattern 4: &ldquo;Natural healing&rdquo; / drug alternative claims</H3>
       <BeforeAfter
-        bad="Chiropractic — the drug-free alternative that naturally heals what drugs only mask."
+        bad="Chiropractic - the drug-free alternative that naturally heals what drugs only mask."
         good="Our practice offers chiropractic care as one option for patients seeking non-pharmaceutical approaches to musculoskeletal concerns. We coordinate with primary care providers as appropriate."
         reason="Comparative claims against pharmaceuticals ('drugs only mask,' 'natural alternative to drugs') have been specifically cited in enforcement. Compliant framing describes the service without comparative claims against other treatment categories."
       />
 
       <H3>Pattern 5: Package/payment-plan marketing</H3>
       <BeforeAfter
-        bad="$29 first visit — no commitment, no contracts required!"
+        bad="$29 first visit - no commitment, no contracts required!"
         good="Our initial consultation and exam is $29, which includes [specific services]. Treatment plans and pricing are discussed at the initial visit based on individual needs."
         reason="Bait pricing without adequate disclosure of actual-treatment costs has drawn state AG consumer protection attention. Specific disclosure is both clearer and compliance-safer."
       />
@@ -115,7 +115,7 @@ export default function Body() {
       <H3>Pattern 6: Testimonials with specific condition outcomes</H3>
       <BeforeAfter
         bad="'Dr. Smith cured my chronic migraines after one adjustment!'"
-        good="'After beginning care at [Practice], I've experienced meaningful improvement in my neck-related headaches.' — [Patient initials]. Individual experiences vary."
+        good="'After beginning care at [Practice], I've experienced meaningful improvement in my neck-related headaches.' - [Patient initials]. Individual experiences vary."
         reason="Specific-condition-cure testimonials carry disease-treatment claims into your marketing. Framing testimonials generically around experience rather than specific outcome cures is compliant."
       />
 
@@ -260,7 +260,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Chiropractic state boards vary substantially in advertising rules — more than state medical boards — so multi-state marketing needs state-by-state review.",
+          "Chiropractic state boards vary substantially in advertising rules - more than state medical boards - so multi-state marketing needs state-by-state review.",
           "Specific condition treatment claims, subluxation-disease claims, and pediatric condition claims are all high-risk marketing patterns.",
           "Comparative claims against pharmaceuticals ('drug-free alternative') have been specifically cited in enforcement.",
           "Practice-approach and musculoskeletal-focus framing is compliance-safer and typically within scope of practice.",

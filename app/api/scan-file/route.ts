@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: PHI_ERROR_MESSAGE, phi_patterns: phi.patterns }, { status: 400 })
     }
 
-    // Check scan cache — skip Claude if identical content was scanned recently
+    // Check scan cache - skip Claude if identical content was scanned recently
     const contentHash = hashContent(extracted.text)
     const { data: cached } = await supabase
       .from("scans")
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     if (cached) {
       return NextResponse.json({
         ...cached,
-        summary: "Cached result — identical content was scanned recently.",
+        summary: "Cached result - identical content was scanned recently.",
         filename: file.name,
         cached: true,
       })
@@ -153,7 +153,7 @@ Use the risk classification system:
 - medium-risk phrases without their required disclaimers = "medium" risk
 - Missing approved patterns where expected (e.g., no disclaimer on a page discussing stem cells) = "low" risk (suggestion)
 
-Be thorough. Check every rule against the text. Flag ANY match — exact phrases, partial matches, synonyms, paraphrases, and semantic equivalents. Do not skip rules. If a phrase in the text conveys the same meaning as a banned phrase or high-risk pattern, flag it.
+Be thorough. Check every rule against the text. Flag ANY match - exact phrases, partial matches, synonyms, paraphrases, and semantic equivalents. Do not skip rules. If a phrase in the text conveys the same meaning as a banned phrase or high-risk pattern, flag it.
 Also check modality-specific rules: if content mentions stem cells, exosomes, PRP, peptides, etc., verify it follows the modality-specific regulatory rules.
 Also check channel-specific rules if the content_type indicates a particular channel (email, ad, social).
 
@@ -173,7 +173,7 @@ Analyze submitted content. Return ONLY valid JSON:
 }
 For each flag, include the full sentence or short surrounding text (up to ~200 chars) that contains the matched phrase, so the user sees how it's used in context.
 Score: 100=clean, 80-99=minor issues, 60-79=medium risk, 40-59=high risk, 0-39=multiple high risk.
-Match partial phrases, synonyms, and intent — not just exact strings.
+Match partial phrases, synonyms, and intent - not just exact strings.
 Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: `[FILE METADATA]\nFilename: ${safeFileName}\n\n[FILE CONTENT]\n${extracted.text}` }],
     })

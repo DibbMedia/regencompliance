@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Plastic surgery marketing is a mature, high-enforcement category. Board-certified rules, before/after imagery standards, medical tourism, and package pricing all draw specific compliance attention.",
   excerpt:
-    "Plastic surgery marketing has some of the most developed enforcement case law in healthcare. Here's the specific compliance framework — board certification rules, before/after standards, and medical tourism considerations.",
+    "Plastic surgery marketing has some of the most developed enforcement case law in healthcare. Here's the specific compliance framework - board certification rules, before/after standards, and medical tourism considerations.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -280,8 +280,8 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Board certification rules are strictly enforced — ABMS-equivalence claims without ABMS certification draw specific discipline.",
-          "Before/after imagery rules are most developed in this specialty — typical-experience, time post-procedure, and consistent imagery conditions all matter.",
+          "Board certification rules are strictly enforced - ABMS-equivalence claims without ABMS certification draw specific discipline.",
+          "Before/after imagery rules are most developed in this specialty - typical-experience, time post-procedure, and consistent imagery conditions all matter.",
           "Medical tourism marketing requires specific disclosures about licensure, post-op care, and complication management.",
           "Package pricing without adequate disclosure is a state AG focus; outcome guarantees beyond narrow warranties create exposure.",
           "Social media transformation content faces platform policy layers on top of FTC Endorsement Guides requirements.",

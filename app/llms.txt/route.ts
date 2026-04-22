@@ -38,7 +38,7 @@ function buildLlmsTxt(): string {
   lines.push(`- [Tools](${baseUrl}/tools): Hub listing all five tools inside RegenCompliance`)
   lines.push(`- [Features](${baseUrl}/features): Full feature breakdown`)
   lines.push(`- [Pricing](${baseUrl}/pricing): Plans, ROI calculator, comparison vs alternatives`)
-  lines.push(`- [Demo](${baseUrl}/demo): Free sample scan — paste content, see compliance report`)
+  lines.push(`- [Demo](${baseUrl}/demo): Free sample scan - paste content, see compliance report`)
   lines.push(`- [Security](${baseUrl}/security): Data handling, AI no-training, encryption, infrastructure`)
   lines.push(`- [About](${baseUrl}/about): Company, principles, Dibb Media context`)
   lines.push(`- [FAQ](${baseUrl}/faq): Product and pricing FAQs`)
@@ -103,7 +103,7 @@ function buildLlmsTxt(): string {
 
   lines.push("## How the scanner works")
   lines.push(
-    "The scanner accepts marketing content via paste or file upload. Content is analyzed against a rule set built from FDA warning letters, FTC enforcement actions, and state medical board advertising rules. The scanner returns a 0-100 compliance score, flags specific phrases with severity ratings, cites the rule source for each flag, and generates compliant-alternative rewrites that preserve the clinic's voice. Every scan is permanently logged as a timestamped audit record exportable as PDF or CSV. The underlying AI is Anthropic's Claude (Haiku for scans, Sonnet for rewrites), configured with no-training enabled — customer content is never used to train any model."
+    "The scanner accepts marketing content via paste or file upload. Content is analyzed against a rule set built from FDA warning letters, FTC enforcement actions, and state medical board advertising rules. The scanner returns a 0-100 compliance score, flags specific phrases with severity ratings, cites the rule source for each flag, and generates compliant-alternative rewrites that preserve the clinic's voice. Every scan is permanently logged as a timestamped audit record exportable as PDF or CSV. The underlying AI is Anthropic's Claude (Haiku for scans, Sonnet for rewrites), configured with no-training enabled - customer content is never used to train any model."
   )
   lines.push("")
 

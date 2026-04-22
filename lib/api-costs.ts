@@ -1,7 +1,7 @@
 /**
  * API cost tracking for Claude usage.
  * Tracks input/output tokens and estimated costs per API call.
- * Non-blocking — errors are caught silently to never break the main flow.
+ * Non-blocking - errors are caught silently to never break the main flow.
  */
 
 export interface ApiUsageRecord {
@@ -46,7 +46,7 @@ export function trackApiUsage(
   const outputTokens = response.usage?.output_tokens || 0
   const costCents = estimateCost(model, inputTokens, outputTokens)
 
-  // Fire and forget — never block the main request
+  // Fire and forget - never block the main request
   supabase.from("api_usage").insert({
     user_id: userId,
     endpoint,

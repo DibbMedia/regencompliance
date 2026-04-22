@@ -88,7 +88,7 @@ export default function AdminWaitlistPage() {
       }
       const { total, sent, failed } = data
       if (failed > 0) {
-        toast.warning(`Sent ${sent} of ${total}. ${failed} failed — check server logs.`)
+        toast.warning(`Sent ${sent} of ${total}. ${failed} failed - check server logs.`)
       } else if (sent === 0) {
         toast.info("No pending waitlist signups to email.")
       } else {
@@ -211,7 +211,7 @@ export default function AdminWaitlistPage() {
                     </a>
                   </td>
                   <td className="px-4 py-3 text-white/65 text-xs">
-                    {entry.source || "—"}
+                    {entry.source || "-"}
                   </td>
                   <td className="px-4 py-3 text-white/65 text-xs">
                     {formatDate(entry.created_at)}

@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "Mental Health Practice Marketing Compliance: Therapy, Psychiatry, and the Rules That Apply to Each",
   description:
-    "Mental health practices face specific compliance considerations — HIPAA is stricter, FTC substantiation applies to treatment outcome claims, and platform policies for mental health advertising are particularly tight.",
+    "Mental health practices face specific compliance considerations - HIPAA is stricter, FTC substantiation applies to treatment outcome claims, and platform policies for mental health advertising are particularly tight.",
   excerpt:
     "Therapy practices, psychiatry clinics, and online mental health platforms operate under specific marketing rules. Here's the complete framework for responsible and compliant mental health marketing.",
   date: "2026-04-22",
@@ -229,7 +229,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Clear service model description.</Strong>
-          Especially for online platforms &mdash; what service,
+          Especially for online platforms - what service,
           with whom, in what format.
         </LI>
         <LI>
@@ -296,7 +296,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Mental health data is particularly HIPAA-sensitive — testimonial and review-response practices need extra care.",
+          "Mental health data is particularly HIPAA-sensitive - testimonial and review-response practices need extra care.",
           "Platform advertising policies for mental health content are among the most restrictive; account certification is sometimes required.",
           "Crisis-targeted commercial marketing raises FTC heightened-scrutiny and professional ethics concerns.",
           "Modality marketing (CBT, EMDR, DBT, etc.) needs accurate training and certification backing.",

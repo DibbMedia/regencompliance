@@ -96,9 +96,9 @@ export default function AdminLibraryPage() {
             ) : (
               actions.map((a) => (
                 <tr key={a.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 text-white/80 text-xs font-mono">{a.agency ?? "—"}</td>
+                  <td className="px-4 py-3 text-white/80 text-xs font-mono">{a.agency ?? "-"}</td>
                   <td className="px-4 py-3 text-white/50 text-xs whitespace-nowrap">
-                    {a.source_date ? new Date(a.source_date).toLocaleDateString() : "—"}
+                    {a.source_date ? new Date(a.source_date).toLocaleDateString() : "-"}
                   </td>
                   <td className="px-4 py-3 text-white/80 max-w-[200px] truncate" title={a.company_name ?? undefined}>
                     {a.company_name ?? a.source_name}

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     "Plain-English breakdowns of FDA warning letters, FTC enforcement actions, and the marketing-claim lines every healthcare practice needs to know. Updated regularly.",
   alternates: { canonical: "https://compliance.regenportal.com/blog" },
   openGraph: {
-    title: "RegenCompliance Blog — FDA & FTC Compliance Insights",
+    title: "RegenCompliance Blog - FDA & FTC Compliance Insights",
     description:
       "Plain-English breakdowns of FDA warning letters, FTC enforcement actions, and healthcare marketing compliance.",
     url: "https://compliance.regenportal.com/blog",

@@ -128,7 +128,7 @@ export async function proxy(request: NextRequest) {
       ) {
         return applyCsp(
           NextResponse.json(
-            { error: "Read-only impersonation — mutations blocked. Stop impersonation to act as yourself." },
+            { error: "Read-only impersonation - mutations blocked. Stop impersonation to act as yourself." },
             { status: 403 },
           ),
         )

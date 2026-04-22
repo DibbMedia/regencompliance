@@ -242,7 +242,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "The FTC Contact Lens Rule specifically governs contact lens marketing and prescription handling — compliance affects pricing and service marketing.",
+          "The FTC Contact Lens Rule specifically governs contact lens marketing and prescription handling - compliance affects pricing and service marketing.",
           "Dry eye treatment device marketing needs accurate FDA-cleared status and evidence-backed efficacy claims.",
           "Myopia management marketing requires substantiation for specific interventions; atropine is typically off-label.",
           "Refractive surgery outcome claims need candidacy-specific framing; broad percentage claims are typically unsubstantiable.",

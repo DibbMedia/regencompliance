@@ -44,7 +44,7 @@ export default function Body() {
       <Lead>
         No healthcare specialty has seen a faster increase in FDA and FTC
         enforcement over the last 18 months than weight loss clinics marketing
-        GLP-1 receptor agonists &mdash; semaglutide, tirzepatide, liraglutide,
+        GLP-1 receptor agonists - semaglutide, tirzepatide, liraglutide,
         and their compounded variants. The regulatory environment around GLP-1
         is the most complex in healthcare advertising today because it
         overlays five distinct issues at once.
@@ -97,7 +97,7 @@ export default function Body() {
       </UL>
 
       <BeforeAfter
-        bad="Affordable Ozempic weight loss — $299/mo."
+        bad="Affordable Ozempic weight loss - $299/mo."
         good="Medically supervised semaglutide weight loss program, using compounded semaglutide prepared by a state-licensed compounding pharmacy. This is not FDA-approved Ozempic or Wegovy."
         reason="Brand-name confusion is a federal issue on two tracks (FDA misbranding + Lanham Act trademark). The compliant version is explicit about the compounded status and the non-FDA-approved nature of the program."
       />
@@ -130,7 +130,7 @@ export default function Body() {
       </UL>
 
       <BeforeAfter
-        bad="Our exclusive semaglutide+B12 formula — more effective than Ozempic."
+        bad="Our exclusive semaglutide+B12 formula - more effective than Ozempic."
         good="A semaglutide formulation compounded to your individual prescription. Some programs include additional vitamin B12; this is an additive, not an FDA-evaluated enhancement to efficacy."
         reason="Never claim a compounded variant is &ldquo;more effective&rdquo; than the branded drug without head-to-head substantiation (which does not exist). Disclose additives as additives, not as efficacy enhancers."
       />
@@ -151,7 +151,7 @@ export default function Body() {
       </P>
 
       <BeforeAfter
-        bad="Semaglutide weight loss program — lose 15% of your body weight in 6 months."
+        bad="Semaglutide weight loss program - lose 15% of your body weight in 6 months."
         good="Medically supervised GLP-1-based weight loss program. A physician consultation will determine whether GLP-1 therapy is appropriate based on your BMI, medical history, and weight loss goals. FDA-approved indications for weight management apply to specific patient populations."
         reason="Don't publish outcome-specific weight-loss claims to the general public. Route the clinical decision to the physician consultation and flag that FDA-approved indications are population-specific."
       />
@@ -172,7 +172,7 @@ export default function Body() {
       <P>
         The FTC doesn&rsquo;t care that GLP-1 drugs <Em>do</Em> produce weight
         loss in clinical trials. The enforcement theory is about how the
-        claim is presented in marketing &mdash; whether it&rsquo;s
+        claim is presented in marketing - whether it&rsquo;s
         substantiated for this specific product, this specific population,
         and this specific clinical context.
       </P>
@@ -180,7 +180,7 @@ export default function Body() {
       <BeforeAfter
         bad="Lose up to 30 lbs in 3 months, guaranteed."
         good="Weight loss outcomes on GLP-1 therapy vary significantly by patient. In clinical trials of FDA-approved semaglutide for chronic weight management, the average weight loss was approximately 15% of body weight over 68 weeks in patients meeting specific criteria. Your results will depend on your starting point, adherence, and medical history."
-        reason="Replace the outcome guarantee with honest clinical-trial-based language, specifying the population and timeframe. Long, specific, factual &mdash; and defensible."
+        reason="Replace the outcome guarantee with honest clinical-trial-based language, specifying the population and timeframe. Long, specific, factual - and defensible."
       />
 
       <H2 id="layer-5-before-after">Layer 5: Before-and-after photos</H2>

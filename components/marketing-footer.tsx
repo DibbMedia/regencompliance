@@ -14,7 +14,7 @@ export function MarketingFooter() {
               <span className="text-[15px] font-bold text-white">RegenCompliance</span>
             </div>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-              FDA/FTC compliance scanning for healthcare practices — regenerative medicine, med spas, dental, dermatology, and more. Scan, fix, and monitor your marketing content.
+              FDA/FTC compliance scanning for healthcare practices - regenerative medicine, med spas, dental, dermatology, and more. Scan, fix, and monitor your marketing content.
             </p>
           </div>
           <div>

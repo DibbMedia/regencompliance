@@ -4,12 +4,12 @@ export const meta: SpecialtyMeta = {
   slug: "dental-practices",
   specialty: "Dental Practices",
   specialtyLong: "Dental and Dental Specialty Practices",
-  title: "Dental Marketing Compliance Software — RegenCompliance",
+  title: "Dental Marketing Compliance Software - RegenCompliance",
   description:
     "Purpose-built compliance scanning for dental practices. Catches FDA/FTC violations, state dental board marketing rules, whitening and implant claim issues, and the testimonial patterns dental boards enforce.",
   heroBadge: "For dental practices",
   heroTagline:
-    "Dental marketing has three overlapping regulators — FDA on devices and treatments, FTC on claims and testimonials, and your state dental board on specialty claims and supervision. One tool built for that full surface.",
+    "Dental marketing has three overlapping regulators - FDA on devices and treatments, FTC on claims and testimonials, and your state dental board on specialty claims and supervision. One tool built for that full surface.",
   riskSummary:
     "Dental marketing is less-publicized than med spa or regen enforcement, but it has its own dense regulatory structure. State dental boards in California, Texas, Florida, New York, and others have active enforcement on specialty claim language ('cosmetic dentist' in states that do not recognize the specialty, implant and endodontic claims by general dentists). The FTC enforces testimonial rules identically to other healthcare specialties. The FDA regulates dental devices (implants, CBCT, intraoral scanners, whitening products) and marketing that misrepresents their labeling. And 'longevity' and 'dental-systemic health' marketing has been a specific growth area that is drawing early attention.",
   enforcementExamples: [
@@ -38,13 +38,13 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Best cosmetic dentist in [city]",
       why: "'Cosmetic dentist' is not an ADA-recognized specialty; superlative claims also fail substantiation.",
-      alternative: "[Practice Name] — general dentistry with a focus on aesthetic treatment",
+      alternative: "[Practice Name] - general dentistry with a focus on aesthetic treatment",
       risk: "HIGH",
     },
     {
       phrase: "Permanent whitening",
       why: "Whitening effects are not permanent under any protocol; this is an unsupportable efficacy claim.",
-      alternative: "Long-lasting whitening results — maintenance protocols discussed at consultation",
+      alternative: "Long-lasting whitening results - maintenance protocols discussed at consultation",
       risk: "HIGH",
     },
     {
@@ -74,7 +74,7 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Shades whiter in one visit",
       why: "Quantified outcome claim requires substantiation that most practices do not have on file.",
-      alternative: "Noticeable whitening in a single visit for most patients — individual results vary",
+      alternative: "Noticeable whitening in a single visit for most patients - individual results vary",
       risk: "MEDIUM",
     },
     {
@@ -133,9 +133,9 @@ export const meta: SpecialtyMeta = {
   caseStudy: {
     title: "A typical first scan on a dental practice homepage",
     before:
-      "Dr. Smith is the best cosmetic dentist in Austin — offering pain-free dentistry, permanent whitening, and guaranteed lifetime implants. Our advanced sleep dentistry cures gum disease, prevents heart disease, and can add 10 years to your life. Shades whiter in one visit, ADA-approved, and designed to reverse aging with dental work.",
+      "Dr. Smith is the best cosmetic dentist in Austin - offering pain-free dentistry, permanent whitening, and guaranteed lifetime implants. Our advanced sleep dentistry cures gum disease, prevents heart disease, and can add 10 years to your life. Shades whiter in one visit, ADA-approved, and designed to reverse aging with dental work.",
     after:
-      "Dr. Smith leads [Practice Name] — a general dentistry practice in Austin with a focus on aesthetic treatment. Our sedation and technique options help most patients experience minimal discomfort. Long-lasting whitening results with maintenance protocols discussed at consultation. Implants have high long-term success rates in clinical literature — we offer [specific warranty terms]. Our treatment protocols can significantly improve gum health for many patients, and good oral health is one component of overall wellness. Noticeable whitening in a single visit for most patients — individual results vary. We use products and materials that hold the ADA Seal of Acceptance where applicable.",
+      "Dr. Smith leads [Practice Name] - a general dentistry practice in Austin with a focus on aesthetic treatment. Our sedation and technique options help most patients experience minimal discomfort. Long-lasting whitening results with maintenance protocols discussed at consultation. Implants have high long-term success rates in clinical literature - we offer [specific warranty terms]. Our treatment protocols can significantly improve gum health for many patients, and good oral health is one component of overall wellness. Noticeable whitening in a single visit for most patients - individual results vary. We use products and materials that hold the ADA Seal of Acceptance where applicable.",
     outcome:
       "Score moved from 22 to 90 across 11 flagged phrases. Specialty-language issues reframed. Guarantee and longevity claims replaced with substantiable alternatives. PDF audit trail generated for the practice's compliance file.",
   },
@@ -160,11 +160,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "What about 'Doctor' title usage and advertising?",
-      a: "Most states have specific rules on how dentists can use the 'Doctor' title in advertising (requiring DDS/DMD qualifier, prohibiting implied medical-doctor status, etc.). Our scanner flags common violations and suggests compliant phrasings. State-specific rules vary and are not fully encoded — for close calls, your attorney should advise based on your specific state.",
+      a: "Most states have specific rules on how dentists can use the 'Doctor' title in advertising (requiring DDS/DMD qualifier, prohibiting implied medical-doctor status, etc.). Our scanner flags common violations and suggests compliant phrasings. State-specific rules vary and are not fully encoded - for close calls, your attorney should advise based on your specific state.",
     },
     {
       q: "What about dental-systemic health marketing?",
-      a: "Dental-systemic health claims — linking oral care to heart disease, diabetes, Alzheimer's, longevity — are a current area of early regulatory attention. The underlying science is real but the causal marketing framing ('prevents,' 'cures,' 'protects from') crosses into FDA disease-claim territory. Our scanner catches these patterns and suggests framings that stay within dental-practice authority while preserving the informational value.",
+      a: "Dental-systemic health claims - linking oral care to heart disease, diabetes, Alzheimer's, longevity - are a current area of early regulatory attention. The underlying science is real but the causal marketing framing ('prevents,' 'cures,' 'protects from') crosses into FDA disease-claim territory. Our scanner catches these patterns and suggests framings that stay within dental-practice authority while preserving the informational value.",
     },
     {
       q: "Do DSOs use this?",
@@ -172,11 +172,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "Can the scanner check patient-facing content like intake forms and after-visit instructions?",
-      a: "Yes. The scanner treats any patient-facing text the same way — if it makes efficacy, safety, or outcome claims, those claims need to be compliant regardless of whether the surface is a public website or an intake form.",
+      a: "Yes. The scanner treats any patient-facing text the same way - if it makes efficacy, safety, or outcome claims, those claims need to be compliant regardless of whether the surface is a public website or an intake form.",
     },
     {
       q: "What about orthodontic and clear aligner marketing?",
-      a: "Orthodontic marketing has its own claim patterns — 'straighter in 6 months,' 'without traditional braces,' guarantees and quantified timelines. Our scanner catches the specific patterns that have generated FTC attention in the clear aligner category. It also flags the 'doctor supervision' implication issues that state dental boards have raised regarding some direct-to-consumer aligner models.",
+      a: "Orthodontic marketing has its own claim patterns - 'straighter in 6 months,' 'without traditional braces,' guarantees and quantified timelines. Our scanner catches the specific patterns that have generated FTC attention in the clear aligner category. It also flags the 'doctor supervision' implication issues that state dental boards have raised regarding some direct-to-consumer aligner models.",
     },
     {
       q: "Does the scanner work for sleep dentistry and airway marketing?",

@@ -89,7 +89,7 @@ export default function Body() {
       <H3>Pattern 1: Specific-condition cure claims</H3>
       <P>
         &ldquo;Cures chronic pain,&rdquo; &ldquo;treats anxiety and
-        depression,&rdquo; &ldquo;reverses infertility&rdquo; &mdash;
+        depression,&rdquo; &ldquo;reverses infertility&rdquo; -
         cure language on specific conditions crosses FDA
         disease-claim territory and exceeds most available evidence.
       </P>
@@ -241,7 +241,7 @@ export default function Body() {
         items={[
           "Acupuncture marketing combines state licensing board rules, FTC substantiation rules, and specific TCM framing considerations.",
           "Long condition lists multiply substantiation exposure; focus on evidence-supported specific indications.",
-          "Evidence-base varies significantly by condition — marketing should match the specific evidence for specific claims.",
+          "Evidence-base varies significantly by condition - marketing should match the specific evidence for specific claims.",
           "TCM terminology used in marketing can be appropriate when contextualized; using it to make cure claims for Western-diagnosable diseases creates issues.",
           "Cosmetic acupuncture, fertility acupuncture, and cancer-related acupuncture have particularly specific compliance considerations.",
         ]}

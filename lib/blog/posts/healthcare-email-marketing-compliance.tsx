@@ -180,20 +180,20 @@ export default function Body() {
       </P>
       <UL>
         <LI>
-          Acquiring email addresses during treatment encounters &mdash;
+          Acquiring email addresses during treatment encounters -
           specific consent for marketing use beyond treatment
           communications.
         </LI>
         <LI>
-          Third-party list purchases &mdash; generally not
+          Third-party list purchases - generally not
           appropriate for healthcare.
         </LI>
         <LI>
-          Opt-in from website forms &mdash; should clearly indicate
+          Opt-in from website forms - should clearly indicate
           marketing use.
         </LI>
         <LI>
-          Opt-out processing &mdash; within CAN-SPAM timeframes,
+          Opt-out processing - within CAN-SPAM timeframes,
           with appropriate HIPAA-compliant handling.
         </LI>
       </UL>
@@ -251,7 +251,7 @@ export default function Body() {
       <H3>Does every patient email need opt-in?</H3>
       <P>
         Treatment-related emails typically don&rsquo;t require
-        marketing opt-in. Marketing emails do &mdash; either under
+        marketing opt-in. Marketing emails do - either under
         HIPAA marketing authorization rules or CAN-SPAM opt-in
         mechanics, depending on the email category.
       </P>
@@ -295,7 +295,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Healthcare email marketing combines HIPAA, CAN-SPAM, FTC claim rules, and state-specific email rules — all apply.",
+          "Healthcare email marketing combines HIPAA, CAN-SPAM, FTC claim rules, and state-specific email rules - all apply.",
           "Treatment communications aren't marketing under HIPAA; promotional content for other services typically is.",
           "Email platforms handling PHI are Business Associates requiring BAA and appropriate security.",
           "Review-solicitation emails face FTC review-gating rules in addition to standard email compliance.",

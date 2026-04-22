@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Dental Implant Marketing Compliance: Specialty Claims, All-on-4 Advertising, and Lifetime Guarantee Pitfalls",
   description:
-    "Dental implant marketing has its own compliance pattern — state dental board rules on specialty claims, All-on-4 brand advertising considerations, lifetime guarantee exposure, and specific failure-rate disclosure issues.",
+    "Dental implant marketing has its own compliance pattern - state dental board rules on specialty claims, All-on-4 brand advertising considerations, lifetime guarantee exposure, and specific failure-rate disclosure issues.",
   excerpt:
     "Dental implant marketing is one of the highest-volume dental advertising categories. Here's what state dental boards, the FTC, and manufacturer-level enforcement focus on.",
   date: "2026-04-22",
@@ -44,7 +44,7 @@ export default function Body() {
         Dental implant marketing is one of the highest-volume
         advertising categories in dental practice. Major
         implant-focused practices spend significantly on
-        direct-to-consumer marketing &mdash; and the marketing
+        direct-to-consumer marketing - and the marketing
         regularly runs into specific compliance issues. This post
         covers the implant-specific framework: specialty claim
         considerations, All-on-4 and similar brand-name rules,
@@ -99,7 +99,7 @@ export default function Body() {
 
       <H2 id="lifetime-guarantees">Lifetime guarantee pitfalls</H2>
       <BeforeAfter
-        bad="Lifetime guarantee on all our implants — we stand behind our work forever."
+        bad="Lifetime guarantee on all our implants - we stand behind our work forever."
         good="Our implant warranty covers [specific parameters] for [specific duration]. Implant success rates in clinical literature are high but not universal; specific warranty terms are reviewed at consultation."
         reason="Broad lifetime guarantees conflict with implant-failure-rate clinical literature and create private-action exposure when specific patients experience failure despite the 'guarantee.' Narrow specific warranties are safer."
       />
@@ -114,7 +114,7 @@ export default function Body() {
 
       <H2 id="outcome-claims">Outcome claims and success rates</H2>
       <BeforeAfter
-        bad="99% success rate on our implants — the best in the industry."
+        bad="99% success rate on our implants - the best in the industry."
         good="Published literature on dental implants reports 10-year survival rates typically between 92% and 97% for well-selected patients. Our practice's outcomes are consistent with this range; factors affecting individual results are reviewed at consultation."
         reason="Specific percentage claims need substantiation. 'Best in the industry' is a comparative superlative without head-to-head evidence."
       />
@@ -236,8 +236,8 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "'Implant dentist' is not an ADA-recognized specialty — general dentists marketing implants should use accurate training-and-focus language.",
-          "All-on-4 is a trademarked protocol — marketing requires authorization and accurate protocol performance.",
+          "'Implant dentist' is not an ADA-recognized specialty - general dentists marketing implants should use accurate training-and-focus language.",
+          "All-on-4 is a trademarked protocol - marketing requires authorization and accurate protocol performance.",
           "Broad lifetime guarantees conflict with clinical literature and create private-action exposure; narrow warranties are safer.",
           "Specific success rate claims need substantiation; 'best' superlatives need head-to-head evidence.",
           "Same-day implant marketing should accurately represent the multi-step treatment process rather than implying single-day completion.",

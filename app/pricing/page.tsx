@@ -29,12 +29,12 @@ import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 
 const includedFeatures = [
-  { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content — website pages, ads, emails, social posts, scripts — as many times as you need, no limits." },
+  { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content - website pages, ads, emails, social posts, scripts - as many times as you need, no limits." },
   { icon: Pencil, title: "AI-Powered Compliant Rewrites", desc: "One-click rewriting of flagged content into compliant alternatives that preserve your clinic's voice and messaging." },
   { icon: BookOpen, title: "Full Compliance Library (300+ Rules)", desc: "Searchable database of banned phrases, compliant alternatives, risk ratings, and source citations from real enforcement actions." },
   { icon: Bell, title: "Daily FDA/FTC Rule Updates", desc: "Automated monitoring adds new violations to your ruleset within 24 hours of enforcement. Always current, never outdated." },
   { icon: Clock, title: "Complete Audit Trail + PDF Export", desc: "Every scan permanently logged with timestamps, scores, and full reports. Export PDF or CSV for legal documentation." },
-  { icon: Users, title: "3 Team Seats Included", desc: "Give access to your marketing manager, content writer, and clinic owner — shared history under one account." },
+  { icon: Users, title: "3 Team Seats Included", desc: "Give access to your marketing manager, content writer, and clinic owner - shared history under one account." },
   { icon: Lock, title: "Zero Patient Data Exposure", desc: "We analyze marketing text only. No PHI, no patient records, no clinical data. Zero HIPAA implications whatsoever." },
   { icon: ShieldCheck, title: "Real-Time Enforcement Alerts", desc: "Get notified when significant new FDA or FTC enforcement actions impact healthcare marketing rules." },
 ]
@@ -55,14 +55,14 @@ const comparisonRows = [
 const pricingFaqs = [
   { q: "Is there a contract or commitment?", a: "No. RegenCompliance is month-to-month. You can cancel at any time from your account settings with one click. No cancellation fees, no penalty, no questions asked. Your access continues through the end of your current billing period." },
   { q: "Does this replace my healthcare marketing attorney?", a: "No. RegenCompliance is an educational compliance tool, not a law firm, and it does not constitute legal advice. We strongly recommend final content review by qualified healthcare marketing counsel. What RegenCompliance does is catch the violations before they reach your attorney, so the attorney's time is spent on judgment calls rather than pattern-matching language that any pre-publish scanner can flag. Most clinics using both see their legal review costs drop substantially." },
-  { q: "Who sees my scanned content? Is it shared with humans?", a: "No human on our team accesses your scan content during normal operation. Scans run through automated AI analysis only. Content is encrypted at rest and in transit, stored in your account for your audit trail, and visible only to you and your team seats. Our staff can only access scan content during an explicit support request that you initiate — and even then, access is logged and requires documented authorization. We do not share, sell, or otherwise distribute your content." },
-  { q: "Is my content used to train AI models?", a: "No. Your scanned content is not used to train any AI models — ours or third-party providers'. We use Anthropic's Claude for scan analysis, and we use their API with the 'no-training' setting enabled for all requests. Your content is processed for the scan, results are returned to you, and nothing from your account feeds into model training anywhere." },
+  { q: "Who sees my scanned content? Is it shared with humans?", a: "No human on our team accesses your scan content during normal operation. Scans run through automated AI analysis only. Content is encrypted at rest and in transit, stored in your account for your audit trail, and visible only to you and your team seats. Our staff can only access scan content during an explicit support request that you initiate - and even then, access is logged and requires documented authorization. We do not share, sell, or otherwise distribute your content." },
+  { q: "Is my content used to train AI models?", a: "No. Your scanned content is not used to train any AI models - ours or third-party providers'. We use Anthropic's Claude for scan analysis, and we use their API with the 'no-training' setting enabled for all requests. Your content is processed for the scan, results are returned to you, and nothing from your account feeds into model training anywhere." },
   { q: "Can I try it before I buy?", a: "Yes. We offer a free demo scanner on our website that lets you paste in sample content and see a compliance report. The demo uses a subset of our full ruleset, but it gives you a clear picture of how the scanner works and the quality of the analysis." },
   { q: "What payment methods do you accept?", a: "We accept all major credit cards (Visa, Mastercard, American Express, Discover) through Stripe, our payment processor. All transactions are secured with bank-level encryption. We do not store your payment details on our servers." },
   { q: "Do you offer discounts for multiple clinics?", a: "We are building multi-location support. If you operate multiple clinic locations, contact us to discuss volume pricing. Each subscription covers one clinic account with 3 team seats." },
   { q: "What happens to my data if I cancel?", a: "Your scan history and audit trail remain accessible for 30 days after cancellation. You can export all reports as PDF or CSV before your account is deactivated. After 30 days, data is permanently deleted per our privacy policy." },
   { q: "Is the subscription tax deductible?", a: "In most cases, yes. RegenCompliance is a business software expense for regulatory compliance. Consult your accountant, but compliance software is typically a deductible business expense under IRS guidelines." },
-  { q: "How does the money-back guarantee work?", a: "If you are not satisfied within your first 30 days, contact us for a full refund. No fine print. We want you to use the tool enough to see the value — if you do not find it valuable after running scans on your actual content, we will refund every penny." },
+  { q: "How does the money-back guarantee work?", a: "If you are not satisfied within your first 30 days, contact us for a full refund. No fine print. We want you to use the tool enough to see the value - if you do not find it valuable after running scans on your actual content, we will refund every penny." },
 ]
 
 function RoiCalculator() {
@@ -105,7 +105,7 @@ function RoiCalculator() {
           </div>
         </div>
         <p className="text-sm text-white/65 leading-relaxed max-w-2xl">
-          Adjust the inputs to match your clinic. The math below is the annual cost of having a healthcare marketing attorney pre-review every page and post at their hourly rate &mdash; vs. RegenCompliance at founding-rate pricing.
+          Adjust the inputs to match your clinic. The math below is the annual cost of having a healthcare marketing attorney pre-review every page and post at their hourly rate - vs. RegenCompliance at founding-rate pricing.
         </p>
       </div>
 
@@ -200,7 +200,7 @@ function RoiCalculator() {
             <span className="text-3xl font-extrabold text-[#55E039] tabular-nums">{roiMultiple}&times;</span>
           </div>
           <p className="text-[11px] text-white/55 leading-relaxed pt-2 border-t border-white/[0.06]">
-            Estimates assume 30 min of legal review per page and 15 min per post. Actual figures vary by attorney, content type, and review cadence. RegenCompliance does not replace final legal review &mdash; it makes that review faster and cheaper by catching pattern-matchable violations before they reach your counsel.
+            Estimates assume 30 min of legal review per page and 15 min per post. Actual figures vary by attorney, content type, and review cadence. RegenCompliance does not replace final legal review - it makes that review faster and cheaper by catching pattern-matchable violations before they reach your counsel.
           </p>
         </div>
       </div>
@@ -246,7 +246,7 @@ export default function PricingPage() {
             unitCode: "MON",
           },
         },
-        description: "Locked for life — rate never increases.",
+        description: "Locked for life - rate never increases.",
       },
       {
         "@type": "Offer",
@@ -299,7 +299,7 @@ export default function PricingPage() {
       <section className="relative pt-32 pb-16">
         <div className="relative mx-auto max-w-6xl px-6 text-center">
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
-            {IS_LAUNCHED ? "FOUNDING MEMBER PRICING" : "BETA LAUNCH — LIMITED SPOTS"}
+            {IS_LAUNCHED ? "FOUNDING MEMBER PRICING" : "BETA LAUNCH - LIMITED SPOTS"}
           </p>
           <h1 className="text-3xl sm:text-4xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1]">
             Lock in $297/mo for life.
@@ -308,8 +308,8 @@ export default function PricingPage() {
           </h1>
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
             {IS_LAUNCHED
-              ? "25 founding member spots at $297/mo — locked in for life. Once they are gone, standard pricing is $497/mo."
-              : "We are opening 25 founding member spots at $297/mo — locked in for life. Once they are gone, the only option is $497/mo."}
+              ? "25 founding member spots at $297/mo - locked in for life. Once they are gone, standard pricing is $497/mo."
+              : "We are opening 25 founding member spots at $297/mo - locked in for life. Once they are gone, the only option is $497/mo."}
           </p>
         </div>
       </section>
@@ -317,7 +317,7 @@ export default function PricingPage() {
       {/* ============ PRICING CARDS ============ */}
       <section className="relative pb-16">
         <div className="relative mx-auto max-w-5xl px-6 grid gap-5 md:gap-8 md:grid-cols-2 items-start">
-          {/* BETA PLAN — PRIMARY */}
+          {/* BETA PLAN - PRIMARY */}
           <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-xl shadow-[#55E039]/[0.08]">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-24 bg-[#55E039]/[0.08] blur-[50px]" />
@@ -332,10 +332,10 @@ export default function PricingPage() {
               <p className="text-6xl font-extrabold tracking-tight text-white">$297</p>
               <span className="text-lg font-normal text-white/40">/mo</span>
             </div>
-            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate — Never increases</p>
+            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate - Never increases</p>
             {!IS_LAUNCHED && (
               <span className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8">
-                Invite-only — Join the waitlist
+                Invite-only - Join the waitlist
               </span>
             )}
             {IS_LAUNCHED ? (
@@ -369,7 +369,7 @@ export default function PricingPage() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo — never increases</span>
+                    <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo - never increases</span>
                     <p className="text-xs text-white/40 mt-0.5 leading-relaxed">Your rate stays at $297/mo for life. All future updates and features included.</p>
                   </div>
                 </li>
@@ -377,7 +377,7 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* STANDARD PLAN — COMING SOON */}
+          {/* STANDARD PLAN - COMING SOON */}
           <div className="rounded-2xl bg-white/[0.02] border border-white/10 p-10 relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             <div className="absolute top-4 right-4">
@@ -394,7 +394,7 @@ export default function PricingPage() {
             <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/55 cursor-not-allowed select-none mb-6">
               Coming Soon
             </div>
-            <p className="text-center text-xs text-white/55 mb-8">Lock in $297/mo now — save $200/mo when standard launches.</p>
+            <p className="text-center text-xs text-white/55 mb-8">Lock in $297/mo now - save $200/mo when standard launches.</p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white/70 mb-4">Everything included:</p>
               <ul className="space-y-3">
@@ -502,7 +502,7 @@ export default function PricingPage() {
                 <h3 className="text-xl font-extrabold text-white">The Bottom Line</h3>
               </div>
               <p className="text-base text-white/70 leading-relaxed max-w-2xl mx-auto">
-                A single FDA warning letter costs more in legal fees than <span className="text-white font-extrabold">14 years</span> of RegenCompliance at beta pricing. Even if you only consider the attorney time to respond to a warning letter — typically $50,000 to $150,000 — the math is clear. At $297/mo, that is $3,564 per year. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
+                A single FDA warning letter costs more in legal fees than <span className="text-white font-extrabold">14 years</span> of RegenCompliance at beta pricing. Even if you only consider the attorney time to respond to a warning letter - typically $50,000 to $150,000 - the math is clear. At $297/mo, that is $3,564 per year. RegenCompliance does not just pay for itself. It pays for itself many times over. The clinics that get warning letters are not doing anything your clinic is not also doing. They are using the same language, making the same claims, running the same ads. The only difference is they got noticed first.
               </p>
             </div>
           </div>
@@ -648,8 +648,8 @@ export default function PricingPage() {
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
             {IS_LAUNCHED
-              ? "Lock in the $297/mo founding rate now — standard launch pricing is $497/mo. 30-day money-back guarantee."
-              : "Pre-release access is invite-only. Join the waitlist to lock in the $297/mo founding rate when your invite is ready — standard launch pricing is $497/mo."}
+              ? "Lock in the $297/mo founding rate now - standard launch pricing is $497/mo. 30-day money-back guarantee."
+              : "Pre-release access is invite-only. Join the waitlist to lock in the $297/mo founding rate when your invite is ready - standard launch pricing is $497/mo."}
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-2 sm:gap-4">
             {IS_LAUNCHED ? (

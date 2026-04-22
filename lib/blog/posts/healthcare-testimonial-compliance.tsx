@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
   description:
     "The FTC's updated Endorsement Guides changed what healthcare practices can publish as patient testimonials. Here's the current rulebook: typical experience disclosure, material connection, employee endorsements, influencer partnerships, and what to do with reposted content.",
   excerpt:
-    "The FTC's Endorsement Guides govern every patient testimonial a healthcare practice publishes &mdash; and they were meaningfully updated in 2023. This post covers the current rulebook on typical-experience disclosure, paid endorsements, employee testimonials, influencer partnerships, and reposted content.",
+    "The FTC's Endorsement Guides govern every patient testimonial a healthcare practice publishes - and they were meaningfully updated in 2023. This post covers the current rulebook on typical-experience disclosure, paid endorsements, employee testimonials, influencer partnerships, and reposted content.",
   date: "2026-04-21",
   readingMinutes: 10,
   keywords: [
@@ -61,21 +61,21 @@ export default function Body() {
 
       <Callout variant="info" title="Who the Endorsement Guides apply to">
         Any healthcare practice that publishes patient outcomes, reviews, or
-        stories as part of marketing &mdash; on its website, social media,
+        stories as part of marketing - on its website, social media,
         paid ads, email, or reposted third-party platforms. There is no small-
         clinic exemption. A solo practitioner reposting a patient&rsquo;s
         Instagram story is subject to the same rules as a national chain.
       </Callout>
 
       <H2 id="typical-experience-disclosure">
-        Rule 1 &mdash; Typical experience disclosure
+        Rule 1 - Typical experience disclosure
       </H2>
       <P>
         The anchor rule. If a testimonial depicts an outcome presented as
         what a consumer (or patient) would typically achieve, you must have
         adequate substantiation that it <Em>is</Em> typical. If the outcome
-        is atypical &mdash; which cherry-picked testimonials almost always
-        are &mdash; you must clearly and conspicuously disclose what the
+        is atypical - which cherry-picked testimonials almost always
+        are - you must clearly and conspicuously disclose what the
         typical outcome actually is.
       </P>
       <P>
@@ -85,13 +85,13 @@ export default function Body() {
         that atypical exists.
       </P>
       <BeforeAfter
-        bad={`"I lost 45 pounds in 3 months. Life-changing!" — Patient testimonial. *Results may vary.`}
-        good={`"I lost 45 pounds in 3 months." — Patient outcome above the typical range for our program. In our medically supervised weight loss program, patients typically lose 10–15% of their starting body weight over 6 months. Individual results depend on starting weight, adherence, and health history.`}
+        bad={`"I lost 45 pounds in 3 months. Life-changing!" - Patient testimonial. *Results may vary.`}
+        good={`"I lost 45 pounds in 3 months." - Patient outcome above the typical range for our program. In our medically supervised weight loss program, patients typically lose 10–15% of their starting body weight over 6 months. Individual results depend on starting weight, adherence, and health history.`}
         reason={`The &ldquo;results may vary&rdquo; line is functionally invisible. The compliant version states what typical is in concrete terms, so the featured outcome is correctly contextualized.`}
       />
 
       <H2 id="material-connection">
-        Rule 2 &mdash; Material connection disclosure
+        Rule 2 - Material connection disclosure
       </H2>
       <P>
         If the patient or endorser received anything of value in exchange
@@ -114,7 +114,7 @@ export default function Body() {
       </P>
 
       <H2 id="employee-testimonials">
-        Rule 3 &mdash; Employee testimonials
+        Rule 3 - Employee testimonials
       </H2>
       <P>
         Testimonials from employees, physicians in your practice, owner-
@@ -124,17 +124,17 @@ export default function Body() {
         patient endorsements is deceptive.
       </P>
       <BeforeAfter
-        bad={`"Best med spa in town!" — Sarah, 5-star review on Google`}
+        bad={`"Best med spa in town!" - Sarah, 5-star review on Google`}
         good={`(Don't publish staff reviews as patient reviews. If you want to feature clinical leadership, present them as clinicians with their own brand voice, not as patients.)`}
         reason="Employee testimonials need explicit disclosure of the employment relationship. In most cases, the right answer is to not publish employee reviews as patient reviews at all, and to feature clinical staff as staff."
       />
 
       <H2 id="influencer-partnerships">
-        Rule 4 &mdash; Influencer and content-creator partnerships
+        Rule 4 - Influencer and content-creator partnerships
       </H2>
       <P>
-        If you partner with an influencer &mdash; paid, gifted, or via
-        affiliate program &mdash; that&rsquo;s an endorsement with a
+        If you partner with an influencer - paid, gifted, or via
+        affiliate program - that&rsquo;s an endorsement with a
         material connection. Standard requirements apply:
       </P>
       <UL>
@@ -162,7 +162,7 @@ export default function Body() {
       </UL>
 
       <H2 id="repost-rules">
-        Rule 5 &mdash; Reposts when patients post about you
+        Rule 5 - Reposts when patients post about you
       </H2>
       <P>
         A patient writes a glowing review on Google, posts a raving
@@ -180,7 +180,7 @@ export default function Body() {
         <LI>
           <Strong>Read the original carefully.</Strong> If it contains
           disease claims, treatment verbs tied to conditions, or outcome
-          guarantees &mdash; don&rsquo;t repost. Or request an edited
+          guarantees - don&rsquo;t repost. Or request an edited
           version from the patient.
         </LI>
         <LI>
@@ -201,7 +201,7 @@ export default function Body() {
       </OL>
 
       <H2 id="substantiation-files">
-        Rule 6 &mdash; Substantiation file retention
+        Rule 6 - Substantiation file retention
       </H2>
       <P>
         For every published testimonial, you should be able to produce, on
@@ -328,7 +328,7 @@ export default function Body() {
           "The FTC Endorsement Guides were meaningfully updated in 2023. Generic &ldquo;results may vary&rdquo; language is no longer sufficient.",
           "Typical-experience disclosure must state what typical is, not just acknowledge that atypical exists.",
           "Material connection (cash, discount, free treatment) must be disclosed in the same location as the testimonial.",
-          "Employee testimonials need explicit employment-relationship disclosure &mdash; or should not be published as patient reviews.",
+          "Employee testimonials need explicit employment-relationship disclosure - or should not be published as patient reviews.",
           "Reposting a patient's public post makes their claim your claim. Read carefully, add disclosures, get written consent, keep substantiation.",
           "The substantiation file is the compliance program. If you can't produce it on demand, you can't survive enforcement contact.",
         ]}

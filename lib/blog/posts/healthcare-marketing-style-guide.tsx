@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Most compliance drift happens because rules exist only in the compliance officer's head. A written marketing style guide turns scattered judgments into an enforceable standard. Here's how to build one.",
   excerpt:
-    "Your compliance officer can't be in every marketing meeting. A written style guide makes compliance principles operable at scale — here's the template and how to keep it alive.",
+    "Your compliance officer can't be in every marketing meeting. A written style guide makes compliance principles operable at scale - here's the template and how to keep it alive.",
   date: "2026-04-22",
   readingMinutes: 8,
   keywords: [
@@ -67,19 +67,19 @@ export default function Body() {
         Typical entries:
       </P>
       <UL>
-        <LI>&ldquo;FDA-approved&rdquo; &mdash; unless the product actually is, with specific labeled indication.</LI>
-        <LI>&ldquo;Cures,&rdquo; &ldquo;heals,&rdquo; &ldquo;treats [disease]&rdquo; &mdash; disease-claim territory.</LI>
-        <LI>&ldquo;Guaranteed,&rdquo; &ldquo;guaranteed results&rdquo; &mdash; FTC trigger.</LI>
-        <LI>&ldquo;No side effects,&rdquo; &ldquo;completely safe&rdquo; &mdash; safety absolutes.</LI>
-        <LI>&ldquo;Proven,&rdquo; &ldquo;clinically proven&rdquo; &mdash; without specific substantiation.</LI>
-        <LI>&ldquo;Best,&rdquo; &ldquo;top,&rdquo; &ldquo;most effective&rdquo; &mdash; unsubstantiated superlatives.</LI>
+        <LI>&ldquo;FDA-approved&rdquo; - unless the product actually is, with specific labeled indication.</LI>
+        <LI>&ldquo;Cures,&rdquo; &ldquo;heals,&rdquo; &ldquo;treats [disease]&rdquo; - disease-claim territory.</LI>
+        <LI>&ldquo;Guaranteed,&rdquo; &ldquo;guaranteed results&rdquo; - FTC trigger.</LI>
+        <LI>&ldquo;No side effects,&rdquo; &ldquo;completely safe&rdquo; - safety absolutes.</LI>
+        <LI>&ldquo;Proven,&rdquo; &ldquo;clinically proven&rdquo; - without specific substantiation.</LI>
+        <LI>&ldquo;Best,&rdquo; &ldquo;top,&rdquo; &ldquo;most effective&rdquo; - unsubstantiated superlatives.</LI>
       </UL>
 
       <H3>3. Preferred phrasings</H3>
       <P>
         For each banned phrase, a compliant alternative. This is
         the most-used section of a style guide because staff rarely
-        wants to just be told &ldquo;no&rdquo; &mdash; they want to
+        wants to just be told &ldquo;no&rdquo; - they want to
         know what to say instead.
       </P>
 
@@ -93,7 +93,7 @@ export default function Body() {
       />
       <BeforeAfter
         bad="Clinically proven to work"
-        good="A [year] clinical study of [protocol] in [population] showed [specific outcome] — individual outcomes depend on many factors"
+        good="A [year] clinical study of [protocol] in [population] showed [specific outcome] - individual outcomes depend on many factors"
       />
 
       <H3>4. Required disclosures</H3>
@@ -155,7 +155,7 @@ export default function Body() {
       <P>
         Identify the recurring compliance issues in your current
         marketing. The banned phrases section should reflect the
-        specific patterns your team actually produces &mdash; generic
+        specific patterns your team actually produces - generic
         lists from the internet are less useful than specific lists
         from your own recent output.
       </P>
@@ -178,13 +178,13 @@ export default function Body() {
       <H3>Step 4: Train the team on it</H3>
       <P>
         A style guide no one has read doesn&rsquo;t work. Build a
-        training session around the guide &mdash; walk through each
+        training session around the guide - walk through each
         section, discuss examples from your own work, take questions.
       </P>
 
       <H3>Step 5: Make it accessible</H3>
       <P>
-        The guide should live somewhere everyone can find it &mdash;
+        The guide should live somewhere everyone can find it -
         a shared drive, a Notion page, an internal wiki, a PDF
         linked from the content management system. A brilliant style
         guide that&rsquo;s not accessible at the moment of need is a
@@ -218,7 +218,7 @@ export default function Body() {
       <H3>Not integrated into workflow</H3>
       <P>
         If the style guide is a PDF nobody checks, it doesn&rsquo;t
-        work. Build the check into the publishing process &mdash;
+        work. Build the check into the publishing process -
         ideally as a step before content goes live.
       </P>
 
@@ -240,7 +240,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "A written style guide turns compliance principles into enforceable team standards.",
-          "The most-used section is banned phrases paired with compliant alternatives — concrete beats abstract.",
+          "The most-used section is banned phrases paired with compliant alternatives - concrete beats abstract.",
           "Specialty-specific and platform-specific sections catch issues a generic guide misses.",
           "Legal counsel should review the initial version; the team should be trained on it; the workflow should require checking it before publish.",
           "Version-controlled updates as rules change keep the guide from drifting into uselessness.",

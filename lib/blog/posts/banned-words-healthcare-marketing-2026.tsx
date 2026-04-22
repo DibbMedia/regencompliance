@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Seven words in healthcare marketing copy generate a disproportionate share of FDA warning letters and FTC enforcement actions. Here is the list, what each one does, and the compliant alternative for every specialty.",
   excerpt:
-    "Seven specific words generate a disproportionate share of FDA warning letters and FTC actions in healthcare marketing. Here is the 2026 list &mdash; with the compliant alternative for every word and five adjacent phrases that drag you into the same violation.",
+    "Seven specific words generate a disproportionate share of FDA warning letters and FTC actions in healthcare marketing. Here is the 2026 list - with the compliant alternative for every word and five adjacent phrases that drag you into the same violation.",
   date: "2026-04-21",
   readingMinutes: 10,
   keywords: [
@@ -43,8 +43,8 @@ export default function Body() {
     <>
       <Lead>
         There is no official FDA &ldquo;banned words&rdquo; list. What there is,
-        in practice, is a set of specific words that &mdash; when tied to a
-        health-condition claim &mdash; reliably convert your marketing copy from
+        in practice, is a set of specific words that - when tied to a
+        health-condition claim - reliably convert your marketing copy from
         legal promotion into an unapproved drug representation. After reading a
         large sample of 2024&ndash;2025 warning letters, seven words do most of
         the damage. These are the ones to get out of your style guide this week.
@@ -53,14 +53,14 @@ export default function Body() {
       <P>
         Each word below maps to a specific regulatory mechanism. That matters,
         because cleaning up the language isn&rsquo;t about finding prettier
-        synonyms &mdash; it&rsquo;s about knowing which regulatory theory each
+        synonyms - it&rsquo;s about knowing which regulatory theory each
         word triggers so the rewrite actually survives review.
       </P>
 
       <Callout variant="info" title="How &ldquo;trigger words&rdquo; actually work">
         The FDA&rsquo;s regulatory authority attaches to <Em>intended use</Em>,
         which is established by what you say your product or procedure is for
-        &mdash; not by the biology. A &ldquo;banned word&rdquo; is really a word
+        - not by the biology. A &ldquo;banned word&rdquo; is really a word
         whose use changes the intended use of your offering into something that
         requires approval. Replace the word, and you usually replace the
         regulatory hook.
@@ -71,7 +71,7 @@ export default function Body() {
         The single most dangerous word in healthcare marketing. A cure claim is
         the textbook definition of a disease claim under 21 CFR. It asserts that
         the product eliminates or permanently resolves a named medical condition
-        &mdash; which is exactly what an approved drug does. If you do not have
+        - which is exactly what an approved drug does. If you do not have
         drug approval for the indication, the word &ldquo;cure&rdquo; makes your
         product an unapproved drug.
       </P>
@@ -165,7 +165,7 @@ export default function Body() {
       <BeforeAfter
         bad="Guaranteed results or your money back."
         good="We offer a 30-day satisfaction policy. If you are not satisfied with your initial experience, we will refund the consultation fee."
-        reason="&ldquo;Guaranteed results&rdquo; is an unsubstantiable clinical outcome claim. The compliant version is a specific, bounded, commercial-refund offer &mdash; which is legal."
+        reason="&ldquo;Guaranteed results&rdquo; is an unsubstantiable clinical outcome claim. The compliant version is a specific, bounded, commercial-refund offer - which is legal."
       />
 
       <P>
@@ -179,7 +179,7 @@ export default function Body() {
         The most-cited specific phrase in 2024&ndash;2025 stem cell and
         regenerative medicine warning letters. Most clinics using this phrase
         mean that their facility is FDA-<Em>registered</Em> as an HCT/P tissue
-        establishment. That is a registration of the facility &mdash; not an
+        establishment. That is a registration of the facility - not an
         approval of the product or procedure being sold.
       </P>
 
@@ -199,7 +199,7 @@ export default function Body() {
       <H2 id="word-7-proven">7. Proven (without substantiation)</H2>
       <P>
         &ldquo;Proven&rdquo; is different from the other six because it&rsquo;s
-        not inherently a disease claim &mdash; it&rsquo;s a <Em>substantiation</Em>{" "}
+        not inherently a disease claim - it&rsquo;s a <Em>substantiation</Em>{" "}
         claim. Under FTC guidance, using &ldquo;proven&rdquo; obligates you to
         produce the proof on demand. Most clinics using the word in marketing do
         not have peer-reviewed clinical substantiation matching the specific
@@ -283,7 +283,7 @@ export default function Body() {
       <H3>2. Scan before publish, not after</H3>
       <P>
         A compliance scanner that runs against the copy before publish catches
-        the word while it&rsquo;s cheap to fix &mdash; not after a patient
+        the word while it&rsquo;s cheap to fix - not after a patient
         complaint opens a file.{" "}
         <Link
           href="/demo"
@@ -305,7 +305,7 @@ export default function Body() {
         The second-most-common way these words get into your marketing is
         through republished patient testimonials. Update your testimonial form
         to ask patients to describe their experience without using the seven
-        words. Not as censorship &mdash; as protection for your clinic.
+        words. Not as censorship - as protection for your clinic.
       </P>
 
       <Callout variant="success" title="We flag these seven, plus 293 more">
@@ -327,10 +327,10 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "The seven trigger words are: cure, heal, treat (+ named condition), reverse, guaranteed, FDA-approved (when actually FDA-registered), and proven (without substantiation).",
-          "Each word maps to a specific regulatory mechanism &mdash; rewrites need to address the mechanism, not just swap a synonym.",
+          "Each word maps to a specific regulatory mechanism - rewrites need to address the mechanism, not just swap a synonym.",
           "Five adjacent phrases (miracle, breakthrough, eliminate, immediate, advanced) pull clinics into the same enforcement theories.",
           "Operationalize by adding the list to CMSes, scanning before publish, auditing existing content, and updating testimonial-solicitation.",
-          "If a sentence is only persuasive because it contains a trigger word, the underlying claim was probably illegal &mdash; not just the phrasing.",
+          "If a sentence is only persuasive because it contains a trigger word, the underlying claim was probably illegal - not just the phrasing.",
         ]}
       />
     </>

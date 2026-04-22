@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   description:
     "Naturopathic practice marketing operates under dramatically varying state licensing rules, FTC substantiation for alternative-treatment claims, and specific considerations around practice scope and terminology.",
   excerpt:
-    "Naturopathic medicine marketing varies dramatically by state — from full licensure to no recognition — and faces specific FTC scrutiny on alternative-treatment claims. Here's the framework.",
+    "Naturopathic medicine marketing varies dramatically by state - from full licensure to no recognition - and faces specific FTC scrutiny on alternative-treatment claims. Here's the framework.",
   date: "2026-04-22",
   readingMinutes: 7,
   keywords: [
@@ -112,7 +112,7 @@ export default function Body() {
       <H3>Pattern 1: Specific-disease treatment claims</H3>
       <P>
         &ldquo;Treats autoimmune disease, cancer, chronic fatigue&rdquo;
-        &mdash; specific disease treatment marketing in naturopathic
+        - specific disease treatment marketing in naturopathic
         context faces the same FDA disease-claim rules as other
         healthcare plus scope-of-practice considerations in the
         specific state.
@@ -128,7 +128,7 @@ export default function Body() {
       <H3>Pattern 3: Alternative-treatment efficacy claims</H3>
       <P>
         IV vitamin therapy, hydrotherapy, homeopathic remedies,
-        herbal medicine &mdash; specific outcome claims for these
+        herbal medicine - specific outcome claims for these
         treatments need FTC-compliant substantiation.
       </P>
 

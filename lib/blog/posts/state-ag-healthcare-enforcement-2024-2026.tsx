@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "State AG Healthcare Marketing Enforcement 2024-2026: The Patterns Driving Active Cases",
   description:
-    "State attorneys general have become increasingly active on healthcare marketing enforcement — particularly in the compounded medication, weight loss, and aesthetic practice categories. Here's the landscape.",
+    "State attorneys general have become increasingly active on healthcare marketing enforcement - particularly in the compounded medication, weight loss, and aesthetic practice categories. Here's the landscape.",
   excerpt:
     "Federal FDA and FTC enforcement gets the most attention, but state AG actions have been driving significant healthcare marketing enforcement in 2024-2026. Here's what's actually happening across state lines.",
   date: "2026-04-22",
@@ -59,7 +59,7 @@ export default function Body() {
       <UL>
         <LI>
           <Strong>State consumer protection acts.</Strong> Each state
-          has one &mdash; California B&amp;P 17500, Texas DTPA,
+          has one - California B&amp;P 17500, Texas DTPA,
           Florida FDUTPA, Ohio CSPA, New York Executive Law &sect;63(12),
           and so on. These provide broad authority over deceptive
           practices.
@@ -77,7 +77,7 @@ export default function Body() {
         <LI>
           <Strong>Private right of action.</Strong> Some state
           consumer protection laws permit private plaintiffs to sue
-          &mdash; creating class action exposure independent of AG
+          - creating class action exposure independent of AG
           action.
         </LI>
       </UL>
@@ -96,7 +96,7 @@ export default function Body() {
       <H3>Pattern 2: Telehealth prescribing advertising</H3>
       <P>
         State AGs have been active on telehealth prescribing
-        advertising &mdash; particularly cross-border marketing by
+        advertising - particularly cross-border marketing by
         providers not licensed in the patient&rsquo;s state, and
         marketing that minimizes the clinical evaluation step.
       </P>
@@ -130,7 +130,7 @@ export default function Body() {
       <H3>Pattern 6: Aesthetic practice supervision</H3>
       <P>
         Some state AG actions coordinate with state medical board
-        discipline on aesthetic practice supervision issues &mdash;
+        discipline on aesthetic practice supervision issues -
         particularly where nurse injector independence language
         creates both medical-board professional-conduct exposure and
         consumer-protection deception exposure.
@@ -227,7 +227,7 @@ export default function Body() {
         Several states&rsquo; consumer protection laws permit private
         plaintiffs to sue, often with statutory or treble damages.
         This creates exposure that runs parallel to any AG action
-        &mdash; a healthcare marketer can face simultaneous AG
+        - a healthcare marketer can face simultaneous AG
         investigation and private class action over the same
         marketing.
       </P>

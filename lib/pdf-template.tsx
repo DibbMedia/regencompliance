@@ -407,7 +407,7 @@ const s = StyleSheet.create({
 function PageFooter({ clinicName }: { clinicName: string }) {
   return (
     <View style={s.pageFooter} fixed>
-      <Text style={s.footerText}>{clinicName} — Compliance Report</Text>
+      <Text style={s.footerText}>{clinicName} - Compliance Report</Text>
       <Text style={s.footerText} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} />
       <Text style={s.footerBrand}>RegenCompliance</Text>
     </View>
@@ -869,7 +869,7 @@ export function SitePdfDocument({
         <Text style={[s.sectionTitle, { fontSize: 12, marginTop: 24 }]}>Priority Actions</Text>
         <View style={{ marginBottom: 16 }}>
           <Text style={[s.recText, { marginBottom: 6 }]}>
-            1. Start with the lowest-scoring pages — these carry the highest regulatory risk.
+            1. Start with the lowest-scoring pages - these carry the highest regulatory risk.
           </Text>
           <Text style={[s.recText, { marginBottom: 6 }]}>
             2. Review each flagged phrase and replace with compliant alternatives.

@@ -4,12 +4,12 @@ export const meta: SpecialtyMeta = {
   slug: "aesthetic-practices",
   specialty: "Aesthetic & Plastic Surgery Practices",
   specialtyLong: "Aesthetic Surgery and Cosmetic Dermatology Practices",
-  title: "FDA/FTC Compliance Software for Aesthetic Practices — RegenCompliance",
+  title: "FDA/FTC Compliance Software for Aesthetic Practices - RegenCompliance",
   description:
     "Purpose-built compliance scanning for aesthetic surgery and cosmetic dermatology practices. Catches FDA device-claim issues, FTC before/after and testimonial rules, and the state-specific physician advertising patterns under enforcement.",
   heroBadge: "For aesthetic practices",
   heroTagline:
-    "Aesthetic and plastic surgery practices carry the most visual marketing of any healthcare specialty — before/after photos, patient transformation content, and surgical outcome claims. That visual surface is also the densest FTC enforcement target.",
+    "Aesthetic and plastic surgery practices carry the most visual marketing of any healthcare specialty - before/after photos, patient transformation content, and surgical outcome claims. That visual surface is also the densest FTC enforcement target.",
   riskSummary:
     "Aesthetic practices operate at the intersection of FDA device rules (lasers, energy devices, surgical instruments), FTC outcome-claim rules (before/after photos, patient testimonials, transformation content), and state medical board physician-advertising rules (specialty claims, board-certification rules, physician-of-record supervision). Visual marketing is both the primary sales channel and the primary regulatory exposure. Aesthetic-specific enforcement has tightened significantly as social media transformation content has become the industry-standard marketing approach. Our rule set is built for the full visual-plus-textual surface these practices publish across.",
   enforcementExamples: [
@@ -31,7 +31,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       title: "State AG actions on package pricing and consumer disclosure",
-      body: "Aesthetic package pricing — advertised flat rates for complex procedures — has drawn state AG consumer-protection attention when actual totals diverge significantly from advertised prices due to add-ons, anesthesia, facility fees, or follow-up costs.",
+      body: "Aesthetic package pricing - advertised flat rates for complex procedures - has drawn state AG consumer-protection attention when actual totals diverge significantly from advertised prices due to add-ons, anesthesia, facility fees, or follow-up costs.",
     },
   ],
   bannedPhrases: [
@@ -44,19 +44,19 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Permanent facelift",
       why: "Aging continues after surgery; 'permanent' overstates the durability of results.",
-      alternative: "Long-lasting facial rejuvenation — aging continues naturally over time",
+      alternative: "Long-lasting facial rejuvenation - aging continues naturally over time",
       risk: "HIGH",
     },
     {
       phrase: "No downtime surgery",
       why: "All surgery has recovery periods; absolute claim is deceptive.",
-      alternative: "Reduced downtime compared to traditional approaches — specific recovery discussed at consultation",
+      alternative: "Reduced downtime compared to traditional approaches - specific recovery discussed at consultation",
       risk: "HIGH",
     },
     {
       phrase: "Board-certified [specialty]",
       why: "Requires specific ABMS or equivalent certification; misuse is a state medical board enforcement target.",
-      alternative: "Certified by [specific board name] — which is [ABMS-member board / other certification]",
+      alternative: "Certified by [specific board name] - which is [ABMS-member board / other certification]",
       risk: "HIGH",
     },
     {
@@ -68,7 +68,7 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Guaranteed satisfaction",
       why: "Satisfaction guarantees are rarely substantiable in surgical practice.",
-      alternative: "Most of our patients report high satisfaction with their results — our consultation process aims to set realistic expectations",
+      alternative: "Most of our patients report high satisfaction with their results - our consultation process aims to set realistic expectations",
       risk: "HIGH",
     },
     {
@@ -85,20 +85,20 @@ export const meta: SpecialtyMeta = {
     },
     {
       phrase: "Best plastic surgeon in [city]",
-      why: "Superlative without substantiation — FTC and state medical board enforcement target.",
-      alternative: "[Practice Name] — a leading aesthetic practice in [city]",
+      why: "Superlative without substantiation - FTC and state medical board enforcement target.",
+      alternative: "[Practice Name] - a leading aesthetic practice in [city]",
       risk: "MEDIUM",
     },
     {
       phrase: "Revolutionary new technique",
-      why: "Unsubstantiated superiority claim — common FTC target in aesthetic marketing.",
+      why: "Unsubstantiated superiority claim - common FTC target in aesthetic marketing.",
       alternative: "A technique our practice uses for [specific indication] based on [specific training or development]",
       risk: "MEDIUM",
     },
     {
-      phrase: "Actual patient — no retouching",
+      phrase: "Actual patient - no retouching",
       why: "Defensive overclaim that often isn't strictly true (lighting, positioning, cropping). FTC rules require typical-experience framing, not authenticity defenses.",
-      alternative: "Actual patient, [N] weeks post-procedure. Individual results vary — typical outcomes depend on candidacy and aftercare.",
+      alternative: "Actual patient, [N] weeks post-procedure. Individual results vary - typical outcomes depend on candidacy and aftercare.",
       risk: "MEDIUM",
     },
     {
@@ -111,7 +111,7 @@ export const meta: SpecialtyMeta = {
   commonCatches: [
     {
       title: "Before/after image captions without typical-experience disclosure",
-      body: "Every before/after image needs clear-and-conspicuous typical-experience language. Most aesthetic practice captions use 'results may vary' in fine print — which the FTC does not consider adequate. Our scanner catches the missing disclosure and inserts compliant language matching FTC-accepted patterns.",
+      body: "Every before/after image needs clear-and-conspicuous typical-experience language. Most aesthetic practice captions use 'results may vary' in fine print - which the FTC does not consider adequate. Our scanner catches the missing disclosure and inserts compliant language matching FTC-accepted patterns.",
     },
     {
       title: "Patient transformation videos with outcome claims",
@@ -133,14 +133,14 @@ export const meta: SpecialtyMeta = {
   caseStudy: {
     title: "A typical first scan on an aesthetic practice homepage",
     before:
-      "Dr. Smith is the best plastic surgeon in Miami — board-certified and the expert in scarless breast augmentation, painless rhinoplasty, and permanent facelifts with no downtime. Reverses 20 years of aging with our revolutionary new technique. Celebrity facelift favorite, guaranteed satisfaction, actual patient photos with no retouching.",
+      "Dr. Smith is the best plastic surgeon in Miami - board-certified and the expert in scarless breast augmentation, painless rhinoplasty, and permanent facelifts with no downtime. Reverses 20 years of aging with our revolutionary new technique. Celebrity facelift favorite, guaranteed satisfaction, actual patient photos with no retouching.",
     after:
-      "Dr. Smith leads [Practice Name], a leading aesthetic practice in Miami. Certified by the American Board of Plastic Surgery (an ABMS-member board). Focused training and experience in breast augmentation, rhinoplasty, and facial rejuvenation. Surgical approach designed to minimize visible scarring, with reduced downtime compared to traditional approaches — specific recovery discussed at consultation. Our sedation and technique options help most patients experience minimal discomfort. Most of our patients report high satisfaction — our consultation process aims to set realistic expectations. Actual patient, 6 weeks post-procedure. Individual results vary — typical outcomes depend on candidacy and aftercare.",
+      "Dr. Smith leads [Practice Name], a leading aesthetic practice in Miami. Certified by the American Board of Plastic Surgery (an ABMS-member board). Focused training and experience in breast augmentation, rhinoplasty, and facial rejuvenation. Surgical approach designed to minimize visible scarring, with reduced downtime compared to traditional approaches - specific recovery discussed at consultation. Our sedation and technique options help most patients experience minimal discomfort. Most of our patients report high satisfaction - our consultation process aims to set realistic expectations. Actual patient, 6 weeks post-procedure. Individual results vary - typical outcomes depend on candidacy and aftercare.",
     outcome:
-      "Score moved from 14 to 91 across 12 flagged phrases. Every core marketing message preserved — superlative and guarantee language replaced with substantiable framings, board-certification language rewritten to meet state medical board standards, before/after caption rewritten to FTC-compliant typical-experience framing. PDF audit trail generated.",
+      "Score moved from 14 to 91 across 12 flagged phrases. Every core marketing message preserved - superlative and guarantee language replaced with substantiable framings, board-certification language rewritten to meet state medical board standards, before/after caption rewritten to FTC-compliant typical-experience framing. PDF audit trail generated.",
   },
   uniqueValue:
-    "Aesthetic practices publish the highest volume of visual marketing of any healthcare specialty — and that visual marketing is where the densest FTC enforcement lives. Our rule set is specifically trained on the before/after caption, transformation video, and board-certification claim patterns that drive enforcement in this category. State-specific physician-advertising rules layered on top (California, Texas, Florida, New York have the strictest medical board rules) are part of what we flag.",
+    "Aesthetic practices publish the highest volume of visual marketing of any healthcare specialty - and that visual marketing is where the densest FTC enforcement lives. Our rule set is specifically trained on the before/after caption, transformation video, and board-certification claim patterns that drive enforcement in this category. State-specific physician-advertising rules layered on top (California, Texas, Florida, New York have the strictest medical board rules) are part of what we flag.",
   whoThisIsFor: [
     "Plastic and reconstructive surgery practices",
     "Cosmetic dermatology practices",
@@ -160,19 +160,19 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "How does before/after caption compliance work?",
-      a: "The FTC requires typical-experience disclosure to be clear and conspicuous — specific positioning, font size, and framing standards apply. 'Results may vary' in fine print at the bottom of a post is not considered adequate. Our scanner catches the pattern and inserts caption language in the specific formats the FTC has accepted in similar enforcement contexts. We also flag transformations that appear to show atypical results based on caption context.",
+      a: "The FTC requires typical-experience disclosure to be clear and conspicuous - specific positioning, font size, and framing standards apply. 'Results may vary' in fine print at the bottom of a post is not considered adequate. Our scanner catches the pattern and inserts caption language in the specific formats the FTC has accepted in similar enforcement contexts. We also flag transformations that appear to show atypical results based on caption context.",
     },
     {
       q: "What about consent for patient photos?",
-      a: "Patient photo consent is a HIPAA and patient-rights issue that happens before the photo enters your marketing. Our scanner does not manage consent workflows — that is your internal process with your compliance officer or attorney. What we do is flag the marketing-side patterns (caption, disclosure, claim language) around the photos you publish.",
+      a: "Patient photo consent is a HIPAA and patient-rights issue that happens before the photo enters your marketing. Our scanner does not manage consent workflows - that is your internal process with your compliance officer or attorney. What we do is flag the marketing-side patterns (caption, disclosure, claim language) around the photos you publish.",
     },
     {
       q: "Do you handle state-specific physician advertising rules?",
-      a: "We flag the most commonly cited state medical board patterns — California, Texas, Florida, and New York have the strictest physician-advertising rules and we model those specifically. State-specific advice on your marketing should involve counsel licensed in your state; our scanner handles the pattern-matching high-volume work.",
+      a: "We flag the most commonly cited state medical board patterns - California, Texas, Florida, and New York have the strictest physician-advertising rules and we model those specifically. State-specific advice on your marketing should involve counsel licensed in your state; our scanner handles the pattern-matching high-volume work.",
     },
     {
       q: "Can the scanner work with video content?",
-      a: "Yes, via text. Paste the video script, voiceover transcript, and on-screen text content into the scanner — it handles the textual content of video marketing. We do not analyze video frames directly (image and video analysis is a different technology), but the caption and narrative content is where the claim content lives and where regulators focus their review.",
+      a: "Yes, via text. Paste the video script, voiceover transcript, and on-screen text content into the scanner - it handles the textual content of video marketing. We do not analyze video frames directly (image and video analysis is a different technology), but the caption and narrative content is where the claim content lives and where regulators focus their review.",
     },
     {
       q: "What about package pricing and consumer disclosure?",
@@ -180,11 +180,11 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "Does the scanner work for non-surgical aesthetic services (laser, injectables, body contouring)?",
-      a: "Yes. Non-surgical aesthetic marketing overlaps significantly with the med spa rule set (injectables, lasers, body devices). If your practice mixes surgical and non-surgical offerings, the scanner handles both — same rule set, different sub-categories of flags.",
+      a: "Yes. Non-surgical aesthetic marketing overlaps significantly with the med spa rule set (injectables, lasers, body devices). If your practice mixes surgical and non-surgical offerings, the scanner handles both - same rule set, different sub-categories of flags.",
     },
     {
       q: "Do I still need a plastic-surgery-marketing attorney?",
-      a: "Yes, for judgment calls and any regulatory response. Our tool handles the high-volume pattern-matching — the part attorney review cannot feasibly do per-item at their billing rate. Most aesthetic practices using both together reduce routine attorney review spend and use those hours on strategic questions (board-certification structure, multi-state expansion, package-structure review) where judgment matters.",
+      a: "Yes, for judgment calls and any regulatory response. Our tool handles the high-volume pattern-matching - the part attorney review cannot feasibly do per-item at their billing rate. Most aesthetic practices using both together reduce routine attorney review spend and use those hours on strategic questions (board-certification structure, multi-state expansion, package-structure review) where judgment matters.",
     },
   ],
   relatedBlogSlugs: [

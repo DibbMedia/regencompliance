@@ -4,12 +4,12 @@ export const meta: ToolMeta = {
   slug: "enforcement-alerts",
   name: "Enforcement Alerts",
   category: "Real-time intelligence",
-  title: "Enforcement Alerts — Get Notified When New FDA/FTC Rules Affect Your Specialty | RegenCompliance",
+  title: "Enforcement Alerts - Get Notified When New FDA/FTC Rules Affect Your Specialty | RegenCompliance",
   description:
-    "Real-time alerts when significant new FDA warning letters, FTC settlements, or state enforcement actions impact your specialty. Know what changed before your competitors do — and before your current marketing becomes non-compliant.",
+    "Real-time alerts when significant new FDA warning letters, FTC settlements, or state enforcement actions impact your specialty. Know what changed before your competitors do - and before your current marketing becomes non-compliant.",
   heroBadge: "Real-time intelligence",
   heroTagline:
-    "Healthcare enforcement shifts weekly. The rule set updates daily. But what affects your specific practice? Enforcement alerts surface only the cases that matter to your specialty — no noise, no generic newsletter.",
+    "Healthcare enforcement shifts weekly. The rule set updates daily. But what affects your specific practice? Enforcement alerts surface only the cases that matter to your specialty - no noise, no generic newsletter.",
   shortVerdict:
     "The difference between practices that stay ahead of enforcement and those that get caught by it is typically 2-4 weeks of awareness.",
   whatItIs:
@@ -25,7 +25,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Impact summary per alert",
-      body: "Each alert includes: what happened, what was cited, what claim categories the case affects, whether your current marketing is likely exposed, and recommended action. Not 'here's a warning letter' — 'here's what this warning letter means for you.'",
+      body: "Each alert includes: what happened, what was cited, what claim categories the case affects, whether your current marketing is likely exposed, and recommended action. Not 'here's a warning letter' - 'here's what this warning letter means for you.'",
     },
     {
       title: "New-rule notifications",
@@ -43,7 +43,7 @@ export const meta: ToolMeta = {
   howItWorks: [
     {
       title: "1. Configure your practice profile",
-      body: "Tell the system your specialty, service lines, states of operation, and content categories. Alerts calibrate to this profile — you only hear about what affects you.",
+      body: "Tell the system your specialty, service lines, states of operation, and content categories. Alerts calibrate to this profile - you only hear about what affects you.",
     },
     {
       title: "2. Monitoring runs continuously",
@@ -59,7 +59,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "5. Action recommendations",
-      body: "Each alert includes recommended action — review specific marketing, update specific claims, train staff on new patterns. Not just news, actionable intelligence.",
+      body: "Each alert includes recommended action - review specific marketing, update specific claims, train staff on new patterns. Not just news, actionable intelligence.",
     },
   ],
   useCases: [
@@ -99,10 +99,10 @@ export const meta: ToolMeta = {
     "Shareable formats for team and agency briefings",
   ],
   whatItIsnt: [
-    "Not a news feed — we filter to actionable intelligence, not every healthcare regulatory story. If you want general healthcare news, subscribe to a healthcare trade publication.",
-    "Not legal advice — alerts describe what happened in enforcement and what the patterns mean; specific legal interpretation for your practice is a question for your attorney.",
-    "Not predictive — we report enforcement that has happened, not predictions about what enforcement will happen. Enforcement trends emerge from patterns; we help you see patterns earlier.",
-    "Not exhaustive for every state — state medical board monitoring is strongest for California, Texas, Florida, New York, and several others; smaller states have less comprehensive coverage.",
+    "Not a news feed - we filter to actionable intelligence, not every healthcare regulatory story. If you want general healthcare news, subscribe to a healthcare trade publication.",
+    "Not legal advice - alerts describe what happened in enforcement and what the patterns mean; specific legal interpretation for your practice is a question for your attorney.",
+    "Not predictive - we report enforcement that has happened, not predictions about what enforcement will happen. Enforcement trends emerge from patterns; we help you see patterns earlier.",
+    "Not exhaustive for every state - state medical board monitoring is strongest for California, Texas, Florida, New York, and several others; smaller states have less comprehensive coverage.",
   ],
   faqs: [
     {
@@ -111,7 +111,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "Can I unsubscribe from specific alert categories?",
-      a: "Yes. Alert configuration is granular — specialty, claim category, source authority, urgency threshold. You can tune alerts to exactly what you want to hear about.",
+      a: "Yes. Alert configuration is granular - specialty, claim category, source authority, urgency threshold. You can tune alerts to exactly what you want to hear about.",
     },
     {
       q: "Do alerts include historical enforcement?",
@@ -131,7 +131,7 @@ export const meta: ToolMeta = {
     },
     {
       q: "Do I get alerts for my competitors receiving warning letters?",
-      a: "Yes, when your competitors are in your specialty and the enforcement pattern affects similar practices. These are some of the most actionable alerts — your competitor's warning letter is typically a pattern that affects you too.",
+      a: "Yes, when your competitors are in your specialty and the enforcement pattern affects similar practices. These are some of the most actionable alerts - your competitor's warning letter is typically a pattern that affects you too.",
     },
   ],
   relatedBlogSlugs: [

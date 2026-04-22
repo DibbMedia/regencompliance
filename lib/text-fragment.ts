@@ -1,6 +1,6 @@
 // Build a Chrome text-fragment URL that jumps to a phrase on the live page.
 // Text fragments (#:~:text=) require an EXACT substring match in the rendered DOM,
-// but our matched_text comes from cheerio-stripped page text — whitespace, punctuation,
+// but our matched_text comes from cheerio-stripped page text - whitespace, punctuation,
 // and entity differences silently break the match. We build a short, cleaned anchor
 // to maximize the hit rate across sites.
 export function buildTextFragmentUrl(
@@ -19,7 +19,7 @@ export function buildTextFragmentUrl(
     .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "") // strip leading/trailing punctuation
     .trim()
     .split(" ")
-    .slice(0, 8)                                 // first 8 words — shorter = more likely to match
+    .slice(0, 8)                                 // first 8 words - shorter = more likely to match
     .join(" ")
 
   if (!anchor) return sourceUrl

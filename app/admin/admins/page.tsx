@@ -130,7 +130,7 @@ export default function AdminsPage() {
                       <option value="developer" className="bg-[#0a0a0a]">developer</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{a.added_by ?? "—"}</td>
+                  <td className="px-4 py-3 text-white/50 text-xs">{a.added_by ?? "-"}</td>
                   <td className="px-4 py-3 text-white/40 text-xs">
                     {new Date(a.added_at).toLocaleDateString()}
                   </td>

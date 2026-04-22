@@ -14,6 +14,6 @@ export function captureError(error: unknown, context?: Record<string, unknown>) 
       Sentry.captureException(error, { extra: context })
     }
   } catch {
-    // Sentry not installed — already logged to console
+    // Sentry not installed - already logged to console
   }
 }

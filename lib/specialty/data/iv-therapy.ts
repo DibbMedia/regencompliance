@@ -4,22 +4,22 @@ export const meta: SpecialtyMeta = {
   slug: "iv-therapy",
   specialty: "IV Therapy & Wellness Clinics",
   specialtyLong: "IV Therapy, Hydration, and Wellness Clinics",
-  title: "FDA/FTC Compliance Software for IV Therapy Clinics — RegenCompliance",
+  title: "FDA/FTC Compliance Software for IV Therapy Clinics - RegenCompliance",
   description:
-    "Purpose-built compliance scanning for IV therapy and wellness clinics. The IV therapy rule set — vitamin, NAD+, hydration, and mobile IV marketing checked against FDA drug-claim and FTC substantiation rules.",
+    "Purpose-built compliance scanning for IV therapy and wellness clinics. The IV therapy rule set - vitamin, NAD+, hydration, and mobile IV marketing checked against FDA drug-claim and FTC substantiation rules.",
   heroBadge: "For IV therapy clinics",
   heroTagline:
-    "IV therapy sits in a uniquely exposed regulatory position — compounded drug rules, FDA drug-claim rules, FTC substantiation rules, and nursing-scope regulations all apply at once.",
+    "IV therapy sits in a uniquely exposed regulatory position - compounded drug rules, FDA drug-claim rules, FTC substantiation rules, and nursing-scope regulations all apply at once.",
   riskSummary:
-    "IV therapy and vitamin-infusion clinics have been a growth category in both patient volume and enforcement interest. The FDA reads most IV therapy offerings under drug-regulatory authority (many IV formulations are legally drugs, whether branded or compounded). The FTC applies substantiation rules to every benefit claim — 'boosts immunity,' 'cures hangovers,' 'improves energy.' State boards of nursing and medicine scrutinize who can administer IVs, under what supervision, and what medical evaluation must precede treatment. And NAD+ marketing specifically has been a growing FTC focus. RegenCompliance is built to catch the specific patterns each authority targets.",
+    "IV therapy and vitamin-infusion clinics have been a growth category in both patient volume and enforcement interest. The FDA reads most IV therapy offerings under drug-regulatory authority (many IV formulations are legally drugs, whether branded or compounded). The FTC applies substantiation rules to every benefit claim - 'boosts immunity,' 'cures hangovers,' 'improves energy.' State boards of nursing and medicine scrutinize who can administer IVs, under what supervision, and what medical evaluation must precede treatment. And NAD+ marketing specifically has been a growing FTC focus. RegenCompliance is built to catch the specific patterns each authority targets.",
   enforcementExamples: [
     {
       title: "FDA drug-claim enforcement on IV formulations",
-      body: "IV formulations with specific active ingredients (glutathione, NAD+, certain compounded vitamin combinations) are legally drugs. Marketing them with disease-claim language ('treats,' 'cures,' 'prevents') triggers the same FDA drug-advertising rules as any prescription drug — a regulatory surface most IV clinics market as if it does not apply.",
+      body: "IV formulations with specific active ingredients (glutathione, NAD+, certain compounded vitamin combinations) are legally drugs. Marketing them with disease-claim language ('treats,' 'cures,' 'prevents') triggers the same FDA drug-advertising rules as any prescription drug - a regulatory surface most IV clinics market as if it does not apply.",
     },
     {
       title: "FTC substantiation enforcement on immune, energy, and hangover claims",
-      body: "'Boosts your immune system,' 'cures hangovers,' 'improves athletic performance' — these are all FTC substantiation targets. Clinical evidence for IV formulations meeting the FTC 'competent and reliable scientific evidence' bar is often sparse or absent. Marketing as if the evidence exists is a direct FTC pattern.",
+      body: "'Boosts your immune system,' 'cures hangovers,' 'improves athletic performance' - these are all FTC substantiation targets. Clinical evidence for IV formulations meeting the FTC 'competent and reliable scientific evidence' bar is often sparse or absent. Marketing as if the evidence exists is a direct FTC pattern.",
     },
     {
       title: "State nursing board actions on standing-order and supervision issues",
@@ -38,7 +38,7 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "Boosts your immune system",
       why: "Immune-boosting claims are FTC substantiation targets and often cross into drug-claim territory.",
-      alternative: "Supports your body's normal immune function — actual results vary by individual",
+      alternative: "Supports your body's normal immune function - actual results vary by individual",
       risk: "HIGH",
     },
     {
@@ -49,8 +49,8 @@ export const meta: SpecialtyMeta = {
     },
     {
       phrase: "Reverses aging with NAD+",
-      why: "Anti-aging reversal claim — direct FTC target in current NAD+ enforcement wave.",
-      alternative: "Supports cellular metabolism — research on NAD+ biology continues",
+      why: "Anti-aging reversal claim - direct FTC target in current NAD+ enforcement wave.",
+      alternative: "Supports cellular metabolism - research on NAD+ biology continues",
       risk: "HIGH",
     },
     {
@@ -74,7 +74,7 @@ export const meta: SpecialtyMeta = {
     {
       phrase: "10 years younger",
       why: "Quantified age-reversal claim without any clinical support.",
-      alternative: "(Remove entirely — no compliant reframe for quantified age-reversal)",
+      alternative: "(Remove entirely - no compliant reframe for quantified age-reversal)",
       risk: "HIGH",
     },
     {
@@ -91,7 +91,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       phrase: "Weight loss IV",
-      why: "Implies IV therapy as a weight-loss treatment — crosses into off-label drug marketing for compounded formulations.",
+      why: "Implies IV therapy as a weight-loss treatment - crosses into off-label drug marketing for compounded formulations.",
       alternative: "Some formulations may support metabolism as part of a broader weight management program under medical guidance",
       risk: "MEDIUM",
     },
@@ -111,7 +111,7 @@ export const meta: SpecialtyMeta = {
   commonCatches: [
     {
       title: "Menu-page benefit columns with disease/condition claims",
-      body: "IV menu pages typically list each formulation with a benefit column — 'Immunity Boost: prevents colds, cures flu.' The condition-specific benefit column is where most disease claims enter IV marketing. Our scanner catches these systematically.",
+      body: "IV menu pages typically list each formulation with a benefit column - 'Immunity Boost: prevents colds, cures flu.' The condition-specific benefit column is where most disease claims enter IV marketing. Our scanner catches these systematically.",
     },
     {
       title: "Social media ads for hangover, recovery, and party-goer IVs",
@@ -127,20 +127,20 @@ export const meta: SpecialtyMeta = {
     },
     {
       title: "Mobile IV pricing disclosure issues",
-      body: "Mobile IV services often advertise base prices without adequate disclosure of add-ons, service fees, and location surcharges — a state AG enforcement pattern. Our scanner catches missing-disclosure patterns and suggests standard-format disclosure language.",
+      body: "Mobile IV services often advertise base prices without adequate disclosure of add-ons, service fees, and location surcharges - a state AG enforcement pattern. Our scanner catches missing-disclosure patterns and suggests standard-format disclosure language.",
     },
   ],
   caseStudy: {
     title: "A typical first scan on an IV therapy clinic menu page",
     before:
-      "Our Immunity Boost IV cures colds and prevents flu. The Hangover Cure IV cures hangovers and reverses alcohol damage. Our NAD+ therapy reverses aging by 10 years, cures chronic fatigue, and is pharmaceutical-grade. Weight loss IV — guaranteed results, celebrity favorite, detoxes your body. FDA-approved formulations proven to improve performance.",
+      "Our Immunity Boost IV cures colds and prevents flu. The Hangover Cure IV cures hangovers and reverses alcohol damage. Our NAD+ therapy reverses aging by 10 years, cures chronic fatigue, and is pharmaceutical-grade. Weight loss IV - guaranteed results, celebrity favorite, detoxes your body. FDA-approved formulations proven to improve performance.",
     after:
-      "Our Immunity Support IV is formulated to support your body's normal immune function — individual results vary. The Recovery IV is designed to support rehydration after dehydration. Our NAD+ infusion supports cellular metabolism — research into NAD+ biology continues, and individual experiences vary. Our metabolism-support formulations may be appropriate as part of a broader weight-management program under medical guidance. Administered by licensed medical professionals using formulations prepared by licensed compounding pharmacies. Most patients report feeling refreshed after treatment — individual results vary.",
+      "Our Immunity Support IV is formulated to support your body's normal immune function - individual results vary. The Recovery IV is designed to support rehydration after dehydration. Our NAD+ infusion supports cellular metabolism - research into NAD+ biology continues, and individual experiences vary. Our metabolism-support formulations may be appropriate as part of a broader weight-management program under medical guidance. Administered by licensed medical professionals using formulations prepared by licensed compounding pharmacies. Most patients report feeling refreshed after treatment - individual results vary.",
     outcome:
-      "Score went from 9 to 88 across 15 flagged phrases. Every core menu item retained — benefit language translated into substantiable framings that match FTC substantiation rules and current NAD+ enforcement patterns. PDF audit trail exported.",
+      "Score went from 9 to 88 across 15 flagged phrases. Every core menu item retained - benefit language translated into substantiable framings that match FTC substantiation rules and current NAD+ enforcement patterns. PDF audit trail exported.",
   },
   uniqueValue:
-    "IV therapy is where FDA drug rules, FTC substantiation rules, state nursing/medical board rules, and state consumer-protection rules all apply simultaneously — and where most marketing is written as if none of them apply. Our rule set specifically handles the IV therapy claim patterns (immunity, energy, detox, anti-aging, hangover, performance) under active enforcement in 2026. A generic healthcare compliance tool would not catch the category-specific patterns.",
+    "IV therapy is where FDA drug rules, FTC substantiation rules, state nursing/medical board rules, and state consumer-protection rules all apply simultaneously - and where most marketing is written as if none of them apply. Our rule set specifically handles the IV therapy claim patterns (immunity, energy, detox, anti-aging, hangover, performance) under active enforcement in 2026. A generic healthcare compliance tool would not catch the category-specific patterns.",
   whoThisIsFor: [
     "In-clinic IV therapy practices",
     "Mobile IV therapy services",
@@ -162,7 +162,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "Do FTC rules apply to IV therapy testimonials?",
-      a: "Yes — identically to any other healthcare testimonial. 'Your energy is back in 20 minutes,' 'your hangover cured,' 'feel 10 years younger' testimonials require typical-experience disclosures. Our scanner catches peak-outcome testimonials and suggests compliant framings.",
+      a: "Yes - identically to any other healthcare testimonial. 'Your energy is back in 20 minutes,' 'your hangover cured,' 'feel 10 years younger' testimonials require typical-experience disclosures. Our scanner catches peak-outcome testimonials and suggests compliant framings.",
     },
     {
       q: "What about mobile IV services specifically?",
@@ -170,7 +170,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "Do the rules apply to my social media ads too?",
-      a: "Yes. Instagram and TikTok ads are the specific channels the FTC has called out for 2024–2026 enforcement priority. IV therapy is one of the most TikTok-heavy healthcare marketing categories. Our scanner treats short-form caption text the same as website copy — the rules apply to both.",
+      a: "Yes. Instagram and TikTok ads are the specific channels the FTC has called out for 2024–2026 enforcement priority. IV therapy is one of the most TikTok-heavy healthcare marketing categories. Our scanner treats short-form caption text the same as website copy - the rules apply to both.",
     },
     {
       q: "What about compounded formulations specifically?",
@@ -178,7 +178,7 @@ export const meta: SpecialtyMeta = {
     },
     {
       q: "Can I describe what is in each IV formulation?",
-      a: "Yes — accurate ingredient descriptions are generally safe. The issue is benefit/efficacy language, not ingredient language. 'Contains vitamin C, B-complex, and glutathione' is fine. 'Boosts immunity, fights illness, and prevents aging' is not. Our scanner separates the two.",
+      a: "Yes - accurate ingredient descriptions are generally safe. The issue is benefit/efficacy language, not ingredient language. 'Contains vitamin C, B-complex, and glutathione' is fine. 'Boosts immunity, fights illness, and prevents aging' is not. Our scanner separates the two.",
     },
     {
       q: "What about athlete and performance IV marketing?",

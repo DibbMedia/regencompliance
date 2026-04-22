@@ -49,7 +49,7 @@ export default function Body() {
         <Em>structure/function</Em> claim and an illegal <Em>disease</Em> claim is
         the line that every warning letter is drawn on. Most clinic owners think
         they know where the line is. After reading a few hundred warning letters,
-        the pattern is clear &mdash; they are usually wrong by exactly one or two
+        the pattern is clear - they are usually wrong by exactly one or two
         words.
       </Lead>
 
@@ -66,7 +66,7 @@ export default function Body() {
       <P>
         The FDA regulates drugs and devices based on their <Strong>intended
         use</Strong>. Intended use is determined by what you say the product or
-        procedure is for &mdash; not by what it biologically does. This is the
+        procedure is for - not by what it biologically does. This is the
         part that confuses almost every new clinic owner.
       </P>
 
@@ -130,9 +130,9 @@ export default function Body() {
       <H3>Trap 1: Naming the condition in any form</H3>
       <P>
         This is the most common error and the most straightforward to fix. The
-        moment you name a specific medical condition &mdash; arthritis,
+        moment you name a specific medical condition - arthritis,
         fibromyalgia, chronic pain, alopecia, rosacea, depression, erectile
-        dysfunction, diabetes, endometriosis &mdash; in proximity to your
+        dysfunction, diabetes, endometriosis - in proximity to your
         product, you have made a disease claim.
       </P>
 
@@ -151,8 +151,8 @@ export default function Body() {
       </P>
 
       <BeforeAfter
-        bad="For patients who struggle to have children &mdash; our regenerative protocol may be the answer."
-        good="Not a compliant rewrite &mdash; reproductive medical conditions cannot be addressed through unapproved regenerative therapies marketed to the public, regardless of phrasing."
+        bad="For patients who struggle to have children - our regenerative protocol may be the answer."
+        good="Not a compliant rewrite - reproductive medical conditions cannot be addressed through unapproved regenerative therapies marketed to the public, regardless of phrasing."
         reason="Even without naming infertility explicitly, the claim is identifiable to the condition. The FDA treats implied disease claims the same as named disease claims."
       />
 
@@ -193,7 +193,7 @@ export default function Body() {
       </P>
 
       <BeforeAfter
-        bad={`"After one treatment my rheumatoid arthritis was gone. I can play with my grandkids again." &mdash; real patient quote`}
+        bad={`"After one treatment my rheumatoid arthritis was gone. I can play with my grandkids again." - real patient quote`}
         good={`Instead of publishing this testimonial, solicit a version that focuses on the patient's subjective experience without naming a condition. Always include typical-experience disclosure when an atypical outcome is featured.`}
         reason="The patient named a specific disease and claimed a cure. Republishing that unchanged makes the clinic responsible for a cure claim for a named condition."
       />
@@ -219,7 +219,7 @@ export default function Body() {
       <H3>Report patient experience, do not assert clinical outcome</H3>
       <P>
         &ldquo;Some patients report&rdquo; is regulatory gold. It is a factual
-        claim about what patients said &mdash; which is substantiable &mdash;
+        claim about what patients said - which is substantiable -
         rather than a claim about what the treatment medically does.
       </P>
 
@@ -261,8 +261,8 @@ export default function Body() {
 
       <H3>Med spa and aesthetics</H3>
       <P>
-        Cosmetic conditions that also have a medical classification &mdash;
-        rosacea, acne, alopecia, hyperpigmentation, hyperhidrosis &mdash; are
+        Cosmetic conditions that also have a medical classification -
+        rosacea, acne, alopecia, hyperpigmentation, hyperhidrosis - are
         disease territory. &ldquo;Reduces the appearance of&rdquo; is compliant
         language; &ldquo;treats&rdquo; or &ldquo;cures&rdquo; the same condition
         is not.
@@ -321,7 +321,7 @@ export default function Body() {
         <span>
           RegenCompliance flags disease-claim verbs, named medical conditions,
           implied-condition language, and testimonial compliance issues in
-          real time &mdash; and produces a one-click structure/function-safe
+          real time - and produces a one-click structure/function-safe
           rewrite.{" "}
           <Link
             href="/demo"
@@ -338,7 +338,7 @@ export default function Body() {
           "Intended use determines regulatory status. Saying a product treats a disease makes it a drug in the FDA's eyes.",
           "Structure/function language (&ldquo;supports,&rdquo; &ldquo;maintains&rdquo;) is legal; disease language (&ldquo;cures,&rdquo; &ldquo;treats&rdquo; a named condition) is not.",
           "The five traps are: naming the condition, implying it, treatment verbs, drug-like idiom, and testimonials that make the claim for you.",
-          "Compliant marketing leans on specific body-system language and patient-experience reporting &mdash; not softer abstractions.",
+          "Compliant marketing leans on specific body-system language and patient-experience reporting - not softer abstractions.",
           "If a claim cannot be rewritten compliantly without losing persuasiveness, it was probably illegal marketing to begin with.",
         ]}
       />

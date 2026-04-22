@@ -18,9 +18,9 @@ export const meta: BlogPostMeta = {
   title:
     "LinkedIn for Healthcare Practices: B2B Marketing Compliance, Provider Recruiting, and Practice Positioning",
   description:
-    "LinkedIn healthcare marketing differs from consumer social platforms — B2B positioning, provider recruiting, and professional content have different compliance considerations.",
+    "LinkedIn healthcare marketing differs from consumer social platforms - B2B positioning, provider recruiting, and professional content have different compliance considerations.",
   excerpt:
-    "LinkedIn is the underused healthcare platform — but it has its own rules. Here's the compliance framework for practice positioning, provider recruiting, and B2B healthcare content.",
+    "LinkedIn is the underused healthcare platform - but it has its own rules. Here's the compliance framework for practice positioning, provider recruiting, and B2B healthcare content.",
   date: "2026-04-22",
   readingMinutes: 6,
   keywords: [
@@ -42,7 +42,7 @@ export default function Body() {
         LinkedIn is an underused healthcare marketing channel for
         most practices. It&rsquo;s also regulated differently than
         consumer social platforms because much LinkedIn content is
-        B2B &mdash; provider recruiting, referral relationships,
+        B2B - provider recruiting, referral relationships,
         industry positioning. FDA/FTC consumer marketing rules
         still apply when content reaches consumers, but LinkedIn
         has specific considerations worth understanding.
@@ -216,7 +216,7 @@ export default function Body() {
 
       <H3>Can I recruit patients via LinkedIn?</H3>
       <P>
-        Yes &mdash; LinkedIn has a B2C audience too. Apply
+        Yes - LinkedIn has a B2C audience too. Apply
         consumer marketing rules to patient-facing content just as
         on other platforms.
       </P>

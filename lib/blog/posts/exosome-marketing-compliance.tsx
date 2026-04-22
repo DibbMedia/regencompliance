@@ -18,11 +18,11 @@ import {
 export const meta: BlogPostMeta = {
   slug: "exosome-marketing-compliance",
   title:
-    "Exosome Marketing Compliance: The Current FTC Enforcement Priority — and How to Stay Off the Target List",
+    "Exosome Marketing Compliance: The Current FTC Enforcement Priority - and How to Stay Off the Target List",
   description:
     "Exosome therapy marketing is a specific current FTC enforcement focus. Here's what's actually being targeted, which claim patterns produce action, and how to market exosome services compliantly without losing marketing effectiveness.",
   excerpt:
-    "Exosome marketing sits at the top of the FTC's 2024-2026 healthcare enforcement priority list. The claim patterns they target are consistent — and fixable. Here's the full playbook.",
+    "Exosome marketing sits at the top of the FTC's 2024-2026 healthcare enforcement priority list. The claim patterns they target are consistent - and fixable. Here's the full playbook.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -84,7 +84,7 @@ export default function Body() {
         or non-homologous use or systemic effects, any of which
         disqualify 361 eligibility. Products that fall under 351
         require full FDA approval to be marketed for therapeutic
-        claims &mdash; which virtually no commercially-marketed
+        claims - which virtually no commercially-marketed
         exosome products have.
       </P>
 
@@ -115,7 +115,7 @@ export default function Body() {
         <LI>
           <Strong>Consumer vulnerability.</Strong> The marketing often
           targets patients with serious conditions or aging concerns
-          &mdash; populations the FTC treats as warranting heightened
+          - populations the FTC treats as warranting heightened
           protection.
         </LI>
       </OL>
@@ -152,16 +152,16 @@ export default function Body() {
 
       <H3>Pattern 5: Hair-restoration exosome claims</H3>
       <BeforeAfter
-        bad="Exosome hair restoration — regrow your hair in 3 months."
+        bad="Exosome hair restoration - regrow your hair in 3 months."
         good="We offer exosome-based treatments as part of our hair restoration protocol; candidacy and expected results are discussed at consultation."
-        reason="Specific hair-regrowth timeline and outcome claims require substantiation meeting the FTC standard — which exosome hair restoration evidence does not currently meet."
+        reason="Specific hair-regrowth timeline and outcome claims require substantiation meeting the FTC standard - which exosome hair restoration evidence does not currently meet."
       />
 
       <H3>Pattern 6: Testimonials with specific conditions</H3>
       <P>
         Patient testimonials describing exosome treatment recovery
         from specific conditions carry the disease-treatment claim
-        into your marketing via the endorsement &mdash; even if the
+        into your marketing via the endorsement - even if the
         clinic itself never says the treatment addresses the
         condition. Remove disease-specific testimonials from public
         exosome marketing.
@@ -211,7 +211,7 @@ export default function Body() {
         Exosome marketing risk is not limited to what your practice
         publishes. If your tissue supplier or exosome source markets
         their products to end consumers with disease-treatment claims,
-        that marketing can affect your regulatory posture &mdash;
+        that marketing can affect your regulatory posture -
         particularly if you&rsquo;re prominently listed as a provider
         or affiliate on their materials.
       </P>
@@ -220,7 +220,7 @@ export default function Body() {
         consumer marketing makes aggressive claims, reconsider your
         visible affiliation or ask them to revise. Many exosome
         suppliers have tightened their consumer-facing marketing in
-        response to FDA letters &mdash; but not all.
+        response to FDA letters - but not all.
       </P>
 
       <BQ>
@@ -285,11 +285,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Exosome marketing is a specific FTC and FDA enforcement focus — more active than comparable regen categories.",
+          "Exosome marketing is a specific FTC and FDA enforcement focus - more active than comparable regen categories.",
           "Most exosome products marketed for therapeutic use are unapproved drugs under FDA's 351 pathway analysis.",
           "Biology-first and service-first framings preserve marketing message while avoiding the claim patterns under enforcement.",
           "Disease-specific indications should stay out of public exosome marketing regardless of clinical appropriateness.",
-          "Supplier-side marketing affects your regulatory posture — review the materials of companies you visibly affiliate with.",
+          "Supplier-side marketing affects your regulatory posture - review the materials of companies you visibly affiliate with.",
         ]}
       />
     </>

@@ -213,7 +213,7 @@ function LoginContent() {
             </div>
           )}
 
-          {/* Tab toggle — only shown when site is launched */}
+          {/* Tab toggle - only shown when site is launched */}
           {IS_LAUNCHED && (
             <div className="flex mb-6 rounded-lg bg-white/[0.03] border border-white/10 p-1" role="tablist">
               <button

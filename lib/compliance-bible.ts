@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Regen Compliance Bible — distilled from the 31-page regulatory guide
+// Regen Compliance Bible - distilled from the 31-page regulatory guide
 // Structured as traffic-light rules for injection into Claude system prompts
 // ---------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ interface DisclaimerTemplate {
 
 export const COMPLIANCE_BIBLE: ComplianceBible = {
   // -------------------------------------------------------------------------
-  // RED LIGHT — NEVER USE (automatic high-risk flag)
+  // RED LIGHT - NEVER USE (automatic high-risk flag)
   // -------------------------------------------------------------------------
   redLight: [
     {
@@ -148,7 +148,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   ],
 
   // -------------------------------------------------------------------------
-  // YELLOW LIGHT — RESTRICTED (needs specific disclaimers)
+  // YELLOW LIGHT - RESTRICTED (needs specific disclaimers)
   // -------------------------------------------------------------------------
   yellowLight: [
     {
@@ -208,7 +208,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   ],
 
   // -------------------------------------------------------------------------
-  // GREEN LIGHT — APPROVED patterns (safe to use)
+  // GREEN LIGHT - APPROVED patterns (safe to use)
   // -------------------------------------------------------------------------
   greenLight: [
     "What is PRP? (educational overview)",
@@ -226,7 +226,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   ],
 
   // -------------------------------------------------------------------------
-  // MODALITY RULES — per-treatment regulatory status
+  // MODALITY RULES - per-treatment regulatory status
   // -------------------------------------------------------------------------
   modalityRules: {
     stem_cell: {
@@ -329,7 +329,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   },
 
   // -------------------------------------------------------------------------
-  // CHANNEL RULES — per-advertising-platform restrictions
+  // CHANNEL RULES - per-advertising-platform restrictions
   // -------------------------------------------------------------------------
   channelRules: {
     google_ads: {
@@ -375,7 +375,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   },
 
   // -------------------------------------------------------------------------
-  // DISCLAIMER TEMPLATES — required legal text
+  // DISCLAIMER TEMPLATES - required legal text
   // -------------------------------------------------------------------------
   disclaimerTemplates: [
     {
@@ -399,22 +399,22 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
       text: "Individual results may vary. Testimonials reflect individual experiences and do not represent typical results. No outcome is guaranteed.",
     },
     {
-      name: "State Notice — Florida",
+      name: "State Notice - Florida",
       text: "Florida requires: The patient is advised that stem cell therapies are not proven by the FDA to be safe or effective for the condition being treated.",
     },
     {
-      name: "State Notice — Utah",
+      name: "State Notice - Utah",
       text: "Utah requires informed consent for investigational stem cell treatments, including risks, alternatives, and that the treatment is not FDA approved.",
     },
     {
-      name: "State Notice — Nevada",
+      name: "State Notice - Nevada",
       text: "Nevada requires stem cell clinics to register and provide informed consent disclosing investigational status.",
     },
   ],
 }
 
 // ---------------------------------------------------------------------------
-// Prompt generator — returns a condensed string for Claude system prompts
+// Prompt generator - returns a condensed string for Claude system prompts
 // ---------------------------------------------------------------------------
 export function getComplianceBiblePrompt(): string {
   const b = COMPLIANCE_BIBLE
@@ -447,12 +447,12 @@ export function getComplianceBiblePrompt(): string {
     .map((d) => `[${d.name}]: ${d.text}`)
     .join("\n")
 
-  return `=== FDA/FTC REGULATORY RULES — RISK CLASSIFICATION ===
+  return `=== FDA/FTC REGULATORY RULES - RISK CLASSIFICATION ===
 
-HIGH RISK — NEVER ALLOWED (flag as HIGH risk):
+HIGH RISK - NEVER ALLOWED (flag as HIGH risk):
 ${redSection}
 
-MEDIUM RISK — RESTRICTED (flag as MEDIUM risk if missing required disclaimers):
+MEDIUM RISK - RESTRICTED (flag as MEDIUM risk if missing required disclaimers):
 ${yellowSection}
 
 APPROVED PATTERNS (safe, suggest if missing where appropriate):
@@ -479,7 +479,7 @@ export function getComplianceBibleRewriteGuidance(): string {
 2. Medium-risk phrases: Keep the content but ADD the required disclaimer text nearby.
 3. Always note regulatory status for any modality mentioned (stem cells, exosomes, PRP, peptides, etc.).
 4. Use patient experience language: "some patients report...", "may support...", "individual results vary".
-5. Never add claims not in the original — only make existing claims compliant.
+5. Never add claims not in the original - only make existing claims compliant.
 6. Maintain original tone, length, and marketing intent.
 7. If the content mentions a specific modality, include the appropriate disclaimer from the templates.
 === END REWRITE PROTOCOL ===`

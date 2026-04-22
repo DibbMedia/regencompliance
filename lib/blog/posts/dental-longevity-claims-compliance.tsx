@@ -139,8 +139,8 @@ export default function Body() {
         &ldquo;Pain-free&rdquo; and comparable absolutes
       </H2>
       <P>
-        Dental treatments &mdash; implants, extractions, root canals, even
-        cleanings for some patients &mdash; routinely produce discomfort.
+        Dental treatments - implants, extractions, root canals, even
+        cleanings for some patients - routinely produce discomfort.
         &ldquo;Painless,&rdquo; &ldquo;no pain,&rdquo; &ldquo;comfortable
         guaranteed&rdquo; are safety/experience absolutes that cannot be
         substantiated across a patient population.
@@ -163,7 +163,7 @@ export default function Body() {
       </H2>
       <P>
         Dental implant success rates are one of the most well-studied
-        areas in the literature &mdash; generally 90&ndash;98% at 10
+        areas in the literature - generally 90&ndash;98% at 10
         years depending on the study, the population, and the definition
         of &ldquo;success.&rdquo; You can cite these rates in your
         marketing, but you have to do it accurately.
@@ -251,49 +251,49 @@ export default function Body() {
       </P>
       <OL>
         <LI>
-          <Strong>Hero section</Strong> &mdash; describes the service in
+          <Strong>Hero section</Strong> - describes the service in
           specific, bounded language. No lifetime, no guaranteed, no
           painless.
         </LI>
         <LI>
-          <Strong>What the procedure is</Strong> &mdash; factual
+          <Strong>What the procedure is</Strong> - factual
           description of what happens clinically. No outcome claims.
         </LI>
         <LI>
-          <Strong>Candidacy</Strong> &mdash; &ldquo;Whether
+          <Strong>Candidacy</Strong> - &ldquo;Whether
           you&rsquo;re a candidate depends on your oral health,
           medical history, and treatment goals, which we&rsquo;ll
           evaluate during your consultation.&rdquo;
         </LI>
         <LI>
-          <Strong>What to expect</Strong> &mdash; honest discussion of
+          <Strong>What to expect</Strong> - honest discussion of
           timeline, sensations, recovery, and follow-up.
         </LI>
         <LI>
-          <Strong>Durability / outcomes</Strong> &mdash; cite literature
+          <Strong>Durability / outcomes</Strong> - cite literature
           with proper qualifications. Skip if you can&rsquo;t cite.
         </LI>
         <LI>
-          <Strong>Risks</Strong> &mdash; standard side-effect profile.
+          <Strong>Risks</Strong> - standard side-effect profile.
           Turns a liability into a trust signal.
         </LI>
         <LI>
-          <Strong>Testimonials</Strong> &mdash; with typical-experience
+          <Strong>Testimonials</Strong> - with typical-experience
           disclosure and substantiation files.
         </LI>
         <LI>
-          <Strong>Pricing or financing</Strong> &mdash; bounded offers,
+          <Strong>Pricing or financing</Strong> - bounded offers,
           not &ldquo;guaranteed&rdquo; discounts.
         </LI>
         <LI>
-          <Strong>CTA to consultation</Strong> &mdash; route clinical
+          <Strong>CTA to consultation</Strong> - route clinical
           decisions to the consultation, not to the marketing copy.
         </LI>
       </OL>
 
       <BQ>
         The best dental marketing reads like a doctor explaining the
-        procedure to a relative &mdash; honest, specific, bounded. That
+        procedure to a relative - honest, specific, bounded. That
         tone is also what survives regulator review. Overpromising and
         compliance failure are the same thing.
       </BQ>
@@ -325,7 +325,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Run every service page through a compliance scan</Strong>{" "}
-          &mdash; the general FTC/FDA ruleset plus your state-specific
+          - the general FTC/FDA ruleset plus your state-specific
           board rules.
         </LI>
       </OL>
@@ -349,10 +349,10 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Dental enforcement primarily runs through FTC + state dental boards, not the FDA &mdash; underestimating state board exposure is common.",
+          "Dental enforcement primarily runs through FTC + state dental boards, not the FDA - underestimating state board exposure is common.",
           "&ldquo;Lifetime,&rdquo; &ldquo;permanent,&rdquo; &ldquo;forever,&rdquo; &ldquo;painless,&rdquo; and &ldquo;guaranteed&rdquo; are the five absolutes to remove from every service page.",
           "Cite peer-reviewed data for durability claims, not marketing-boilerplate percentages.",
-          "State dental board rules vary substantially &mdash; specialist-language, discount, testimonial, and comparative-advertising rules all have state-specific layers.",
+          "State dental board rules vary substantially - specialist-language, discount, testimonial, and comparative-advertising rules all have state-specific layers.",
           "Replace outcome guarantees with service-experience guarantees (bounded commercial refund) where a guarantee is commercially needed.",
         ]}
       />

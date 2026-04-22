@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
   description:
     "TikTok is the fastest-growing paid healthcare advertising channel and the FTC's specifically-named social media enforcement priority. Here's the full playbook for healthcare practices running TikTok advertising.",
   excerpt:
-    "TikTok is where healthcare practice growth is happening — and where the FTC has explicitly said enforcement is focused. Here's how to run TikTok ads compliantly without drawing account action or agency attention.",
+    "TikTok is where healthcare practice growth is happening - and where the FTC has explicitly said enforcement is focused. Here's how to run TikTok ads compliantly without drawing account action or agency attention.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -196,8 +196,8 @@ export default function Body() {
 
       <H3>Educational content</H3>
       <P>
-        Educational healthcare content &mdash; explaining conditions,
-        treatment categories, research findings &mdash; faces less
+        Educational healthcare content - explaining conditions,
+        treatment categories, research findings - faces less
         platform friction and typically converts well for
         top-of-funnel awareness.
       </P>
@@ -296,7 +296,7 @@ export default function Body() {
         items={[
           "TikTok healthcare advertising is a specific FTC enforcement priority for 2024-2026.",
           "Platform policy on healthcare is strict; weight loss, aesthetic, and mental health face particular restrictions.",
-          "Short-form video format challenges disclosure but doesn't remove requirements — on-screen text, verbal disclosure, and caption support work together.",
+          "Short-form video format challenges disclosure but doesn't remove requirements - on-screen text, verbal disclosure, and caption support work together.",
           "Transformation reels are the single highest-risk TikTok format for healthcare practices.",
           "Educational, provider-introduction, and consultation-conversion content run reliably and convert well without triggering policy issues.",
         ]}

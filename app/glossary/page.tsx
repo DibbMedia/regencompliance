@@ -14,7 +14,7 @@ const canonical = "https://compliance.regenportal.com/glossary"
 
 export const metadata: Metadata = {
   title:
-    "Healthcare Marketing Compliance Glossary — FDA, FTC, and State Regulatory Terms",
+    "Healthcare Marketing Compliance Glossary - FDA, FTC, and State Regulatory Terms",
   description:
     "Plain-English definitions of the terms that shape FDA and FTC enforcement against healthcare practices. Warning letters, structure-function claims, HCT/P, material connections, typical-experience disclosures, and more.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical },
   openGraph: {
-    title: "Healthcare Marketing Compliance Glossary — RegenCompliance",
+    title: "Healthcare Marketing Compliance Glossary - RegenCompliance",
     description:
       "Plain-English definitions of FDA, FTC, state medical board, and device regulatory terms. 28+ terms every healthcare marketer should know.",
     url: canonical,

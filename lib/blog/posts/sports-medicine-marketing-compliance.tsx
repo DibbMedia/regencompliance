@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   description:
     "Sports medicine practices combine orthopedic care, regen medicine (PRP, stem cells), performance optimization, and often concierge or pro-athlete service lines. Each adds compliance considerations.",
   excerpt:
-    "Sports medicine practices face a unique compliance mix — orthopedic marketing, regen medicine rules, performance claims, and athlete endorsement complications. Here's the framework.",
+    "Sports medicine practices face a unique compliance mix - orthopedic marketing, regen medicine rules, performance claims, and athlete endorsement complications. Here's the framework.",
   date: "2026-04-22",
   readingMinutes: 8,
   keywords: [
@@ -52,7 +52,7 @@ export default function Body() {
       <H3>Pattern 1: Specific condition treatment claims</H3>
       <P>
         Sports medicine marketing often names specific conditions
-        &mdash; rotator cuff tears, ACL injuries, tennis elbow,
+        - rotator cuff tears, ACL injuries, tennis elbow,
         plantar fasciitis, meniscus tears. Listing these as
         conditions the practice &ldquo;treats&rdquo; with specific
         modalities can cross into disease-treatment territory. The
@@ -202,7 +202,7 @@ export default function Body() {
 
       <H3>How do I handle regen medicine in sports context?</H3>
       <P>
-        Apply the regen marketing compliance framework &mdash; no
+        Apply the regen marketing compliance framework - no
         disease-treatment claims, acknowledge evidence state, frame
         as part of comprehensive care. The sports context
         doesn&rsquo;t change regen compliance rules.
@@ -234,7 +234,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Sports medicine combines orthopedic, regen, performance, and concierge service lines — each with its own compliance framework.",
+          "Sports medicine combines orthopedic, regen, performance, and concierge service lines - each with its own compliance framework.",
           "Pro-athlete patient marketing requires HIPAA authorization, material-connection disclosure, and typical-experience framing.",
           "PRP and regen services within sports medicine carry the same compliance considerations as in dedicated regen practices.",
           "Performance-claim marketing needs substantiation; 'return to activity' framing is defensible, 'guaranteed performance improvement' is not.",

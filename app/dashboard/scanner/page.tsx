@@ -497,7 +497,7 @@ export default function ScannerPage() {
                       <span className="hidden sm:inline">Drop your file here or </span>
                       <span className="text-[#55E039] hover:text-[#6FF055]">click to browse</span>
                     </p>
-                    <p className="text-xs text-white/55 mt-1">.docx, .pdf, or .txt — max 10MB</p>
+                    <p className="text-xs text-white/55 mt-1">.docx, .pdf, or .txt - max 10MB</p>
                   </div>
                 </div>
               </div>
@@ -633,7 +633,7 @@ export default function ScannerPage() {
             </div>
 
             <p className="text-sm text-white/60">
-              Scans this exact page only — not the full site.
+              Scans this exact page only - not the full site.
             </p>
 
             {/* Scan URL Button */}
@@ -666,7 +666,7 @@ export default function ScannerPage() {
         )}
 
         <p className="text-xs text-white/55 italic text-center">
-          Educational guidance only — not legal advice. Consult healthcare marketing counsel before publishing.
+          Educational guidance only - not legal advice. Consult healthcare marketing counsel before publishing.
         </p>
       </div>
 

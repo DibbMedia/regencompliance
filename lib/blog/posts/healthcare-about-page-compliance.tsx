@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Healthcare Practice 'About' Page Compliance: The Most-Overlooked Marketing Surface",
   description:
-    "Practice About pages and provider bios are rarely reviewed for compliance — but they frequently contain specialty misrepresentations, credential overstatement, and outcome claims that draw enforcement. Here's what to audit.",
+    "Practice About pages and provider bios are rarely reviewed for compliance - but they frequently contain specialty misrepresentations, credential overstatement, and outcome claims that draw enforcement. Here's what to audit.",
   excerpt:
     "Your About page hasn't been audited in years. It probably has specialty misrepresentations, credentialing issues, and outcome claims nobody noticed. Here's the specific audit framework.",
   date: "2026-04-22",
@@ -42,7 +42,7 @@ export default function Body() {
     <>
       <Lead>
         Practice &ldquo;About&rdquo; pages and provider bios are
-        typically written once and rarely updated &mdash; much less
+        typically written once and rarely updated - much less
         reviewed for compliance. They frequently contain specialty
         misrepresentations, credential overstatement, outcome claims,
         and superlative language that compliance counsel would flag
@@ -227,7 +227,7 @@ export default function Body() {
           "About pages and provider bios are rarely reviewed for compliance but contain significant marketing exposure.",
           "Specialty misrepresentations, credential overstatement, and outcome claims are the most common issues.",
           "State medical boards specifically review About pages in complaint investigations.",
-          "Specific factual attribution — named boards, specific dates, specific institutions — is compliance-safer and more credible than vague superlative language.",
+          "Specific factual attribution - named boards, specific dates, specific institutions - is compliance-safer and more credible than vague superlative language.",
           "Annual review prevents the long-term drift that makes About pages the most-ignored high-exposure marketing surface.",
         ]}
       />

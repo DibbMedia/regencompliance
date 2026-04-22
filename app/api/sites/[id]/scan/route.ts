@@ -14,7 +14,7 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 
 const MAX_PAGES_PER_CRAWL = 20
 
-// POST — trigger a crawl of the site
+// POST - trigger a crawl of the site
 export async function POST(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -98,7 +98,7 @@ export async function POST(
   }
 }
 
-// Shared crawl logic — used by both manual trigger and cron
+// Shared crawl logic - used by both manual trigger and cron
 export async function crawlSitePages(
   supabase: SupabaseClient,
   site: { id: string; domain: string; profile_id: string },
@@ -171,7 +171,7 @@ Use the risk classification system:
 - medium-risk phrases without required disclaimers = "medium" risk
 - Missing approved patterns where expected = "low" risk
 
-Be thorough. Flag ANY match — exact, partial, synonyms, paraphrases, semantic equivalents.
+Be thorough. Flag ANY match - exact, partial, synonyms, paraphrases, semantic equivalents.
 
 Return ONLY valid JSON:
 {

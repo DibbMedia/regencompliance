@@ -5,16 +5,16 @@ export const STATES: StateMeta[] = [
     slug: "california",
     state: "California",
     abbreviation: "CA",
-    title: "California Healthcare Marketing Compliance Rules — FDA, FTC, MBC & AG",
+    title: "California Healthcare Marketing Compliance Rules - FDA, FTC, MBC & AG",
     description:
-      "California has the most active state-level enforcement environment for healthcare marketing. Medical Board of California advertising rules, state AG consumer protection, and specialty board actions — with a focus on med spas, telehealth, and aesthetic practices.",
+      "California has the most active state-level enforcement environment for healthcare marketing. Medical Board of California advertising rules, state AG consumer protection, and specialty board actions - with a focus on med spas, telehealth, and aesthetic practices.",
     heroTagline:
-      "California healthcare marketing sits under the strictest state-level enforcement environment in the country — Medical Board of California rules, Business & Professions Code §17500 false advertising authority, and active AG consumer protection.",
+      "California healthcare marketing sits under the strictest state-level enforcement environment in the country - Medical Board of California rules, Business & Professions Code §17500 false advertising authority, and active AG consumer protection.",
     intro:
       "California is the single most-enforced state for healthcare marketing. The Medical Board of California (MBC) has its own detailed advertising rules in 16 CCR §1353.5; the Attorney General's office uses B&P §17200 and §17500 authority extensively against healthcare practices; and the state's Sherman Food, Drug, and Cosmetic Law mirrors federal FDA authority at state level. Practices marketing in California face a genuinely distinct and heavier regulatory surface than most states, and marketing written to 'meet federal rules' often still fails California-specific standards.",
     medicalBoardName: "Medical Board of California (MBC)",
     medicalBoardFocus:
-      "The MBC actively enforces 16 CCR §1353.5 — which covers deceptive advertising by licensed physicians. Specialty-claim misuse ('cosmetic surgeon' by non-ABMS-certified physicians), supervision misrepresentation (particularly for med spa injectors), and outcome guarantee language are the most common bases for discipline. California also has specific rules on how physicians can advertise 'board-certified' status — requiring disclosure of the specific certifying board.",
+      "The MBC actively enforces 16 CCR §1353.5 - which covers deceptive advertising by licensed physicians. Specialty-claim misuse ('cosmetic surgeon' by non-ABMS-certified physicians), supervision misrepresentation (particularly for med spa injectors), and outcome guarantee language are the most common bases for discipline. California also has specific rules on how physicians can advertise 'board-certified' status - requiring disclosure of the specific certifying board.",
     stateAgFocus:
       "The California AG uses Business & Professions Code §17500 (false advertising) and §17200 (unfair competition) extensively. Recent enforcement has focused on telehealth prescribing advertising (particularly for weight loss and hormones), package pricing disclosure in aesthetic practices, and medical device marketing that misrepresents FDA clearance status. California is also the origin of many multi-state healthcare marketing settlements.",
     focusAreas: [
@@ -42,7 +42,7 @@ export const STATES: StateMeta[] = [
       },
       {
         pattern: "'FDA-approved' applied to FDA-cleared aesthetic devices",
-        why: "Triggers both federal FDA misbranding and California Sherman Law violations — double exposure.",
+        why: "Triggers both federal FDA misbranding and California Sherman Law violations - double exposure.",
       },
       {
         pattern: "Telehealth prescriber location not disclosed",
@@ -50,7 +50,7 @@ export const STATES: StateMeta[] = [
       },
       {
         pattern: "Package pricing advertising without clear add-on disclosure",
-        why: "California AG active enforcement area — particularly in aesthetic surgery and fertility practices.",
+        why: "California AG active enforcement area - particularly in aesthetic surgery and fertility practices.",
       },
       {
         pattern: "Patient testimonials with outcome specificity and no typical-experience disclosure",
@@ -58,11 +58,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — highest-enforcement specialty in California for supervision and injectable marketing.",
-      "Weight loss / telehealth — growing state AG focus on cross-border prescribing.",
-      "Aesthetic surgery — package pricing disclosure and 'board-certified' language specifically targeted.",
-      "Dental — 'cosmetic dentist' misuse is active MBC-adjacent area (Dental Board of California handles dental).",
-      "Regen medicine — Sherman Law creates state-level exposure in addition to federal CBER issues.",
+      "Med spas - highest-enforcement specialty in California for supervision and injectable marketing.",
+      "Weight loss / telehealth - growing state AG focus on cross-border prescribing.",
+      "Aesthetic surgery - package pricing disclosure and 'board-certified' language specifically targeted.",
+      "Dental - 'cosmetic dentist' misuse is active MBC-adjacent area (Dental Board of California handles dental).",
+      "Regen medicine - Sherman Law creates state-level exposure in addition to federal CBER issues.",
     ],
     disclaimer:
       "This summary reflects general patterns in California healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a California-licensed healthcare marketing attorney.",
@@ -79,13 +79,13 @@ export const STATES: StateMeta[] = [
     slug: "texas",
     state: "Texas",
     abbreviation: "TX",
-    title: "Texas Healthcare Marketing Compliance Rules — TMB, AG, and Federal Overlap",
+    title: "Texas Healthcare Marketing Compliance Rules - TMB, AG, and Federal Overlap",
     description:
       "Texas Medical Board advertising rules, Texas Deceptive Trade Practices Act enforcement, and the specific supervision requirements that define Texas med spa and weight loss marketing compliance.",
     heroTagline:
       "Texas has an active Medical Board with specific rules for medical advertising, and the DTPA gives consumers and the state AG independent enforcement authority over deceptive healthcare marketing.",
     intro:
-      "Texas healthcare marketing is shaped by the Texas Medical Board (TMB), the Texas Deceptive Trade Practices Act (DTPA), and the Texas AG's consumer protection authority. The TMB has specific advertising rules in 22 TAC §164 that cover physician-advertising conduct, specialty claim requirements, and supervision disclosures. The DTPA is unusual in permitting private plaintiffs to bring claims in addition to AG actions — creating multiple enforcement vectors for the same marketing conduct.",
+      "Texas healthcare marketing is shaped by the Texas Medical Board (TMB), the Texas Deceptive Trade Practices Act (DTPA), and the Texas AG's consumer protection authority. The TMB has specific advertising rules in 22 TAC §164 that cover physician-advertising conduct, specialty claim requirements, and supervision disclosures. The DTPA is unusual in permitting private plaintiffs to bring claims in addition to AG actions - creating multiple enforcement vectors for the same marketing conduct.",
     medicalBoardName: "Texas Medical Board (TMB)",
     medicalBoardFocus:
       "The TMB's advertising rules under 22 TAC §164 cover deceptive advertising, specialty claim language, and supervision representation. Texas has specific rules on 'board-certified' language, on how cosmetic and aesthetic specialties can be claimed by physicians, and on the supervision requirements for nurse injectors and non-physician providers in aesthetic practices. Texas has been particularly active on telehealth prescribing rules as the state has grown as a telehealth hub.",
@@ -106,7 +106,7 @@ export const STATES: StateMeta[] = [
       },
       {
         title: "DTPA private enforcement",
-        body: "Unlike most state consumer-protection laws, the DTPA permits private plaintiffs to sue — including class actions. Healthcare marketing that deceives consumers creates exposure to private lawsuits in addition to AG or Medical Board action.",
+        body: "Unlike most state consumer-protection laws, the DTPA permits private plaintiffs to sue - including class actions. Healthcare marketing that deceives consumers creates exposure to private lawsuits in addition to AG or Medical Board action.",
       },
     ],
     watchItems: [
@@ -132,11 +132,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — supervision language is the primary TMB enforcement pattern.",
-      "Weight loss / telehealth GLP-1 — Texas AG has prioritized this specialty under DTPA.",
-      "Dental — the Texas State Board of Dental Examiners enforces its own advertising rules separately.",
-      "Regen medicine — Texas has been a growth market with corresponding enforcement interest.",
-      "Aesthetic surgery — 'board-certified' language is actively enforced.",
+      "Med spas - supervision language is the primary TMB enforcement pattern.",
+      "Weight loss / telehealth GLP-1 - Texas AG has prioritized this specialty under DTPA.",
+      "Dental - the Texas State Board of Dental Examiners enforces its own advertising rules separately.",
+      "Regen medicine - Texas has been a growth market with corresponding enforcement interest.",
+      "Aesthetic surgery - 'board-certified' language is actively enforced.",
     ],
     disclaimer:
       "This summary reflects general patterns in Texas healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a Texas-licensed healthcare marketing attorney.",
@@ -153,16 +153,16 @@ export const STATES: StateMeta[] = [
     slug: "florida",
     state: "Florida",
     abbreviation: "FL",
-    title: "Florida Healthcare Marketing Compliance Rules — FL Medical Board and AG",
+    title: "Florida Healthcare Marketing Compliance Rules - FL Medical Board and AG",
     description:
       "Florida Board of Medicine advertising rules under F.A.C. 64B8, the Florida Deceptive and Unfair Trade Practices Act (FDUTPA), and specific enforcement patterns in med spa, weight loss, and regenerative medicine marketing.",
     heroTagline:
-      "Florida's regulatory environment is defined by the Board of Medicine, FDUTPA, and an AG office that has been active on healthcare marketing — particularly in the fast-growing med spa, weight-loss, and regen categories.",
+      "Florida's regulatory environment is defined by the Board of Medicine, FDUTPA, and an AG office that has been active on healthcare marketing - particularly in the fast-growing med spa, weight-loss, and regen categories.",
     intro:
-      "Florida is a healthcare practice destination — particularly for regen medicine, aesthetic surgery, and concierge medicine — and the regulatory environment reflects that. The Florida Board of Medicine (FBM) enforces specific advertising rules under F.A.C. 64B8, which include physician qualification disclosure, specialty claim rules, and deceptive-advertising prohibitions. FDUTPA provides state-AG and private enforcement over deceptive practices. Florida has been a particularly active jurisdiction for enforcement against stem cell and regenerative medicine marketing, given the volume of such practices in the state.",
+      "Florida is a healthcare practice destination - particularly for regen medicine, aesthetic surgery, and concierge medicine - and the regulatory environment reflects that. The Florida Board of Medicine (FBM) enforces specific advertising rules under F.A.C. 64B8, which include physician qualification disclosure, specialty claim rules, and deceptive-advertising prohibitions. FDUTPA provides state-AG and private enforcement over deceptive practices. Florida has been a particularly active jurisdiction for enforcement against stem cell and regenerative medicine marketing, given the volume of such practices in the state.",
     medicalBoardName: "Florida Board of Medicine (FBM)",
     medicalBoardFocus:
-      "The FBM enforces F.A.C. 64B8-11 and related advertising rules. Specific focus areas include the 'board-certified' rule (requires ABMS or equivalent), specialty-claim accuracy, and supervision requirements in aesthetic practices. The FBM has also been active on cosmetic surgery marketing specifically — including handling of complications and the marketing of medical tourism.",
+      "The FBM enforces F.A.C. 64B8-11 and related advertising rules. Specific focus areas include the 'board-certified' rule (requires ABMS or equivalent), specialty-claim accuracy, and supervision requirements in aesthetic practices. The FBM has also been active on cosmetic surgery marketing specifically - including handling of complications and the marketing of medical tourism.",
     stateAgFocus:
       "FDUTPA gives the Florida AG consumer-protection authority over deceptive healthcare marketing. Recent enforcement has included stem cell clinic marketing, telehealth weight-loss advertising, and aesthetic practice package pricing. FDUTPA also permits private action, creating parallel class-action exposure.",
     focusAreas: [
@@ -176,11 +176,11 @@ export const STATES: StateMeta[] = [
       },
       {
         title: "Weight loss and GLP-1 advertising",
-        body: "Florida's telehealth-friendly environment has produced substantial weight-loss practice growth — and corresponding state AG attention to marketing that minimizes clinical evaluation or misrepresents medication options.",
+        body: "Florida's telehealth-friendly environment has produced substantial weight-loss practice growth - and corresponding state AG attention to marketing that minimizes clinical evaluation or misrepresents medication options.",
       },
       {
         title: "'Board-certified' enforcement",
-        body: "Florida Board of Medicine enforces specific rules on 'board-certified' language — requiring ABMS or Florida-recognized equivalent certification. Non-ABMS board certification claims must be qualified.",
+        body: "Florida Board of Medicine enforces specific rules on 'board-certified' language - requiring ABMS or Florida-recognized equivalent certification. Non-ABMS board certification claims must be qualified.",
       },
     ],
     watchItems: [
@@ -206,11 +206,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Regen medicine — Florida has particularly active state-level enforcement due to practice volume.",
-      "Aesthetic surgery — 'board-certified' and medical-tourism disclosure are active focus areas.",
-      "Weight loss / telehealth — AG activity under FDUTPA has grown.",
-      "Med spas — FBM supervision enforcement is in line with other heavily-enforced states.",
-      "Dental — Florida Board of Dentistry has separate advertising rules.",
+      "Regen medicine - Florida has particularly active state-level enforcement due to practice volume.",
+      "Aesthetic surgery - 'board-certified' and medical-tourism disclosure are active focus areas.",
+      "Weight loss / telehealth - AG activity under FDUTPA has grown.",
+      "Med spas - FBM supervision enforcement is in line with other heavily-enforced states.",
+      "Dental - Florida Board of Dentistry has separate advertising rules.",
     ],
     disclaimer:
       "This summary reflects general patterns in Florida healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a Florida-licensed healthcare marketing attorney.",
@@ -227,22 +227,22 @@ export const STATES: StateMeta[] = [
     slug: "new-york",
     state: "New York",
     abbreviation: "NY",
-    title: "New York Healthcare Marketing Compliance Rules — OPMC and AG",
+    title: "New York Healthcare Marketing Compliance Rules - OPMC and AG",
     description:
       "New York's Office of Professional Medical Conduct (OPMC) rules on physician advertising, Executive Law §63(12) AG authority, and specific enforcement patterns in aesthetic, weight loss, and corporate practice of medicine contexts.",
     heroTagline:
-      "New York's healthcare marketing environment is defined by OPMC, an aggressive AG office, and the state's particularly strict corporate-practice-of-medicine rules — each of which shapes how practices can advertise.",
+      "New York's healthcare marketing environment is defined by OPMC, an aggressive AG office, and the state's particularly strict corporate-practice-of-medicine rules - each of which shapes how practices can advertise.",
     intro:
       "New York has one of the most distinctive healthcare marketing regulatory environments in the country. The Office of Professional Medical Conduct (OPMC) enforces physician conduct rules that include specific advertising prohibitions. Executive Law §63(12) gives the AG broad authority over persistent fraud, which has been used in healthcare marketing contexts. And New York's particularly strict interpretation of corporate-practice-of-medicine rules shapes how non-physician-owned entities can advertise healthcare services.",
     medicalBoardName: "New York Office of Professional Medical Conduct (OPMC)",
     medicalBoardFocus:
-      "OPMC enforces Education Law §6530 prohibitions on deceptive advertising, specialty misrepresentation, and conduct-related marketing issues. New York has specific rules on how physicians can advertise — including rules on guarantees, superlative claims, and the use of patient testimonials. New York also has specific rules on the relationship between physicians and corporate service providers (including med spa corporate structures) that affect how advertising can be attributed and who is liable for violations.",
+      "OPMC enforces Education Law §6530 prohibitions on deceptive advertising, specialty misrepresentation, and conduct-related marketing issues. New York has specific rules on how physicians can advertise - including rules on guarantees, superlative claims, and the use of patient testimonials. New York also has specific rules on the relationship between physicians and corporate service providers (including med spa corporate structures) that affect how advertising can be attributed and who is liable for violations.",
     stateAgFocus:
-      "The NY AG uses Executive Law §63(12) for persistent-fraud enforcement and Consumer Protection Act authority for deceptive practices. Healthcare marketing enforcement has included cosmetic practice advertising, telehealth prescribing, and corporate-practice-of-medicine violations via marketing. The AG office has also been notably active on cross-border healthcare marketing — including marketing targeting New York residents by out-of-state providers.",
+      "The NY AG uses Executive Law §63(12) for persistent-fraud enforcement and Consumer Protection Act authority for deceptive practices. Healthcare marketing enforcement has included cosmetic practice advertising, telehealth prescribing, and corporate-practice-of-medicine violations via marketing. The AG office has also been notably active on cross-border healthcare marketing - including marketing targeting New York residents by out-of-state providers.",
     focusAreas: [
       {
         title: "Corporate practice of medicine and marketing",
-        body: "New York has particularly strict corporate-practice-of-medicine rules. Marketing that implies non-physician corporate entities provide medical services can trigger enforcement — including against corporate med spa chains, telehealth platforms, and franchise models.",
+        body: "New York has particularly strict corporate-practice-of-medicine rules. Marketing that implies non-physician corporate entities provide medical services can trigger enforcement - including against corporate med spa chains, telehealth platforms, and franchise models.",
       },
       {
         title: "Cosmetic and aesthetic practice advertising",
@@ -280,11 +280,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Aesthetic surgery — NY is particularly strict on 'best/top' superlatives and specialty claims.",
-      "Med spas — corporate practice of medicine shapes what entities can advertise.",
-      "Telehealth — cross-border advertising to NY residents is a focus area.",
-      "Weight loss — intersection of telehealth and corporate-practice concerns.",
-      "Regen medicine — AG enforcement has followed federal patterns.",
+      "Aesthetic surgery - NY is particularly strict on 'best/top' superlatives and specialty claims.",
+      "Med spas - corporate practice of medicine shapes what entities can advertise.",
+      "Telehealth - cross-border advertising to NY residents is a focus area.",
+      "Weight loss - intersection of telehealth and corporate-practice concerns.",
+      "Regen medicine - AG enforcement has followed federal patterns.",
     ],
     disclaimer:
       "This summary reflects general patterns in New York healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a New York-licensed healthcare marketing attorney.",
@@ -301,9 +301,9 @@ export const STATES: StateMeta[] = [
     slug: "illinois",
     state: "Illinois",
     abbreviation: "IL",
-    title: "Illinois Healthcare Marketing Compliance Rules — IDFPR and AG",
+    title: "Illinois Healthcare Marketing Compliance Rules - IDFPR and AG",
     description:
-      "Illinois Department of Financial and Professional Regulation (IDFPR) rules on physician advertising and the Illinois Consumer Fraud Act — with specific focus on med spa supervision, weight loss, and aesthetic practice marketing.",
+      "Illinois Department of Financial and Professional Regulation (IDFPR) rules on physician advertising and the Illinois Consumer Fraud Act - with specific focus on med spa supervision, weight loss, and aesthetic practice marketing.",
     heroTagline:
       "Illinois healthcare marketing is governed by IDFPR licensing rules, the Consumer Fraud Act, and specific supervision requirements that shape aesthetic and weight loss practice marketing.",
     intro:
@@ -354,11 +354,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — supervision language is primary IDFPR focus.",
-      "Weight loss / telehealth — AG has been active on ICFA enforcement.",
-      "Aesthetic surgery — package pricing and 'board-certified' standards apply.",
-      "Dental — Illinois Dental Practice Act applies separately.",
-      "Regen medicine — federal patterns generally mirrored in state enforcement.",
+      "Med spas - supervision language is primary IDFPR focus.",
+      "Weight loss / telehealth - AG has been active on ICFA enforcement.",
+      "Aesthetic surgery - package pricing and 'board-certified' standards apply.",
+      "Dental - Illinois Dental Practice Act applies separately.",
+      "Regen medicine - federal patterns generally mirrored in state enforcement.",
     ],
     disclaimer:
       "This summary reflects general patterns in Illinois healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult an Illinois-licensed healthcare marketing attorney.",
@@ -374,9 +374,9 @@ export const STATES: StateMeta[] = [
     slug: "pennsylvania",
     state: "Pennsylvania",
     abbreviation: "PA",
-    title: "Pennsylvania Healthcare Marketing Compliance Rules — State Board of Medicine and AG",
+    title: "Pennsylvania Healthcare Marketing Compliance Rules - State Board of Medicine and AG",
     description:
-      "Pennsylvania State Board of Medicine advertising rules and UTPCPL enforcement against healthcare marketing deception — with focus areas specific to PA's aesthetic, weight loss, and telehealth sectors.",
+      "Pennsylvania State Board of Medicine advertising rules and UTPCPL enforcement against healthcare marketing deception - with focus areas specific to PA's aesthetic, weight loss, and telehealth sectors.",
     heroTagline:
       "Pennsylvania's regulatory environment is shaped by the State Board of Medicine, UTPCPL consumer protection authority, and specific supervision rules for aesthetic practices.",
     intro:
@@ -401,7 +401,7 @@ export const STATES: StateMeta[] = [
       },
       {
         title: "UTPCPL private enforcement",
-        body: "UTPCPL permits private action with treble damages — creating exposure to class-action litigation beyond AG enforcement.",
+        body: "UTPCPL permits private action with treble damages - creating exposure to class-action litigation beyond AG enforcement.",
       },
     ],
     watchItems: [
@@ -427,11 +427,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — supervision enforcement is primary focus.",
-      "Weight loss / telehealth — PA AG activity under UTPCPL.",
-      "Aesthetic surgery — guarantee and specialty rules apply.",
-      "Dental — PA State Board of Dentistry rules separate.",
-      "Compounding-pharmacy-affiliated clinics — growing enforcement area.",
+      "Med spas - supervision enforcement is primary focus.",
+      "Weight loss / telehealth - PA AG activity under UTPCPL.",
+      "Aesthetic surgery - guarantee and specialty rules apply.",
+      "Dental - PA State Board of Dentistry rules separate.",
+      "Compounding-pharmacy-affiliated clinics - growing enforcement area.",
     ],
     disclaimer:
       "This summary reflects general patterns in Pennsylvania healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a Pennsylvania-licensed healthcare marketing attorney.",
@@ -447,9 +447,9 @@ export const STATES: StateMeta[] = [
     slug: "ohio",
     state: "Ohio",
     abbreviation: "OH",
-    title: "Ohio Healthcare Marketing Compliance Rules — SMBO and AG",
+    title: "Ohio Healthcare Marketing Compliance Rules - SMBO and AG",
     description:
-      "State Medical Board of Ohio (SMBO) advertising rules and Ohio Consumer Sales Practices Act enforcement — with specific focus areas in aesthetic practice, weight loss, and telehealth marketing.",
+      "State Medical Board of Ohio (SMBO) advertising rules and Ohio Consumer Sales Practices Act enforcement - with specific focus areas in aesthetic practice, weight loss, and telehealth marketing.",
     heroTagline:
       "Ohio healthcare marketing rules are shaped by SMBO physician advertising regulations, CSPA consumer protection authority, and Ohio-specific supervision rules.",
     intro:
@@ -500,11 +500,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — SMBO and Board of Nursing supervision enforcement.",
-      "Weight loss — Ohio AG CSPA activity on compounded-GLP-1.",
-      "Aesthetic surgery — specialty claims and guarantee rules.",
-      "Dental — Ohio State Dental Board separate rules.",
-      "Regen medicine — federal patterns mirrored.",
+      "Med spas - SMBO and Board of Nursing supervision enforcement.",
+      "Weight loss - Ohio AG CSPA activity on compounded-GLP-1.",
+      "Aesthetic surgery - specialty claims and guarantee rules.",
+      "Dental - Ohio State Dental Board separate rules.",
+      "Regen medicine - federal patterns mirrored.",
     ],
     disclaimer:
       "This summary reflects general patterns in Ohio healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult an Ohio-licensed healthcare marketing attorney.",
@@ -520,9 +520,9 @@ export const STATES: StateMeta[] = [
     slug: "georgia",
     state: "Georgia",
     abbreviation: "GA",
-    title: "Georgia Healthcare Marketing Compliance Rules — GCMB and AG",
+    title: "Georgia Healthcare Marketing Compliance Rules - GCMB and AG",
     description:
-      "Georgia Composite Medical Board (GCMB) advertising rules and Fair Business Practices Act enforcement — with focus on aesthetic, weight loss, and regenerative medicine marketing.",
+      "Georgia Composite Medical Board (GCMB) advertising rules and Fair Business Practices Act enforcement - with focus on aesthetic, weight loss, and regenerative medicine marketing.",
     heroTagline:
       "Georgia healthcare marketing is shaped by GCMB physician rules, the Fair Business Practices Act (FBPA), and growing enforcement attention on med spa and weight loss marketing.",
     intro:
@@ -573,11 +573,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — GCMB enforcement on supervision and specialty claims.",
-      "Weight loss — FBPA activity on compounded medication marketing.",
-      "Aesthetic surgery — package pricing focus.",
-      "Dental — Georgia Board of Dentistry rules separate.",
-      "Regen medicine — following federal patterns.",
+      "Med spas - GCMB enforcement on supervision and specialty claims.",
+      "Weight loss - FBPA activity on compounded medication marketing.",
+      "Aesthetic surgery - package pricing focus.",
+      "Dental - Georgia Board of Dentistry rules separate.",
+      "Regen medicine - following federal patterns.",
     ],
     disclaimer:
       "This summary reflects general patterns in Georgia healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a Georgia-licensed healthcare marketing attorney.",
@@ -593,9 +593,9 @@ export const STATES: StateMeta[] = [
     slug: "north-carolina",
     state: "North Carolina",
     abbreviation: "NC",
-    title: "North Carolina Healthcare Marketing Compliance Rules — NCMB and AG",
+    title: "North Carolina Healthcare Marketing Compliance Rules - NCMB and AG",
     description:
-      "North Carolina Medical Board (NCMB) physician advertising rules and Unfair and Deceptive Trade Practices Act (UDTPA) enforcement — focus on aesthetic, weight loss, and telehealth practice marketing.",
+      "North Carolina Medical Board (NCMB) physician advertising rules and Unfair and Deceptive Trade Practices Act (UDTPA) enforcement - focus on aesthetic, weight loss, and telehealth practice marketing.",
     heroTagline:
       "North Carolina's regulatory environment is shaped by NCMB rules, UDTPA consumer protection authority, and specific rules on physician advertising and supervision.",
     intro:
@@ -646,11 +646,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — NCMB supervision focus.",
-      "Weight loss / telehealth — NC AG UDTPA activity.",
-      "Aesthetic surgery — specialty and guarantee rules.",
-      "Dental — NC State Board of Dental Examiners rules separate.",
-      "Regen medicine — federal patterns.",
+      "Med spas - NCMB supervision focus.",
+      "Weight loss / telehealth - NC AG UDTPA activity.",
+      "Aesthetic surgery - specialty and guarantee rules.",
+      "Dental - NC State Board of Dental Examiners rules separate.",
+      "Regen medicine - federal patterns.",
     ],
     disclaimer:
       "This summary reflects general patterns in North Carolina healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a North Carolina-licensed healthcare marketing attorney.",
@@ -666,13 +666,13 @@ export const STATES: StateMeta[] = [
     slug: "michigan",
     state: "Michigan",
     abbreviation: "MI",
-    title: "Michigan Healthcare Marketing Compliance Rules — LARA and AG",
+    title: "Michigan Healthcare Marketing Compliance Rules - LARA and AG",
     description:
-      "Michigan Department of Licensing and Regulatory Affairs (LARA) rules for physician advertising and Michigan Consumer Protection Act enforcement — focus on aesthetic, weight loss, and telehealth practices.",
+      "Michigan Department of Licensing and Regulatory Affairs (LARA) rules for physician advertising and Michigan Consumer Protection Act enforcement - focus on aesthetic, weight loss, and telehealth practices.",
     heroTagline:
       "Michigan healthcare marketing is shaped by LARA licensing rules, MCPA consumer protection authority, and specific Michigan-specific supervision and telehealth rules.",
     intro:
-      "Michigan healthcare marketing compliance operates under the Michigan Department of Licensing and Regulatory Affairs (LARA) — specifically the Michigan Board of Medicine and Board of Osteopathic Medicine and Surgery — and the Michigan Consumer Protection Act (MCPA). Michigan is a significant med spa and weight-loss market with corresponding enforcement attention.",
+      "Michigan healthcare marketing compliance operates under the Michigan Department of Licensing and Regulatory Affairs (LARA) - specifically the Michigan Board of Medicine and Board of Osteopathic Medicine and Surgery - and the Michigan Consumer Protection Act (MCPA). Michigan is a significant med spa and weight-loss market with corresponding enforcement attention.",
     medicalBoardName: "Michigan Board of Medicine (via LARA)",
     medicalBoardFocus:
       "Michigan physician advertising is governed by Public Health Code provisions and LARA rules covering deceptive advertising, specialty claims, supervision representations, and testimonial rules. Enforcement has focused on aesthetic and weight-loss practice marketing.",
@@ -719,11 +719,11 @@ export const STATES: StateMeta[] = [
       },
     ],
     specialtyCallouts: [
-      "Med spas — LARA supervision enforcement.",
-      "Weight loss / telehealth — MCPA activity on compounded medication.",
-      "Aesthetic surgery — package pricing and specialty rules.",
-      "Dental — Michigan Board of Dentistry rules separate.",
-      "Regen medicine — following federal enforcement patterns.",
+      "Med spas - LARA supervision enforcement.",
+      "Weight loss / telehealth - MCPA activity on compounded medication.",
+      "Aesthetic surgery - package pricing and specialty rules.",
+      "Dental - Michigan Board of Dentistry rules separate.",
+      "Regen medicine - following federal enforcement patterns.",
     ],
     disclaimer:
       "This summary reflects general patterns in Michigan healthcare marketing enforcement; it is not legal advice. For state-specific guidance on your practice, consult a Michigan-licensed healthcare marketing attorney.",

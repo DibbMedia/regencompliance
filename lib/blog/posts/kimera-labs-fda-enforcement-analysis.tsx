@@ -33,7 +33,7 @@ export const meta: BlogPostMeta = {
   ],
   tags: ["Case study", "FDA", "Regen"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
-  heroLabel: "Case study — supply chain",
+  heroLabel: "Case study - supply chain",
 }
 
 export default function Body() {
@@ -294,14 +294,14 @@ export default function Body() {
 
       <H3>Should I include supplier vetting in my compliance program?</H3>
       <P>
-        Yes &mdash; for categories where supplier enforcement is
+        Yes - for categories where supplier enforcement is
         active. Document the vetting process, the specific due
         diligence performed, and the renewal cadence.
       </P>
 
       <KeyTakeaways
         items={[
-          "Supplier-level FDA enforcement affects clinics that purchase and administer products — access, reputation, and sometimes regulatory exposure flow downstream.",
+          "Supplier-level FDA enforcement affects clinics that purchase and administer products - access, reputation, and sometimes regulatory exposure flow downstream.",
           "Clinic marketing that copies supplier language inherits the compliance issues of that language.",
           "Due diligence on suppliers should be part of every regen, compounding-adjacent, and aesthetic-device practice's compliance program.",
           "Supplier-sponsored education is valuable but shouldn't be mistaken for compliance certification of the language presented.",

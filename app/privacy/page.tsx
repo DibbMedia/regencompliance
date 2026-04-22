@@ -4,7 +4,7 @@ import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
 
 export const metadata = {
-  title: "Privacy Policy — RegenCompliance",
+  title: "Privacy Policy - RegenCompliance",
   description: "Privacy Policy for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
 }
 
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
                   <div key={service.name} className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="text-sm font-extrabold text-white">{service.name}</h3>
-                      <span className="text-xs text-[#55E039]/70">— {service.role}</span>
+                      <span className="text-xs text-[#55E039]/70">- {service.role}</span>
                     </div>
                     <p className="text-sm text-white/60 leading-relaxed">{service.detail}</p>
                   </div>

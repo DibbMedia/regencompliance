@@ -77,7 +77,7 @@ export default function Body() {
       <H3>Issue 1: Package excluded typical necessary add-ons</H3>
       <P>
         Package pricing that excludes items typically needed for
-        the marketed outcome &mdash; anesthesia, follow-up
+        the marketed outcome - anesthesia, follow-up
         appointments, touch-up treatments, product add-ons. If a
         meaningful percentage of patients require the excluded
         items, excluding them from advertised pricing creates
@@ -152,7 +152,7 @@ export default function Body() {
       <H3>Injectable packages</H3>
       <P>
         Injectable package pricing (Botox units, filler syringes)
-        has its own issues &mdash; per-unit pricing can be clear
+        has its own issues - per-unit pricing can be clear
         but doesn&rsquo;t always communicate what patients actually
         purchase. Package marketing (&ldquo;Botox package 40
         units&rdquo;) should reflect typical treatment needs.
@@ -204,7 +204,7 @@ export default function Body() {
 
       <H3>Can I advertise promotional pricing at all?</H3>
       <P>
-        Yes &mdash; with appropriate context. &ldquo;Starting
+        Yes - with appropriate context. &ldquo;Starting
         at&rdquo; pricing with disclosure of typical actual costs
         is different from bait pricing.
       </P>

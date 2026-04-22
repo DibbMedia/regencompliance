@@ -49,7 +49,7 @@ interface SiteData {
   pages: SitePage[]
 }
 
-// API returns { site, pages } — we merge them
+// API returns { site, pages } - we merge them
 interface SiteApiResponse {
   site: Omit<SiteData, "pages">
   pages: SitePage[]

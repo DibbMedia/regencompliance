@@ -28,7 +28,7 @@ export async function GET() {
       .select("*", { count: "exact", head: true })
       .eq("subscription_status", "cancelled")
 
-    // Beta subscribers — profiles with is_beta = true and active status
+    // Beta subscribers - profiles with is_beta = true and active status
     let betaSubscribers = 0
     try {
       const { count: betaCount } = await serviceClient
@@ -209,7 +209,7 @@ export async function GET() {
       type: "scan" as string,
       user_email: emailMap[scan.profile_id] || "unknown",
       profile_id: scan.profile_id,
-      description: `Scanned ${scan.content_type?.replace(/_/g, " ") || "content"} — Score: ${scan.compliance_score ?? "N/A"}%, ${scan.flag_count || 0} flags`,
+      description: `Scanned ${scan.content_type?.replace(/_/g, " ") || "content"} - Score: ${scan.compliance_score ?? "N/A"}%, ${scan.flag_count || 0} flags`,
       compliance_score: scan.compliance_score,
       flag_count: scan.flag_count,
       content_type: scan.content_type,
@@ -222,7 +222,7 @@ export async function GET() {
       type: "signup" as string,
       user_email: emailMap[signup.id] || "unknown",
       profile_id: signup.id,
-      description: `New user signed up${signup.clinic_name ? ` — ${signup.clinic_name}` : ""}`,
+      description: `New user signed up${signup.clinic_name ? ` - ${signup.clinic_name}` : ""}`,
       compliance_score: null,
       flag_count: 0,
       content_type: null,
@@ -369,7 +369,7 @@ export async function GET() {
 
     const userGrowth = (usersLastWeek || 0) - (usersPriorWeek || 0)
 
-    // Cron status (static — we track what's configured)
+    // Cron status (static - we track what's configured)
     const cronStatus = {
       scrapeRules: { name: "scrape-rules", status: "configured" },
       deepScrape: { name: "deep-scrape", status: "configured" },

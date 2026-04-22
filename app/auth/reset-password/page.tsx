@@ -83,7 +83,7 @@ export default function ResetPasswordPage() {
       return
     }
 
-    // Revoke every other active session (other browsers/devices) — the old
+    // Revoke every other active session (other browsers/devices) - the old
     // password is no longer valid anywhere. Best-effort; don't block on failure.
     try {
       await supabase.auth.signOut({ scope: "others" })

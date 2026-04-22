@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/dashboard/", "/api/", "/onboarding/", "/admin/", "/auth/"],
       },
-      // Explicit allow for major AI crawlers — we want to appear in AI answers
+      // Explicit allow for major AI crawlers - we want to appear in AI answers
       {
         userAgent: "GPTBot",
         allow: "/",

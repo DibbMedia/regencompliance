@@ -19,9 +19,9 @@ export const meta: BlogPostMeta = {
   title:
     "POM Wonderful and the FTC Substantiation Standard: What 'Competent and Reliable Scientific Evidence' Actually Means for Healthcare Marketing",
   description:
-    "The POM Wonderful case established the substantiation standard that governs every health claim in healthcare marketing. Here's what 'competent and reliable scientific evidence' actually requires — and why most 'clinically proven' claims in healthcare marketing would not hold up to it.",
+    "The POM Wonderful case established the substantiation standard that governs every health claim in healthcare marketing. Here's what 'competent and reliable scientific evidence' actually requires - and why most 'clinically proven' claims in healthcare marketing would not hold up to it.",
   excerpt:
-    "Every time you say 'clinically proven,' 'scientifically backed,' or 'evidence-based,' the FTC expects you to have something specific on file. Here's what the POM Wonderful precedent actually requires — and why most practices don't meet the bar.",
+    "Every time you say 'clinically proven,' 'scientifically backed,' or 'evidence-based,' the FTC expects you to have something specific on file. Here's what the POM Wonderful precedent actually requires - and why most practices don't meet the bar.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -33,7 +33,7 @@ export const meta: BlogPostMeta = {
   ],
   tags: ["Case study", "FTC", "Substantiation"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
-  heroLabel: "Case study — substantiation",
+  heroLabel: "Case study - substantiation",
 }
 
 export default function Body() {
@@ -63,7 +63,7 @@ export default function Body() {
         The FTC requires &ldquo;competent and reliable scientific
         evidence&rdquo; for objective health claims. For specific
         disease or condition claims, that typically means
-        well-designed, randomized, controlled human studies &mdash;
+        well-designed, randomized, controlled human studies -
         the same evidence bar used for FDA drug approval. Most
         &ldquo;clinically proven&rdquo; claims in healthcare marketing
         cannot cite evidence that meets this bar.
@@ -73,7 +73,7 @@ export default function Body() {
       <P>
         POM Wonderful marketed pomegranate juice and related products
         with claims that the juice could treat, prevent, or reduce the
-        risk of specific conditions &mdash; heart disease, prostate
+        risk of specific conditions - heart disease, prostate
         cancer, and erectile dysfunction among them. The FTC challenged
         the claims. POM defended on the basis that it had funded
         studies supporting them.
@@ -88,7 +88,7 @@ export default function Body() {
       <OL>
         <LI>
           Disease-specific claims require the evidentiary standard
-          typically associated with FDA drug approval &mdash; adequate
+          typically associated with FDA drug approval - adequate
           and well-controlled human clinical studies.
         </LI>
         <LI>
@@ -98,7 +98,7 @@ export default function Body() {
         </LI>
         <LI>
           &ldquo;Proven&rdquo; or similar language carries the full
-          substantiation weight &mdash; even if the underlying claim
+          substantiation weight - even if the underlying claim
           is technically hedged.
         </LI>
       </OL>
@@ -125,7 +125,7 @@ export default function Body() {
 
       <P>
         For disease or condition claims specifically, this typically
-        means well-designed randomized controlled trials &mdash;
+        means well-designed randomized controlled trials -
         adequate sample size, appropriate controls, blinding,
         pre-registered endpoints, statistical analysis consistent with
         the field, and published peer-reviewed results. Single small
@@ -146,7 +146,7 @@ export default function Body() {
 
       <H2 id="prior-substantiation">The prior-substantiation requirement</H2>
       <P>
-        The FTC requires &ldquo;prior substantiation&rdquo; &mdash;
+        The FTC requires &ldquo;prior substantiation&rdquo; -
         meaning the evidence must exist before the claim is made, not
         gathered afterward in response to a letter. Clinics making
         aggressive claims and expecting to assemble the evidence file
@@ -156,8 +156,8 @@ export default function Body() {
       <P>
         The FTC&rsquo;s administrative interpretation of this: if you
         are asked to produce your substantiation and cannot produce it
-        on request &mdash; or you can only produce post-hoc
-        assembly of studies that do not meet the scientific bar &mdash;
+        on request - or you can only produce post-hoc
+        assembly of studies that do not meet the scientific bar -
         you were making unsubstantiated claims from the moment the
         claims were published.
       </P>
@@ -184,7 +184,7 @@ export default function Body() {
       <P>
         Claim: &ldquo;our IV formulation has been shown to improve
         immune function.&rdquo; Evidence cited: studies on individual
-        vitamins at specific doses in specific populations &mdash; none
+        vitamins at specific doses in specific populations - none
         of which were on the specific IV formulation marketed. The
         borrowed-evidence shortcut fails the FTC bar because the
         substantiation has to be for the specific product marketed.
@@ -215,7 +215,7 @@ export default function Body() {
         they felt better after a treatment does not substantiate an
         efficacy claim about the treatment. The FTC reads testimonials
         under the Endorsement Guides, and substantiation under the
-        competent-and-reliable standard &mdash; they are separate
+        competent-and-reliable standard - they are separate
         regulatory requirements, and testimonials never cure a
         substantiation gap.
       </P>
@@ -279,7 +279,7 @@ export default function Body() {
       <H2 id="building-the-evidence-file">Building a substantiation file</H2>
       <P>
         Practices with aggressive health claims should maintain a
-        substantiation file &mdash; a document that inventories each
+        substantiation file - a document that inventories each
         objective claim, the evidence supporting it, and the specific
         studies relied on. This is good practice even without a
         regulator asking.
@@ -300,7 +300,7 @@ export default function Body() {
           competent-and-reliable standard for the specific claim.
         </LI>
         <LI>
-          Dates &mdash; when the claim was first published, and when
+          Dates - when the claim was first published, and when
           the substantiation was compiled (prior-substantiation
           evidence).
         </LI>
@@ -371,18 +371,18 @@ export default function Body() {
         AI-generated copy often includes confident health claims
         without the evidence base. This is the pattern that turns AI
         writing tools into a compliance liability for healthcare
-        practices &mdash; the copy reads persuasive but fails
+        practices - the copy reads persuasive but fails
         substantiation review. Any AI-generated copy making objective
         health claims needs substantiation before it goes live.
       </P>
 
       <KeyTakeaways
         items={[
-          "'Competent and reliable scientific evidence' is a specific FTC standard — usually well-controlled human clinical trials for disease claims.",
-          "Substantiation must exist before the claim is made — post-hoc evidence assembly is already a violation.",
+          "'Competent and reliable scientific evidence' is a specific FTC standard - usually well-controlled human clinical trials for disease claims.",
+          "Substantiation must exist before the claim is made - post-hoc evidence assembly is already a violation.",
           "Specific citations are both more compliant and more persuasive than vague 'clinically proven' shorthand.",
-          "Testimonials are not substitutes for substantiation — they are a separate regulatory surface.",
-          "A substantiation file is essential for any practice making objective health claims — attorney review is essential for disease-specific claims.",
+          "Testimonials are not substitutes for substantiation - they are a separate regulatory surface.",
+          "A substantiation file is essential for any practice making objective health claims - attorney review is essential for disease-specific claims.",
         ]}
       />
     </>

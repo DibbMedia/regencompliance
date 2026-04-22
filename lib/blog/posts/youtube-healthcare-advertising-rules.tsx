@@ -85,7 +85,7 @@ export default function Body() {
       </P>
       <UL>
         <LI>
-          Disclosure challenges similar to TikTok &mdash; visible
+          Disclosure challenges similar to TikTok - visible
           on-screen text, verbal disclosure, caption support.
         </LI>
         <LI>
@@ -309,8 +309,8 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "YouTube advertising uses Google Ads policy plus YouTube-specific medical misinformation policy — both apply.",
-          "Short-form ad formats challenge disclosure but don't remove requirements — use on-screen text + verbal + caption support.",
+          "YouTube advertising uses Google Ads policy plus YouTube-specific medical misinformation policy - both apply.",
+          "Short-form ad formats challenge disclosure but don't remove requirements - use on-screen text + verbal + caption support.",
           "Channel content (non-ad) still falls under FDA/FTC marketing rules and HIPAA when promoting the practice.",
           "Creator and influencer partnerships need FTC-compliant disclosure in the video itself, not only in descriptions.",
           "Educational, practice-introduction, and Q&A content run reliably; condition-specific treatment claims and transformation compilations face the most scrutiny.",

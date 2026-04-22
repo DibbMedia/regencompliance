@@ -33,15 +33,15 @@ export const meta: BlogPostMeta = {
   ],
   tags: ["Case study", "Regen", "FDA"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
-  heroLabel: "Case study — foundational",
+  heroLabel: "Case study - foundational",
 }
 
 export default function Body() {
   return (
     <>
       <Lead>
-        The Regenerative Sciences litigation &mdash; formally US v.
-        Regenerative Sciences, LLC &mdash; established the FDA&rsquo;s
+        The Regenerative Sciences litigation - formally US v.
+        Regenerative Sciences, LLC - established the FDA&rsquo;s
         authority to regulate stem cell and HCT/P products as drugs
         when they fail the 361-pathway criteria. The case ran from
         2009 through appellate affirmation in 2014 and remains the
@@ -54,7 +54,7 @@ export default function Body() {
       <H2 id="background">The background</H2>
       <P>
         Regenerative Sciences offered an autologous stem cell
-        therapy called Regenexx for orthopedic conditions &mdash;
+        therapy called Regenexx for orthopedic conditions -
         specifically, a protocol involving extracting mesenchymal
         stem cells, culturing them in the laboratory to expand their
         number, and then reinjecting them into the patient.
@@ -63,8 +63,8 @@ export default function Body() {
         The company&rsquo;s position was that because the cells were
         the patient&rsquo;s own (autologous), the treatment was the
         practice of medicine and not subject to FDA drug regulation.
-        The FDA&rsquo;s position was that the expansion step &mdash;
-        culturing cells to increase their number &mdash; constituted
+        The FDA&rsquo;s position was that the expansion step -
+        culturing cells to increase their number - constituted
         more than minimal manipulation, which took the product out
         of the 361 pathway and into 351 drug/biologic territory.
       </P>
@@ -92,8 +92,8 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Marketing representations affected regulatory
-          status.</Strong> How the product was marketed &mdash; what
-          claims were made &mdash; was part of the analysis of what
+          status.</Strong> How the product was marketed - what
+          claims were made - was part of the analysis of what
           the product was legally.
         </LI>
       </OL>
@@ -102,8 +102,8 @@ export default function Body() {
 
       <H3>The autologous/patient-own argument is not a defense</H3>
       <P>
-        A common regen clinic marketing framing &mdash; &ldquo;these
-        are your own cells, not a drug&rdquo; &mdash; was
+        A common regen clinic marketing framing - &ldquo;these
+        are your own cells, not a drug&rdquo; - was
         specifically rejected in this case. The autologous nature of
         the material doesn&rsquo;t automatically place a product
         outside FDA drug regulation. The processing, manipulation,
@@ -115,7 +115,7 @@ export default function Body() {
         The court accepted that how a product is marketed affects
         its regulatory classification. Marketing claims that position
         a product as treating specific diseases convert the product
-        into an unapproved drug for those indications &mdash; even
+        into an unapproved drug for those indications - even
         if the product itself would otherwise qualify for a
         different pathway.
       </P>
@@ -133,8 +133,8 @@ export default function Body() {
       <P>
         The court upheld the FDA&rsquo;s narrow interpretation of
         minimal manipulation. Processing steps that change the
-        relevant biological characteristics of cells &mdash;
-        including cell expansion through culturing &mdash; exceed
+        relevant biological characteristics of cells -
+        including cell expansion through culturing - exceed
         minimal manipulation. This is why regen practice marketing
         that emphasizes advanced processing, activation, or
         enhancement signals 351-pathway territory.
@@ -145,7 +145,7 @@ export default function Body() {
       <H3>Marketing language matters to regulatory classification</H3>
       <P>
         The specific marketing language your practice uses isn&rsquo;t
-        just a compliance-advertising issue &mdash; it can affect how
+        just a compliance-advertising issue - it can affect how
         the underlying product is regulatorily classified. Marketing
         that implies more-than-minimal manipulation, systemic
         effects, or non-homologous use moves the product out of 361
@@ -174,7 +174,7 @@ export default function Body() {
       <P>
         Even practices operating without cell expansion face
         enforcement when their marketing claims push the product
-        outside 361 eligibility in other ways &mdash; disease-
+        outside 361 eligibility in other ways - disease-
         treatment claims, systemic-effect claims, non-homologous-use
         claims. The pathway analysis applies to marketing language,
         not just physical processing.
@@ -188,7 +188,7 @@ export default function Body() {
         361 pathway, marketing should reflect that. Language about
         &ldquo;expanded,&rdquo; &ldquo;cultured,&rdquo;
         &ldquo;activated,&rdquo; or &ldquo;enhanced&rdquo; cell
-        products signals non-361 processing &mdash; which converts
+        products signals non-361 processing - which converts
         your marketing into unapproved drug marketing.
       </P>
 
@@ -205,7 +205,7 @@ export default function Body() {
       medicine&rdquo; framing</H3>
       <P>
         Marketing that positions services as pure practice of
-        medicine &mdash; beyond FDA reach &mdash; doesn&rsquo;t
+        medicine - beyond FDA reach - doesn&rsquo;t
         actually work. Regenerative Sciences specifically rejected
         this framing. Clinical practice is state-regulated; products
         manufactured or administered are subject to FDA authority.
@@ -251,7 +251,7 @@ export default function Body() {
 
       <H3>Did Regenerative Sciences effectively shut down stem cell medicine in the US?</H3>
       <P>
-        No &mdash; but it reshaped how stem cell medicine can operate
+        No - but it reshaped how stem cell medicine can operate
         in the US. Practices offering same-day, minimally-manipulated,
         homologous-use autologous HCT/P procedures continue to
         operate under the 361 pathway. Practices doing cell expansion
@@ -270,8 +270,8 @@ export default function Body() {
       <P>
         Yes. PRP is an HCT/P subject to the same 361 pathway
         analysis. Marketing claims that push PRP products outside
-        361 eligibility &mdash; typically through disease-treatment
-        claims &mdash; have the same regulatory effect.
+        361 eligibility - typically through disease-treatment
+        claims - have the same regulatory effect.
       </P>
 
       <H3>What about exosomes specifically?</H3>
@@ -288,7 +288,7 @@ export default function Body() {
         Consult healthcare regulatory counsel familiar with HCT/P
         regulation. The pathway analysis requires detailed
         understanding of your specific products, processing steps,
-        and intended uses &mdash; plus current FDA interpretation,
+        and intended uses - plus current FDA interpretation,
         which evolves. This is not a self-assessment question.
       </P>
 
@@ -304,9 +304,9 @@ export default function Body() {
         items={[
           "Regenerative Sciences established FDA authority over stem cell and HCT/P products when they fall outside the 361 pathway.",
           "Autologous source material does not automatically exempt products from FDA drug regulation.",
-          "Marketing claims affect regulatory classification — disease-treatment marketing can convert a product into an unapproved drug.",
+          "Marketing claims affect regulatory classification - disease-treatment marketing can convert a product into an unapproved drug.",
           "'Practice of medicine' is not a blanket shield against FDA authority when practices involve manufacturing or administering regulated products.",
-          "Minimal manipulation is interpreted narrowly — cell expansion, activation, and enhancement signals non-361 processing.",
+          "Minimal manipulation is interpreted narrowly - cell expansion, activation, and enhancement signals non-361 processing.",
         ]}
       />
     </>

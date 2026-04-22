@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Original research: scanning 100 healthcare practice websites across med spa, regen, weight loss, dental, and aesthetic specialties reveals specific patterns of FDA/FTC compliance issues.",
   excerpt:
-    "We ran 100 healthcare practice websites through systematic compliance review. The findings — patterns, prevalence, and specialty variation — reveal where enforcement risk is actually concentrated.",
+    "We ran 100 healthcare practice websites through systematic compliance review. The findings - patterns, prevalence, and specialty variation - reveal where enforcement risk is actually concentrated.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -177,7 +177,7 @@ export default function Body() {
 
       <H3>Aesthetic surgery (n=15)</H3>
       <P>
-        Board-certified claim issues (13% &mdash; relatively
+        Board-certified claim issues (13% - relatively
         lower). Before/after typical-experience gaps (87%).
         Specific outcome guarantees (60%).
       </P>
@@ -189,12 +189,12 @@ export default function Body() {
       </P>
       <UL>
         <LI>
-          Conservative claim language throughout &mdash; no
+          Conservative claim language throughout - no
           guarantees, no absolutes, no superlatives without
           substantiation.
         </LI>
         <LI>
-          Accurate regulatory terminology &mdash; specific
+          Accurate regulatory terminology - specific
           FDA-cleared indications, accurate HCT/P pathway
           language.
         </LI>
@@ -268,7 +268,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Most issues are textual, not structural.</Strong>
-          Correction is typically straightforward &mdash; practices
+          Correction is typically straightforward - practices
           that haven&rsquo;t done it are leaving easy gains on the
           table.
         </LI>
@@ -333,11 +333,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "94% of healthcare practice sites reviewed had at least one Category 1-5 violation — near-universal exposure.",
+          "94% of healthcare practice sites reviewed had at least one Category 1-5 violation - near-universal exposure.",
           "FDA-approved/cleared misuse is the most prevalent single issue, particularly in med spa marketing.",
           "Unsubstantiated efficacy framing ('clinically proven') appears on 84% of reviewed sites.",
           "The 6% of clean-compliance sites share documented compliance programs, counsel relationships, and systematic review practices.",
-          "Most violations are textual and correctable without structural changes — 2-8 hours of site-wide revision typically addresses the majority.",
+          "Most violations are textual and correctable without structural changes - 2-8 hours of site-wide revision typically addresses the majority.",
         ]}
       />
     </>

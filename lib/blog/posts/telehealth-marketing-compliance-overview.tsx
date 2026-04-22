@@ -40,7 +40,7 @@ export default function Body() {
     <>
       <Lead>
         Telehealth has grown from a niche delivery mode to a
-        dominant healthcare category in several specialties &mdash;
+        dominant healthcare category in several specialties -
         mental health, weight loss, primary care, hormone therapy,
         dermatology. The marketing compliance framework for
         telehealth combines standard healthcare marketing rules with
@@ -283,10 +283,10 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Telehealth marketing must reflect state-by-state licensure accurately — marketing to state residents where providers aren't licensed is an enforcement pattern.",
+          "Telehealth marketing must reflect state-by-state licensure accurately - marketing to state residents where providers aren't licensed is an enforcement pattern.",
           "Ryan Haight Act restrictions on online controlled-substance prescribing are in active flux; marketing should reflect current rules.",
           "'Skip the doctor visit' and speed-focused framing has drawn specific state medical board enforcement.",
-          "Telehealth marketing varies significantly by category — mental health, weight loss, hormone therapy, and dermatology each have specific considerations.",
+          "Telehealth marketing varies significantly by category - mental health, weight loss, hormone therapy, and dermatology each have specific considerations.",
           "Texas, California, New York, and Florida have been notably active on telehealth marketing enforcement.",
         ]}
       />

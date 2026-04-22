@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
   description:
     "One Instagram caption, one Facebook testimonial, one TikTok claim. Multi-million-dollar FTC stem cell settlements now routinely trace back to a single social post. Here is how that chain actually works and how to break it.",
   excerpt:
-    "Multi-million-dollar FTC settlements against stem cell and regenerative medicine clinics now routinely start with a single Instagram caption or Facebook testimonial. Here is how that chain actually works &mdash; and the four places clinics lose control of it.",
+    "Multi-million-dollar FTC settlements against stem cell and regenerative medicine clinics now routinely start with a single Instagram caption or Facebook testimonial. Here is how that chain actually works - and the four places clinics lose control of it.",
   date: "2026-04-21",
   readingMinutes: 8,
   keywords: [
@@ -47,8 +47,8 @@ export default function Body() {
         The settlements that are ending multi-location stem cell and regenerative
         medicine groups in 2024 and 2025 rarely start where clinic owners assume
         they start. They do not start with the website. They start with a single
-        social post &mdash; often posted by a front-desk staff member or a
-        marketing vendor &mdash; that pulls the entire business into scope.
+        social post - often posted by a front-desk staff member or a
+        marketing vendor - that pulls the entire business into scope.
       </Lead>
 
       <StatCard
@@ -95,15 +95,15 @@ export default function Body() {
         Stage 2: The file gets opened
       </H2>
       <P>
-        Most enforcement files open when an external party &mdash; a patient, a
-        competitor, a former employee, or a consumer-protection nonprofit &mdash;
+        Most enforcement files open when an external party - a patient, a
+        competitor, a former employee, or a consumer-protection nonprofit -
         submits a complaint to the FTC or the state attorney general. The trigger
         post has usually been public for weeks or months before the complaint.
       </P>
       <P>
         Once the file opens, the investigator&rsquo;s first move is to screen-
         capture everything publicly accessible associated with the business. Not
-        just the post that triggered the complaint &mdash; <Em>everything</Em>.
+        just the post that triggered the complaint - <Em>everything</Em>.
       </P>
 
       <Callout variant="warn" title="This is the single most misunderstood step">
@@ -124,7 +124,7 @@ export default function Body() {
       <P>
         By the time the clinic receives formal notice, the agency already has a
         thousand-page PDF of your marketing history. Your response is building its
-        case against that file &mdash; not against the original complaint.
+        case against that file - not against the original complaint.
       </P>
 
       <H2 id="stage-3-stacking">Stage 3: The stacking</H2>
@@ -185,8 +185,8 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Permanent marketing injunction.</Strong> The defendants are
-          enjoined from making specified categories of claims &mdash; cure claims,
-          implied-approval claims, guarantee language &mdash; for life.
+          enjoined from making specified categories of claims - cure claims,
+          implied-approval claims, guarantee language - for life.
         </LI>
         <LI>
           <Strong>Compliance monitoring.</Strong> Multi-year reporting requirements
@@ -220,7 +220,7 @@ export default function Body() {
       <P>
         If anyone on your team can post to your business social accounts without a
         compliance pass, you have no defensible marketing program. This is not
-        about distrusting your team &mdash; it is about the marginal cost of a
+        about distrusting your team - it is about the marginal cost of a
         single bad caption compared to the cost of the eventual settlement.
       </P>
 
@@ -293,7 +293,7 @@ export default function Body() {
           "Most enforcement actions against clinics start with a single social post, not the website.",
           "Once a file opens, the evidence set is every marketing surface ever published by the business.",
           "Settlements stack per-violation, which is how one caption becomes a multi-million-dollar exposure.",
-          "Permanent marketing injunctions are the real consequence &mdash; and they are a lifetime prohibition, not a fine.",
+          "Permanent marketing injunctions are the real consequence - and they are a lifetime prohibition, not a fine.",
           "A defensible program requires pre-publish scanning, rewrite-at-source rules, archive retirement, and exportable audit trail.",
         ]}
       />

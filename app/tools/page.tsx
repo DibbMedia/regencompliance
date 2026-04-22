@@ -52,9 +52,9 @@ const TOOL_ICON_MAP: Record<string, typeof Scan> = {
 }
 
 export const metadata: Metadata = {
-  title: "RegenCompliance Tools — Scanner, AI Rewriter, Audit Trail, Library, Alerts",
+  title: "RegenCompliance Tools - Scanner, AI Rewriter, Audit Trail, Library, Alerts",
   description:
-    "Deep dives on every RegenCompliance tool — the compliance scanner, AI compliant rewriter, audit trail with PDF export, 300+ rule library, and real-time enforcement alerts.",
+    "Deep dives on every RegenCompliance tool - the compliance scanner, AI compliant rewriter, audit trail with PDF export, 300+ rule library, and real-time enforcement alerts.",
   keywords: [
     "RegenCompliance tools",
     "healthcare compliance tools",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RegenCompliance Tools",
     description:
-      "Every tool inside RegenCompliance — scanner, rewriter, audit trail, rule library, enforcement alerts.",
+      "Every tool inside RegenCompliance - scanner, rewriter, audit trail, rule library, enforcement alerts.",
     url: canonical,
     type: "website",
   },

@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
   description:
     "HIPAA's marketing rule restricts how patient information (PHI) can be used in marketing. Here's what counts as marketing under HIPAA, when patient authorization is required, and what the exceptions actually cover.",
   excerpt:
-    "Most healthcare practices conflate HIPAA compliance with FTC compliance — they're different regulatory regimes with different rules. Here's the HIPAA-specific framework for marketing that uses any patient information.",
+    "Most healthcare practices conflate HIPAA compliance with FTC compliance - they're different regulatory regimes with different rules. Here's the HIPAA-specific framework for marketing that uses any patient information.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -43,7 +43,7 @@ export default function Body() {
         HIPAA&rsquo;s marketing rule restricts how protected health
         information (PHI) can be used in marketing communications.
         It&rsquo;s a separate regulatory regime from FTC rules on
-        testimonials and FDA rules on claims &mdash; and many
+        testimonials and FDA rules on claims - and many
         healthcare practices conflate the three. HIPAA compliance
         doesn&rsquo;t cure FTC issues, and FTC compliance doesn&rsquo;t
         cure HIPAA issues. Both layers apply. This post is the
@@ -136,7 +136,7 @@ export default function Body() {
         HIPAA-compliant authorization specific to the marketing use.
         The authorization needs to cover the specific medium, the
         specific use, and duration. Authorization should be separate
-        from treatment consent &mdash; a single form bundling both
+        from treatment consent - a single form bundling both
         typically doesn&rsquo;t meet the authorization specificity
         requirements.
       </P>
@@ -153,7 +153,7 @@ export default function Body() {
       <H3>Scenario 3: Responding to an online review from a patient</H3>
       <P>
         Responding publicly to a review that confirms or reveals
-        treatment at your practice &mdash; even generically &mdash;
+        treatment at your practice - even generically -
         can constitute a HIPAA disclosure. This is why generic
         responses that neither confirm nor deny treatment are the
         recommended approach. See our post on responding to negative
@@ -181,7 +181,7 @@ export default function Body() {
 
       <H3>Scenario 6: Social media success posts about patient outcomes</H3>
       <P>
-        Posts about patient outcomes &mdash; even without names &mdash;
+        Posts about patient outcomes - even without names -
         may still reveal PHI in combination with photos, dates, or
         distinctive details. Authorization should cover the specific
         social media use.
@@ -275,7 +275,7 @@ export default function Body() {
         HIPAA compliance and FTC compliance are separate regulatory
         regimes. Meeting one doesn&rsquo;t meet the other.
         Healthcare marketing that uses any patient information needs
-        review under both layers &mdash; and often a third layer
+        review under both layers - and often a third layer
         (state privacy or medical board rules) as well.
       </BQ>
 
@@ -300,7 +300,7 @@ export default function Body() {
 
       <H3>Does HIPAA apply to non-patients who become testimonial subjects?</H3>
       <P>
-        HIPAA only applies to PHI &mdash; information generated
+        HIPAA only applies to PHI - information generated
         through treatment. If someone hasn&rsquo;t received treatment
         at your practice, HIPAA doesn&rsquo;t apply to their
         statements. But FTC endorsement rules still do.
@@ -333,11 +333,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "HIPAA's marketing rule restricts PHI use in marketing — separate regulatory regime from FTC and FDA rules.",
+          "HIPAA's marketing rule restricts PHI use in marketing - separate regulatory regime from FTC and FDA rules.",
           "Authorization for marketing use has specific content requirements; standard treatment consent typically doesn't meet them.",
           "Public posting by a patient doesn't waive your HIPAA obligations to get authorization for your own use of their information.",
-          "Responding to reviews in ways that confirm treatment can be a HIPAA disclosure — generic responses that neither confirm nor deny are the safer approach.",
-          "OCR has pursued HIPAA marketing violations with six-figure settlements — enforcement is active even though less visible than FTC enforcement.",
+          "Responding to reviews in ways that confirm treatment can be a HIPAA disclosure - generic responses that neither confirm nor deny are the safer approach.",
+          "OCR has pursued HIPAA marketing violations with six-figure settlements - enforcement is active even though less visible than FTC enforcement.",
         ]}
       />
     </>

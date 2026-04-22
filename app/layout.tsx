@@ -38,7 +38,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   url: "https://compliance.regenportal.com",
   logo: "https://compliance.regenportal.com/og-image.png",
   description:
-    "FDA/FTC compliance scanning software purpose-built for healthcare practices — regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
+    "FDA/FTC compliance scanning software purpose-built for healthcare practices - regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
   contactPoint: {
     "@type": "ContactPoint",
     email: "support@regencompliance.com",
@@ -72,7 +72,7 @@ const WEBSITE_JSON = JSON.stringify({
 
 export const metadata: Metadata = {
   title: {
-    default: "RegenCompliance — FDA/FTC Compliance Scanner for Healthcare Marketing",
+    default: "RegenCompliance - FDA/FTC Compliance Scanner for Healthcare Marketing",
     template: "%s | RegenCompliance",
   },
   description:
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://compliance.regenportal.com",
     siteName: "RegenCompliance",
-    title: "RegenCompliance — FDA/FTC Compliance Scanner",
+    title: "RegenCompliance - FDA/FTC Compliance Scanner",
     description:
       "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for healthcare practices.",
     images: [
@@ -91,13 +91,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "RegenCompliance — FDA/FTC Compliance Scanner",
+        alt: "RegenCompliance - FDA/FTC Compliance Scanner",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RegenCompliance — FDA/FTC Compliance Scanner",
+    title: "RegenCompliance - FDA/FTC Compliance Scanner",
     description:
       "Scan your marketing content against live FDA/FTC enforcement data.",
     images: ["/og-image.png"],

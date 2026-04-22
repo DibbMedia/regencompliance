@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
   description:
     "Before-and-after photos are the most regulated visual in healthcare marketing. Four overlapping regimes govern them: FTC Endorsement Guides, FDA, HIPAA consent, and platform ad policies. Here's the complete protocol.",
   excerpt:
-    "Before-and-after photos are the most regulated visual in healthcare marketing &mdash; four overlapping regimes govern them simultaneously (FTC Endorsement Guides, FDA intent-of-use, HIPAA consent, platform ad policies). This is the complete compliant-photo protocol.",
+    "Before-and-after photos are the most regulated visual in healthcare marketing - four overlapping regimes govern them simultaneously (FTC Endorsement Guides, FDA intent-of-use, HIPAA consent, platform ad policies). This is the complete compliant-photo protocol.",
   date: "2026-04-21",
   readingMinutes: 10,
   keywords: [
@@ -45,7 +45,7 @@ export default function Body() {
       <Lead>
         Before-and-after photos convert. They also draw more FTC attention
         than any other visual format in healthcare marketing. Four separate
-        regulatory regimes touch every before-and-after photo at once &mdash;
+        regulatory regimes touch every before-and-after photo at once -
         the FTC Endorsement Guides, FDA intent-of-use rules, HIPAA consent
         requirements, and the healthcare-specific policies of Meta, Google,
         and TikTok. Most clinics comply with zero of them.
@@ -67,7 +67,7 @@ export default function Body() {
       </Callout>
 
       <H2 id="regime-1-ftc">
-        Regime 1 &mdash; FTC Endorsement Guides
+        Regime 1 - FTC Endorsement Guides
       </H2>
       <P>
         The FTC&rsquo;s Endorsement Guides (16 CFR Part 255) are the
@@ -104,7 +104,7 @@ export default function Body() {
         at no charge in exchange for consenting to marketing use.&rdquo;
       </P>
 
-      <H2 id="regime-2-fda">Regime 2 &mdash; FDA intent-of-use</H2>
+      <H2 id="regime-2-fda">Regime 2 - FDA intent-of-use</H2>
       <P>
         The FDA doesn&rsquo;t regulate the photo itself, but it does
         regulate what the photo implies about your procedure. A photo
@@ -142,7 +142,7 @@ export default function Body() {
         appearance of redness.&rdquo;
       </P>
 
-      <H2 id="regime-3-hipaa">Regime 3 &mdash; HIPAA and patient consent</H2>
+      <H2 id="regime-3-hipaa">Regime 3 - HIPAA and patient consent</H2>
       <P>
         The patient&rsquo;s image is Protected Health Information. Even if
         the face is cropped or blurred, any identifiable feature (a
@@ -181,7 +181,7 @@ export default function Body() {
         copies you control.
       </P>
 
-      <H2 id="regime-4-platforms">Regime 4 &mdash; Platform ad policies</H2>
+      <H2 id="regime-4-platforms">Regime 4 - Platform ad policies</H2>
       <P>
         Meta (Instagram/Facebook), TikTok, and Google each have their own
         before-and-after photo rules that operate independently of federal
@@ -263,7 +263,7 @@ export default function Body() {
       <BQ>
         A photo that depends on misleading lighting or angle to look
         impressive is an FTC claim your treatment can&rsquo;t actually
-        support. The fix isn&rsquo;t better lighting &mdash; it&rsquo;s
+        support. The fix isn&rsquo;t better lighting - it&rsquo;s
         different patient selection.
       </BQ>
 
@@ -361,7 +361,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "Four regimes govern every before-and-after photo: FTC Endorsement Guides, FDA intent-of-use, HIPAA consent, and platform ad policies.",
-          "Typical-experience disclosure is required when the featured outcome is atypical &mdash; which most cherry-picked before-and-afters are.",
+          "Typical-experience disclosure is required when the featured outcome is atypical - which most cherry-picked before-and-afters are.",
           "Pair photos with appearance language (texture, volume, redness), not condition language (acne, rosacea, alopecia).",
           "Signed HIPAA authorization is required for every clinical photo used in marketing; retain the file and honor revocations.",
           "Production standards matter: same lighting, angle, pose, and disclosed time frame. Misleading production is a direct FTC target.",

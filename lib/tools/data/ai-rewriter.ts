@@ -4,16 +4,16 @@ export const meta: ToolMeta = {
   slug: "ai-rewriter",
   name: "AI Compliant Rewriter",
   category: "Core tool",
-  title: "AI Compliant Rewriter — One-Click Compliant Rewrites for Healthcare Marketing | RegenCompliance",
+  title: "AI Compliant Rewriter - One-Click Compliant Rewrites for Healthcare Marketing | RegenCompliance",
   description:
     "Turn flagged non-compliant phrases into compliant alternatives that preserve your clinic's voice. The AI rewriter suggests 2-3 compliant options per flag, explains why each works, and lets you accept or modify in one click.",
   heroBadge: "Core tool",
   heroTagline:
-    "Flagged phrases become compliant alternatives in one click. The rewriter preserves your voice, explains its reasoning, and offers multiple options per flag — never the same generic replacement twice.",
+    "Flagged phrases become compliant alternatives in one click. The rewriter preserves your voice, explains its reasoning, and offers multiple options per flag - never the same generic replacement twice.",
   shortVerdict:
     "Most compliance tools flag problems. The rewriter fixes them. You keep the marketing message; the claim language becomes compliant.",
   whatItIs:
-    "The AI rewriter is a compliance-aware rewriting engine that takes flagged phrases and produces compliant alternatives tied to the specific rule that triggered the flag. It understands context — rewriting a disease-claim phrase differently than a substantiation phrase — and offers multiple options so you can pick the framing that matches your voice. It runs on Anthropic's Claude Sonnet for the rewriting step.",
+    "The AI rewriter is a compliance-aware rewriting engine that takes flagged phrases and produces compliant alternatives tied to the specific rule that triggered the flag. It understands context - rewriting a disease-claim phrase differently than a substantiation phrase - and offers multiple options so you can pick the framing that matches your voice. It runs on Anthropic's Claude Sonnet for the rewriting step.",
   capabilities: [
     {
       title: "Rule-aware rewriting",
@@ -29,7 +29,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Reasoning explained",
-      body: "Every rewrite includes why the original was flagged, why the alternative works, and what specific rule category the change addresses. This is learning-by-doing — your team internalizes the rules through repeated exposure.",
+      body: "Every rewrite includes why the original was flagged, why the alternative works, and what specific rule category the change addresses. This is learning-by-doing - your team internalizes the rules through repeated exposure.",
     },
     {
       title: "Bulk rewrite mode",
@@ -51,7 +51,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "3. Review the alternatives",
-      body: "Each option shows the rewrite plus a short rationale — what rule category the rewrite addresses and why this specific alternative preserves your message.",
+      body: "Each option shows the rewrite plus a short rationale - what rule category the rewrite addresses and why this specific alternative preserves your message.",
     },
     {
       title: "4. Accept, modify, or write your own",
@@ -85,7 +85,7 @@ export const meta: ToolMeta = {
     },
   ],
   included: [
-    "Unlimited rewrites — no per-rewrite fees",
+    "Unlimited rewrites - no per-rewrite fees",
     "2-3 alternatives per flagged phrase",
     "Reasoning explanation for every rewrite",
     "Bulk rewrite mode for multi-flag pages",
@@ -94,10 +94,10 @@ export const meta: ToolMeta = {
     "Rule-category-specific rewrite logic",
   ],
   whatItIsnt: [
-    "Not a content generator — you need existing content for the rewriter to rewrite. For creating new content from scratch, use ChatGPT or Jasper.",
-    "Not a replacement for editorial judgment — rewrites are suggestions; your marketing team still picks the final wording.",
-    "Not a substitute for legal advice — for close-call language, counsel should review the final copy.",
-    "Not perfect on first pass — sometimes the best rewrite requires combining elements from multiple suggestions or adding context only you know.",
+    "Not a content generator - you need existing content for the rewriter to rewrite. For creating new content from scratch, use ChatGPT or Jasper.",
+    "Not a replacement for editorial judgment - rewrites are suggestions; your marketing team still picks the final wording.",
+    "Not a substitute for legal advice - for close-call language, counsel should review the final copy.",
+    "Not perfect on first pass - sometimes the best rewrite requires combining elements from multiple suggestions or adding context only you know.",
   ],
   faqs: [
     {

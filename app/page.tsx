@@ -28,12 +28,12 @@ import {
 import { useState } from "react"
 
 const features = [
-  { icon: Scan, title: "Live Compliance Scanner", desc: "Instant FDA/FTC compliance scoring on any marketing content — website copy, social posts, ads, emails, scripts." },
+  { icon: Scan, title: "Live Compliance Scanner", desc: "Instant FDA/FTC compliance scoring on any marketing content - website copy, social posts, ads, emails, scripts." },
   { icon: Pencil, title: "AI-Powered Rewrites", desc: "One click rewrites all flagged content to meet compliance standards while preserving your clinic's voice." },
   { icon: BookOpen, title: "300+ Compliance Rules", desc: "A living database sourced directly from real FDA warning letters and FTC enforcement actions." },
   { icon: Bell, title: "Daily Rule Updates", desc: "Automated monitoring adds new violations to your ruleset within 24 hours of enforcement." },
   { icon: Clock, title: "Audit Trail + Export", desc: "Every scan is permanently logged. Export PDF compliance reports for legal review or internal records." },
-  { icon: Users, title: "3 Team Seats", desc: "Extend access to your marketing team, content writer, and front desk — shared history under one account." },
+  { icon: Users, title: "3 Team Seats", desc: "Extend access to your marketing team, content writer, and front desk - shared history under one account." },
 ]
 
 const libraryExamples = [
@@ -56,9 +56,9 @@ const checklist = [
 
 const faqs = [
   { q: "Is this actual legal advice?", a: "No. RegenCompliance is an educational compliance tool. We strongly recommend having all final content reviewed by qualified healthcare marketing counsel." },
-  { q: "Does this access any patient data?", a: "Never. We analyze marketing text only — no PHI, no patient records, no clinical data. Zero HIPAA implications." },
+  { q: "Does this access any patient data?", a: "Never. We analyze marketing text only - no PHI, no patient records, no clinical data. Zero HIPAA implications." },
   { q: "How are rules updated?", a: "Daily. Our system monitors FDA warning letters and FTC press releases every morning. New enforcement actions are processed and added automatically." },
-  { q: "Who is this for?", a: "Any healthcare practice marketing FDA/FTC-regulated treatments — regenerative medicine clinics, med spas, dental practices, plastic surgery, dermatology, weight loss clinics, chiropractic, wellness centers, and more. If you market health outcomes, you need compliance scanning." },
+  { q: "Who is this for?", a: "Any healthcare practice marketing FDA/FTC-regulated treatments - regenerative medicine clinics, med spas, dental practices, plastic surgery, dermatology, weight loss clinics, chiropractic, wellness centers, and more. If you market health outcomes, you need compliance scanning." },
   { q: "What if I cancel?", a: "You keep full access through your billing period. No contracts, no fees, no penalties. Resubscribe anytime." },
 ]
 
@@ -100,7 +100,7 @@ export default function LandingPage() {
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">before regulators do.</span>
             </h1>
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
-              FDA and FTC enforcement against healthcare practices hit a 25-year high — from regenerative medicine to med spas, dental, dermatology, and beyond. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
+              FDA and FTC enforcement against healthcare practices hit a 25-year high - from regenerative medicine to med spas, dental, dermatology, and beyond. RegenCompliance checks every word against live enforcement data and rewrites violations automatically.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
               {IS_LAUNCHED ? (
@@ -242,13 +242,13 @@ export default function LandingPage() {
             <p className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] mb-4 flex items-center justify-center gap-2">
               <AlertTriangle className="h-3.5 w-3.5" /> Enforcement at all-time high
             </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The FDA and FTC are actively targeting healthcare practices — especially regenerative medicine, med spas, and aesthetics.</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">The FDA and FTC are actively targeting healthcare practices - especially regenerative medicine, med spas, and aesthetics.</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
             {[
-              { stat: "200+", label: "FDA warning letters in 2024", desc: "The highest volume in 25 years — directly targeting stem cell and regenerative marketing claims." },
+              { stat: "200+", label: "FDA warning letters in 2024", desc: "The highest volume in 25 years - directly targeting stem cell and regenerative marketing claims." },
               { stat: "$5.15M", label: "Single FTC settlement", desc: "What one clinic group paid for deceptive stem cell marketing. A single social media post triggered the investigation." },
-              { stat: "Permanent Ban", label: "Repeat offender penalty", desc: "Not a fine — a permanent, court-enforced prohibition on all marketing and advertising activity." },
+              { stat: "Permanent Ban", label: "Repeat offender penalty", desc: "Not a fine - a permanent, court-enforced prohibition on all marketing and advertising activity." },
             ].map((item) => (
               <div key={item.stat} className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:bg-white/[0.06] hover:border-white/15 transition-all duration-300">
                 <p className="text-4xl font-extrabold text-red-400 tracking-tight">{item.stat}</p>
@@ -336,7 +336,7 @@ export default function LandingPage() {
                 <tr>
                   <td className="px-5 py-4 align-top">
                     <p className="text-[15px] font-bold text-white/85">Generic AI writing tool</p>
-                    <p className="text-xs text-white/60 mt-1 leading-relaxed">ChatGPT, Jasper, Copy.ai &mdash; helpful for copy, zero healthcare regulatory knowledge.</p>
+                    <p className="text-xs text-white/60 mt-1 leading-relaxed">ChatGPT, Jasper, Copy.ai - helpful for copy, zero healthcare regulatory knowledge.</p>
                   </td>
                   <td className="px-5 py-4 align-top">
                     <p className="text-[15px] font-semibold text-white/85">$20&ndash;$100/mo</p>
@@ -380,9 +380,9 @@ export default function LandingPage() {
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
             {[
-              { n: "01", title: "Paste your content", desc: "Website copy, social posts, ad text, emails, call scripts — anything that represents your clinic publicly." },
+              { n: "01", title: "Paste your content", desc: "Website copy, social posts, ad text, emails, call scripts - anything that represents your clinic publicly." },
               { n: "02", title: "Review your score", desc: "Instant 0–100 compliance score with every flagged phrase highlighted by risk level and clearly explained." },
-              { n: "03", title: "Rewrite automatically", desc: "AI rewrites your entire content to meet FDA/FTC standards — keeping your tone, message, and voice intact." },
+              { n: "03", title: "Rewrite automatically", desc: "AI rewrites your entire content to meet FDA/FTC standards - keeping your tone, message, and voice intact." },
             ].map((s) => (
               <div key={s.n} className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:border-[#55E039]/20 hover:bg-white/[0.06] transition-all duration-300 group">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 text-[#55E039] text-sm font-bold font-mono group-hover:bg-[#55E039]/20 transition-colors">{s.n}</span>
@@ -492,7 +492,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <p className="mt-10 text-center text-sm text-white/40">300+ rules in the full library — updated daily from live enforcement data.</p>
+          <p className="mt-10 text-center text-sm text-white/40">300+ rules in the full library - updated daily from live enforcement data.</p>
         </div>
       </section>
 
@@ -505,7 +505,7 @@ export default function LandingPage() {
             <p className="mt-4 text-base text-white/60">Limited to 25 founding members. Rate locked for life.</p>
           </div>
           <div className="mx-auto max-w-4xl grid gap-6 md:grid-cols-2 items-start">
-            {/* BETA PLAN — PRIMARY */}
+            {/* BETA PLAN - PRIMARY */}
             <div className="rounded-2xl bg-white/[0.03] border-2 border-[#55E039]/40 p-10 relative overflow-hidden shadow-[0_0_60px_rgba(85,224,57,0.1)]">
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#55E039]/70 to-transparent" />
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-24 bg-[#55E039]/[0.08] blur-[50px]" />
@@ -517,10 +517,10 @@ export default function LandingPage() {
               </div>
               <div className="relative text-center mb-8 pt-4">
                 <p className="text-5xl sm:text-6xl font-extrabold tracking-tight">$297<span className="text-lg font-normal text-white/40 ml-1">/mo</span></p>
-                <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Locked-In Rate — Never increases</p>
+                <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Locked-In Rate - Never increases</p>
                 {!IS_LAUNCHED && (
                   <span className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1">
-                    Invite-only — Join the waitlist
+                    Invite-only - Join the waitlist
                   </span>
                 )}
               </div>
@@ -533,7 +533,7 @@ export default function LandingPage() {
                 ))}
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
-                  <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo — never increases</span>
+                  <span className="text-[15px] text-white font-semibold">Rate locked at $297/mo - never increases</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-[#55E039] shrink-0" />
@@ -558,7 +558,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* STANDARD PLAN — COMING SOON */}
+            {/* STANDARD PLAN - COMING SOON */}
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-10 relative overflow-hidden opacity-70">
               <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
@@ -583,7 +583,7 @@ export default function LandingPage() {
                 Coming Soon
               </div>
               <p className="mt-4 text-center text-xs text-white/20">
-                Lock in $297/mo now — rate goes to $497/mo after beta.
+                Lock in $297/mo now - rate goes to $497/mo after beta.
               </p>
             </div>
           </div>

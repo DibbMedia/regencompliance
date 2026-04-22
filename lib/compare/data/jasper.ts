@@ -10,15 +10,15 @@ export const meta: CompetitorMeta = {
     "Jasper writes marketing copy at scale. It has no healthcare-specific compliance rules and no FDA/FTC enforcement data. Here is the honest breakdown for clinic owners choosing between them.",
   heroBadge: "Head to head",
   heroTagline:
-    "Jasper is built for marketers at scale. RegenCompliance is built for one very specific problem — not triggering an FDA warning letter or an FTC investigation.",
+    "Jasper is built for marketers at scale. RegenCompliance is built for one very specific problem - not triggering an FDA warning letter or an FTC investigation.",
   bottomLine:
-    "Jasper is an excellent marketing content machine. It produces on-brand copy, campaigns, and assets at volume. It does not know a structure-function claim from a disease claim, it has no current FDA warning letter data, and its 'brand voice' features cannot override healthcare regulatory reality. If your marketing budget is already on Jasper, keep it — and add RegenCompliance as the compliance gate before anything goes live.",
+    "Jasper is an excellent marketing content machine. It produces on-brand copy, campaigns, and assets at volume. It does not know a structure-function claim from a disease claim, it has no current FDA warning letter data, and its 'brand voice' features cannot override healthcare regulatory reality. If your marketing budget is already on Jasper, keep it - and add RegenCompliance as the compliance gate before anything goes live.",
   shortVerdict:
     "Jasper scales content production. RegenCompliance scales compliance certainty. They solve different problems.",
   theirStrengths: [
     {
       title: "Built for marketing teams at volume",
-      body: "Jasper is designed for marketing teams shipping dozens of assets per week — blog posts, ad variations, email sequences, landing pages. Its templates, brand voice, and workflow features are genuinely good at that job.",
+      body: "Jasper is designed for marketing teams shipping dozens of assets per week - blog posts, ad variations, email sequences, landing pages. Its templates, brand voice, and workflow features are genuinely good at that job.",
     },
     {
       title: "Brand voice and style consistency",
@@ -48,15 +48,15 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Audit trail for regulator response",
-      body: "Every RegenCompliance scan is a permanent, timestamped, exportable record — evidence of pre-publish due diligence. Jasper's version history is designed for content collaboration, not for demonstrating regulatory compliance.",
+      body: "Every RegenCompliance scan is a permanent, timestamped, exportable record - evidence of pre-publish due diligence. Jasper's version history is designed for content collaboration, not for demonstrating regulatory compliance.",
     },
     {
       title: "One-purpose tool vs. many-purpose tool",
-      body: "Purpose-built compliance tools outperform multi-purpose marketing tools at compliance. Not a slight on Jasper — the same is true of every category where specialized tools coexist with generalists.",
+      body: "Purpose-built compliance tools outperform multi-purpose marketing tools at compliance. Not a slight on Jasper - the same is true of every category where specialized tools coexist with generalists.",
     },
   ],
   honestLimitations: [
-    "If your team needs content at scale — 50+ blog posts, hundreds of ad variations, large-scale email campaigns — Jasper's workflow is built for that and ours is not.",
+    "If your team needs content at scale - 50+ blog posts, hundreds of ad variations, large-scale email campaigns - Jasper's workflow is built for that and ours is not.",
     "Jasper's brand-voice feature is genuinely good for tone consistency across writers. We do not have an equivalent.",
     "Jasper integrates directly into WordPress, Google Docs, and other platforms. We are a paste-in scanner + file upload, not an IDE-style integration.",
     "Our rewrites are compliance-first. If you want maximum creative variation on non-regulated copy, Jasper's variation features are the better tool.",
@@ -72,7 +72,7 @@ export const meta: CompetitorMeta = {
       scenario: "Ad campaign with 50+ creative variations",
       winner: "both",
       recommendation:
-        "Generate variations in Jasper. Bulk-scan each variation in RegenCompliance. Do not skip this — ad libraries are public, and variations that pass internal review often contain new claim language the original headline did not.",
+        "Generate variations in Jasper. Bulk-scan each variation in RegenCompliance. Do not skip this - ad libraries are public, and variations that pass internal review often contain new claim language the original headline did not.",
     },
     {
       scenario: "Writing a single clinic landing page",
@@ -90,7 +90,7 @@ export const meta: CompetitorMeta = {
       scenario: "Monthly email newsletter to patient list",
       winner: "both",
       recommendation:
-        "Write in Jasper. Scan the full newsletter body in RegenCompliance before send. Pay special attention to the testimonial block — that is where the FTC Endorsement Guides apply.",
+        "Write in Jasper. Scan the full newsletter body in RegenCompliance before send. Pay special attention to the testimonial block - that is where the FTC Endorsement Guides apply.",
     },
   ],
   featureMatrix: [
@@ -129,7 +129,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Can Jasper's brand voice feature catch compliance issues?",
-      a: "No. Brand voice controls tone, sentence structure, and word preference — 'professional vs conversational,' 'technical vs accessible,' and so on. It does not and cannot catch FDA/FTC-violating claims, because brand voice is a style layer, not a regulatory layer.",
+      a: "No. Brand voice controls tone, sentence structure, and word preference - 'professional vs conversational,' 'technical vs accessible,' and so on. It does not and cannot catch FDA/FTC-violating claims, because brand voice is a style layer, not a regulatory layer.",
     },
     {
       q: "Can I upload my Jasper-generated content to RegenCompliance?",
@@ -137,7 +137,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "If I already pay for Jasper, am I doubling up by adding RegenCompliance?",
-      a: "No. They are non-overlapping tools. Jasper is a content production platform. RegenCompliance is a compliance gate. Keeping Jasper and adding RegenCompliance is common for clinics and healthcare marketing agencies — the combined cost is still a small fraction of a single warning-letter response.",
+      a: "No. They are non-overlapping tools. Jasper is a content production platform. RegenCompliance is a compliance gate. Keeping Jasper and adding RegenCompliance is common for clinics and healthcare marketing agencies - the combined cost is still a small fraction of a single warning-letter response.",
     },
     {
       q: "Does Jasper's SEO optimization introduce compliance issues?",
@@ -145,11 +145,11 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Is Jasper cheaper because they have a bigger market?",
-      a: "Jasper serves every industry, so their per-seat price is tuned to a horizontal market. Our rules, enforcement ingestion, and rewrite engine are purpose-built for one vertical. The comparison is like comparing general accounting software to industry-specific ERP pricing — different input costs on our side.",
+      a: "Jasper serves every industry, so their per-seat price is tuned to a horizontal market. Our rules, enforcement ingestion, and rewrite engine are purpose-built for one vertical. The comparison is like comparing general accounting software to industry-specific ERP pricing - different input costs on our side.",
     },
     {
       q: "Is there a workflow where I use Jasper alone?",
-      a: "Yes, if your marketing is entirely non-medical — surgical supply resale to clinics, for example, or wellness content that avoids medical outcomes entirely. The moment your copy describes a treatment, condition, or patient outcome, healthcare marketing compliance applies, and generic tooling stops being sufficient.",
+      a: "Yes, if your marketing is entirely non-medical - surgical supply resale to clinics, for example, or wellness content that avoids medical outcomes entirely. The moment your copy describes a treatment, condition, or patient outcome, healthcare marketing compliance applies, and generic tooling stops being sufficient.",
     },
   ],
   relatedBlogSlugs: [

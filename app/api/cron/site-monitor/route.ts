@@ -133,7 +133,7 @@ Use the risk classification system:
 - medium-risk phrases without required disclaimers = "medium" risk
 - Missing approved patterns where expected = "low" risk
 
-Be thorough. Flag ANY match — exact, partial, synonyms, paraphrases, semantic equivalents.
+Be thorough. Flag ANY match - exact, partial, synonyms, paraphrases, semantic equivalents.
 
 Return ONLY valid JSON:
 {

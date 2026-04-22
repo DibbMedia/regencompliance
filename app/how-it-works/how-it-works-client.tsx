@@ -36,7 +36,7 @@ const STEPS = [
     title: "AI scans against live enforcement data",
     body: "Content runs through our rule engine comparing against 300+ patterns sourced from real FDA warning letters and FTC enforcement actions.",
     detail:
-      "Runs on Anthropic's Claude (Haiku for the scan, Sonnet for rewrites). Rule set updates daily as new enforcement publishes. Specialty-aware — med spa content gets med-spa-specific pattern matching; weight loss gets GLP-1 specific handling.",
+      "Runs on Anthropic's Claude (Haiku for the scan, Sonnet for rewrites). Rule set updates daily as new enforcement publishes. Specialty-aware - med spa content gets med-spa-specific pattern matching; weight loss gets GLP-1 specific handling.",
   },
   {
     n: "03",
@@ -81,7 +81,7 @@ const TECH_POINTS = [
   {
     icon: Clock,
     title: "Daily rule updates",
-    body: "Our ingestion pipeline watches federal and state enforcement every day. New cases become new rules within 24 hours — your marketing is never scanned against a stale rule set.",
+    body: "Our ingestion pipeline watches federal and state enforcement every day. New cases become new rules within 24 hours - your marketing is never scanned against a stale rule set.",
   },
   {
     icon: CheckCircle2,

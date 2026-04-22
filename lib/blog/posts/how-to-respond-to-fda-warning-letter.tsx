@@ -19,9 +19,9 @@ export const meta: BlogPostMeta = {
   title:
     "How to Respond to an FDA Warning Letter: The Step-by-Step Playbook for the First 15 Business Days",
   description:
-    "A tactical playbook for the first 15 business days after receiving an FDA warning letter — who to call, what to document, how to structure the response, and what the FDA actually expects in the written reply.",
+    "A tactical playbook for the first 15 business days after receiving an FDA warning letter - who to call, what to document, how to structure the response, and what the FDA actually expects in the written reply.",
   excerpt:
-    "The first 15 business days after a warning letter determine how enforcement proceeds. Here's the exact sequence of actions — from calling an attorney in the first hour to submitting the formal response — that protects your practice and maximizes the chance of favorable resolution.",
+    "The first 15 business days after a warning letter determine how enforcement proceeds. Here's the exact sequence of actions - from calling an attorney in the first hour to submitting the formal response - that protects your practice and maximizes the chance of favorable resolution.",
   date: "2026-04-22",
   readingMinutes: 12,
   keywords: [
@@ -40,7 +40,7 @@ export const meta: BlogPostMeta = {
       "@type": "HowTo",
       name: "How to respond to an FDA warning letter in 15 business days",
       description:
-        "Step-by-step playbook for the first 15 business days after receiving an FDA warning letter — who to call, what to document, and how to structure the formal written response.",
+        "Step-by-step playbook for the first 15 business days after receiving an FDA warning letter - who to call, what to document, and how to structure the formal written response.",
       totalTime: "P15D",
       step: [
         {
@@ -75,7 +75,7 @@ export const meta: BlogPostMeta = {
           "@type": "HowToStep",
           position: 5,
           name: "Build the structural corrective plan",
-          text: "Beyond individual corrections, develop the systemic changes that will prevent recurrence — compliance training, pre-publish review processes, staff accountability, documentation practices. The FDA expects structural change, not just surface-level fixes.",
+          text: "Beyond individual corrections, develop the systemic changes that will prevent recurrence - compliance training, pre-publish review processes, staff accountability, documentation practices. The FDA expects structural change, not just surface-level fixes.",
           url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-5-structural",
         },
         {
@@ -94,8 +94,8 @@ export default function Body() {
   return (
     <>
       <Lead>
-        If you have just received an FDA warning letter &mdash; or if
-        you want to know exactly what to do if you ever do &mdash;
+        If you have just received an FDA warning letter - or if
+        you want to know exactly what to do if you ever do -
         this is the tactical playbook. The first 15 business days
         after a warning letter arrives determine how the enforcement
         proceeds. A well-structured response can lead to closure of
@@ -112,14 +112,14 @@ export default function Body() {
         immediately. Every warning letter has specific facts that
         affect response strategy, and experienced counsel is essential.
         This post is a framework for understanding what your attorney
-        will be doing &mdash; not a substitute for counsel.
+        will be doing - not a substitute for counsel.
       </Callout>
 
-      <H2 id="step-1-attorney">Step 1 — Call a healthcare regulatory attorney the same day</H2>
+      <H2 id="step-1-attorney">Step 1 - Call a healthcare regulatory attorney the same day</H2>
       <P>
         The first call is to an attorney. Not your general business
         lawyer unless they have specific FDA regulatory experience
-        &mdash; the body of law, enforcement practices, and response
+        - the body of law, enforcement practices, and response
         conventions are specialized enough that a non-specialist
         attorney will slow the response rather than accelerate it.
       </P>
@@ -158,7 +158,7 @@ export default function Body() {
           of records.
         </LI>
         <LI>
-          Advise on communications &mdash; with whom, through what
+          Advise on communications - with whom, through what
           channels, and what not to say to anyone.
         </LI>
       </UL>
@@ -168,13 +168,13 @@ export default function Body() {
         statements or post on social media. Do not delete the cited
         marketing content until your attorney has seen it. Do not
         alter business records. Do not discuss the letter with staff
-        beyond what is strictly operationally necessary &mdash; the
+        beyond what is strictly operationally necessary - the
         letter becomes discoverable in any subsequent litigation.
       </Callout>
 
-      <H2 id="step-2-preserve">Step 2 — Preserve all marketing records</H2>
+      <H2 id="step-2-preserve">Step 2 - Preserve all marketing records</H2>
       <P>
-        Record preservation is not about hiding &mdash; it&rsquo;s
+        Record preservation is not about hiding - it&rsquo;s
         about making sure you have complete information to build the
         response. Preservation also protects against later claims that
         you altered or deleted evidence.
@@ -184,39 +184,39 @@ export default function Body() {
       <UL>
         <LI>
           Screenshots and archives of every marketing surface cited
-          in the letter &mdash; as of the date the letter was
+          in the letter - as of the date the letter was
           issued.
         </LI>
         <LI>
           Full inventories of related marketing surfaces not cited
-          &mdash; your attorney will need to understand the full
+          - your attorney will need to understand the full
           pattern.
         </LI>
         <LI>
-          Business records relevant to the claims &mdash; invoices,
+          Business records relevant to the claims - invoices,
           staff training materials, marketing approval logs,
           substantiation files if any exist.
         </LI>
         <LI>
-          Communications related to the marketing &mdash; emails,
+          Communications related to the marketing - emails,
           Slack messages, meeting notes.
         </LI>
       </UL>
 
       <H3>How to preserve</H3>
       <P>
-        Work with your attorney to implement a litigation hold &mdash;
+        Work with your attorney to implement a litigation hold -
         a formal preservation notice to staff and vendors instructing
         them to preserve rather than delete relevant materials. This
         is standard practice in regulatory response and protects
         against spoliation claims.
       </P>
 
-      <H2 id="step-3-scope">Step 3 — Map the full scope of the letter</H2>
+      <H2 id="step-3-scope">Step 3 - Map the full scope of the letter</H2>
       <P>
         Before you start correcting, understand what needs to be
         corrected and why. A response that addresses the letter
-        narrowly &mdash; fixing only the specific phrases cited &mdash;
+        narrowly - fixing only the specific phrases cited -
         often fails to close the underlying pattern, which means the
         FDA returns later.
       </P>
@@ -233,7 +233,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Evidence the FDA relied on.</Strong> Usually the
-          letter references specific content with dates &mdash; this
+          letter references specific content with dates - this
           is the evidence base.
         </LI>
         <LI>
@@ -248,11 +248,11 @@ export default function Body() {
         </LI>
       </OL>
 
-      <H2 id="step-4-correct">Step 4 — Execute immediate corrective actions</H2>
+      <H2 id="step-4-correct">Step 4 - Execute immediate corrective actions</H2>
       <P>
         Under attorney direction, begin implementing corrective actions
         on the cited content. Do not start before the scope mapping is
-        complete &mdash; piecemeal correction creates inconsistent
+        complete - piecemeal correction creates inconsistent
         record trails that complicate the response.
       </P>
 
@@ -282,11 +282,11 @@ export default function Body() {
         and can affect patient perception.
       </P>
 
-      <H2 id="step-5-structural">Step 5 — Build the structural corrective plan</H2>
+      <H2 id="step-5-structural">Step 5 - Build the structural corrective plan</H2>
       <P>
         The FDA does not just want surface-level corrections. It
         expects structural changes that prevent recurrence. This is
-        where most responses fall short &mdash; they fix the specific
+        where most responses fall short - they fix the specific
         phrases cited but don&rsquo;t demonstrate that the practice
         will not make the same category of mistake next month.
       </P>
@@ -319,7 +319,7 @@ export default function Body() {
         </LI>
       </UL>
 
-      <H2 id="step-6-submit">Step 6 — Submit the written response</H2>
+      <H2 id="step-6-submit">Step 6 - Submit the written response</H2>
       <P>
         The written response is what the FDA evaluates. Its structure
         matters. Your attorney drafts it, but understanding what it
@@ -358,7 +358,7 @@ export default function Body() {
       <P>
         Professional, cooperative, factual. Not defensive, not
         argumentative. The FDA has broad discretion in how it proceeds
-        &mdash; a cooperative response tone affects how that discretion
+        - a cooperative response tone affects how that discretion
         is exercised even when the underlying facts are
         contested.
       </P>
@@ -374,7 +374,7 @@ export default function Body() {
       <BQ>
         Every FDA warning letter response is its own negotiation
         under formal process. The outcome is not predetermined by
-        the letter itself &mdash; it&rsquo;s shaped by the quality
+        the letter itself - it&rsquo;s shaped by the quality
         of the response. A strong response can close a serious letter
         without further action; a weak response can escalate a
         marginal letter into significant enforcement.
@@ -385,7 +385,7 @@ export default function Body() {
       <H3>Possible FDA responses</H3>
       <UL>
         <LI>
-          <Strong>Close-out letter.</Strong> The ideal outcome &mdash;
+          <Strong>Close-out letter.</Strong> The ideal outcome -
           the FDA confirms corrective actions are sufficient and the
           matter is closed (though subject to later revisitation if
           violations recur).
@@ -397,13 +397,13 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Escalation.</Strong> If the response is deemed
-          inadequate, the FDA can escalate &mdash; consent decree,
+          inadequate, the FDA can escalate - consent decree,
           seizure, injunction, or criminal referral in severe
           cases.
         </LI>
         <LI>
           <Strong>Silence.</Strong> The FDA may simply not respond in
-          writing. Silence is not necessarily closure &mdash; the
+          writing. Silence is not necessarily closure - the
           matter remains open in principle until explicitly closed.
         </LI>
       </UL>
@@ -429,7 +429,7 @@ export default function Body() {
 
       <H3>Do I have to retain all marketing during the response?</H3>
       <P>
-        No &mdash; cited marketing typically needs correction, not
+        No - cited marketing typically needs correction, not
         retention. But preserve the original versions for your
         records. Your attorney will advise on specific retention.
       </P>
@@ -452,7 +452,7 @@ export default function Body() {
 
       <H3>Can I still operate while responding?</H3>
       <P>
-        Yes &mdash; in most cases. A warning letter does not
+        Yes - in most cases. A warning letter does not
         automatically suspend operations. It demands corrective action
         on specific issues, and operations continue during the
         response (typically with the cited issues corrected).
@@ -480,10 +480,10 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Call a healthcare regulatory attorney the same day — do not respond directly or make public statements without counsel.",
-          "The 15-business-day response window is operative — build your timeline to meet it from the start.",
+          "Call a healthcare regulatory attorney the same day - do not respond directly or make public statements without counsel.",
+          "The 15-business-day response window is operative - build your timeline to meet it from the start.",
           "Structural corrective action (compliance programs, training, pre-publish review) matters as much as surface-level fixes.",
-          "Document every corrective action with date, author, and specific content changes — this documentation is part of the response package.",
+          "Document every corrective action with date, author, and specific content changes - this documentation is part of the response package.",
           "A strong response can close a serious letter; a weak response can escalate a marginal one.",
         ]}
       />

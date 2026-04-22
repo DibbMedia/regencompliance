@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "Orthodontic and Clear Aligner Marketing Compliance: The Direct-to-Consumer Category Drawing Specific Enforcement",
   description:
-    "Clear aligner marketing — SmileDirectClub-style direct-to-consumer and practice-based Invisalign and competitor marketing — faces specific compliance concerns around supervision, outcome timelines, and guarantee language.",
+    "Clear aligner marketing - SmileDirectClub-style direct-to-consumer and practice-based Invisalign and competitor marketing - faces specific compliance concerns around supervision, outcome timelines, and guarantee language.",
   excerpt:
     "Clear aligner marketing has been a state dental board and FTC focus for years. Here's the compliance framework for practices offering Invisalign, ClearCorrect, SureSmile, and other aligner services.",
   date: "2026-04-22",
@@ -40,9 +40,9 @@ export default function Body() {
   return (
     <>
       <Lead>
-        Clear aligner marketing &mdash; from direct-to-consumer
+        Clear aligner marketing - from direct-to-consumer
         models to practice-based Invisalign, ClearCorrect, SureSmile,
-        and other branded aligner services &mdash; has been a
+        and other branded aligner services - has been a
         sustained state dental board and FTC focus. The underlying
         issues: supervision representation, specific outcome-timeline
         marketing, guarantee language, and comparative claims against
@@ -106,14 +106,14 @@ export default function Body() {
 
       <H3>Pattern 4: Pricing and financing marketing</H3>
       <BeforeAfter
-        bad="Clear aligners starting at $99/month — get started today!"
+        bad="Clear aligners starting at $99/month - get started today!"
         good="Financing is available through [specific partner]; total treatment cost typically ranges from $[range] depending on case complexity. Full cost is determined at consultation."
         reason="Promotional pricing that doesn't accurately reflect total treatment cost creates consumer protection concerns. Financing payment doesn't communicate total cost."
       />
 
       <H3>Pattern 5: &ldquo;Invisible&rdquo; absolutes</H3>
       <BeforeAfter
-        bad="Completely invisible aligners — no one will know you're straightening your teeth."
+        bad="Completely invisible aligners - no one will know you're straightening your teeth."
         good="Clear aligners are significantly less visible than traditional braces and most patients find them comfortable for everyday and professional situations."
         reason="Clear aligners are visible on close inspection. 'Completely invisible' overclaims visibility and can be cited as deceptive."
       />
@@ -231,10 +231,10 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "Clear aligner marketing combines standard orthodontic rules with specific DTC-model and supervision-representation considerations.",
-          "'Only orthodontists are orthodontists' — state dental boards actively enforce specialty-claim rules.",
+          "'Only orthodontists are orthodontists' - state dental boards actively enforce specialty-claim rules.",
           "Specific timeline promises, outcome guarantees, and without-braces equivalence claims all draw state board and FTC attention.",
           "Brand-name aligner marketing (Invisalign, ClearCorrect, etc.) requires accurate protocol performance and trademark consideration.",
-          "Promotional pricing must accurately reflect total treatment cost — financing amounts aren't the same as total cost disclosure.",
+          "Promotional pricing must accurately reflect total treatment cost - financing amounts aren't the same as total cost disclosure.",
         ]}
       />
     </>

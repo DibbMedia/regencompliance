@@ -28,7 +28,7 @@ const SUGGESTIONS = [
 ]
 
 export const metadata = {
-  title: "Page not found — RegenCompliance",
+  title: "Page not found - RegenCompliance",
   description:
     "The page you're looking for doesn't exist. Try the demo, read the blog, or browse pricing.",
   robots: { index: false, follow: true },

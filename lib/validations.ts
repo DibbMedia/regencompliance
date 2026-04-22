@@ -107,7 +107,7 @@ export const libraryQuerySchema = z.object({
     'doj_fraud',
     'manual',
   ]).optional(),
-  // PostgREST OR uses comma/paren as delimiters — exclude them from accepted search.
+  // PostgREST OR uses comma/paren as delimiters - exclude them from accepted search.
   search: z.string().max(100).regex(/^[a-zA-Z0-9 .'\-_/]*$/, 'Search contains invalid characters').optional(),
 })
 

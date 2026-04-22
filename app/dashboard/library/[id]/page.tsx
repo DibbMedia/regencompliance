@@ -141,7 +141,7 @@ export default function LibraryDetailPage({
             ) : (
               <div className="rounded-lg bg-white/[0.02] border border-dashed border-white/[0.08] p-4">
                 <p className="text-xs text-white/45 italic">
-                  No AI summary available for this action — review the source document and the cited
+                  No AI summary available for this action - review the source document and the cited
                   violations below.
                 </p>
               </div>

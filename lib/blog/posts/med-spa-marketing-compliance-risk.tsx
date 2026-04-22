@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Med spa marketing sits at the intersection of three regulators: FDA, FTC, and state medical boards. Here are 12 phrases that routinely trigger enforcement, plus the compliant alternatives every aesthetic clinic should adopt.",
   excerpt:
-    "Med spas face a compliance environment most aesthetic marketers don't fully understand &mdash; three regulators overlap, cosmetic conditions blur into medical ones, and platform ad policies add a fourth layer. Here are 12 phrases to remove from your copy this week, with BeforeAfter rewrites.",
+    "Med spas face a compliance environment most aesthetic marketers don't fully understand - three regulators overlap, cosmetic conditions blur into medical ones, and platform ad policies add a fourth layer. Here are 12 phrases to remove from your copy this week, with BeforeAfter rewrites.",
   date: "2026-04-21",
   readingMinutes: 10,
   keywords: [
@@ -53,7 +53,7 @@ export default function Body() {
 
       <P>
         This article is the 12-phrase short list. Each phrase maps to a real
-        enforcement theory &mdash; cosmetic/medical condition blurring, implied
+        enforcement theory - cosmetic/medical condition blurring, implied
         FDA approval, guarantee language, unsubstantiated superiority claims,
         and testimonial/before-after failures. All 12 are removable. All 12
         have compliant alternatives that still sell.
@@ -64,7 +64,7 @@ export default function Body() {
         medical (often prescription), but the outcome claimed is cosmetic. That
         straddle is catnip for regulators. When a cosmetic outcome claim maps
         onto a named medical condition (rosacea, acne, alopecia, hyperhidrosis,
-        melasma), the claim is a disease claim &mdash; even if the patient
+        melasma), the claim is a disease claim - even if the patient
         thinks of it as an appearance issue.
       </Callout>
 
@@ -72,7 +72,7 @@ export default function Body() {
 
       <H3>1. &ldquo;FDA-approved Botox for wrinkles&rdquo;</H3>
       <P>
-        Botox <Em>is</Em> FDA-approved &mdash; but the approved indication
+        Botox <Em>is</Em> FDA-approved - but the approved indication
         changes the story. Botox is approved for specific wrinkle indications
         (glabellar lines, crow&rsquo;s feet, forehead lines) and some off-label
         uses. Saying &ldquo;FDA-approved&rdquo; without specifying the
@@ -81,7 +81,7 @@ export default function Body() {
       <BeforeAfter
         bad="FDA-approved Botox treatment for all facial wrinkles."
         good="Botox is FDA-approved for moderate-to-severe glabellar lines, crow's feet, and forehead lines. Other uses are discussed individually during your consultation."
-        reason="The non-compliant version implies FDA approval for indications it doesn't cover. The compliant version specifies approved indications and flags off-label uses for the consultation &mdash; which is both legal and more trust-building."
+        reason="The non-compliant version implies FDA approval for indications it doesn't cover. The compliant version specifies approved indications and flags off-label uses for the consultation - which is both legal and more trust-building."
       />
 
       <H3>2. &ldquo;Dermal fillers that cure rosacea&rdquo;</H3>
@@ -127,7 +127,7 @@ export default function Body() {
       <P>
         Healthcare outcome guarantees are almost never substantiable (biological
         variation, adherence, underlying conditions). A commercial satisfaction
-        guarantee is different &mdash; but it has to be phrased as a service-
+        guarantee is different - but it has to be phrased as a service-
         level commitment, not a clinical-outcome promise.
       </P>
       <BeforeAfter
@@ -160,7 +160,7 @@ export default function Body() {
       </P>
       <BeforeAfter
         bad="Our patented, trademarked collagen-boost protocol."
-        good="Our signature collagen-boost protocol &mdash; a combination of treatments we've refined over years of practice."
+        good="Our signature collagen-boost protocol - a combination of treatments we've refined over years of practice."
         reason="Only use IP-status language when the IP actually exists. Otherwise, describe the protocol as proprietary to your practice without asserting legal protection."
       />
 
@@ -194,7 +194,7 @@ export default function Body() {
       <P>
         Universal-applicability claims are another FTC substantiation problem.
         Fitzpatrick-type-specific outcomes are well documented in laser and
-        pigment treatments &mdash; claiming universal suitability is factually
+        pigment treatments - claiming universal suitability is factually
         wrong.
       </P>
       <BeforeAfter

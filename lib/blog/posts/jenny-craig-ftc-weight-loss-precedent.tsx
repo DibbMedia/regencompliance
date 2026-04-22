@@ -20,9 +20,9 @@ export const meta: BlogPostMeta = {
   title:
     "The Jenny Craig FTC Precedent: Why Every Weight Loss Clinic's Testimonials Are Under Stricter Rules Than They Think",
   description:
-    "A complete breakdown of the Jenny Craig FTC consent order — and why that 1997 precedent still defines the typical-experience disclosure rules that determine whether your weight loss clinic's testimonials comply with FTC law in 2026.",
+    "A complete breakdown of the Jenny Craig FTC consent order - and why that 1997 precedent still defines the typical-experience disclosure rules that determine whether your weight loss clinic's testimonials comply with FTC law in 2026.",
   excerpt:
-    "A 1997 FTC consent order set the template for how weight-loss testimonials must be disclosed. It is still the standard in 2026 — and most GLP-1 clinics, med spas, and telehealth weight-loss practices are marketing in direct violation of it without realizing it.",
+    "A 1997 FTC consent order set the template for how weight-loss testimonials must be disclosed. It is still the standard in 2026 - and most GLP-1 clinics, med spas, and telehealth weight-loss practices are marketing in direct violation of it without realizing it.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -34,22 +34,22 @@ export const meta: BlogPostMeta = {
   ],
   tags: ["Case study", "FTC", "Weight loss"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
-  heroLabel: "Case study — precedent",
+  heroLabel: "Case study - precedent",
 }
 
 export default function Body() {
   return (
     <>
       <Lead>
-        If you run a weight loss clinic &mdash; GLP-1, traditional bariatric,
-        medical weight management, or telehealth semaglutide &mdash; the
+        If you run a weight loss clinic - GLP-1, traditional bariatric,
+        medical weight management, or telehealth semaglutide - the
         single most important FTC precedent shaping how you can use
         testimonials is nearly 30 years old. The 1997 Jenny Craig consent
         order set the template for how weight-loss before/after and outcome
         testimonials must be disclosed under the FTC Endorsement Guides.
         The Guides have been updated several times since, most recently in
         2023, but the Jenny Craig framework for weight-loss specifically
-        is still the operative standard &mdash; and the overwhelming
+        is still the operative standard - and the overwhelming
         majority of weight loss clinic marketing today is in violation of
         it without the clinic knowing.
       </Lead>
@@ -66,7 +66,7 @@ export default function Body() {
       <Callout variant="info" title="Why this precedent still matters">
         The FTC does not re-prove basic consumer-protection principles
         every enforcement action. Precedent cases like Jenny Craig get
-        cited in new actions for decades &mdash; because they establish
+        cited in new actions for decades - because they establish
         the interpretive framework the agency continues to apply. A 2025
         warning letter to a telehealth GLP-1 clinic can cite Jenny Craig
         directly.
@@ -91,7 +91,7 @@ export default function Body() {
         <LI>
           Testimonial-based weight loss claims must be accompanied by a
           clear and prominent disclosure of the generally expected results
-          on the program &mdash; not just disclaimers about individual
+          on the program - not just disclaimers about individual
           variation.
         </LI>
         <LI>
@@ -117,9 +117,9 @@ export default function Body() {
       </P>
 
       <P>
-        The FTC&rsquo;s position &mdash; established through Jenny Craig
+        The FTC&rsquo;s position - established through Jenny Craig
         and a series of parallel cases against Nutrisystem, Weight
-        Watchers, and similar programs &mdash; is that the standard
+        Watchers, and similar programs - is that the standard
         &ldquo;results may vary&rdquo; disclaimer familiar from other
         categories is not sufficient for weight loss. Something stronger
         is required: a disclosure of what typical customers actually
@@ -132,7 +132,7 @@ export default function Body() {
         The 2010s POM Wonderful FTC action extended the substantiation
         layer on top of the Jenny Craig typical-experience framework for
         health claims broadly. POM Wonderful established that health
-        claims &mdash; including weight-loss efficacy claims &mdash;
+        claims - including weight-loss efficacy claims -
         require &ldquo;competent and reliable scientific evidence&rdquo;
         meeting a specific evidentiary bar. Together, Jenny Craig and
         POM Wonderful form the regulatory spine that shapes weight-loss
@@ -157,9 +157,9 @@ export default function Body() {
 
       <H3>Mistake 2: Peak-outcome framing without context</H3>
       <BeforeAfter
-        bad="Real patient results on our weight loss program — lost 87 pounds and counting!"
+        bad="Real patient results on our weight loss program - lost 87 pounds and counting!"
         good="One of our patients, highlighted with her permission: 87 pounds of sustained loss with continued program participation. Outcomes in our patient population typically cluster between 40 and 65 pounds sustained over 18-24 months among patients who continue full program adherence."
-        reason="Highlighting peak results without the typical range creates the implication that peak is typical — which is precisely the deception Jenny Craig was about."
+        reason="Highlighting peak results without the typical range creates the implication that peak is typical - which is precisely the deception Jenny Craig was about."
       />
 
       <H3>Mistake 3: Celebrity or influencer endorsements without material-connection disclosure</H3>
@@ -169,7 +169,7 @@ export default function Body() {
         influencer endorsing a weight-loss clinic needs to disclose
         payment, free treatment, or any other material connection in
         a way the FTC considers &ldquo;clear and conspicuous&rdquo;
-        &mdash; which typically means in the post itself, not in a
+        - which typically means in the post itself, not in a
         linked bio, not in fine print, not behind a &ldquo;read
         more.&rdquo;
       </P>
@@ -179,15 +179,15 @@ export default function Body() {
         &ldquo;Clinically proven&rdquo; and &ldquo;proven to work&rdquo;
         trigger the POM Wonderful substantiation standard. For most
         individual weight-loss practices, the evidence file required
-        &mdash; multiple well-controlled human studies of the specific
-        protocol &mdash; does not exist. Using the phrase without the
+        - multiple well-controlled human studies of the specific
+        protocol - does not exist. Using the phrase without the
         backing evidence is a direct FTC violation.
       </P>
 
       <H3>Mistake 5: Safety absolutes</H3>
       <P>
         &ldquo;No side effects,&rdquo; &ldquo;completely safe,&rdquo;
-        &ldquo;risk-free&rdquo; &mdash; applied to any weight loss
+        &ldquo;risk-free&rdquo; - applied to any weight loss
         medication or program, these are unsubstantiable and trigger
         the safety-claim prong of FTC enforcement. GLP-1 medications
         specifically have well-documented side effects that any
@@ -236,7 +236,7 @@ export default function Body() {
       <H3>Format 4: Educational-framed content separated from the offer</H3>
       <P>
         Content explaining how GLP-1 medications work, what compounded
-        vs brand-name means, what candidacy looks like &mdash; this is
+        vs brand-name means, what candidacy looks like - this is
         genuinely useful patient-facing information that carries less
         compliance risk than outcome-focused marketing. Structure your
         top-of-funnel around education, your mid-funnel around protocol
@@ -246,7 +246,7 @@ export default function Body() {
 
       <Callout variant="success" title="The compliance insight that matters">
         Compliant weight-loss marketing is not about removing messages
-        &mdash; it is about restructuring them. Every message the
+        - it is about restructuring them. Every message the
         marketing needs to convey can be conveyed compliantly. The
         practices that win are the ones that invest in figuring out
         how, not the ones that settle for the non-compliant shortcut
@@ -262,7 +262,7 @@ export default function Body() {
       <OL>
         <LI>
           <Strong>Does every before/after have typical-experience
-          disclosure?</Strong> Not &ldquo;results may vary&rdquo; &mdash;
+          disclosure?</Strong> Not &ldquo;results may vary&rdquo; -
           actual typical-outcome language.
         </LI>
         <LI>
@@ -309,7 +309,7 @@ export default function Body() {
         &ldquo;Up to&rdquo; claims are specifically addressed in FTC
         guidance. They can be used if a substantial proportion of
         consumers actually achieve close to the &ldquo;up to&rdquo;
-        number &mdash; not if the claimed number is a peak-case
+        number - not if the claimed number is a peak-case
         outlier. In practice, weight-loss &ldquo;up to&rdquo;
         numbers are almost always misleading under this test, and the
         FTC has pursued them in multiple cases.
@@ -326,7 +326,7 @@ export default function Body() {
 
       <H3>What about HIPAA considerations for testimonials?</H3>
       <P>
-        HIPAA compliance is a separate requirement &mdash; patient
+        HIPAA compliance is a separate requirement - patient
         authorization to use their information in marketing must be
         obtained through a HIPAA-compliant authorization form. HIPAA
         compliance alone does not cure FTC-side issues, and vice versa.
@@ -335,7 +335,7 @@ export default function Body() {
 
       <H3>Does this apply to compounded semaglutide marketing?</H3>
       <P>
-        Yes &mdash; and additional rules apply on top. Compounded
+        Yes - and additional rules apply on top. Compounded
         semaglutide marketing is subject to Jenny Craig / FTC
         weight-loss rules plus specific FDA rules about compounded-drug
         marketing. Marketing compounded GLP-1 as equivalent to
@@ -356,10 +356,10 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "The Jenny Craig 1997 consent order established stricter typical-experience rules for weight-loss testimonials than other categories.",
-          "'Results may vary' is not sufficient disclosure for weight-loss marketing — you must disclose actual typical outcomes.",
+          "'Results may vary' is not sufficient disclosure for weight-loss marketing - you must disclose actual typical outcomes.",
           "Peak-outcome testimonials without typical-context framing are the single highest-risk content category for weight-loss clinics.",
-          "'Clinically proven' and safety absolutes trigger FTC substantiation and safety-claim requirements — remove them unless you have the evidence file.",
-          "Compliant weight-loss marketing is about restructuring messages, not removing them — every conversion goal can be met within FTC rules.",
+          "'Clinically proven' and safety absolutes trigger FTC substantiation and safety-claim requirements - remove them unless you have the evidence file.",
+          "Compliant weight-loss marketing is about restructuring messages, not removing them - every conversion goal can be met within FTC rules.",
         ]}
       />
     </>

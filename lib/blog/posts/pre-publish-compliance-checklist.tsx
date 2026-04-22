@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
   description:
     "A practical 15-item checklist for reviewing any piece of healthcare marketing content before it goes live. Covers the FDA, FTC, HIPAA, and platform-policy categories in 90 seconds per item.",
   excerpt:
-    "Most compliance failures would be caught by a 90-second review. Here's the exact checklist — 15 items across FDA, FTC, HIPAA, and platform policy — that every piece of content should pass before publishing.",
+    "Most compliance failures would be caught by a 90-second review. Here's the exact checklist - 15 items across FDA, FTC, HIPAA, and platform policy - that every piece of content should pass before publishing.",
   date: "2026-04-22",
   readingMinutes: 7,
   keywords: [
@@ -40,7 +40,7 @@ export const meta: BlogPostMeta = {
       "@type": "HowTo",
       name: "Pre-publish healthcare marketing compliance checklist",
       description:
-        "A 15-item checklist for reviewing any piece of healthcare marketing content before it goes live — FDA, FTC, HIPAA, and platform policy categories.",
+        "A 15-item checklist for reviewing any piece of healthcare marketing content before it goes live - FDA, FTC, HIPAA, and platform policy categories.",
       totalTime: "PT10M",
       step: [
         {
@@ -71,7 +71,7 @@ export const meta: BlogPostMeta = {
           "@type": "HowToStep",
           position: 5,
           name: "Platform policy check",
-          text: "Verify compliance with specific platform rules for the channel the content is going to — Meta, Google, TikTok each have distinct requirements.",
+          text: "Verify compliance with specific platform rules for the channel the content is going to - Meta, Google, TikTok each have distinct requirements.",
         },
       ],
     },
@@ -84,7 +84,7 @@ export default function Body() {
       <Lead>
         Most healthcare marketing compliance failures are preventable
         with a 90-second review per item. The problem is not that
-        review takes too long &mdash; it&rsquo;s that the review
+        review takes too long - it&rsquo;s that the review
         isn&rsquo;t structured, so staff don&rsquo;t know what to
         check. Here&rsquo;s a practical 15-item checklist that covers
         the main FDA, FTC, HIPAA, and platform-policy categories.
@@ -107,7 +107,7 @@ export default function Body() {
         connection with your treatment. &ldquo;Arthritis,&rdquo;
         &ldquo;depression,&rdquo; &ldquo;diabetes,&rdquo;
         &ldquo;cancer,&rdquo; &ldquo;ED,&rdquo; &ldquo;migraine&rdquo;
-        &mdash; any named disease paired with claimed treatment is
+        - any named disease paired with claimed treatment is
         FDA drug-claim territory. Remove the disease name or remove
         the claim.
       </P>
@@ -131,7 +131,7 @@ export default function Body() {
       <H3>4. Any safety absolutes?</H3>
       <P>
         &ldquo;No side effects,&rdquo; &ldquo;completely safe,&rdquo;
-        &ldquo;risk-free,&rdquo; &ldquo;painless&rdquo; &mdash;
+        &ldquo;risk-free,&rdquo; &ldquo;painless&rdquo; -
         absolute-safety claims. Replace with specific
         &ldquo;most patients experience&rdquo; language.
       </P>
@@ -166,14 +166,14 @@ export default function Body() {
       <P>
         Any testimonial describing outcome must be paired with
         disclosure of typical experience. &ldquo;Results may vary&rdquo;
-        is not sufficient &mdash; disclose what typical customers
+        is not sufficient - disclose what typical customers
         actually experience.
       </P>
 
       <H3>9. Material connections disclosed?</H3>
       <P>
         Paid endorsers, free-treatment endorsers, employees, family
-        members &mdash; the material connection must be clearly
+        members - the material connection must be clearly
         disclosed in the post itself. Not in bio, not in fine print,
         not behind a click.
       </P>
@@ -190,7 +190,7 @@ export default function Body() {
 
       <H3>11. Patient authorization for info used?</H3>
       <P>
-        Photos, stories, quotes, initials &mdash; any patient
+        Photos, stories, quotes, initials - any patient
         information needs documented HIPAA-compliant authorization
         for marketing use. Verify authorization exists in your
         records.
@@ -271,8 +271,8 @@ export default function Body() {
         items={[
           "A 15-item pre-publish checklist catches most compliance failures in 90 seconds per item.",
           "Items cluster across FDA claim (4), FTC substantiation (3), endorsement (3), HIPAA (2), platform (2), and final gut check (1).",
-          "Print the checklist and integrate it into the content workflow — the discipline of running it matters more than the specific format.",
-          "Gut check at item 15 — would you show this to a regulator? — is the most-useful item because it invites honest reviewer judgment.",
+          "Print the checklist and integrate it into the content workflow - the discipline of running it matters more than the specific format.",
+          "Gut check at item 15 - would you show this to a regulator? - is the most-useful item because it invites honest reviewer judgment.",
           "Different content types apply different subsets; ads get the full checklist plus landing page review.",
         ]}
       />

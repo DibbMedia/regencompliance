@@ -303,7 +303,7 @@ function UserRow({
           {isExpanded ? <ChevronUp className="h-4 w-4 text-white/40" /> : <ChevronDown className="h-4 w-4 text-white/40" />}
         </td>
         <td className="px-4 py-3 text-white/80 cursor-pointer" onClick={onToggle}>{user.email}</td>
-        <td className="px-4 py-3 text-white/50 cursor-pointer" onClick={onToggle}>{user.clinic_name || "—"}</td>
+        <td className="px-4 py-3 text-white/50 cursor-pointer" onClick={onToggle}>{user.clinic_name || "-"}</td>
         <td className="px-4 py-3 cursor-pointer" onClick={onToggle}><StatusBadge status={user.subscription_status} /></td>
         <td className="px-4 py-3 cursor-pointer" onClick={onToggle}>
           <span className="inline-flex items-center gap-1">
@@ -312,7 +312,7 @@ function UserRow({
           </span>
         </td>
         <td className="px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
-          {user.last_scan_at ? formatRelative(user.last_scan_at) : "—"}
+          {user.last_scan_at ? formatRelative(user.last_scan_at) : "-"}
         </td>
         <td className="px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
           {new Date(user.created_at).toLocaleDateString()}

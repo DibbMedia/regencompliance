@@ -36,7 +36,7 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "What is RegenCompliance?",
-        a: "RegenCompliance is a specialized FDA/FTC compliance scanning platform built for healthcare practices of all types. It analyzes your marketing content — website copy, social media posts, ads, emails, scripts, and more — against a database of over 300 compliance rules derived from real FDA warning letters and FTC enforcement actions. The platform flags non-compliant language and generates compliant alternative wording with a single click.",
+        a: "RegenCompliance is a specialized FDA/FTC compliance scanning platform built for healthcare practices of all types. It analyzes your marketing content - website copy, social media posts, ads, emails, scripts, and more - against a database of over 300 compliance rules derived from real FDA warning letters and FTC enforcement actions. The platform flags non-compliant language and generates compliant alternative wording with a single click.",
       },
       {
         q: "Who is RegenCompliance designed for?",
@@ -44,11 +44,11 @@ const faqCategories: FaqCategory[] = [
       },
       {
         q: "Is RegenCompliance a replacement for legal counsel?",
-        a: "No. RegenCompliance is an educational compliance tool, not a law firm. It helps you identify and fix the most common compliance violations in your marketing content based on real enforcement data, but it does not constitute legal advice. We strongly recommend that all final marketing content be reviewed by qualified healthcare marketing counsel. Think of RegenCompliance as your first line of defense — it catches the violations before they reach your attorney, saving you significant legal review costs while reducing your regulatory exposure.",
+        a: "No. RegenCompliance is an educational compliance tool, not a law firm. It helps you identify and fix the most common compliance violations in your marketing content based on real enforcement data, but it does not constitute legal advice. We strongly recommend that all final marketing content be reviewed by qualified healthcare marketing counsel. Think of RegenCompliance as your first line of defense - it catches the violations before they reach your attorney, saving you significant legal review costs while reducing your regulatory exposure.",
       },
       {
         q: "How is this different from a generic AI writing tool?",
-        a: "Generic AI tools like ChatGPT have no awareness of FDA or FTC regulations specific to healthcare marketing. They will happily write marketing copy that includes drug claims, unapproved efficacy statements, and misleading testimonials — all of which violate federal law. RegenCompliance is purpose-built with a ruleset derived from actual enforcement actions against healthcare practices. It knows that 'FDA-approved stem cells' is a false claim, that 'cures arthritis' is an unapproved drug claim, that 'guaranteed weight loss' triggers FTC scrutiny, and that 'painless dental implants' is a misleading safety claim. No generic tool has this specialized knowledge.",
+        a: "Generic AI tools like ChatGPT have no awareness of FDA or FTC regulations specific to healthcare marketing. They will happily write marketing copy that includes drug claims, unapproved efficacy statements, and misleading testimonials - all of which violate federal law. RegenCompliance is purpose-built with a ruleset derived from actual enforcement actions against healthcare practices. It knows that 'FDA-approved stem cells' is a false claim, that 'cures arthritis' is an unapproved drug claim, that 'guaranteed weight loss' triggers FTC scrutiny, and that 'painless dental implants' is a misleading safety claim. No generic tool has this specialized knowledge.",
       },
     ],
   },
@@ -58,7 +58,7 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "What types of compliance violations does the scanner detect?",
-        a: "The scanner detects a wide range of FDA and FTC violations common in healthcare marketing. This includes unapproved drug claims (e.g., 'heals,' 'cures,' 'treats'), false FDA status claims (e.g., 'FDA-approved stem cells'), misleading efficacy claims (e.g., 'proven to reverse aging,' 'guaranteed weight loss'), improper testimonial use (patient stories that imply guaranteed outcomes), comparative claims without substantiation (e.g., 'better than surgery'), and structure/function claims that cross into drug claim territory. These rules apply across all practice types — regenerative medicine, med spas, dental, dermatology, weight loss, plastic surgery, and more. Each flagged violation includes the specific regulatory basis — whether from an FDA warning letter, FTC enforcement action, or CBER guidance document.",
+        a: "The scanner detects a wide range of FDA and FTC violations common in healthcare marketing. This includes unapproved drug claims (e.g., 'heals,' 'cures,' 'treats'), false FDA status claims (e.g., 'FDA-approved stem cells'), misleading efficacy claims (e.g., 'proven to reverse aging,' 'guaranteed weight loss'), improper testimonial use (patient stories that imply guaranteed outcomes), comparative claims without substantiation (e.g., 'better than surgery'), and structure/function claims that cross into drug claim territory. These rules apply across all practice types - regenerative medicine, med spas, dental, dermatology, weight loss, plastic surgery, and more. Each flagged violation includes the specific regulatory basis - whether from an FDA warning letter, FTC enforcement action, or CBER guidance document.",
       },
       {
         q: "How current is the compliance database?",
@@ -102,7 +102,7 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "How much does RegenCompliance cost?",
-        a: "RegenCompliance is $497 per month. This is a single plan that includes every feature — unlimited scans, AI-powered rewrites, the full compliance library with 300+ rules, daily rule updates, complete audit trail with PDF/CSV export, real-time enforcement alerts, and 3 team seats. There are no tiers, no hidden fees, no add-ons, and no per-scan charges. The price is the same for every clinic regardless of size or scan volume.",
+        a: "RegenCompliance is $497 per month. This is a single plan that includes every feature - unlimited scans, AI-powered rewrites, the full compliance library with 300+ rules, daily rule updates, complete audit trail with PDF/CSV export, real-time enforcement alerts, and 3 team seats. There are no tiers, no hidden fees, no add-ons, and no per-scan charges. The price is the same for every clinic regardless of size or scan volume.",
       },
       {
         q: "Is there a contract or long-term commitment?",
@@ -114,7 +114,7 @@ const faqCategories: FaqCategory[] = [
       },
       {
         q: "What payment methods do you accept?",
-        a: "We accept all major credit cards including Visa, Mastercard, American Express, and Discover. Payments are processed through Stripe with bank-level encryption. We do not store your payment details on our servers — Stripe handles all payment processing securely. You will receive an email receipt for each monthly payment, and you can view your full billing history in your account settings.",
+        a: "We accept all major credit cards including Visa, Mastercard, American Express, and Discover. Payments are processed through Stripe with bank-level encryption. We do not store your payment details on our servers - Stripe handles all payment processing securely. You will receive an email receipt for each monthly payment, and you can view your full billing history in your account settings.",
       },
     ],
   },
@@ -124,11 +124,11 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "Does RegenCompliance access any patient data?",
-        a: "Never. RegenCompliance analyzes marketing text only. We do not access patient records, medical charts, treatment histories, or any form of protected health information (PHI). The system has zero connection to your EMR, practice management software, or patient databases. You paste marketing content into the scanner — that is the only data we process. There are zero HIPAA implications because we never handle PHI in any form.",
+        a: "Never. RegenCompliance analyzes marketing text only. We do not access patient records, medical charts, treatment histories, or any form of protected health information (PHI). The system has zero connection to your EMR, practice management software, or patient databases. You paste marketing content into the scanner - that is the only data we process. There are zero HIPAA implications because we never handle PHI in any form.",
       },
       {
         q: "Is my scanned content stored? Who can see it?",
-        a: "Yes, scanned content is stored as part of your audit trail. This is a feature, not a risk — it gives you documented proof that you reviewed your content for compliance. Your scanned content is encrypted at rest and in transit. Only authenticated users on your account (your team seats) can access your scan history. We do not share, sell, or use your content for any purpose other than providing the compliance scanning service. Our employees cannot access your scan content without explicit authorization during a support request.",
+        a: "Yes, scanned content is stored as part of your audit trail. This is a feature, not a risk - it gives you documented proof that you reviewed your content for compliance. Your scanned content is encrypted at rest and in transit. Only authenticated users on your account (your team seats) can access your scan history. We do not share, sell, or use your content for any purpose other than providing the compliance scanning service. Our employees cannot access your scan content without explicit authorization during a support request.",
       },
       {
         q: "Where is my data hosted?",

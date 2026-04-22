@@ -197,7 +197,7 @@ export async function POST(request: Request) {
             }
           } else {
             console.log(
-              `[Stripe Webhook] Beta subscription purchase recorded for email=[redacted] — will be claimed on signup/login`
+              `[Stripe Webhook] Beta subscription purchase recorded for email=[redacted] - will be claimed on signup/login`
             )
           }
         } else {
@@ -329,7 +329,7 @@ export async function POST(request: Request) {
         }
 
         if (updatedProfile.is_beta_subscriber && status !== "active") {
-          console.log(`[Stripe Webhook] Beta subscriber — skipping demotion to ${status}`)
+          console.log(`[Stripe Webhook] Beta subscriber - skipping demotion to ${status}`)
           break
         }
 
@@ -363,7 +363,7 @@ export async function POST(request: Request) {
         }
 
         if (deletedProfile.is_beta_subscriber) {
-          console.log(`[Stripe Webhook] Beta subscriber — keeping seat after Stripe cancellation`)
+          console.log(`[Stripe Webhook] Beta subscriber - keeping seat after Stripe cancellation`)
           break
         }
 

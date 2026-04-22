@@ -229,7 +229,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Direct access rules vary by state — marketing should accurately represent what patients can access without a physician referral.",
+          "Direct access rules vary by state - marketing should accurately represent what patients can access without a physician referral.",
           "Specific recovery timeline guarantees and percentage-success claims need substantiation; broad claims are exposure-heavy.",
           "PTA supervision language must accurately reflect state supervision rules.",
           "Dry needling scope-of-practice varies by state; marketing should match authorized practice.",

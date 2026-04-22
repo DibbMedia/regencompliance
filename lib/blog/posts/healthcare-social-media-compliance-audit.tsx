@@ -19,9 +19,9 @@ export const meta: BlogPostMeta = {
   title:
     "How to Audit Your Healthcare Practice's Social Media for FDA/FTC Compliance: A Step-by-Step Framework",
   description:
-    "A tactical audit framework for healthcare practice social media — Instagram, TikTok, Facebook, YouTube, LinkedIn, and staff personal accounts. Covers what to scan for, how to prioritize, and how to fix patterns at the source.",
+    "A tactical audit framework for healthcare practice social media - Instagram, TikTok, Facebook, YouTube, LinkedIn, and staff personal accounts. Covers what to scan for, how to prioritize, and how to fix patterns at the source.",
   excerpt:
-    "Your social media is the highest-velocity compliance surface in your practice — and the one that typically has the least review before publish. Here's the audit framework to catch compliance issues before a regulator does.",
+    "Your social media is the highest-velocity compliance surface in your practice - and the one that typically has the least review before publish. Here's the audit framework to catch compliance issues before a regulator does.",
   date: "2026-04-22",
   readingMinutes: 11,
   keywords: [
@@ -98,14 +98,14 @@ export default function Body() {
         healthcare practices and the one that typically gets the least
         compliance review before publish. It&rsquo;s also
         disproportionately where FTC and FDA enforcement actually
-        starts &mdash; the Wellbeing Corporation settlement cited a
+        starts - the Wellbeing Corporation settlement cited a
         single Instagram post; the FDA regularly cites social media
         content in warning letters. If you haven&rsquo;t audited your
         practice&rsquo;s social media presence for compliance, this
         post walks through the framework to do it in a week.
       </Lead>
 
-      <H2 id="step-1-inventory">Step 1 &mdash; Inventory every account</H2>
+      <H2 id="step-1-inventory">Step 1 - Inventory every account</H2>
       <P>
         Most clinic owners underestimate the number of social accounts
         in scope. A typical med spa with a physician owner and three
@@ -129,7 +129,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Nurse injector and provider accounts.</Strong> Same
-          rule &mdash; if practice-related content appears, it&rsquo;s
+          rule - if practice-related content appears, it&rsquo;s
           part of the marketing surface.
         </LI>
         <LI>
@@ -143,7 +143,7 @@ export default function Body() {
         </LI>
       </UL>
 
-      <H2 id="step-2-export">Step 2 &mdash; Pull content export or screenshot history</H2>
+      <H2 id="step-2-export">Step 2 - Pull content export or screenshot history</H2>
       <P>
         Before scanning, you need to have the content accessible.
         Different platforms have different export capabilities:
@@ -185,7 +185,7 @@ export default function Body() {
         regardless of age.
       </P>
 
-      <H2 id="step-3-scan">Step 3 &mdash; Scan for specific claim categories</H2>
+      <H2 id="step-3-scan">Step 3 - Scan for specific claim categories</H2>
       <P>
         Scanning without a structured rule set misses categories of
         issues consistently. Use a specific list of claim categories
@@ -250,7 +250,7 @@ export default function Body() {
         output.
       </Callout>
 
-      <H2 id="step-4-triage">Step 4 &mdash; Triage by reach and risk</H2>
+      <H2 id="step-4-triage">Step 4 - Triage by reach and risk</H2>
       <P>
         Not all flagged content is equally urgent. The priority
         framework is reach times risk:
@@ -278,7 +278,7 @@ export default function Body() {
         For each flagged piece of content, use impression count or
         engagement as a reach proxy. A HIGH-risk post with 50,000
         impressions is more urgent than a HIGH-risk post with 200
-        impressions &mdash; though both need fixing.
+        impressions - though both need fixing.
       </P>
 
       <H3>Triage output</H3>
@@ -290,7 +290,7 @@ export default function Body() {
         highest-impact ones.
       </P>
 
-      <H2 id="step-5-correct">Step 5 &mdash; Correct or retire content</H2>
+      <H2 id="step-5-correct">Step 5 - Correct or retire content</H2>
       <P>
         For each flagged piece, there are three options: edit, add
         disclosure, or delete.
@@ -309,7 +309,7 @@ export default function Body() {
       <P>
         For typical-experience gaps, material-connection issues, and
         some substantiation issues, adding proper disclosure is often
-        sufficient &mdash; provided the disclosure is clear and
+        sufficient - provided the disclosure is clear and
         conspicuous (not in fine print, not linked elsewhere).
       </P>
 
@@ -331,7 +331,7 @@ export default function Body() {
         of good-faith compliance in any future regulatory interaction.
       </P>
 
-      <H2 id="step-6-update-process">Step 6 &mdash; Update the publish process</H2>
+      <H2 id="step-6-update-process">Step 6 - Update the publish process</H2>
       <P>
         The audit is temporary. The publish process is permanent. If
         you don&rsquo;t change how new content enters the social
@@ -368,7 +368,7 @@ export default function Body() {
         Create clear written guidelines for what physicians and staff
         can and cannot post about practice treatments on personal
         accounts. Many practices solve this by saying &ldquo;no
-        practice-related content on personal accounts&rdquo; &mdash;
+        practice-related content on personal accounts&rdquo; -
         which is clear, enforceable, and eliminates an entire class of
         compliance risk.
       </P>
@@ -440,7 +440,7 @@ export default function Body() {
       <P>
         Correct it quickly. The length of time a violation has been
         up doesn&rsquo;t increase your liability for subsequent
-        correction &mdash; but continuing the violation after
+        correction - but continuing the violation after
         awareness definitely does. Silent, prompt correction is the
         right approach for most historical issues.
       </P>
@@ -472,11 +472,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Every practice-adjacent social account is in scope — including physician personal accounts and nurse injector personal accounts.",
+          "Every practice-adjacent social account is in scope - including physician personal accounts and nurse injector personal accounts.",
           "Scan with a structured rule set covering disease-treatment, FDA-approved misuse, safety absolutes, outcome guarantees, typical-experience gaps, and material-connection gaps.",
-          "Triage corrections by reach × risk — highest-reach HIGH-risk content first.",
+          "Triage corrections by reach × risk - highest-reach HIGH-risk content first.",
           "The audit closes historical issues; updating the publish process prevents recurrence.",
-          "Document every correction with URL, original content, action, date, and responsible staff — this is evidence of good-faith compliance.",
+          "Document every correction with URL, original content, action, date, and responsible staff - this is evidence of good-faith compliance.",
         ]}
       />
     </>

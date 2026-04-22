@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "Three different FDA statuses, one frequently conflated by aesthetic practices. Here's what FDA-approved, FDA-cleared, and FDA-registered actually mean for lasers, RF devices, injectables, and what to say in marketing for each.",
   excerpt:
-    "Most aesthetic practices use 'FDA-approved' to describe devices that are technically FDA-cleared. The distinction matters — FDA warning letters regularly cite it. Here's the complete breakdown of the three statuses and which one applies to your equipment.",
+    "Most aesthetic practices use 'FDA-approved' to describe devices that are technically FDA-cleared. The distinction matters - FDA warning letters regularly cite it. Here's the complete breakdown of the three statuses and which one applies to your equipment.",
   date: "2026-04-22",
   readingMinutes: 9,
   keywords: [
@@ -45,8 +45,8 @@ export default function Body() {
         marketing regularly conflates: FDA-approved, FDA-cleared, and
         FDA-registered. They mean different things, have different
         evidentiary bases, and carry different marketing implications.
-        Using them interchangeably &mdash; which almost every aesthetic
-        practice does &mdash; is both factually wrong and a specific
+        Using them interchangeably - which almost every aesthetic
+        practice does - is both factually wrong and a specific
         FDA enforcement pattern. This is the full breakdown of what each
         term means, which one applies to which equipment, and how to
         describe your devices in marketing accurately.
@@ -99,7 +99,7 @@ export default function Body() {
 
       <H3>FDA-registered</H3>
       <P>
-        FDA registration is an entirely different concept &mdash; it
+        FDA registration is an entirely different concept - it
         refers to the facility or establishment that manufactures,
         processes, packs, or distributes a product, not the product
         itself. Registration is a regulatory filing confirming the
@@ -120,7 +120,7 @@ export default function Body() {
         what that means. Registration is about the facility, not the
         product. The terminology is commonly used to create the
         <Em>impression</Em> of FDA endorsement without actually
-        claiming approval or clearance &mdash; which is what makes it
+        claiming approval or clearance - which is what makes it
         a common enforcement target.
       </Callout>
 
@@ -151,8 +151,8 @@ export default function Body() {
       <P>
         Websites that use &ldquo;FDA-approved&rdquo; on the homepage,
         &ldquo;FDA-cleared&rdquo; on the device detail page, and
-        &ldquo;FDA-registered&rdquo; in the staff bios &mdash; all
-        describing the same piece of equipment &mdash; create an
+        &ldquo;FDA-registered&rdquo; in the staff bios - all
+        describing the same piece of equipment - create an
         internal inconsistency that itself flags poor compliance. The
         FDA reads the entire surface, and inconsistency is a visible
         pattern.
@@ -193,7 +193,7 @@ export default function Body() {
       <H3>Neurotoxins (Botox, Dysport, Xeomin, Jeuveau, Daxxify)</H3>
       <P>
         FDA-approved prescription drugs. Describe accurately with
-        approved indications &mdash; glabellar lines, forehead lines,
+        approved indications - glabellar lines, forehead lines,
         lateral canthal lines, depending on the specific product and
         FDA approval status. Marketing for off-label indications
         (masseter, jawline, chin) is a specific enforcement pattern.
@@ -213,7 +213,7 @@ export default function Body() {
         as general centrifuge equipment, not FDA-approved for specific
         therapeutic applications. The PRP preparation itself is
         typically considered an HCT/P operating under the 361 pathway.
-        Describe accurately &mdash; &ldquo;PRP prepared in our
+        Describe accurately - &ldquo;PRP prepared in our
         FDA-cleared centrifuge system&rdquo; is fine; &ldquo;FDA-approved
         PRP treatment&rdquo; is not.
       </P>
@@ -222,7 +222,7 @@ export default function Body() {
       <P>
         HCT/P products operating under the 361 pathway do not require
         FDA pre-market approval; they are regulated but not approved.
-        Describe accurately &mdash; &ldquo;our HCT/P products are
+        Describe accurately - &ldquo;our HCT/P products are
         provided by FDA-registered tissue processors under the 361
         pathway&rdquo; is compliant; &ldquo;FDA-approved stem
         cells&rdquo; is not.
@@ -249,7 +249,7 @@ export default function Body() {
       <OL>
         <LI>
           Search your website for the phrase &ldquo;FDA-approved&rdquo;
-          &mdash; list every page where it appears.
+          - list every page where it appears.
         </LI>
         <LI>
           For each appearance, determine whether the product is actually
@@ -258,7 +258,7 @@ export default function Body() {
         </LI>
         <LI>
           Search for &ldquo;FDA-registered&rdquo; and &ldquo;FDA-cleared&rdquo;
-          &mdash; verify each is applied to the correct thing
+          - verify each is applied to the correct thing
           (facility vs device).
         </LI>
         <LI>
@@ -267,7 +267,7 @@ export default function Body() {
         </LI>
         <LI>
           Update every inaccurate reference. Use specific device names
-          and specific approved indications where possible &mdash;
+          and specific approved indications where possible -
           vagueness reads as hiding something.
         </LI>
       </OL>
@@ -322,7 +322,7 @@ export default function Body() {
         approved and cleared is technical. From a regulatory-compliance
         perspective, it&rsquo;s the difference between compliant and
         non-compliant advertising. The FDA and patient understanding
-        operate on different frames &mdash; but only the FDA
+        operate on different frames - but only the FDA
         perspective determines whether you receive a warning letter.
       </P>
 
@@ -339,9 +339,9 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "FDA-approved, FDA-cleared, and FDA-registered are three distinct regulatory statuses — not interchangeable.",
+          "FDA-approved, FDA-cleared, and FDA-registered are three distinct regulatory statuses - not interchangeable.",
           "Most aesthetic lasers, RF devices, and body-contouring equipment are FDA-cleared (510(k)), not FDA-approved.",
-          "FDA-registered refers to the manufacturing facility, not the device — using it in practice marketing creates a false endorsement impression.",
+          "FDA-registered refers to the manufacturing facility, not the device - using it in practice marketing creates a false endorsement impression.",
           "The correct terminology for each device category is a one-afternoon audit that closes a high-frequency FDA enforcement pattern.",
           "Specificity ('FDA-cleared for [specific indication]') is always stronger than vague usage and is less likely to trigger enforcement review.",
         ]}

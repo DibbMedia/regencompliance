@@ -4,7 +4,7 @@ import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
 
 export const metadata = {
-  title: "Terms of Service — RegenCompliance",
+  title: "Terms of Service - RegenCompliance",
   description: "Terms of Service for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
 }
 
@@ -123,7 +123,7 @@ export default function TermsPage() {
                   "Reverse engineering, decompiling, or attempting to extract the source code of the Service",
                   "Sharing your account credentials or allowing unauthorized third parties to access the Service through your account",
                   "Using the Service to build a competing product or service",
-                  "Submitting content containing Protected Health Information (PHI), patient data, or any personally identifiable health information — the Service is NOT HIPAA compliant",
+                  "Submitting content containing Protected Health Information (PHI), patient data, or any personally identifiable health information - the Service is NOT HIPAA compliant",
                   "Submitting content that is illegal, abusive, or violates third-party rights",
                   "Attempting to bypass security measures, rate limits, or access restrictions",
                   "Reselling, sublicensing, or redistributing access to the Service",

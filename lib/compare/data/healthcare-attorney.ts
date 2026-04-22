@@ -12,7 +12,7 @@ export const meta: CompetitorMeta = {
   heroTagline:
     "A healthcare marketing attorney is irreplaceable for judgment calls. They are also $400–$800 per hour. Here is how to use each for what they are actually good at.",
   bottomLine:
-    "A good healthcare marketing attorney is an essential part of a compliance program. They are also the most expensive part, and they are not the right tool for every compliance task. RegenCompliance does not replace your attorney — it makes your attorney's time dramatically more valuable by removing the pattern-matching work (flagging banned phrases, scoring pages, catching FTC disclosure gaps) and leaving the judgment calls that actually need legal expertise. Clinics with both spend less total on compliance and get better coverage.",
+    "A good healthcare marketing attorney is an essential part of a compliance program. They are also the most expensive part, and they are not the right tool for every compliance task. RegenCompliance does not replace your attorney - it makes your attorney's time dramatically more valuable by removing the pattern-matching work (flagging banned phrases, scoring pages, catching FTC disclosure gaps) and leaving the judgment calls that actually need legal expertise. Clinics with both spend less total on compliance and get better coverage.",
   shortVerdict:
     "Attorneys handle judgment calls. Software handles pattern matching. Running both saves money and reduces risk.",
   theirStrengths: [
@@ -22,11 +22,11 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Privileged advice and attorney-client protection",
-      body: "Communications with your attorney are protected by attorney-client privilege. Software scan records are business records — discoverable in litigation. When you need to discuss edge-case claims or prior enforcement exposure, that privileged conversation happens with a lawyer.",
+      body: "Communications with your attorney are protected by attorney-client privilege. Software scan records are business records - discoverable in litigation. When you need to discuss edge-case claims or prior enforcement exposure, that privileged conversation happens with a lawyer.",
     },
     {
       title: "Warning-letter response strategy",
-      body: "If you get a warning letter, you need a lawyer. Federally mandated response windows (typically 15 business days), negotiation with FDA or FTC staff, potential consent decree terms — this is outside the scope of any software product, ours or otherwise.",
+      body: "If you get a warning letter, you need a lawyer. Federally mandated response windows (typically 15 business days), negotiation with FDA or FTC staff, potential consent decree terms - this is outside the scope of any software product, ours or otherwise.",
     },
     {
       title: "State medical board and licensure issues",
@@ -34,7 +34,7 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Novel or edge-case claims",
-      body: "A new treatment without established marketing precedent, off-label communication in patient education, research-stage messaging — these need an attorney's judgment. Our rule set is strongest on patterns that have already been enforced, which is most but not all of compliance.",
+      body: "A new treatment without established marketing precedent, off-label communication in patient education, research-stage messaging - these need an attorney's judgment. Our rule set is strongest on patterns that have already been enforced, which is most but not all of compliance.",
     },
   ],
   ourStrengths: [
@@ -48,11 +48,11 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Daily enforcement data ingestion",
-      body: "Your attorney updates their mental rule set on whatever cadence their reading habits support — typically weekly to monthly for the strongest practitioners. Our ingestion pipeline processes FDA warning letters and FTC press releases daily, within 24 hours of publication.",
+      body: "Your attorney updates their mental rule set on whatever cadence their reading habits support - typically weekly to monthly for the strongest practitioners. Our ingestion pipeline processes FDA warning letters and FTC press releases daily, within 24 hours of publication.",
     },
     {
       title: "Audit trail structured for warning-letter response",
-      body: "Every scan is a timestamped, exportable record of pre-publish due diligence. When an attorney represents you in a warning-letter response, that audit trail is the evidence of a defensible compliance program — the difference between 'we did not know' and 'we did know, we actively checked, here is our record.'",
+      body: "Every scan is a timestamped, exportable record of pre-publish due diligence. When an attorney represents you in a warning-letter response, that audit trail is the evidence of a defensible compliance program - the difference between 'we did not know' and 'we did know, we actively checked, here is our record.'",
     },
     {
       title: "Available at 11pm on a Saturday",
@@ -71,19 +71,19 @@ export const meta: CompetitorMeta = {
       scenario: "Reviewing every social post before publishing",
       winner: "us",
       recommendation:
-        "At attorney rates, per-post review is not economically feasible. Scan in RegenCompliance before every post — 30 seconds, unlimited volume. Escalate to your attorney only for posts that fall into a gray area.",
+        "At attorney rates, per-post review is not economically feasible. Scan in RegenCompliance before every post - 30 seconds, unlimited volume. Escalate to your attorney only for posts that fall into a gray area.",
     },
     {
       scenario: "Launching a new treatment service",
       winner: "both",
       recommendation:
-        "Draft the page, scan in RegenCompliance, apply compliant rewrites. Then send the rewritten page to your attorney for final review before launch. Your attorney is working from a near-clean page instead of raw first-draft copy — their time is spent on judgment, not pattern-matching.",
+        "Draft the page, scan in RegenCompliance, apply compliant rewrites. Then send the rewritten page to your attorney for final review before launch. Your attorney is working from a near-clean page instead of raw first-draft copy - their time is spent on judgment, not pattern-matching.",
     },
     {
       scenario: "Responding to an FDA warning letter",
       winner: "them",
       recommendation:
-        "Attorney first, immediately. Use RegenCompliance to produce the full audit documentation that your attorney will rely on for the response strategy — but the response itself is a legal proceeding.",
+        "Attorney first, immediately. Use RegenCompliance to produce the full audit documentation that your attorney will rely on for the response strategy - but the response itself is a legal proceeding.",
     },
     {
       scenario: "Auditing 200 pages of existing website content",
@@ -101,7 +101,7 @@ export const meta: CompetitorMeta = {
       scenario: "Training your marketing team on compliance basics",
       winner: "us",
       recommendation:
-        "Our flag explanations are educational by design — each flagged phrase includes the rule, the source, and the compliant alternative. Teams running scans learn compliance thinking as a byproduct. Attorney-led training is also valuable, but an ongoing tool teaches continuously.",
+        "Our flag explanations are educational by design - each flagged phrase includes the rule, the source, and the compliant alternative. Teams running scans learn compliance thinking as a byproduct. Attorney-led training is also valuable, but an ongoing tool teaches continuously.",
     },
   ],
   featureMatrix: [
@@ -134,15 +134,15 @@ export const meta: CompetitorMeta = {
   faqs: [
     {
       q: "Can RegenCompliance replace my healthcare marketing attorney?",
-      a: "No, and we do not recommend attempting it. We replace a narrow, specific part of what an attorney does — the pattern-matching review of marketing copy for known banned phrases and rule categories. We do not replace legal advice, warning-letter response, medical board representation, or novel-claim judgment. Clinics running both together typically reduce their attorney's total billable hours while increasing compliance coverage.",
+      a: "No, and we do not recommend attempting it. We replace a narrow, specific part of what an attorney does - the pattern-matching review of marketing copy for known banned phrases and rule categories. We do not replace legal advice, warning-letter response, medical board representation, or novel-claim judgment. Clinics running both together typically reduce their attorney's total billable hours while increasing compliance coverage.",
     },
     {
       q: "If I already have an attorney on retainer, is there a reason to add compliance software?",
-      a: "Yes. Attorneys review at a cadence your budget supports — typically quarterly audits and pre-launch reviews of major assets. Day-to-day marketing (social posts, ad variations, monthly blog posts, email campaigns) rarely gets attorney review because the per-item cost is too high. Those are the surfaces where regulators are most active. Compliance software is what makes per-item pre-publish review feasible.",
+      a: "Yes. Attorneys review at a cadence your budget supports - typically quarterly audits and pre-launch reviews of major assets. Day-to-day marketing (social posts, ad variations, monthly blog posts, email campaigns) rarely gets attorney review because the per-item cost is too high. Those are the surfaces where regulators are most active. Compliance software is what makes per-item pre-publish review feasible.",
     },
     {
       q: "Is the RegenCompliance audit trail admissible as evidence of compliance?",
-      a: "The audit trail is a business record — timestamped, consistent, and exportable. Whether it is treated as evidence in a specific proceeding depends on the proceeding, the claims at issue, and the rules of that forum, so that is a question for your attorney. In practical terms, clinics with our audit trail have documented evidence of pre-publish compliance checking. Clinics without one do not. That distinction is meaningful.",
+      a: "The audit trail is a business record - timestamped, consistent, and exportable. Whether it is treated as evidence in a specific proceeding depends on the proceeding, the claims at issue, and the rules of that forum, so that is a question for your attorney. In practical terms, clinics with our audit trail have documented evidence of pre-publish compliance checking. Clinics without one do not. That distinction is meaningful.",
     },
     {
       q: "How do clinics typically divide work between attorney and software?",
@@ -150,7 +150,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Does running content through your tool waive any attorney-client privilege?",
-      a: "Your scan records are business records, not privileged communications. If you want a privileged conversation about a specific piece of content, that conversation needs to happen with your attorney — not through the scanner. Most clinics use the scanner as a pre-privilege layer: scan everything, discuss only ambiguous cases with counsel.",
+      a: "Your scan records are business records, not privileged communications. If you want a privileged conversation about a specific piece of content, that conversation needs to happen with your attorney - not through the scanner. Most clinics use the scanner as a pre-privilege layer: scan everything, discuss only ambiguous cases with counsel.",
     },
     {
       q: "Can I show the audit trail to the FDA or FTC if I get a warning letter?",
@@ -158,7 +158,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "What if my attorney disagrees with a RegenCompliance flag?",
-      a: "Defer to your attorney. Our output is rule-based, which means false positives are possible. If an experienced attorney has reviewed a flagged phrase in context and confirmed it is fine for your specific jurisdiction and specialty, their judgment wins. We optimize for false positives over false negatives — it is better to over-flag and let an attorney waive than under-flag and let a warning letter arrive.",
+      a: "Defer to your attorney. Our output is rule-based, which means false positives are possible. If an experienced attorney has reviewed a flagged phrase in context and confirmed it is fine for your specific jurisdiction and specialty, their judgment wins. We optimize for false positives over false negatives - it is better to over-flag and let an attorney waive than under-flag and let a warning letter arrive.",
     },
     {
       q: "Do you have a relationship with any healthcare marketing law firms?",

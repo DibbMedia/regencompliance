@@ -6,7 +6,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { discoverPages } from "@/lib/site-crawler"
 import { assertSafeUrl } from "@/lib/ssrf"
 
-// GET — list user's monitored sites with page counts and avg scores
+// GET - list user's monitored sites with page counts and avg scores
 export async function GET() {
   try {
     const supabase = await createClient()
@@ -36,7 +36,7 @@ export async function GET() {
   }
 }
 
-// POST — add a new monitored site
+// POST - add a new monitored site
 export async function POST(request: Request) {
   try {
     const supabase = await createClient()
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Domain is required" }, { status: 400 })
     }
 
-    // Normalize domain — strip protocol and trailing slash
+    // Normalize domain - strip protocol and trailing slash
     const normalizedDomain = domain
       .replace(/^(https?:\/\/)/, "")
       .replace(/\/+$/, "")
@@ -160,7 +160,7 @@ export async function POST(request: Request) {
       }
     } catch (crawlError) {
       console.error("Page discovery error (non-fatal):", crawlError)
-      // Non-fatal — site is still added, pages can be discovered on first crawl
+      // Non-fatal - site is still added, pages can be discovered on first crawl
     }
 
     return NextResponse.json({ site }, { status: 201 })

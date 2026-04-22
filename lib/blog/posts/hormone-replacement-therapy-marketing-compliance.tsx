@@ -20,9 +20,9 @@ export const meta: BlogPostMeta = {
   title:
     "Hormone Replacement Therapy Marketing Compliance: HRT, TRT, and Bioidentical Advertising Rules",
   description:
-    "Hormone replacement therapy marketing — HRT, TRT, bioidentical, pellet therapy — combines prescription drug advertising rules, compounded-drug issues, and anti-aging FTC enforcement. Here's the full compliance playbook.",
+    "Hormone replacement therapy marketing - HRT, TRT, bioidentical, pellet therapy - combines prescription drug advertising rules, compounded-drug issues, and anti-aging FTC enforcement. Here's the full compliance playbook.",
   excerpt:
-    "HRT, TRT, and bioidentical hormone marketing sits in an unusually complex regulatory position — prescription drugs plus compounded drugs plus anti-aging claim rules. Here's how to market these services compliantly.",
+    "HRT, TRT, and bioidentical hormone marketing sits in an unusually complex regulatory position - prescription drugs plus compounded drugs plus anti-aging claim rules. Here's how to market these services compliantly.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -42,9 +42,9 @@ export default function Body() {
   return (
     <>
       <Lead>
-        Hormone replacement therapy marketing &mdash; HRT for
+        Hormone replacement therapy marketing - HRT for
         menopause and perimenopause, TRT for men, bioidentical
-        hormones, pellet therapy, compounded combinations &mdash;
+        hormones, pellet therapy, compounded combinations -
         combines several regulatory layers that practices routinely
         collapse together. FDA-approved hormone products have
         prescription-drug advertising rules. Compounded hormones have
@@ -89,7 +89,7 @@ export default function Body() {
 
       <H3>Pattern 1: &ldquo;Safer than synthetic hormones&rdquo;</H3>
       <BeforeAfter
-        bad="Bioidentical hormones are safer than synthetic hormones — the body recognizes them naturally."
+        bad="Bioidentical hormones are safer than synthetic hormones - the body recognizes them naturally."
         good="Our hormone replacement protocols use [specific products]. All hormone therapies carry risks and benefits that we discuss at consultation based on your personal and family medical history."
         reason="'Safer than synthetic' is a comparative safety claim without adequate head-to-head substantiation. The FTC has specifically pursued this claim pattern in compounding-pharmacy and hormone-clinic contexts."
       />
@@ -110,14 +110,14 @@ export default function Body() {
 
       <H3>Pattern 4: Performance and body composition claims</H3>
       <BeforeAfter
-        bad="TRT — build muscle, lose fat, regain your edge."
+        bad="TRT - build muscle, lose fat, regain your edge."
         good="Testosterone replacement therapy is prescribed for men with clinically diagnosed low testosterone. Some patients report improvements in energy, mood, and body composition; individual outcomes vary based on many factors."
         reason="Performance-optimization marketing of TRT has been specifically targeted by FDA warning letters and FTC actions. Clinical-indication framing (symptoms, lab values) is the compliant alternative."
       />
 
       <H3>Pattern 5: Pellet therapy equivalence</H3>
       <BeforeAfter
-        bad="Our pellet therapy gives you the same hormones as any other delivery — just more convenient."
+        bad="Our pellet therapy gives you the same hormones as any other delivery - just more convenient."
         good="Our pellet therapy is a compounded preparation delivered through subcutaneous insertion; pellets release hormones over approximately 3-5 months. Clinical candidacy is evaluated at consultation."
         reason="Pellets are a compounded delivery mechanism, not FDA-approved products. 'Same hormones' framing can mislead patients about the regulatory category."
       />
@@ -127,8 +127,8 @@ export default function Body() {
         &ldquo;Hormone optimization&rdquo; marketing positions
         patients as optimization candidates based on lab values even
         when values are within normal ranges. The marketing
-        implication &mdash; that you need treatment even without
-        clinical symptoms of deficiency &mdash; has been a specific
+        implication - that you need treatment even without
+        clinical symptoms of deficiency - has been a specific
         FDA and state medical board focus. Compliant framing treats
         clinical symptoms plus confirmed deficiency as the indication.
       </P>
@@ -138,9 +138,9 @@ export default function Body() {
       <H3>Lead with symptom evaluation</H3>
       <P>
         &ldquo;Our practice evaluates patients with symptoms
-        potentially related to hormone changes &mdash; fatigue,
+        potentially related to hormone changes - fatigue,
         sleep disruption, mood changes, low libido, body composition
-        changes &mdash; with comprehensive medical history and
+        changes - with comprehensive medical history and
         appropriate laboratory testing.&rdquo; Symptom-forward
         framing positions the service as clinical care.
       </P>
@@ -223,7 +223,7 @@ export default function Body() {
       <H3>What about &ldquo;low T&rdquo; marketing specifically?</H3>
       <P>
         &ldquo;Low T&rdquo; as marketing shorthand for low
-        testosterone has its own enforcement history &mdash; the FDA
+        testosterone has its own enforcement history - the FDA
         issued specific warnings about over-diagnosis and inappropriate
         prescribing marketing. Marketing should focus on clinical
         symptom evaluation rather than implying broad
@@ -243,7 +243,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "HRT/TRT marketing combines prescription drug rules (for FDA-approved forms), compounded drug issues, anti-aging FTC enforcement, and state medical board rules.",
-          "'Bioidentical is safer than synthetic' is a comparative claim without adequate substantiation — a specific FTC enforcement target.",
+          "'Bioidentical is safer than synthetic' is a comparative claim without adequate substantiation - a specific FTC enforcement target.",
           "Disease-prevention claims on HRT (osteoporosis, heart disease, Alzheimer's) push marketing into FDA drug-claim territory.",
           "Symptom and deficiency-forward framing is both clinically accurate and compliance-safer than 'optimization' or anti-aging framing.",
           "Pellet therapy and other compounded preparations need compounded-specific framing rather than equivalence to FDA-approved products.",

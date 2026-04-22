@@ -179,7 +179,7 @@ export function SpecialtyLayout({
             </h2>
             <p className="mt-4 text-base text-white/65 max-w-2xl mx-auto">
               Every phrase below is from real enforcement actions. RegenCompliance flags
-              them automatically on every scan — with the compliant alternative ready.
+              them automatically on every scan - with the compliant alternative ready.
             </p>
           </div>
 

@@ -20,9 +20,9 @@ export const meta: BlogPostMeta = {
   title:
     "NAD+ Marketing Compliance: Why the FTC Has Your Clinic's Longevity Claims in Its Crosshairs",
   description:
-    "NAD+ marketing is one of the current FTC enforcement priorities in 2026. Here's what the rules require for anti-aging, cognitive-enhancement, and longevity claims — and why most IV therapy and wellness clinic NAD+ marketing would not survive a regulatory review.",
+    "NAD+ marketing is one of the current FTC enforcement priorities in 2026. Here's what the rules require for anti-aging, cognitive-enhancement, and longevity claims - and why most IV therapy and wellness clinic NAD+ marketing would not survive a regulatory review.",
   excerpt:
-    "'Reverses aging,' 'extends lifespan,' 'restores cellular function' — the claims driving NAD+ marketing are the exact claims the FTC is currently pursuing. Here's the full compliance playbook for NAD+ IV, NAD+ injection, and NAD+ protocol marketing.",
+    "'Reverses aging,' 'extends lifespan,' 'restores cellular function' - the claims driving NAD+ marketing are the exact claims the FTC is currently pursuing. Here's the full compliance playbook for NAD+ IV, NAD+ injection, and NAD+ protocol marketing.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -66,7 +66,7 @@ export default function Body() {
         independently difficult: anti-aging, cognitive enhancement, and
         longevity. Combining them multiplies the substantiation burden.
         Meanwhile, the underlying clinical evidence for many of the
-        specific marketed outcomes is genuinely thin &mdash; which
+        specific marketed outcomes is genuinely thin - which
         makes the gap between claim and evidence particularly
         visible.
       </Callout>
@@ -77,7 +77,7 @@ export default function Body() {
         in every cell, involved in cellular energy metabolism and DNA
         repair processes. The underlying biology is genuine. The
         regulatory question is not about NAD+&rsquo;s existence or its
-        biological role &mdash; it&rsquo;s about what specific claims
+        biological role - it&rsquo;s about what specific claims
         about outcomes in humans are supported by adequate and
         reliable evidence.
       </P>
@@ -121,7 +121,7 @@ export default function Body() {
 
       <H3>Factor 1: Aggressive consumer claims</H3>
       <P>
-        NAD+ marketing routinely makes sweeping claims &mdash;
+        NAD+ marketing routinely makes sweeping claims -
         &ldquo;reverses aging,&rdquo; &ldquo;extends lifespan,&rdquo;
         &ldquo;boosts cognition by X%,&rdquo; &ldquo;restores cellular
         function.&rdquo; The claims are both specific enough to
@@ -132,7 +132,7 @@ export default function Body() {
       <H3>Factor 2: Weak clinical evidence on outcomes</H3>
       <P>
         The human clinical evidence for many specific marketed outcomes
-        is thin &mdash; small studies, short durations, mixed results,
+        is thin - small studies, short durations, mixed results,
         limited blinding. Whatever one&rsquo;s view of the underlying
         biology, the clinical evidence does not meet the FTC&rsquo;s
         competent-and-reliable standard for many common claims.
@@ -158,16 +158,16 @@ export default function Body() {
 
       <H3>Pattern 2: Cognitive enhancement specifics</H3>
       <BeforeAfter
-        bad="Improves memory, focus, and cognitive function — many patients report mental clarity within a single session."
+        bad="Improves memory, focus, and cognitive function - many patients report mental clarity within a single session."
         good="Some patients describe subjective feelings of mental clarity and energy following treatment; these responses vary widely by individual and do not represent clinical evidence of cognitive enhancement."
         reason="Cognitive-enhancement claims trigger both FTC substantiation rules and FDA disease-claim rules (cognitive decline is a medical diagnosis). Subjective-report framing avoids the claim while preserving the marketing message."
       />
 
       <H3>Pattern 3: Longevity / lifespan extension</H3>
       <BeforeAfter
-        bad="NAD+ supports longevity — studies show it may extend lifespan by up to 30%."
+        bad="NAD+ supports longevity - studies show it may extend lifespan by up to 30%."
         good="Research on NAD+ biology, including cellular and animal studies, continues to evolve. We do not make specific claims about lifespan extension in humans, as that level of evidence does not currently exist."
-        reason="Lifespan-extension claims require human clinical evidence over years or decades — which does not exist for any current NAD+ protocol. Citing cellular or animal studies to support human lifespan claims is a specific enforcement pattern."
+        reason="Lifespan-extension claims require human clinical evidence over years or decades - which does not exist for any current NAD+ protocol. Citing cellular or animal studies to support human lifespan claims is a specific enforcement pattern."
       />
 
       <H3>Pattern 4: Chronic fatigue and disease-adjacent claims</H3>
@@ -186,7 +186,7 @@ export default function Body() {
 
       <H3>Pattern 6: Celebrity/testimonial-driven marketing</H3>
       <BeforeAfter
-        bad="[Celebrity] swears by our NAD+ protocol — you can too!"
+        bad="[Celebrity] swears by our NAD+ protocol - you can too!"
         good="[Remove unless documented paid endorsement with FTC-compliant material-connection disclosure in the post itself.]"
         reason="Celebrity implied endorsement without proper disclosure is a top-5 FTC enforcement pattern. NAD+ is a space where celebrity mentions appear frequently in clinic marketing, often without the required disclosures."
       />
@@ -235,7 +235,7 @@ export default function Body() {
       <H3>Keep disease-specific indications out of public marketing</H3>
       <P>
         Cancer, Parkinson&rsquo;s, Alzheimer&rsquo;s, ALS, post-viral
-        illness, chronic fatigue syndrome, fibromyalgia &mdash; keep
+        illness, chronic fatigue syndrome, fibromyalgia - keep
         these out of public marketing even when clinical discussion
         may appropriately include them. The in-consultation
         conversation and the public marketing operate under different
@@ -247,7 +247,7 @@ export default function Body() {
         (&ldquo;many patients exploring cellular health,&rdquo; &ldquo;a
         wellness offering for patients interested in cellular support,
         metabolism, and energy&rdquo;) tends to convert as well as
-        aggressive outcome marketing &mdash; and faces none of the
+        aggressive outcome marketing - and faces none of the
         enforcement risk. The outcome-focused marketing signals
         desperation; the wellness-framed marketing signals
         confidence.
@@ -256,13 +256,13 @@ export default function Body() {
       <H2 id="supplement-layer">The supplement layer (NR, NMN)</H2>
       <P>
         If your practice also sells NAD+ precursor supplements (NR,
-        NMN), those operate under DSHEA &mdash; dietary supplement
+        NMN), those operate under DSHEA - dietary supplement
         rules. Structure-function claims (&ldquo;supports cellular
         energy&rdquo;) are permitted with the required DSHEA
         disclaimer and adequate substantiation. Disease claims (same
         list: cures, treats, prevents) are not permitted in either
         framework. The supplement layer does not cure compliance
-        issues in the IV or injection layer &mdash; they&rsquo;re
+        issues in the IV or injection layer - they&rsquo;re
         independent.
       </P>
 
@@ -273,7 +273,7 @@ export default function Body() {
         Citing studies accurately is generally fine. The issue is how
         the citations are used. A study on NAD+ in cells or in
         animals cited to support a claim about human outcomes is a
-        substantiation mismatch &mdash; the evidence doesn&rsquo;t
+        substantiation mismatch - the evidence doesn&rsquo;t
         reach the claim. Citing studies to support what you&rsquo;re
         actually doing (&ldquo;research on NAD+ biology
         continues&rdquo;) is fine.
@@ -307,7 +307,7 @@ export default function Body() {
 
       <H3>Can I show patient &ldquo;before/after&rdquo; energy-level testimonials?</H3>
       <P>
-        Yes, with proper FTC endorsement framing &mdash; typical-
+        Yes, with proper FTC endorsement framing - typical-
         experience disclosure, material-connection disclosure if
         applicable, and avoidance of disease-related outcome framing.
         Energy and well-being testimonials are lower-risk than
@@ -328,11 +328,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "NAD+ marketing is a current FTC enforcement priority — expect continued scrutiny of anti-aging, cognitive, and longevity claims.",
+          "NAD+ marketing is a current FTC enforcement priority - expect continued scrutiny of anti-aging, cognitive, and longevity claims.",
           "The underlying biology is real; the specific human outcome claims typically lack the clinical evidence required for FTC substantiation.",
           "Biology-first framing and subjective-report framing preserve marketing effectiveness while avoiding enforcement patterns.",
           "Disease-specific indications (cancer, Alzheimer's, chronic fatigue, etc.) should stay out of public NAD+ marketing regardless of clinical appropriateness in consultation.",
-          "Compliant NAD+ marketing often converts as well as aggressive marketing — outcome-focused framing signals desperation; wellness-focused framing signals confidence.",
+          "Compliant NAD+ marketing often converts as well as aggressive marketing - outcome-focused framing signals desperation; wellness-focused framing signals confidence.",
         ]}
       />
     </>

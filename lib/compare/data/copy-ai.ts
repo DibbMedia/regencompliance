@@ -12,17 +12,17 @@ export const meta: CompetitorMeta = {
   heroTagline:
     "Copy.ai is built to write more marketing copy, faster. RegenCompliance is built to keep what you publish from triggering a federal investigation.",
   bottomLine:
-    "Copy.ai is a good template-driven copywriting tool, optimized for producing ad copy, product descriptions, and email sequences at volume. It is not a compliance tool and has no healthcare regulatory logic. The two tools sit at different stages of the content lifecycle — generate in Copy.ai, scan in RegenCompliance, then publish.",
+    "Copy.ai is a good template-driven copywriting tool, optimized for producing ad copy, product descriptions, and email sequences at volume. It is not a compliance tool and has no healthcare regulatory logic. The two tools sit at different stages of the content lifecycle - generate in Copy.ai, scan in RegenCompliance, then publish.",
   shortVerdict:
     "Copy.ai generates. RegenCompliance validates. Use both, in that order.",
   theirStrengths: [
     {
       title: "Hundreds of marketing-specific templates",
-      body: "Copy.ai's template library is large and genuinely useful for common marketing tasks — ad headlines, product descriptions, Amazon listings, email sequences, cold outreach. If the task fits a template, output is fast.",
+      body: "Copy.ai's template library is large and genuinely useful for common marketing tasks - ad headlines, product descriptions, Amazon listings, email sequences, cold outreach. If the task fits a template, output is fast.",
     },
     {
       title: "Workflow automation features",
-      body: "Copy.ai has expanded beyond single-shot generation into workflow automation — multi-step prompts, chained outputs, integrations. Useful for marketing operations teams.",
+      body: "Copy.ai has expanded beyond single-shot generation into workflow automation - multi-step prompts, chained outputs, integrations. Useful for marketing operations teams.",
     },
     {
       title: "Affordable entry pricing",
@@ -30,7 +30,7 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Good for non-medical marketing",
-      body: "Supplement sales to non-clinical customers, wellness content without medical outcomes, appointment-booking UI copy — Copy.ai handles this range well.",
+      body: "Supplement sales to non-clinical customers, wellness content without medical outcomes, appointment-booking UI copy - Copy.ai handles this range well.",
     },
   ],
   ourStrengths: [
@@ -40,7 +40,7 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Compliance-aware rewrites, not generic rewrites",
-      body: "When we flag 'cures arthritis,' we offer compliant alternatives tied to the specific rule ('FDA-prohibited disease claim — substitute a structure-function or experience-based framing'). Copy.ai can rewrite on request but has no model of which rewrites are safe in healthcare.",
+      body: "When we flag 'cures arthritis,' we offer compliant alternatives tied to the specific rule ('FDA-prohibited disease claim - substitute a structure-function or experience-based framing'). Copy.ai can rewrite on request but has no model of which rewrites are safe in healthcare.",
     },
     {
       title: "Rule set from real enforcement, refreshed daily",
@@ -62,7 +62,7 @@ export const meta: CompetitorMeta = {
       scenario: "Generating ad copy for a GLP-1 weight loss clinic",
       winner: "us",
       recommendation:
-        "GLP-1 marketing is the current highest-enforcement category. Every ad variation Copy.ai produces will need compliance review anyway. Scan in RegenCompliance first, ideally before publishing — one non-compliant ad in rotation has triggered full FTC investigations.",
+        "GLP-1 marketing is the current highest-enforcement category. Every ad variation Copy.ai produces will need compliance review anyway. Scan in RegenCompliance first, ideally before publishing - one non-compliant ad in rotation has triggered full FTC investigations.",
     },
     {
       scenario: "Writing product descriptions for non-medical wellness items",
@@ -74,19 +74,19 @@ export const meta: CompetitorMeta = {
       scenario: "Creating email sequences for new patient onboarding",
       winner: "both",
       recommendation:
-        "Build sequences in Copy.ai. Scan each email through RegenCompliance before enabling the automation. Patient-onboarding email is one of the most-overlooked compliance surfaces because it is automated — which means one mistake goes to every new patient for months.",
+        "Build sequences in Copy.ai. Scan each email through RegenCompliance before enabling the automation. Patient-onboarding email is one of the most-overlooked compliance surfaces because it is automated - which means one mistake goes to every new patient for months.",
     },
     {
       scenario: "Writing clinic homepage copy",
       winner: "both",
       recommendation:
-        "Draft in Copy.ai's landing-page template. Paste the full draft into RegenCompliance. Expect to find 8–15 flagged phrases in a first scan of template-generated healthcare copy — this is the norm, not an exception.",
+        "Draft in Copy.ai's landing-page template. Paste the full draft into RegenCompliance. Expect to find 8–15 flagged phrases in a first scan of template-generated healthcare copy - this is the norm, not an exception.",
     },
     {
       scenario: "A/B testing ad headline variations",
       winner: "both",
       recommendation:
-        "Generate 20 variations in Copy.ai. Scan each variation. The variation that 'tests best' on CTR is frequently the one closest to the FDA disease-claim boundary — CTR-winning language and compliance-risk language correlate in healthcare because patient pain-point language lands harder.",
+        "Generate 20 variations in Copy.ai. Scan each variation. The variation that 'tests best' on CTR is frequently the one closest to the FDA disease-claim boundary - CTR-winning language and compliance-risk language correlate in healthcare because patient pain-point language lands harder.",
     },
   ],
   featureMatrix: [
@@ -121,11 +121,11 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Is Copy.ai's output ever compliant out of the box?",
-      a: "For non-medical copy, often. For medical treatment copy, rarely. The training data that makes Copy.ai fluent at healthcare marketing is the same open-web corpus that is full of copy that has been the subject of enforcement — so the default output leans toward patterns that trigger letters, not patterns that avoid them.",
+      a: "For non-medical copy, often. For medical treatment copy, rarely. The training data that makes Copy.ai fluent at healthcare marketing is the same open-web corpus that is full of copy that has been the subject of enforcement - so the default output leans toward patterns that trigger letters, not patterns that avoid them.",
     },
     {
       q: "What is the right workflow with both tools?",
-      a: "Generate in Copy.ai with a specific template. Paste the full output into RegenCompliance's scanner. Accept the compliant rewrites. Export the PDF audit record. Publish. This is the same workflow as Jasper, ChatGPT, or any other generation-first tool — the tools sit in different stages.",
+      a: "Generate in Copy.ai with a specific template. Paste the full output into RegenCompliance's scanner. Accept the compliant rewrites. Export the PDF audit record. Publish. This is the same workflow as Jasper, ChatGPT, or any other generation-first tool - the tools sit in different stages.",
     },
     {
       q: "Is Copy.ai's pricing cheaper than RegenCompliance because they do less?",
@@ -133,11 +133,11 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Can I skip Copy.ai and just use RegenCompliance?",
-      a: "If you do not need help generating new copy from scratch, yes. Our tool assumes you have copy — written by you, your team, an agency, or any generation tool — and you need to check it before publishing. If you want AI to draft from a brief, pair us with a generation tool.",
+      a: "If you do not need help generating new copy from scratch, yes. Our tool assumes you have copy - written by you, your team, an agency, or any generation tool - and you need to check it before publishing. If you want AI to draft from a brief, pair us with a generation tool.",
     },
     {
       q: "Which tool should I buy first?",
-      a: "If you already have a marketing team or agency producing copy, add RegenCompliance first — the compliance check is the gap. If you are a solo-owner clinic writing everything yourself, Copy.ai speeds up drafting and RegenCompliance handles the check. Most clinics end up with both.",
+      a: "If you already have a marketing team or agency producing copy, add RegenCompliance first - the compliance check is the gap. If you are a solo-owner clinic writing everything yourself, Copy.ai speeds up drafting and RegenCompliance handles the check. Most clinics end up with both.",
     },
   ],
   relatedBlogSlugs: [

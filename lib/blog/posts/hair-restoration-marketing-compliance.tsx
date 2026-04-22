@@ -20,9 +20,9 @@ export const meta: BlogPostMeta = {
   title:
     "Hair Restoration Marketing Compliance: FUE, FUT, PRP, Exosomes, and the Guarantee Language Getting Clinics Sued",
   description:
-    "Hair restoration marketing — surgical FUE/FUT transplants, PRP therapy, exosome treatments, and drug combinations — faces FTC substantiation, FDA device rules, and active class-action exposure around guarantee language.",
+    "Hair restoration marketing - surgical FUE/FUT transplants, PRP therapy, exosome treatments, and drug combinations - faces FTC substantiation, FDA device rules, and active class-action exposure around guarantee language.",
   excerpt:
-    "Hair restoration is one of the most litigated healthcare marketing categories — FTC actions, state AG consumer protection cases, and private class actions. Here's the full compliance playbook for surgical and non-surgical offerings.",
+    "Hair restoration is one of the most litigated healthcare marketing categories - FTC actions, state AG consumer protection cases, and private class actions. Here's the full compliance playbook for surgical and non-surgical offerings.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -49,7 +49,7 @@ export default function Body() {
         prescribing finasteride and minoxidil all face significant
         compliance considerations. Beyond FDA and FTC enforcement,
         hair restoration has meaningful private class-action exposure
-        &mdash; consumers can sue practices that misrepresented
+        - consumers can sue practices that misrepresented
         outcomes.
       </Lead>
 
@@ -89,14 +89,14 @@ export default function Body() {
 
       <H3>Pattern 1: Guarantee language</H3>
       <BeforeAfter
-        bad="Guaranteed hair regrowth or your money back — no other clinic offers this."
+        bad="Guaranteed hair regrowth or your money back - no other clinic offers this."
         good="Most of our appropriate surgical candidates experience sustained results; our consultation process aims to set realistic expectations, and we discuss our specific revision and follow-up policies during your visit."
         reason="Hair restoration guarantees are one of the most-litigated marketing patterns. Class action exposure alone makes this one of the least-advisable patterns in the category."
       />
 
       <H3>Pattern 2: Specific follicle-count claims</H3>
       <BeforeAfter
-        bad="3,000 follicular units transplanted — guaranteed 95% graft survival."
+        bad="3,000 follicular units transplanted - guaranteed 95% graft survival."
         good="Typical sessions for full-coverage restoration involve 1,500-3,500 grafts depending on area and density; graft survival in appropriate candidates is typically 85-95% across published literature."
         reason="Specific numerical outcome claims tied to specific patients need case-specific substantiation. Framing typical ranges from published literature is compliant."
       />
@@ -110,21 +110,21 @@ export default function Body() {
 
       <H3>Pattern 4: Method superiority claims</H3>
       <BeforeAfter
-        bad="FUE is the superior method — no scarring, faster recovery, better results."
+        bad="FUE is the superior method - no scarring, faster recovery, better results."
         good="We primarily perform FUE, which involves extracting follicular units individually. Some patients may be better served by FUT depending on donor supply, scarring considerations, and desired coverage; we discuss method selection at consultation."
         reason="Superiority claims between methods require substantiation. Method selection is case-specific; marketing one method as superior to another is a comparative-efficacy claim that generally cannot be substantiated generally."
       />
 
       <H3>Pattern 5: &ldquo;Pain-free&rdquo; absolutes</H3>
       <BeforeAfter
-        bad="Pain-free hair transplant — walk out and go right back to work."
+        bad="Pain-free hair transplant - walk out and go right back to work."
         good="Our local anesthesia protocols help most patients experience minimal discomfort; some patients experience soreness or tightness for several days post-procedure."
         reason="'Pain-free' is an absolute safety/comfort claim conflicting with typical patient experience. The compliant version describes typical experience accurately."
       />
 
       <H3>Pattern 6: PRP-specific efficacy guarantees</H3>
       <BeforeAfter
-        bad="PRP hair restoration — guaranteed density increase in 3 months."
+        bad="PRP hair restoration - guaranteed density increase in 3 months."
         good="PRP-based hair treatments are offered as part of our protocol for appropriate candidates with specific patterns of thinning; individual response varies significantly."
         reason="PRP hair restoration has its own specific compliance concerns (see PRP marketing compliance post). Guarantees + specific-timeline + PRP-specific is triple exposure."
       />
@@ -173,7 +173,7 @@ export default function Body() {
       <H3>Multi-modality approach framing</H3>
       <P>
         Most serious hair restoration involves combinations
-        &mdash; surgical restoration plus medical therapy plus
+        - surgical restoration plus medical therapy plus
         ongoing maintenance. Framing the practice as offering a
         comprehensive approach (rather than promising a single-session
         transformation) sets accurate expectations and is
@@ -259,7 +259,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Hair restoration is among the most-litigated marketing categories — FTC, state AG, and private class actions are all active.",
+          "Hair restoration is among the most-litigated marketing categories - FTC, state AG, and private class actions are all active.",
           "Guarantee language is the single highest-exposure pattern; broad outcome guarantees should generally be removed from marketing.",
           "Specific graft counts, timelines, and survival rates need case-specific substantiation or attribution to typical ranges from literature.",
           "Method-specific marketing pages outperform generic 'hair restoration' marketing both in compliance and conversion.",

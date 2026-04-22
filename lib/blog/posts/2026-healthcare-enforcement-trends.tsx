@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "2026 Healthcare Marketing Enforcement Trends: What Practices Should Expect This Year",
   description:
-    "A forward-looking analysis of where FDA, FTC, state AG, and platform-policy enforcement is heading in 2026 — and what healthcare practices should adjust to stay ahead of the trajectory.",
+    "A forward-looking analysis of where FDA, FTC, state AG, and platform-policy enforcement is heading in 2026 - and what healthcare practices should adjust to stay ahead of the trajectory.",
   excerpt:
     "Healthcare marketing enforcement is evolving fast. Here's where the trajectory points for 2026 across compounded medications, aesthetic practices, longevity marketing, AI-generated content, and platform policy.",
   date: "2026-04-22",
@@ -68,7 +68,7 @@ export default function Body() {
         </LI>
         <LI>
           Expansion of enforcement interest to other compounded drug
-          categories &mdash; compounded hormones, compounded peptides,
+          categories - compounded hormones, compounded peptides,
           compounded cosmetic preparations.
         </LI>
         <LI>
@@ -83,7 +83,7 @@ export default function Body() {
       <P>
         What to do: audit all compounded-drug marketing for
         equivalency language and correct. This applies beyond GLP-1
-        &mdash; the pattern is category-wide.
+        - the pattern is category-wide.
       </P>
 
       <H2 id="trend-2">Trend 2: Aesthetic device enforcement intensifies</H2>
@@ -95,7 +95,7 @@ export default function Body() {
       <UL>
         <LI>
           More specific FDA letters on device-category marketing
-          &mdash; lasers, RF, body contouring.
+          - lasers, RF, body contouring.
         </LI>
         <LI>
           Off-label body-area marketing increasingly cited.
@@ -247,8 +247,8 @@ export default function Body() {
 
       <H2 id="trend-9">Trend 9: Corporate practice of medicine</H2>
       <P>
-        Non-physician-owned healthcare entities &mdash; franchise med
-        spas, telehealth platforms, corporate-owned practices &mdash;
+        Non-physician-owned healthcare entities - franchise med
+        spas, telehealth platforms, corporate-owned practices -
         face increasing scrutiny in states with strict corporate
         practice rules. Expect:
       </P>
@@ -337,7 +337,7 @@ export default function Body() {
 
       <BQ>
         The enforcement environment in 2026 rewards practices that
-        invested in compliance programs before they had to &mdash;
+        invested in compliance programs before they had to -
         and penalizes practices that treated compliance as overhead
         rather than infrastructure. The gap between these two
         postures is wider than it&rsquo;s ever been, and growing.
@@ -406,7 +406,7 @@ export default function Body() {
           "AI-generated testimonials and fake patient content are specific 2026 enforcement targets under the updated FTC Endorsement Guides.",
           "Telehealth advertising rules are firming up at both federal and state levels.",
           "Platform policy enforcement (Meta, Google, TikTok) continues to tighten and affects account-level risk.",
-          "Documented compliance programs — written style guides, pre-publish review, trained staff — increasingly distinguish practices with favorable enforcement outcomes from those without.",
+          "Documented compliance programs - written style guides, pre-publish review, trained staff - increasingly distinguish practices with favorable enforcement outcomes from those without.",
         ]}
       />
     </>

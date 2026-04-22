@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
   description:
     "A 6-year analysis of FDA warning letters to healthcare practices reveals the most commonly cited phrases across specialties. Here's the specific language to avoid and the compliant alternatives that work.",
   excerpt:
-    "Across 6 years of FDA warning letters to healthcare practices, 25 specific phrases appear again and again. Here's the list — with compliant alternatives that preserve the marketing message.",
+    "Across 6 years of FDA warning letters to healthcare practices, 25 specific phrases appear again and again. Here's the list - with compliant alternatives that preserve the marketing message.",
   date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
@@ -46,7 +46,7 @@ export default function Body() {
         patterns. The FDA cites the same categories of language
         repeatedly, across specialties and enforcement waves.
         Understanding these specific patterns is the fastest path
-        to compliance &mdash; and to writing marketing that
+        to compliance - and to writing marketing that
         doesn&rsquo;t land a clinic on the next enforcement list.
       </Lead>
 
@@ -319,7 +319,7 @@ export default function Body() {
           "Disease-treatment claims and FDA regulatory-status misrepresentation are the two most-cited categories.",
           "Category-based compliance analysis catches patterns that specific phrase blocklists miss.",
           "The specific compliant alternatives preserve marketing messages while avoiding the enforcement patterns.",
-          "Most compliance failures trace to one of these 25 specific patterns — correction addresses a substantial share of exposure.",
+          "Most compliance failures trace to one of these 25 specific patterns - correction addresses a substantial share of exposure.",
         ]}
       />
     </>

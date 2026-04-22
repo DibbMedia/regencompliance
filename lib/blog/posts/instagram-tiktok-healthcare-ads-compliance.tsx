@@ -176,7 +176,7 @@ export default function Body() {
       </UL>
 
       <BeforeAfter
-        bad="Tired of chronic back pain? Our stem cell therapy can cure it in one visit. Book now — results guaranteed."
+        bad="Tired of chronic back pain? Our stem cell therapy can cure it in one visit. Book now - results guaranteed."
         good="Curious about regenerative medicine for your wellness goals? Discover our medically supervised program. Book a free consultation to discuss if you're a candidate."
         reason="The rejected version triggers four platform / regulatory issues at once: negative self-image (&ldquo;tired of&rdquo;), named medical condition (chronic back pain), cure claim, and outcome guarantee. The compliant version is aspirational, route-to-consultation, and avoids all four."
       />
@@ -216,7 +216,7 @@ export default function Body() {
       </UL>
 
       <H2 id="landing-page-coherence">
-        Landing-page coherence &mdash; the ad + page read as one claim
+        Landing-page coherence - the ad + page read as one claim
       </H2>
       <P>
         Regulators do not review ads in isolation. They review the ad +
@@ -236,7 +236,7 @@ export default function Body() {
       />
 
       <H2 id="ad-variant-risk">
-        Ad-variant risk &mdash; platform-generated copy is your copy
+        Ad-variant risk - platform-generated copy is your copy
       </H2>
       <P>
         Meta&rsquo;s Advantage+ and TikTok&rsquo;s Smart+ creative generate
@@ -290,7 +290,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Test the ad URL&rsquo;s canonical landing page</Strong>{" "}
-          &mdash; especially if you have UTM parameters that render
+          - especially if you have UTM parameters that render
           different content. Each UTM variant is independently evaluated.
         </LI>
         <LI>
@@ -366,7 +366,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Platform policies and FDA/FTC rules don't align &mdash; you have to satisfy both simultaneously.",
+          "Platform policies and FDA/FTC rules don't align - you have to satisfy both simultaneously.",
           "Every ad variant Meta or TikTok auto-generates is a separate advertising claim your brand is responsible for.",
           "Regulators evaluate the ad + landing page as one commercial message. Both surfaces have to pass the same scrutiny.",
           "TikTok enforces healthcare policies on organic content, not just paid ads. Don't treat organic as compliance-free.",

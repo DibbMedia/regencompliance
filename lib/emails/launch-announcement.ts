@@ -8,7 +8,7 @@ interface LaunchEmailParams {
 }
 
 export const LAUNCH_EMAIL_SUBJECT =
-  "You're in — 20% off forever as a RegenCompliance early-access member"
+  "You're in - 20% off forever as a RegenCompliance early-access member"
 
 export function renderLaunchEmail({ name, promoCode, appUrl }: LaunchEmailParams): string {
   const firstName = (name || "").trim().split(/\s+/)[0] || "there"
@@ -19,7 +19,7 @@ export function renderLaunchEmail({ name, promoCode, appUrl }: LaunchEmailParams
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RegenCompliance — You're in</title>
+    <title>RegenCompliance - You're in</title>
   </head>
   <body style="margin:0;padding:0;background-color:#0a0a0a;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#ffffff;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#0a0a0a;">

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Body Contouring Marketing Compliance: CoolSculpting, EmSculpt, Morpheus8 and the Device-Specific Rules Practices Miss",
   description:
-    "Non-surgical body contouring marketing — CoolSculpting, EmSculpt, SculpSure, Morpheus8 — carries device-specific FDA compliance rules plus FTC substantiation plus platform ad policy layers. Here's the full playbook.",
+    "Non-surgical body contouring marketing - CoolSculpting, EmSculpt, SculpSure, Morpheus8 - carries device-specific FDA compliance rules plus FTC substantiation plus platform ad policy layers. Here's the full playbook.",
   excerpt:
     "Body contouring devices have specific FDA-cleared indications. Marketing them for unapproved body areas, with guaranteed results, or with transformation-style before/afters triggers multiple enforcement patterns. Here's how to market compliantly.",
   date: "2026-04-22",
@@ -42,7 +42,7 @@ export default function Body() {
     <>
       <Lead>
         Non-surgical body contouring is one of the most-advertised
-        aesthetic service categories &mdash; CoolSculpting, EmSculpt,
+        aesthetic service categories - CoolSculpting, EmSculpt,
         SculpSure, TruSculpt, Morpheus8, Emsella, and similar devices
         across hundreds of thousands of practices. Most of these
         devices have specific FDA-cleared indications for specific
@@ -101,7 +101,7 @@ export default function Body() {
       <BeforeAfter
         bad="FDA-approved CoolSculpting for any problem area on your body."
         good="CoolSculpting is FDA-cleared for [specific labeled body areas]. We evaluate candidacy for each patient and discuss which areas are appropriate at consultation."
-        reason="CoolSculpting is FDA-cleared, not FDA-approved. 'Any problem area' extends the marketing beyond labeled indications — which is off-label marketing of a medical device."
+        reason="CoolSculpting is FDA-cleared, not FDA-approved. 'Any problem area' extends the marketing beyond labeled indications - which is off-label marketing of a medical device."
       />
 
       <H3>Pattern 2: Off-label body areas</H3>
@@ -113,7 +113,7 @@ export default function Body() {
 
       <H3>Pattern 3: Guarantee results and transformation claims</H3>
       <BeforeAfter
-        bad="Guaranteed 20-25% fat reduction in a single treatment — or your money back."
+        bad="Guaranteed 20-25% fat reduction in a single treatment - or your money back."
         good="Clinical studies of cryolipolysis have shown an average 20-25% reduction in fat layer thickness in treated areas in appropriate candidates (per manufacturer's clinical data). Individual results vary by candidacy, treatment protocol, and lifestyle factors."
         reason="Guarantees trigger FTC substantiation requirements. Attributing specific numbers to the device without citing the underlying studies is the pattern regulators cite. Citation of published studies is compliant."
       />
@@ -127,14 +127,14 @@ export default function Body() {
 
       <H3>Pattern 5: &ldquo;Non-surgical liposuction&rdquo; equivalence claims</H3>
       <BeforeAfter
-        bad="Non-surgical liposuction — the same results without the surgery."
+        bad="Non-surgical liposuction - the same results without the surgery."
         good="Body contouring as a non-surgical option; the results and experience are different from surgical liposuction, and our consultation includes discussing both."
         reason="'Same results' as liposuction is a comparative equivalence claim that clinical evidence does not support. Liposuction produces different and typically more dramatic volume reduction."
       />
 
       <H3>Pattern 6: &ldquo;No downtime&rdquo; absolutes</H3>
       <BeforeAfter
-        bad="Zero downtime — walk out and get right back to your life!"
+        bad="Zero downtime - walk out and get right back to your life!"
         good="Most patients resume normal activities the same day, though some patients experience soreness, bruising, or numbness for days to weeks after treatment."
         reason="'Zero downtime' is an absolute claim that conflicts with documented side effects of most body-contouring modalities. The compliant version describes typical experience including the known potential side effects."
       />
@@ -233,7 +233,7 @@ export default function Body() {
         Clinical appropriateness for individual patients is a
         professional judgment matter between provider and patient.
         Marketing specifically to draw patients with off-label area
-        requests is the compliance issue &mdash; the clinical
+        requests is the compliance issue - the clinical
         discussion within consultation is a different matter.
       </P>
 
@@ -248,7 +248,7 @@ export default function Body() {
       <H3>Can I compare my results to competitors?</H3>
       <P>
         Competitive comparison claims require substantiation meeting
-        the FTC standard &mdash; head-to-head studies of the specific
+        the FTC standard - head-to-head studies of the specific
         devices and protocols being compared. Most clinic-level
         comparison marketing cannot substantiate the specific
         comparison claims being made.
@@ -265,7 +265,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Body-contouring devices are FDA-cleared (not approved) for specific body areas and indications — marketing outside those is off-label device marketing.",
+          "Body-contouring devices are FDA-cleared (not approved) for specific body areas and indications - marketing outside those is off-label device marketing.",
           "Transformation-style before/afters with peak-outcome framing are the single most-common enforcement pattern in this category.",
           "Guarantee language and 'non-surgical liposuction' equivalence claims are both substantiation-rule violations.",
           "Device-specific marketing pages with accurate indications outperform generic 'body contouring' marketing both compliance-wise and in conversion.",

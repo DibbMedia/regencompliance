@@ -7,17 +7,17 @@ export const meta: CompetitorMeta = {
   categoryLabel: "Grammar and style assistant",
   title: "RegenCompliance vs Grammarly for Healthcare Compliance (2026)",
   description:
-    "Grammarly catches grammar, spelling, and style issues. It does not catch FDA or FTC violations. Why grammar tools miss the exact mistakes that trigger warning letters — and what to use instead.",
+    "Grammarly catches grammar, spelling, and style issues. It does not catch FDA or FTC violations. Why grammar tools miss the exact mistakes that trigger warning letters - and what to use instead.",
   heroBadge: "Beyond grammar",
   heroTagline:
-    "Grammarly will catch 'principle' vs 'principal' and fix your comma splice. It will not catch 'FDA-approved stem cells' — a phrase that has been the basis for warning letters for years.",
+    "Grammarly will catch 'principle' vs 'principal' and fix your comma splice. It will not catch 'FDA-approved stem cells' - a phrase that has been the basis for warning letters for years.",
   bottomLine:
     "Grammarly is an outstanding grammar and style tool. It was never designed as a regulatory compliance tool, and it does not function as one. Running healthcare marketing copy through Grammarly will improve its grammar and style with high reliability. It will not reduce your FDA or FTC enforcement exposure, because Grammarly does not model that problem. Keep Grammarly. Add RegenCompliance. They solve different problems at different layers.",
   shortVerdict:
     "Grammarly fixes grammar. RegenCompliance catches the phrases that trigger federal enforcement. Completely different problems.",
   theirStrengths: [
     {
-      title: "Grammar, spelling, and punctuation — best in class",
+      title: "Grammar, spelling, and punctuation - best in class",
       body: "Grammarly's core grammar and spelling engine is genuinely among the best in software. For catching typos, comma splices, subject-verb mismatches, and punctuation issues, it is hard to beat.",
     },
     {
@@ -44,7 +44,7 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Current enforcement data, not a frozen rulebook",
-      body: "Every week, the FDA issues new warning letters and the FTC announces new enforcement actions. Our rule set ingests these daily. A grammar tool's rule set is grammar — which does not need weekly updates, because grammar does not change.",
+      body: "Every week, the FDA issues new warning letters and the FTC announces new enforcement actions. Our rule set ingests these daily. A grammar tool's rule set is grammar - which does not need weekly updates, because grammar does not change.",
     },
     {
       title: "Audit trail built for regulatory response",
@@ -54,7 +54,7 @@ export const meta: CompetitorMeta = {
   honestLimitations: [
     "Grammarly catches grammar and spelling that we do not. Our scanner is not a grammar check.",
     "Grammarly's real-time inline editor is a different UX from our paste-and-scan workflow. For live writing, Grammarly's surface is more convenient.",
-    "If all you write is internal memos, operations docs, and non-medical patient comms — Grammarly alone is fine.",
+    "If all you write is internal memos, operations docs, and non-medical patient comms - Grammarly alone is fine.",
     "We do not compete on tone detection, brevity scoring, or readability grades. Grammarly is the better tool for those.",
   ],
   useCases: [
@@ -74,13 +74,13 @@ export const meta: CompetitorMeta = {
       scenario: "Social media captions",
       winner: "us",
       recommendation:
-        "Captions are short enough that grammar issues are already obvious. The compliance exposure is the hidden problem — short captions violate the FTC Endorsement Guides, typical-experience rules, and structure-function boundary constantly.",
+        "Captions are short enough that grammar issues are already obvious. The compliance exposure is the hidden problem - short captions violate the FTC Endorsement Guides, typical-experience rules, and structure-function boundary constantly.",
     },
     {
       scenario: "Internal SOPs and operations docs",
       winner: "them",
       recommendation:
-        "No public audience, no regulatory exposure. Grammarly is the right tool. Do not run internal docs through RegenCompliance — it is not that kind of check.",
+        "No public audience, no regulatory exposure. Grammarly is the right tool. Do not run internal docs through RegenCompliance - it is not that kind of check.",
     },
     {
       scenario: "Email to a prospective patient",
@@ -119,7 +119,7 @@ export const meta: CompetitorMeta = {
   faqs: [
     {
       q: "Will Grammarly eventually add FDA/FTC compliance checks?",
-      a: "Nothing about Grammarly's product direction suggests they will. Their roadmap centers on writing assistance across all industries — grammar, style, tone, clarity, plagiarism, generative drafting. Purpose-built regulatory compliance is a categorically different product with a different data model, different enforcement-monitoring infrastructure, and different audit-trail requirements. The horizontal-tool-adds-vertical-feature pattern does not typically produce best-in-class vertical tools.",
+      a: "Nothing about Grammarly's product direction suggests they will. Their roadmap centers on writing assistance across all industries - grammar, style, tone, clarity, plagiarism, generative drafting. Purpose-built regulatory compliance is a categorically different product with a different data model, different enforcement-monitoring infrastructure, and different audit-trail requirements. The horizontal-tool-adds-vertical-feature pattern does not typically produce best-in-class vertical tools.",
     },
     {
       q: "Is there overlap between the two tools?",
@@ -127,7 +127,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Does Grammarly Business have any compliance features?",
-      a: "Grammarly Business adds style guides, brand tone, and team analytics. None of these are regulatory compliance features. 'Style guide' in Grammarly terms means enforcing internal writing standards (e.g., 'always use serial commas,' 'prefer active voice') — not enforcing external regulatory rules.",
+      a: "Grammarly Business adds style guides, brand tone, and team analytics. None of these are regulatory compliance features. 'Style guide' in Grammarly terms means enforcing internal writing standards (e.g., 'always use serial commas,' 'prefer active voice') - not enforcing external regulatory rules.",
     },
     {
       q: "If I use Grammarly for everything, am I safe?",
@@ -139,7 +139,7 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "Does RegenCompliance do any grammar or style checking?",
-      a: "No. We focus exclusively on healthcare regulatory compliance. Adding grammar checking would spread our focus — and the Grammarly-style surface is already well-served. We stay deep on the one thing nobody else does well.",
+      a: "No. We focus exclusively on healthcare regulatory compliance. Adding grammar checking would spread our focus - and the Grammarly-style surface is already well-served. We stay deep on the one thing nobody else does well.",
     },
   ],
   relatedBlogSlugs: [

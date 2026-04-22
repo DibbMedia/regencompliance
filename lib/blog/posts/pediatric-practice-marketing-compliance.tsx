@@ -61,7 +61,7 @@ export default function Body() {
           is standard healthcare marketing under general FTC rules.
         </LI>
         <LI>
-          Content directly targeting children is separate &mdash;
+          Content directly targeting children is separate -
           with more restrictive rules.
         </LI>
         <LI>
@@ -139,7 +139,7 @@ export default function Body() {
           Privacy considerations that extend beyond HIPAA.
         </LI>
         <LI>
-          Permanence of online presence &mdash; content the child
+          Permanence of online presence - content the child
           can&rsquo;t consent to remove later.
         </LI>
       </UL>
@@ -147,7 +147,7 @@ export default function Body() {
       <H3>Pattern 4: Treatment guarantee claims</H3>
       <P>
         &ldquo;Guaranteed pain-free pediatric dental visits,&rdquo;
-        &ldquo;guaranteed outcomes for [condition]&rdquo; &mdash;
+        &ldquo;guaranteed outcomes for [condition]&rdquo; -
         pediatric guarantee language faces standard FTC rules plus
         specific sensitivity considerations around vulnerable
         patient populations.
@@ -267,7 +267,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Pediatric practice marketing is marketing to parents about services for children — with heightened FTC scrutiny on children-affecting content.",
+          "Pediatric practice marketing is marketing to parents about services for children - with heightened FTC scrutiny on children-affecting content.",
           "COPPA applies to online services directed at children under 13; most practice websites target parents but child-interactive content triggers COPPA.",
           "Children's imagery requires parental HIPAA authorization plus additional privacy considerations for the child's long-term interests.",
           "Alternative therapy marketing for pediatric conditions (autism, ADHD) faces particular FTC substantiation scrutiny.",

@@ -24,4 +24,4 @@ export function detectPhi(text: string): PhiDetection {
 }
 
 export const PHI_ERROR_MESSAGE =
-  "Your content looks like it contains patient information (PHI). For safety, we block these patterns. Please only scan marketing materials — remove patient names, DOB, MRN, SSN, or insurance identifiers before scanning."
+  "Your content looks like it contains patient information (PHI). For safety, we block these patterns. Please only scan marketing materials - remove patient names, DOB, MRN, SSN, or insurance identifiers before scanning."

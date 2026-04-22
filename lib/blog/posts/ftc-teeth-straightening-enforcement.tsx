@@ -40,9 +40,9 @@ export default function Body() {
   return (
     <>
       <Lead>
-        The direct-to-consumer teeth-straightening category &mdash;
+        The direct-to-consumer teeth-straightening category -
         epitomized by SmileDirectClub&rsquo;s rise and collapse
-        &mdash; produced sustained regulatory attention from the
+        - produced sustained regulatory attention from the
         FTC, state dental boards, and state AGs over roughly a
         decade. The patterns cited in those enforcement actions
         apply to the broader clear aligner marketplace, including
@@ -153,8 +153,8 @@ export default function Body() {
 
       <H3>Lesson 1: Supervision representation matters</H3>
       <P>
-        Any aligner or orthodontic practice &mdash; DTC, teledental,
-        or traditional &mdash; must accurately represent who is
+        Any aligner or orthodontic practice - DTC, teledental,
+        or traditional - must accurately represent who is
         supervising treatment and at what level. Implying
         specialist supervision when actual supervision is general
         practice creates exposure regardless of business model.
@@ -251,8 +251,8 @@ export default function Body() {
         The DTC aligner era wasn&rsquo;t about any single practice;
         it was about the sustained conflict between marketing
         claims and clinical/regulatory reality. Practices
-        operating in the broader aligner space &mdash; or in any
-        healthcare category where that gap opens &mdash; should
+        operating in the broader aligner space - or in any
+        healthcare category where that gap opens - should
         learn from the trajectory.
       </BQ>
 
@@ -305,9 +305,9 @@ export default function Body() {
         items={[
           "The DTC aligner enforcement saga produced specific lessons applicable to the broader clear aligner and orthodontic marketing industry.",
           "Supervision representation, clinical evaluation adequacy, and non-disparagement clauses were the primary enforcement threads.",
-          "Consumer Review Fairness Act prohibits non-disparagement clauses — all healthcare practices should audit consumer agreements.",
+          "Consumer Review Fairness Act prohibits non-disparagement clauses - all healthcare practices should audit consumer agreements.",
           "Scaling marketing ahead of compliance scaling creates concentrated exposure that can ultimately threaten business operations.",
-          "State dental boards were particularly decisive in this category — state-level enforcement is a significant vector.",
+          "State dental boards were particularly decisive in this category - state-level enforcement is a significant vector.",
         ]}
       />
     </>

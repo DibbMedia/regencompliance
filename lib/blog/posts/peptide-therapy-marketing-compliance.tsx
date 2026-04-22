@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "Peptide Therapy Marketing Compliance: BPC-157, Ipamorelin, and the FDA Schedule Changes That Shifted Everything",
   description:
-    "Peptide therapy marketing — BPC-157, Ipamorelin, TB-500, and adjacent compounds — faces a specifically shifting regulatory landscape. Here's what the FDA schedule changes mean for clinic marketing and how to stay compliant.",
+    "Peptide therapy marketing - BPC-157, Ipamorelin, TB-500, and adjacent compounds - faces a specifically shifting regulatory landscape. Here's what the FDA schedule changes mean for clinic marketing and how to stay compliant.",
   excerpt:
     "The FDA scheduled several commonly-marketed peptides as prohibited for compounding in recent years. Peptide clinic marketing that hasn't updated is operating in a different regulatory world than it started in. Here's the current framework.",
   date: "2026-04-22",
@@ -56,8 +56,8 @@ export default function Body() {
       <P>
         The FDA&rsquo;s 503A compounding framework evaluates specific
         substances for compounding eligibility. Several peptides
-        commonly used in wellness practice &mdash; including BPC-157
-        &mdash; were placed on the Category 2 list (significant
+        commonly used in wellness practice - including BPC-157
+        - were placed on the Category 2 list (significant
         safety risks), effectively restricting 503A compounding.
         Other peptides remain available through various pathways but
         with specific restrictions.
@@ -85,7 +85,7 @@ export default function Body() {
 
       <H3>Pattern 1: Marketing restricted peptides as broadly available</H3>
       <BeforeAfter
-        bad="BPC-157 — healing and recovery peptide now available at our clinic."
+        bad="BPC-157 - healing and recovery peptide now available at our clinic."
         good="(If a peptide is no longer appropriately compoundable for your state/pharmacy situation, remove it from marketing. Marketing products that cannot legally be provided is a misrepresentation issue beyond the standard compliance concerns.)"
         reason="Marketing peptides whose compounding status has been restricted creates a false impression that the product is readily available through standard channels."
       />
@@ -99,14 +99,14 @@ export default function Body() {
 
       <H3>Pattern 3: Performance and body composition claims</H3>
       <BeforeAfter
-        bad="Ipamorelin and CJC-1295 — build lean muscle, lose fat, improve recovery."
+        bad="Ipamorelin and CJC-1295 - build lean muscle, lose fat, improve recovery."
         good="Growth hormone-releasing peptides are one option in our comprehensive approach to specific clinical goals; we discuss candidacy and current options at consultation."
         reason="Performance claims need substantiation; peptide-specific performance claims typically cannot meet the FTC evidence standard."
       />
 
       <H3>Pattern 4: Anti-aging and longevity claims</H3>
       <BeforeAfter
-        bad="Peptide therapy — turn back the clock and extend your lifespan."
+        bad="Peptide therapy - turn back the clock and extend your lifespan."
         good="Peptides are a broad category of signaling molecules involved in various biological processes. Research on specific peptides continues; our practice offers peptide options for clinically appropriate candidates."
         reason="Anti-aging and longevity claims are FTC enforcement priorities. Biology-first framing is compliant; longevity outcome claims are not."
       />
@@ -120,7 +120,7 @@ export default function Body() {
 
       <H3>Pattern 6: Injectable peptide marketing to at-home use</H3>
       <BeforeAfter
-        bad="Weekly at-home peptide injections — convenient, effective, affordable."
+        bad="Weekly at-home peptide injections - convenient, effective, affordable."
         good="Our in-clinic peptide protocol includes scheduled injections administered under clinical supervision; appropriate monitoring is part of our program."
         reason="At-home injectable peptide marketing raises both supervision and safety considerations that regulators have cited. In-clinic framing is both clinically safer and compliance-safer."
       />

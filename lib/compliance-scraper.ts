@@ -260,7 +260,7 @@ export interface ExtractedRule {
 const EXTRACTION_PROMPT = `You are a compliance analyst specializing in regenerative medicine marketing regulations.
 You use the following risk classification system:
 
-RED LIGHT (high risk) — phrases/claims that are NEVER allowed:
+RED LIGHT (high risk) - phrases/claims that are NEVER allowed:
 - Cure/treatment claims for unapproved therapies
 - Guaranteed outcomes or absolute safety claims
 - FDA approval misrepresentation
@@ -268,14 +268,14 @@ RED LIGHT (high risk) — phrases/claims that are NEVER allowed:
 - Comparative superiority without substantiation
 - Misleading credentials, PHI in marketing, fake reviews
 
-YELLOW LIGHT (medium risk) — phrases that are RESTRICTED and need disclaimers:
+YELLOW LIGHT (medium risk) - phrases that are RESTRICTED and need disclaimers:
 - Research citations without links or FDA disclaimers
 - Off-label use mentions without off-label disclaimer
 - Patient experience language without typicality disclosure
 - PRP/PRF benefit claims without off-label status clarification
 - Stem cell/exosome educational content without regulatory status disclaimers
 
-GREEN LIGHT (low risk / approved) — safe patterns:
+GREEN LIGHT (low risk / approved) - safe patterns:
 - Educational overviews, consultation framing, process descriptions
 - Balanced risk language, clear regulatory status
 - General wellness claims, real credentials, proper disclaimers
@@ -319,7 +319,7 @@ export async function extractRulesFromText(
     const content = response.content[0]
     if (content.type !== "text") return []
 
-    // Parse JSON — handle possible markdown fencing
+    // Parse JSON - handle possible markdown fencing
     let jsonStr = content.text.trim()
     if (jsonStr.startsWith("```")) {
       jsonStr = jsonStr.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "")
@@ -362,7 +362,7 @@ export async function isDuplicateRule(
     if (isSimpleDuplicate(newPhrase, existing)) return true
   }
 
-  // No simple match found — batch check the closest candidates with Claude
+  // No simple match found - batch check the closest candidates with Claude
   // Only check against a reasonable subset to avoid excessive API calls
   const candidates = existingPhrases.slice(0, 50)
   if (candidates.length === 0) return false
@@ -410,7 +410,7 @@ compliance library. Read the document and return STRICT JSON with these fields:
 - "product_or_treatment": short phrase naming the product or treatment at issue
   (e.g., "stem cell injections for arthritis", "exosome IV therapy"). Use null
   if not applicable.
-- "summary": exactly 1-3 sentences in plain English explaining what happened —
+- "summary": exactly 1-3 sentences in plain English explaining what happened -
   who was cited, what they were marketing, and what the agency said. No quotes,
   no markdown, no bullet points. Maximum 350 characters.
 

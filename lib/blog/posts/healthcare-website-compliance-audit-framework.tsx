@@ -42,21 +42,21 @@ export const meta: BlogPostMeta = {
       "@type": "HowTo",
       name: "How to Audit a Healthcare Website for FDA/FTC Compliance in Two Weeks",
       description:
-        "A tactical 5-step framework for auditing a healthcare practice website for FDA/FTC compliance violations — inventory, triage, claim-category scan, rewrite at source, archive retirement.",
+        "A tactical 5-step framework for auditing a healthcare practice website for FDA/FTC compliance violations - inventory, triage, claim-category scan, rewrite at source, archive retirement.",
       totalTime: "P14D",
       step: [
         {
           "@type": "HowToStep",
           position: 1,
           name: "Full marketing-surface inventory",
-          text: "Pull every marketing surface into one sheet — website pages (via sitemap or crawl), social media posts and highlights, paid ads (active and paused), email templates and automations, sales scripts, intake forms, and third-party listings like Google Business, Yelp, Healthgrades, Zocdoc.",
+          text: "Pull every marketing surface into one sheet - website pages (via sitemap or crawl), social media posts and highlights, paid ads (active and paused), email templates and automations, sales scripts, intake forms, and third-party listings like Google Business, Yelp, Healthgrades, Zocdoc.",
           url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-1-inventory",
         },
         {
           "@type": "HowToStep",
           position: 2,
           name: "Pageview-weighted triage",
-          text: "Rank the inventory by pageviews and impressions. Top-traffic assets get reviewed first. Target the top 20% of traffic-weighted surfaces for the initial pass — this typically captures 80%+ of enforcement exposure.",
+          text: "Rank the inventory by pageviews and impressions. Top-traffic assets get reviewed first. Target the top 20% of traffic-weighted surfaces for the initial pass - this typically captures 80%+ of enforcement exposure.",
           url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-2-triage",
         },
         {
@@ -70,14 +70,14 @@ export const meta: BlogPostMeta = {
           "@type": "HowToStep",
           position: 4,
           name: "Rewrite at source",
-          text: "Update your style guide and content sources with compliant language — not just the audit output. The goal is preventing the same violations from reappearing in future content, not just removing them once.",
+          text: "Update your style guide and content sources with compliant language - not just the audit output. The goal is preventing the same violations from reappearing in future content, not just removing them once.",
           url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-4-rewrite",
         },
         {
           "@type": "HowToStep",
           position: 5,
           name: "Archive retirement",
-          text: "Old pages, old social posts, and old ads that aren't worth updating should be deprecated, delisted, or removed. Regulators read your active public surface — if it exists and is findable, it's in scope.",
+          text: "Old pages, old social posts, and old ads that aren't worth updating should be deprecated, delisted, or removed. Regulators read your active public surface - if it exists and is findable, it's in scope.",
           url: "https://compliance.regenportal.com/blog/healthcare-website-compliance-audit-framework#step-5-archive",
         },
       ],
@@ -99,7 +99,7 @@ export default function Body() {
       <Lead>
         A website compliance audit is the single highest-ROI compliance
         investment a healthcare practice can make right now. It is also the
-        single most commonly misrun one &mdash; either treated as a
+        single most commonly misrun one - either treated as a
         once-a-year legal review, or as a one-time cleanup that finishes and
         stays finished. Both approaches fail under 2026 FDA/FTC enforcement
         cadence. Here is the framework that actually works.
@@ -116,14 +116,14 @@ export default function Body() {
       <Callout variant="info" title="Two-week sprint, not a two-month project">
         Every clinic that runs this framework in under two weeks ships. Every
         clinic that treats it as a two-month project does not. Time-box
-        aggressively &mdash; the goal is getting the worst risk off the
+        aggressively - the goal is getting the worst risk off the
         public surface this month, not building a perfect audit program.
       </Callout>
 
-      <H2 id="step-1-inventory">Step 1 — Full marketing-surface inventory</H2>
+      <H2 id="step-1-inventory">Step 1 - Full marketing-surface inventory</H2>
       <P>
         Before you can audit, you need to know what exists. Most clinic owners
-        underestimate this by a factor of 5 to 10 &mdash; the marketing
+        underestimate this by a factor of 5 to 10 - the marketing
         surface is always larger than you think.
       </P>
       <H3>What to inventory</H3>
@@ -140,7 +140,7 @@ export default function Body() {
         <LI>
           <Strong>Paid ads.</Strong> Every active and paused ad + every ad
           variation across Google, Meta, TikTok, YouTube. Platform ad
-          libraries are public &mdash; regulators use them.
+          libraries are public - regulators use them.
         </LI>
         <LI>
           <Strong>Email.</Strong> Every template in your ESP, every automation
@@ -168,7 +168,7 @@ export default function Body() {
       </P>
 
       <H2 id="step-2-triage">
-        Step 2 — Pageview-weighted triage
+        Step 2 - Pageview-weighted triage
       </H2>
       <P>
         Auditing 200 pages perfectly takes weeks. Auditing the top 10 pages
@@ -207,14 +207,14 @@ export default function Body() {
       </Callout>
 
       <H2 id="step-3-claim-category-scan">
-        Step 3 — Claim-category scan
+        Step 3 - Claim-category scan
       </H2>
       <P>
         For each surface in your triaged list, scan against four specific
         claim categories. These are the categories that drive the vast
         majority of 2024&ndash;2026 enforcement.
       </P>
-      <H3>Category 1 — Disease claims</H3>
+      <H3>Category 1 - Disease claims</H3>
       <P>
         Any language asserting the product or procedure treats, cures, heals,
         reverses, or prevents a named medical condition. This is the single
@@ -227,7 +227,7 @@ export default function Body() {
         </Link>{" "}
         for the line.
       </P>
-      <H3>Category 2 — Implied or false FDA status</H3>
+      <H3>Category 2 - Implied or false FDA status</H3>
       <P>
         &ldquo;FDA-approved&rdquo; language when what you mean is
         FDA-registered, or when nothing at all is FDA-approved in the
@@ -240,12 +240,12 @@ export default function Body() {
         </Link>{" "}
         for the specific phrases.
       </P>
-      <H3>Category 3 — Outcome guarantees and safety absolutes</H3>
+      <H3>Category 3 - Outcome guarantees and safety absolutes</H3>
       <P>
         &ldquo;Guaranteed,&rdquo; &ldquo;100% safe,&rdquo; &ldquo;no side
         effects,&rdquo; &ldquo;risk-free.&rdquo; FTC territory.
       </P>
-      <H3>Category 4 — Testimonial and before/after compliance</H3>
+      <H3>Category 4 - Testimonial and before/after compliance</H3>
       <P>
         Testimonials without typical-experience disclosure. Before/after
         photos without standardization or consent documentation. Paid
@@ -259,7 +259,7 @@ export default function Body() {
       </P>
 
       <H2 id="step-4-rewrite-at-source">
-        Step 4 — Rewrite at the source, not at the instance
+        Step 4 - Rewrite at the source, not at the instance
       </H2>
       <P>
         The most common audit failure is fixing each flagged phrase one at a
@@ -296,7 +296,7 @@ export default function Body() {
       </P>
 
       <H2 id="step-5-archive-retirement">
-        Step 5 — Archive retirement and audit trail
+        Step 5 - Archive retirement and audit trail
       </H2>
       <P>
         Two things remain after the rewrite pass.
@@ -304,7 +304,7 @@ export default function Body() {
       <H3>Archive retirement</H3>
       <P>
         Pages, posts, and ads that were written under an older compliance
-        standard and cannot be rewritten compliantly get retired &mdash; not
+        standard and cannot be rewritten compliantly get retired - not
         hidden. For a website page that means 301-redirect it to the most
         relevant compliant page, so any link equity is preserved and the old
         URL stops serving violative content. For a social post, delete it;
@@ -312,8 +312,8 @@ export default function Body() {
       </P>
       <H3>Audit trail</H3>
       <P>
-        Every change you made in the audit &mdash; what was flagged, what
-        was rewritten, what was retired, by whom, and when &mdash; goes
+        Every change you made in the audit - what was flagged, what
+        was rewritten, what was retired, by whom, and when - goes
         into a centralized audit log. If a warning letter arrives nine
         months from now, this is the file that turns a 15-business-day
         panic into a 15-business-day administrative task.
@@ -362,7 +362,7 @@ export default function Body() {
           you have one.
         </LI>
         <LI>
-          <Strong>Vendor (if any):</Strong> runs the technical side &mdash;
+          <Strong>Vendor (if any):</Strong> runs the technical side -
           redirects, sitemap updates, CMS edits. Does not make compliance
           calls on copy.
         </LI>
@@ -394,7 +394,7 @@ export default function Body() {
           "Time-box the first audit at two weeks. Clinics that run it as a two-month project stall.",
           "Prioritize by pageviews and active-ad landing pages, not alphabetically.",
           "Scan every surface against four categories: disease claims, implied FDA approval, guarantees, testimonials.",
-          "Fix at the source &mdash; style guide, testimonial workflow, pre-publish scan &mdash; so violations stop entering in the first place.",
+          "Fix at the source - style guide, testimonial workflow, pre-publish scan - so violations stop entering in the first place.",
           "Keep an exportable audit trail. In a warning-letter response, the trail is the program.",
         ]}
       />

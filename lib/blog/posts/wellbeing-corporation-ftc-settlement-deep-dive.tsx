@@ -17,11 +17,11 @@ import {
 export const meta: BlogPostMeta = {
   slug: "wellbeing-corporation-ftc-settlement-deep-dive",
   title:
-    "The $5.15M FTC Stem Cell Settlement: A Full Breakdown of Wellbeing Corporation — and What It Means for Every Healthcare Clinic",
+    "The $5.15M FTC Stem Cell Settlement: A Full Breakdown of Wellbeing Corporation - and What It Means for Every Healthcare Clinic",
   description:
-    "Deep-dive analysis of the FTC's Wellbeing Corporation settlement — how a single Instagram post led to a $5.15M penalty, a 20-year compliance monitoring order, and permanent bars on stem cell claims. Plus what every healthcare practice should learn from it.",
+    "Deep-dive analysis of the FTC's Wellbeing Corporation settlement - how a single Instagram post led to a $5.15M penalty, a 20-year compliance monitoring order, and permanent bars on stem cell claims. Plus what every healthcare practice should learn from it.",
   excerpt:
-    "One Instagram post. Five claims about stem cells. $5.15M paid and a 20-year compliance leash. The case that sets the current FTC enforcement bar for every healthcare practice — and the specific mistakes you can avoid by reading it carefully.",
+    "One Instagram post. Five claims about stem cells. $5.15M paid and a 20-year compliance leash. The case that sets the current FTC enforcement bar for every healthcare practice - and the specific mistakes you can avoid by reading it carefully.",
   date: "2026-04-22",
   readingMinutes: 12,
   keywords: [
@@ -33,7 +33,7 @@ export const meta: BlogPostMeta = {
   ],
   tags: ["Case study", "FTC", "Enforcement"],
   author: { name: "RegenCompliance Editorial", role: "FDA/FTC compliance desk" },
-  heroLabel: "Case study — enforcement",
+  heroLabel: "Case study - enforcement",
 }
 
 export default function Body() {
@@ -46,7 +46,7 @@ export default function Body() {
         single Instagram post led to a $5.15 million settlement, a 20-year
         compliance monitoring order, and a permanent bar on a long list of
         specific claims. The case set the FTC&rsquo;s current enforcement
-        bar for social-media healthcare marketing &mdash; and it is still the
+        bar for social-media healthcare marketing - and it is still the
         template the agency uses when pursuing similar practices.
       </Lead>
 
@@ -72,7 +72,7 @@ export default function Body() {
       <H2 id="what-happened">What actually happened</H2>
       <P>
         The FTC&rsquo;s complaint centered on a set of marketing claims the
-        company made about stem cell treatments &mdash; specifically claims
+        company made about stem cell treatments - specifically claims
         that the treatments could address serious health conditions. The
         complaint alleged that these claims were made without adequate
         substantiation, meaning the company did not have the kind of
@@ -83,7 +83,7 @@ export default function Body() {
         The claims appeared across multiple surfaces: the company&rsquo;s
         website, its YouTube presence, its Facebook and Instagram accounts,
         and in consumer-facing testimonial content. The FTC treated the
-        entire surface as a single connected advertising operation &mdash; a
+        entire surface as a single connected advertising operation - a
         point worth noting, because many clinics think about their website
         and their social media as separate compliance surfaces. The FTC
         does not.
@@ -92,7 +92,7 @@ export default function Body() {
       <H2 id="the-claims">The specific claims that triggered the action</H2>
       <P>
         According to the public record, the marketing claims at issue
-        included some variation of the following &mdash; we paraphrase
+        included some variation of the following - we paraphrase
         rather than quote exactly, because the settlement documents are
         long and specific:
       </P>
@@ -131,7 +131,7 @@ export default function Body() {
         The FTC complaint specifically cited a single Instagram post as
         part of the evidentiary basis. The post made outcome claims about
         stem cell treatment for a named condition. A single post. That is
-        the level of granularity FTC investigations work at &mdash; not
+        the level of granularity FTC investigations work at - not
         a pattern of dozens, but a handful of specific posts cited by the
         FTC as deceptive.
       </Callout>
@@ -149,7 +149,7 @@ export default function Body() {
       <P>
         The order required a $5.15 million payment for consumer redress.
         That number is the widely-cited headline, but the economic impact
-        extended well beyond &mdash; the order included asset freezes,
+        extended well beyond - the order included asset freezes,
         accounting obligations, and ongoing compliance costs that run for
         the full 20-year monitoring period.
       </P>
@@ -157,7 +157,7 @@ export default function Body() {
       <H3>Permanent prohibitions</H3>
       <P>
         The order permanently prohibits specific categories of marketing
-        claims &mdash; not just the exact claims cited in the complaint,
+        claims - not just the exact claims cited in the complaint,
         but broader claim categories. The defendants are barred from making
         any claim that a stem cell treatment can treat, cure, or mitigate
         any specific disease without first possessing &ldquo;competent and
@@ -180,7 +180,7 @@ export default function Body() {
         The defendants were required to notify former patients of the
         settlement and to post specific language on their public marketing
         surfaces. This notice obligation itself is often the most damaging
-        long-term consequence &mdash; because it permanently associates
+        long-term consequence - because it permanently associates
         the business with the enforcement action in any patient&rsquo;s
         search history.
       </P>
@@ -196,7 +196,7 @@ export default function Body() {
           <Strong>Social media posts are advertising.</Strong> Every
           Instagram post, TikTok video, and Facebook update counts as an
           advertisement subject to full FTC advertising law. Not a sliver
-          of it, not a simplified version &mdash; all of it.
+          of it, not a simplified version - all of it.
         </LI>
         <LI>
           <Strong>Small operations face full FTC Act authority.</Strong>
@@ -224,7 +224,7 @@ export default function Body() {
       <P>
         The striking thing about reviewing the Wellbeing complaint in 2026
         is how much of the problematic language is still present in
-        healthcare marketing today &mdash; sometimes word-for-word on the
+        healthcare marketing today - sometimes word-for-word on the
         websites of small-to-midsize practices that have no idea that
         exactly this language produced one of the largest settlements in
         FTC healthcare enforcement history.
@@ -236,15 +236,15 @@ export default function Body() {
         common in regen clinic marketing. In the overwhelming majority of
         cases, the underlying product is an HCT/P operating under the 361
         pathway, which does not require FDA pre-market approval. The phrase
-        is simply factually wrong &mdash; and the Wellbeing case made clear
+        is simply factually wrong - and the Wellbeing case made clear
         the FTC treats this kind of claim as a direct violation.
       </P>
 
       <H3>Mistake 2: Disease-treatment outcome testimonials</H3>
       <P>
         Testimonials describing a patient&rsquo;s recovery from a specific
-        named disease &mdash; &ldquo;after my stem cell treatment my
-        Parkinson&rsquo;s symptoms improved dramatically&rdquo; &mdash; carry
+        named disease - &ldquo;after my stem cell treatment my
+        Parkinson&rsquo;s symptoms improved dramatically&rdquo; - carry
         the disease-treatment claim into the clinic&rsquo;s advertising
         whether or not the clinic ever itself says the treatment
         addresses the named disease. The FTC reads the ad-plus-endorsement
@@ -262,8 +262,8 @@ export default function Body() {
 
       <H3>Mistake 4: &ldquo;Educational&rdquo; content with promotional framing</H3>
       <P>
-        Content that starts as education &mdash; &ldquo;what are stem cells,
-        what does the research show&rdquo; &mdash; often drifts into
+        Content that starts as education - &ldquo;what are stem cells,
+        what does the research show&rdquo; - often drifts into
         promotional framing that ties the generalized information to the
         specific practice&rsquo;s treatments. The Wellbeing case included
         educational-framed content that crossed into advertising. So do
@@ -275,7 +275,7 @@ export default function Body() {
         The set of corrective actions a clinic should take to avoid
         Wellbeing-pattern risk is not mysterious. The hard part is doing
         them consistently every time new content is published, which is
-        where most clinics fail over time &mdash; marketing turns over,
+        where most clinics fail over time - marketing turns over,
         a new staffer posts something, the claim creeps back in.
       </P>
 
@@ -313,8 +313,8 @@ export default function Body() {
         The difference between practices that drift toward the Wellbeing
         pattern and practices that don&rsquo;t is whether a compliance
         check exists as a gate before content goes live. Pre-publish
-        review &mdash; whether via software, internal checklist, or
-        outside counsel &mdash; is what keeps the drift out.
+        review - whether via software, internal checklist, or
+        outside counsel - is what keeps the drift out.
       </P>
 
       <BQ>
@@ -330,7 +330,7 @@ export default function Body() {
       <H3>Did Wellbeing Corporation admit to deceptive advertising?</H3>
       <P>
         FTC stipulated orders typically resolve without an admission of
-        liability &mdash; the defendants agree to the order&rsquo;s terms
+        liability - the defendants agree to the order&rsquo;s terms
         without formally conceding the underlying violation. That is
         standard in FTC settlements and does not weaken the order&rsquo;s
         enforceability. A violation of the order itself becomes its own
@@ -347,7 +347,7 @@ export default function Body() {
 
       <H3>Could this case happen to a smaller regen clinic?</H3>
       <P>
-        Yes &mdash; at a correspondingly smaller scale. The FTC pursues
+        Yes - at a correspondingly smaller scale. The FTC pursues
         violations based on the severity of the claim and the reach of
         the marketing, not just the size of the business. A small regen
         clinic with aggressive disease-treatment claims in its marketing
@@ -359,7 +359,7 @@ export default function Body() {
       <P>
         If you are a clinic that inherited testimonials originally given in
         the context of disease-treatment claims, the right move is to
-        retire them &mdash; not republish them with new framing. The
+        retire them - not republish them with new framing. The
         testimonials were given in a specific context that the FTC has
         now deemed deceptive; repurposing them carries the original
         context forward.
@@ -371,7 +371,7 @@ export default function Body() {
         specifically exclude regulatory enforcement settlements. Cyber
         liability, management liability (D&amp;O), and specialty
         advertising liability policies may cover portions. Review your
-        coverage with your broker &mdash; and do not rely on any of this
+        coverage with your broker - and do not rely on any of this
         as the first line of defense. Prevention is vastly cheaper than
         any coverage scenario.
       </P>
@@ -379,7 +379,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "A single Instagram post was enough evidence for the FTC to build a $5.15M enforcement action.",
-          "The order permanently prohibits claim categories, not just individual phrases — compliance thinking needs to work the same way.",
+          "The order permanently prohibits claim categories, not just individual phrases - compliance thinking needs to work the same way.",
           "Social media posts, podcast appearances, and staff accounts all count as advertising.",
           "Disease-treatment testimonials remain the highest-risk content category in regen medicine marketing.",
           "Pre-publish compliance review is the practical difference between practices that drift toward the Wellbeing pattern and those that don't.",

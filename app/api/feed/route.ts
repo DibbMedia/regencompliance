@@ -33,7 +33,7 @@ const STATIC_TIPS: Omit<FeedItem, "id" | "timestamp">[] = [
   {
     category: "tip",
     title: "Website Copy: Structure Matters",
-    body: "Place FDA disclaimers near any treatment description, not just in the footer. The FTC evaluates the \"net impression\" a consumer gets — if bold cure claims are at the top and tiny disclaimers are at the bottom, you're still at risk.",
+    body: "Place FDA disclaimers near any treatment description, not just in the footer. The FTC evaluates the \"net impression\" a consumer gets - if bold cure claims are at the top and tiny disclaimers are at the bottom, you're still at risk.",
   },
   {
     category: "tip",
@@ -73,7 +73,7 @@ const STATIC_TIPS: Omit<FeedItem, "id" | "timestamp">[] = [
   {
     category: "announcement",
     title: "Welcome to RegenCompliance",
-    body: "Your compliance scanner is ready to use. Paste any marketing content — website copy, social posts, emails, or ad text — and get instant feedback on potential FDA/FTC violations. Use the Compliance Library to browse all active rules.",
+    body: "Your compliance scanner is ready to use. Paste any marketing content - website copy, social posts, emails, or ad text - and get instant feedback on potential FDA/FTC violations. Use the Compliance Library to browse all active rules.",
   },
 ]
 

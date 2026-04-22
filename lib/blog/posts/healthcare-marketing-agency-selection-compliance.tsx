@@ -43,7 +43,7 @@ export default function Body() {
         Agency selection is one of the highest-leverage compliance
         decisions a healthcare practice makes. The agency&rsquo;s
         output becomes your marketing, and their compliance
-        knowledge &mdash; or lack of it &mdash; directly affects
+        knowledge - or lack of it - directly affects
         your enforcement exposure. Most healthcare marketing
         agencies are not specifically trained on FDA/FTC rules;
         they apply general marketing best practices that work in
@@ -235,7 +235,7 @@ export default function Body() {
           Periodic audit of live content the agency produces.
         </LI>
         <LI>
-          Incident review when compliance issues arise &mdash; not
+          Incident review when compliance issues arise - not
           blame, but process improvement.
         </LI>
       </UL>
@@ -282,7 +282,7 @@ export default function Body() {
 
       <H3>Can I require my agency to use compliance software?</H3>
       <P>
-        Yes &mdash; this is increasingly a standard requirement in
+        Yes - this is increasingly a standard requirement in
         healthcare marketing agency contracts. Specifies the
         compliance tool and requires its use in the workflow.
       </P>
@@ -296,11 +296,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Agency selection is one of the highest-leverage compliance decisions — the agency's output becomes your marketing exposure.",
+          "Agency selection is one of the highest-leverage compliance decisions - the agency's output becomes your marketing exposure.",
           "Most healthcare marketing agencies are general agencies; specific healthcare-specialized agencies are materially different.",
           "Diagnostic vetting questions (warning letter patterns, review processes, Endorsement Guides updates) quickly distinguish prepared from unprepared agencies.",
           "Contract terms on liability, compliance review obligations, and insurance are essential for agency relationships.",
-          "Your practice remains accountable for agency output — ongoing oversight doesn't end at contract signing.",
+          "Your practice remains accountable for agency output - ongoing oversight doesn't end at contract signing.",
         ]}
       />
     </>

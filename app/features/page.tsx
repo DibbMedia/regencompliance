@@ -93,7 +93,7 @@ export default function FeaturesPage() {
     "@type": "WebPage",
     name: "RegenCompliance Features",
     description:
-      "Full feature breakdown for RegenCompliance — compliance scanner, AI rewriter, audit trail, 300+ rule library, enforcement alerts, and team collaboration.",
+      "Full feature breakdown for RegenCompliance - compliance scanner, AI rewriter, audit trail, 300+ rule library, enforcement alerts, and team collaboration.",
     url: "https://compliance.regenportal.com/features",
     about: {
       "@type": "SoftwareApplication",
@@ -126,7 +126,7 @@ export default function FeaturesPage() {
               <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">stay compliant.</span>
             </h1>
             <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-xl">
-              RegenCompliance combines real-time scanning, AI-powered rewrites, and a living compliance library into a single platform purpose-built for healthcare marketing compliance — from regenerative medicine and med spas to dental, dermatology, weight loss, and beyond.
+              RegenCompliance combines real-time scanning, AI-powered rewrites, and a living compliance library into a single platform purpose-built for healthcare marketing compliance - from regenerative medicine and med spas to dental, dermatology, weight loss, and beyond.
             </p>
           </div>
         </div>
@@ -232,7 +232,7 @@ export default function FeaturesPage() {
                 The rewriter is not a generic AI text generator. It has been specifically trained on FDA and FTC enforcement language, compliant marketing examples from leading healthcare practices across all specialties, and the nuanced difference between a health claim, a structure/function claim, and a patient experience statement. It understands that &quot;heals damaged tissue&quot; is a drug claim that requires FDA approval, while &quot;may support the body&apos;s natural healing processes&quot; is a structure/function claim that carries significantly less regulatory risk.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                Every rewrite comes with an explanation of why the original language was problematic and what specific regulatory principle the new language satisfies. This means your marketing team does not just get compliant copy — they learn the compliance reasoning behind each change. Over time, your team writes fewer violations because they understand the underlying rules, not just the individual corrections.
+                Every rewrite comes with an explanation of why the original language was problematic and what specific regulatory principle the new language satisfies. This means your marketing team does not just get compliant copy - they learn the compliance reasoning behind each change. Over time, your team writes fewer violations because they understand the underlying rules, not just the individual corrections.
               </p>
               <Link href="/tools/ai-rewriter" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
                 See the full rewriter breakdown
@@ -258,7 +258,7 @@ export default function FeaturesPage() {
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The Compliance Library is a searchable, categorized database of over 300 active compliance rules covering healthcare marketing across all practice types. Each rule includes the banned or risky phrase, a compliant alternative, a risk severity rating, and the original source — whether that is an FDA warning letter, FTC press release, CBER guidance document, or state medical board ruling.
+                The Compliance Library is a searchable, categorized database of over 300 active compliance rules covering healthcare marketing across all practice types. Each rule includes the banned or risky phrase, a compliant alternative, a risk severity rating, and the original source - whether that is an FDA warning letter, FTC press release, CBER guidance document, or state medical board ruling.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 The library is organized by treatment type (PRP, stem cells, exosomes, peptides, prolotherapy, BMAC, Wharton&apos;s jelly, dermal fillers, weight loss treatments, dental implants, chiropractic, IV therapy), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
@@ -319,7 +319,7 @@ export default function FeaturesPage() {
                   </div>
                   <div>
                     <p className="text-sm font-extrabold text-white mb-1">Analyze</p>
-                    <p className="text-sm text-white/60">New enforcement actions are analyzed to extract specific language violations, banned claims, and compliance requirements relevant to healthcare marketing — including regenerative medicine, aesthetics, dental, weight loss, and more.</p>
+                    <p className="text-sm text-white/60">New enforcement actions are analyzed to extract specific language violations, banned claims, and compliance requirements relevant to healthcare marketing - including regenerative medicine, aesthetics, dental, weight loss, and more.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -385,13 +385,13 @@ export default function FeaturesPage() {
                 </div>
               </div>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                Every scan you run is permanently logged in your account with a full audit trail. This includes the original content scanned, the compliance score, every violation flagged, every rewrite generated, and the timestamp. This is not just a feature — it is your evidence that you took compliance seriously.
+                Every scan you run is permanently logged in your account with a full audit trail. This includes the original content scanned, the compliance score, every violation flagged, every rewrite generated, and the timestamp. This is not just a feature - it is your evidence that you took compliance seriously.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 If the FDA or FTC ever contacts your clinic about marketing content, the first thing your attorney will ask for is documentation showing that you had a compliance review process. RegenCompliance provides that documentation automatically. Every scan generates a compliance report that can be exported as a PDF for legal review or as a CSV for internal record-keeping.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The audit trail also tracks your compliance score over time, giving you a clear picture of whether your marketing content is improving or degrading. This is valuable for clinic owners who delegate marketing to staff or agencies — you can verify that content is being checked before it goes live, and you can identify patterns in the types of violations your team tends to make.
+                The audit trail also tracks your compliance score over time, giving you a clear picture of whether your marketing content is improving or degrading. This is valuable for clinic owners who delegate marketing to staff or agencies - you can verify that content is being checked before it goes live, and you can identify patterns in the types of violations your team tends to make.
               </p>
               <Link href="/tools/audit-trail" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#55E039] hover:text-[#6FF055] transition-colors">
                 See the full audit-trail breakdown
@@ -496,7 +496,7 @@ export default function FeaturesPage() {
               How the scan actually works.
             </h2>
             <p className="mt-4 text-base text-white/70 max-w-2xl mx-auto leading-relaxed">
-              Every scan runs through a five-stage pipeline. Nothing about this is magic &mdash; it&rsquo;s deterministic pattern matching layered with contextual AI analysis, all backed by a ruleset sourced directly from enforcement actions.
+              Every scan runs through a five-stage pipeline. Nothing about this is magic - it&rsquo;s deterministic pattern matching layered with contextual AI analysis, all backed by a ruleset sourced directly from enforcement actions.
             </p>
           </div>
 
@@ -505,7 +505,7 @@ export default function FeaturesPage() {
               {
                 n: "01",
                 title: "Normalize + segment",
-                desc: "Your input (text / URL / file) is cleaned, de-duplicated, and split into analyzable units — sentences for paste mode, DOM elements for URL mode, text blocks for files.",
+                desc: "Your input (text / URL / file) is cleaned, de-duplicated, and split into analyzable units - sentences for paste mode, DOM elements for URL mode, text blocks for files.",
               },
               {
                 n: "02",
@@ -515,7 +515,7 @@ export default function FeaturesPage() {
               {
                 n: "03",
                 title: "Contextual AI pass",
-                desc: "An Anthropic Claude model runs over flagged content to catch claims that rule-matching alone can't — implied disease claims, structure/function line-crossings, and testimonial-embedded violations. No-training setting enabled on every request.",
+                desc: "An Anthropic Claude model runs over flagged content to catch claims that rule-matching alone can't - implied disease claims, structure/function line-crossings, and testimonial-embedded violations. No-training setting enabled on every request.",
               },
               {
                 n: "04",
@@ -547,7 +547,7 @@ export default function FeaturesPage() {
                 Privacy
               </p>
               <p className="text-sm text-white/70 leading-relaxed">
-                Your content is processed, scored, and stored only in your account. Nothing feeds into model training &mdash; Anthropic&rsquo;s no-training flag is set on every request. Scans run over TLS and are encrypted at rest with AES-256.
+                Your content is processed, scored, and stored only in your account. Nothing feeds into model training - Anthropic&rsquo;s no-training flag is set on every request. Scans run over TLS and are encrypted at rest with AES-256.
               </p>
             </div>
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-6">
@@ -555,7 +555,7 @@ export default function FeaturesPage() {
                 Freshness
               </p>
               <p className="text-sm text-white/70 leading-relaxed">
-                The ruleset updates daily from automated monitoring of FDA.gov, FTC.gov, and state medical board sites. New enforcement actions land in your scanner within 24 hours &mdash; no manual update cycle, no quarterly rule refresh.
+                The ruleset updates daily from automated monitoring of FDA.gov, FTC.gov, and state medical board sites. New enforcement actions land in your scanner within 24 hours - no manual update cycle, no quarterly rule refresh.
               </p>
             </div>
             <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-6">
@@ -578,7 +578,7 @@ export default function FeaturesPage() {
             Built for healthcare practices.<br />Every specialty covered.
           </h2>
           <p className="mt-5 text-base text-white/60 max-w-md mx-auto leading-relaxed">
-            Every feature, every rule, every rewrite is designed specifically for healthcare marketing compliance — regenerative medicine, med spas, dental, plastic surgery, dermatology, weight loss, and more. No generic tools. No guesswork.
+            Every feature, every rule, every rewrite is designed specifically for healthcare marketing compliance - regenerative medicine, med spas, dental, plastic surgery, dermatology, weight loss, and more. No generic tools. No guesswork.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             {IS_LAUNCHED ? (

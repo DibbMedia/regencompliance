@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "FTC Med Spa Enforcement Patterns 2024-2026: The Specific Claim Categories Drawing Attention",
   description:
-    "Med spa enforcement by the FTC has accelerated in 2024-2026. Here's what the agency is specifically pursuing — testimonial rules, before/after framing, supervision language, and aggressive package marketing.",
+    "Med spa enforcement by the FTC has accelerated in 2024-2026. Here's what the agency is specifically pursuing - testimonial rules, before/after framing, supervision language, and aggressive package marketing.",
   excerpt:
     "Med spas are among the highest-volume recipients of FTC enforcement in healthcare marketing. Here's what the agency is specifically pursuing in 2024-2026 and what practices should adjust.",
   date: "2026-04-22",
@@ -55,7 +55,7 @@ export default function Body() {
         typical-experience disclosure are the single most-common
         FTC enforcement pattern in med spas. &ldquo;Results may
         vary&rdquo; is not sufficient disclosure under the 2023
-        Endorsement Guides update &mdash; typical actual outcomes
+        Endorsement Guides update - typical actual outcomes
         must be disclosed.
       </P>
       <P>
@@ -108,8 +108,8 @@ export default function Body() {
       <H2 id="pattern-5">Pattern 5: Off-label indication promotion</H2>
       <P>
         Marketing neuromodulators or fillers for specific off-label
-        indications &mdash; jawline slimming, non-surgical
-        rhinoplasty, specific body-contouring applications &mdash;
+        indications - jawline slimming, non-surgical
+        rhinoplasty, specific body-contouring applications -
         is a sustained enforcement pattern. Clinical off-label use
         may be appropriate; public marketing of off-label indications
         is not.
@@ -134,7 +134,7 @@ export default function Body() {
       <H2 id="pattern-8">Pattern 8: Safety absolutes</H2>
       <P>
         &ldquo;No side effects,&rdquo; &ldquo;completely safe,&rdquo;
-        &ldquo;painless&rdquo; &mdash; absolute safety claims in
+        &ldquo;painless&rdquo; - absolute safety claims in
         aesthetic marketing. These conflict with documented side
         effect profiles of every injectable, laser, and RF device.
       </P>
@@ -225,7 +225,7 @@ export default function Body() {
       <KeyTakeaways
         items={[
           "Med spa FTC enforcement has been sustained and growing across 2024-2026.",
-          "Typical-experience disclosure gaps are the single most-cited pattern — 'results may vary' is not sufficient.",
+          "Typical-experience disclosure gaps are the single most-cited pattern - 'results may vary' is not sufficient.",
           "FDA-approved vs FDA-cleared misuse is one of the simplest patterns to fix and one of the most-commonly cited.",
           "Coordinated enforcement between FTC, state medical boards, and state AGs creates multi-vector exposure on the same marketing.",
           "Practices that invested in compliance infrastructure in 2024-2025 enter 2026 materially better positioned than those that deferred.",

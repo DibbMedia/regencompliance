@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
   description:
     "FDA warning letters to healthcare practices hit a 25-year high in 2024. Here is what is actually being flagged, which specialties are most exposed, and how to audit your marketing before a letter arrives.",
   excerpt:
-    "More than 200 FDA warning letters hit healthcare practices in 2024 &mdash; the highest volume in a quarter century. Here is what is being flagged, why regenerative medicine and med spas are on the front line, and what a defensible marketing program looks like now.",
+    "More than 200 FDA warning letters hit healthcare practices in 2024 - the highest volume in a quarter century. Here is what is being flagged, why regenerative medicine and med spas are on the front line, and what a defensible marketing program looks like now.",
   date: "2026-04-21",
   readingMinutes: 9,
   keywords: [
@@ -47,7 +47,7 @@ export default function Body() {
         If you run a regenerative medicine, med spa, dental, dermatology, or wellness
         practice, the regulatory environment you are marketing in today is not the
         one you were marketing in two years ago. FDA warning letters directed at
-        healthcare practices hit a 25-year high in 2024 &mdash; and the volume has
+        healthcare practices hit a 25-year high in 2024 - and the volume has
         not tapered off heading into 2026.
       </Lead>
 
@@ -64,7 +64,7 @@ export default function Body() {
       <P>
         This article walks through what is actually driving the spike, which
         specialties are drawing the most attention, and what a defensible marketing
-        program looks like in 2026 &mdash; before a warning letter arrives at your
+        program looks like in 2026 - before a warning letter arrives at your
         front desk.
       </P>
 
@@ -86,7 +86,7 @@ export default function Body() {
         window under the 21 CFR Part 1271 framework covering human cells, tissues,
         and cellular and tissue-based products. Enforcement discretion during that
         window is gone. The agency is now treating non-compliant products as
-        unapproved biological drugs &mdash; and the clinics marketing them as
+        unapproved biological drugs - and the clinics marketing them as
         marketing unapproved drugs.
       </P>
 
@@ -102,7 +102,7 @@ export default function Body() {
       <H3>3. Patient complaints feed the pipeline</H3>
       <P>
         The majority of enforcement actions start with a patient, competitor, or
-        former employee complaint &mdash; not a regulator browsing your site for
+        former employee complaint - not a regulator browsing your site for
         fun. Once the file is open, every surface gets read: site, socials, ads,
         email funnels, intake forms, consent language, and staff training decks.
       </P>
@@ -130,7 +130,7 @@ export default function Body() {
         <LI>
           <Strong>Med spa and aesthetics.</Strong> Neurotoxin and dermal filler
           marketing, laser treatment outcome claims, and before/after photo
-          presentations &mdash; especially when paired with disease-condition
+          presentations - especially when paired with disease-condition
           language like &ldquo;rosacea cure&rdquo; or &ldquo;acne cure.&rdquo;
         </LI>
         <LI>
@@ -178,7 +178,7 @@ export default function Body() {
         Language like &ldquo;FDA-approved stem cells,&rdquo; &ldquo;FDA-cleared
         regenerative protocol,&rdquo; or &ldquo;FDA-registered treatment&rdquo; is a
         perennial warning-letter trigger. Most clinics using this language mean that
-        their facility is FDA-registered as a tissue establishment &mdash; which is
+        their facility is FDA-registered as a tissue establishment - which is
         a registration, not an approval, and it does not transfer to the product or
         procedure being sold.
       </P>
@@ -250,7 +250,7 @@ export default function Body() {
       </H2>
       <P>
         A defensible program is built around four principles. None of them require
-        you to make your marketing boring or abandon your voice &mdash; they require
+        you to make your marketing boring or abandon your voice - they require
         you to make the language match the regulatory reality of what you sell.
       </P>
 
@@ -267,7 +267,7 @@ export default function Body() {
         (&ldquo;cures,&rdquo; &ldquo;heals,&rdquo; &ldquo;reverses&rdquo;) with
         structure-function or patient-experience language
         (&ldquo;may support,&rdquo; &ldquo;some patients report&rdquo;) throughout
-        your marketing style guide &mdash; not just on the one page the lawyer
+        your marketing style guide - not just on the one page the lawyer
         reviewed.
       </P>
 
@@ -279,7 +279,7 @@ export default function Body() {
         any subsequent changes.
       </P>
 
-      <H3>4. Rule updates flow in daily &mdash; not quarterly</H3>
+      <H3>4. Rule updates flow in daily - not quarterly</H3>
       <P>
         The language that triggered a warning letter to a clinic in Florida on
         Monday should be in your compliance ruleset by Tuesday. Quarterly reviews
@@ -322,7 +322,7 @@ export default function Body() {
         <LI>
           <Strong>Pull every testimonial currently live.</Strong> Confirm that each
           one has either typical-experience disclosure or is demonstrably
-          representative &mdash; and keep the substantiation file with the
+          representative - and keep the substantiation file with the
           testimonial, not in a separate folder.
         </LI>
       </OL>

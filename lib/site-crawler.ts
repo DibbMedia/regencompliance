@@ -18,7 +18,7 @@ export interface PageContent {
 }
 
 // ---------------------------------------------------------------------------
-// Skip patterns — non-content paths to ignore during crawl
+// Skip patterns - non-content paths to ignore during crawl
 // ---------------------------------------------------------------------------
 
 const SKIP_PATHS = [
@@ -48,7 +48,7 @@ const SKIP_EXTENSIONS = [
 ]
 
 // ---------------------------------------------------------------------------
-// discoverPages — BFS crawl to find all internal URLs
+// discoverPages - BFS crawl to find all internal URLs
 // ---------------------------------------------------------------------------
 
 export async function discoverPages(
@@ -100,7 +100,7 @@ export async function discoverPages(
 }
 
 // ---------------------------------------------------------------------------
-// extractPageContent — fetch and extract visible text from a URL
+// extractPageContent - fetch and extract visible text from a URL
 // ---------------------------------------------------------------------------
 
 export async function extractPageContent(url: string): Promise<PageContent | null> {

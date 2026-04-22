@@ -16,7 +16,7 @@ import { MarketingBg } from "@/components/marketing-bg"
 const canonical = "https://compliance.regenportal.com/about"
 
 export const metadata: Metadata = {
-  title: "About RegenCompliance — Built for Real Healthcare Compliance Work",
+  title: "About RegenCompliance - Built for Real Healthcare Compliance Work",
   description:
     "About the RegenCompliance team, why we built purpose-built FDA/FTC compliance software for healthcare practices, and the principles that shape the product.",
   keywords: [
@@ -44,17 +44,17 @@ const PRINCIPLES = [
   {
     icon: Eye,
     title: "Honest positioning",
-    body: "Every comparison page says where competitors win. Every tool page says what the tool isn't. Every specialty page acknowledges the edge cases we don't cover. Healthcare buyers can smell marketing that overpromises — honesty works better long-term.",
+    body: "Every comparison page says where competitors win. Every tool page says what the tool isn't. Every specialty page acknowledges the edge cases we don't cover. Healthcare buyers can smell marketing that overpromises - honesty works better long-term.",
   },
   {
     icon: ShieldCheck,
     title: "Evidence over opinion",
-    body: "Every rule in the library cites its source. Every blog post references real enforcement. Every compliance claim traces to an actual FDA letter or FTC case. We don't publish 'experts say' — we publish 'here's the specific warning letter.'",
+    body: "Every rule in the library cites its source. Every blog post references real enforcement. Every compliance claim traces to an actual FDA letter or FTC case. We don't publish 'experts say' - we publish 'here's the specific warning letter.'",
   },
   {
     icon: Users,
     title: "Built for compliance teams, not compliance theater",
-    body: "Audit trails, pre-publish review workflows, documented compliance programs — because that's what actually works when regulators ask questions. Compliance theater (vague policies, one-time training) is worse than nothing because it creates false confidence.",
+    body: "Audit trails, pre-publish review workflows, documented compliance programs - because that's what actually works when regulators ask questions. Compliance theater (vague policies, one-time training) is worse than nothing because it creates false confidence.",
   },
 ]
 
@@ -121,7 +121,7 @@ export default function AboutPage() {
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-white/80 leading-relaxed max-w-3xl">
             RegenCompliance is FDA/FTC compliance software for healthcare
-            practices &mdash; regenerative medicine, med spas, weight loss,
+            practices - regenerative medicine, med spas, weight loss,
             dental, aesthetic, and the specialties that live inside active
             enforcement environments. We built it because the existing
             options didn&rsquo;t fit.
@@ -225,7 +225,7 @@ export default function AboutPage() {
               </p>
               <p className="text-base sm:text-[17px] text-white/85 leading-relaxed">
                 Based in the US. Independently owned. Funded by customers,
-                not venture capital &mdash; which means we&rsquo;re optimizing
+                not venture capital - which means we&rsquo;re optimizing
                 for a product our customers want to use long-term, not a
                 growth story that makes an exit work.
               </p>

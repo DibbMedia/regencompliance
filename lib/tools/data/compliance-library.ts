@@ -4,24 +4,24 @@ export const meta: ToolMeta = {
   slug: "compliance-library",
   name: "Compliance Library (300+ Rules)",
   category: "Rule database",
-  title: "Compliance Library — 300+ Banned Phrases & Rules from Real FDA/FTC Enforcement | RegenCompliance",
+  title: "Compliance Library - 300+ Banned Phrases & Rules from Real FDA/FTC Enforcement | RegenCompliance",
   description:
     "A searchable database of 300+ active compliance rules sourced from actual FDA warning letters, FTC settlements, and state medical board actions. Every rule includes the phrase, the risk level, the source, and the compliant alternative.",
   heroBadge: "Rule database",
   heroTagline:
-    "The same 300+ rule database the scanner uses, exposed as a searchable library. Every rule is sourced from real enforcement — FDA warning letters, FTC settlements, state board actions. Updated daily.",
+    "The same 300+ rule database the scanner uses, exposed as a searchable library. Every rule is sourced from real enforcement - FDA warning letters, FTC settlements, state board actions. Updated daily.",
   shortVerdict:
     "Most practices learn compliance by trial and error. The library is the condensed version of what 1,200+ warning letters taught the industry.",
   whatItIs:
-    "The compliance library is a searchable database of every active rule the scanner applies — 300+ banned phrases and patterns, each sourced from actual enforcement action. Browse by specialty, claim category, or source authority. Search for specific language to see how regulators have handled it. The library is both reference material and the backbone of the scanner's rule engine.",
+    "The compliance library is a searchable database of every active rule the scanner applies - 300+ banned phrases and patterns, each sourced from actual enforcement action. Browse by specialty, claim category, or source authority. Search for specific language to see how regulators have handled it. The library is both reference material and the backbone of the scanner's rule engine.",
   capabilities: [
     {
       title: "300+ active rules",
-      body: "Current rule count across specialties and claim categories. Every rule is tied to specific enforcement evidence — a warning letter, settlement, or equivalent — not hypothetical patterns.",
+      body: "Current rule count across specialties and claim categories. Every rule is tied to specific enforcement evidence - a warning letter, settlement, or equivalent - not hypothetical patterns.",
     },
     {
       title: "Sourced from real enforcement",
-      body: "Each rule cites the source authority and, where applicable, the specific enforcement action that established the pattern. Not 'we think this might be a problem' — 'this specific phrasing produced this specific warning letter.'",
+      body: "Each rule cites the source authority and, where applicable, the specific enforcement action that established the pattern. Not 'we think this might be a problem' - 'this specific phrasing produced this specific warning letter.'",
     },
     {
       title: "Searchable by phrase, category, specialty, authority",
@@ -29,7 +29,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Compliant alternatives built in",
-      body: "Every rule includes compliant alternative language. Not just 'don't say this' — 'don't say this, say this instead, here's why the alternative works.'",
+      body: "Every rule includes compliant alternative language. Not just 'don't say this' - 'don't say this, say this instead, here's why the alternative works.'",
     },
     {
       title: "Risk level per rule (HIGH/MEDIUM/LOW)",
@@ -69,7 +69,7 @@ export const meta: ToolMeta = {
     },
     {
       title: "Style guide foundation",
-      body: "Most healthcare practices should maintain a written compliance style guide. The library is the source material — the banned phrases, compliant alternatives, and specialty-specific rules that belong in the guide.",
+      body: "Most healthcare practices should maintain a written compliance style guide. The library is the source material - the banned phrases, compliant alternatives, and specialty-specific rules that belong in the guide.",
     },
     {
       title: "Marketing agency calibration",
@@ -91,10 +91,10 @@ export const meta: ToolMeta = {
     "Email notifications on new rules in your categories",
   ],
   whatItIsnt: [
-    "Not exhaustive — 300+ rules covers the high-frequency enforcement patterns; long-tail rules and edge cases may not have library entries yet. Your attorney handles the edge cases.",
-    "Not a legal source of truth — the library is a working reference; regulatory interpretation in specific contexts requires attorney review.",
-    "Not the only rule set — the scanner applies additional context-aware logic beyond the library's literal phrase matching. The library is a subset of the full rule engine.",
-    "Not prescriptive — rules flag patterns that have produced enforcement; that doesn't mean every use of every phrase is always wrong. Context matters.",
+    "Not exhaustive - 300+ rules covers the high-frequency enforcement patterns; long-tail rules and edge cases may not have library entries yet. Your attorney handles the edge cases.",
+    "Not a legal source of truth - the library is a working reference; regulatory interpretation in specific contexts requires attorney review.",
+    "Not the only rule set - the scanner applies additional context-aware logic beyond the library's literal phrase matching. The library is a subset of the full rule engine.",
+    "Not prescriptive - rules flag patterns that have produced enforcement; that doesn't mean every use of every phrase is always wrong. Context matters.",
   ],
   faqs: [
     {

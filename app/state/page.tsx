@@ -9,9 +9,9 @@ import { STATES } from "@/lib/state/data"
 const canonical = "https://compliance.regenportal.com/state"
 
 export const metadata: Metadata = {
-  title: "State-by-State Healthcare Marketing Compliance Rules — RegenCompliance",
+  title: "State-by-State Healthcare Marketing Compliance Rules - RegenCompliance",
   description:
-    "State-specific compliance rules for healthcare marketing — medical board advertising rules, consumer protection authorities, and enforcement patterns across California, Texas, Florida, New York, and more.",
+    "State-specific compliance rules for healthcare marketing - medical board advertising rules, consumer protection authorities, and enforcement patterns across California, Texas, Florida, New York, and more.",
   keywords: [
     "state healthcare marketing rules",
     "state medical board advertising",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical },
   openGraph: {
-    title: "State-by-State Healthcare Marketing Rules — RegenCompliance",
+    title: "State-by-State Healthcare Marketing Rules - RegenCompliance",
     description:
       "Deep-dive state guides on medical board rules, state AG consumer protection, and the marketing patterns under enforcement.",
     url: canonical,
@@ -137,8 +137,8 @@ export default function StateIndexPage() {
               More states coming
             </h2>
             <p className="text-base text-white/75 leading-relaxed mb-4">
-              We start with the highest-enforcement states — California, Texas, Florida,
-              New York — plus the next tier of heavily-regulated states. Additional states
+              We start with the highest-enforcement states - California, Texas, Florida,
+              New York - plus the next tier of heavily-regulated states. Additional states
               are added as our rule set's state-specific content expands. If your state
               isn't listed yet, federal rules still apply, and the most common
               state-level patterns (medical board advertising rules, state AG consumer

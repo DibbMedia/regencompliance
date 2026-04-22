@@ -260,7 +260,7 @@ export default function AccountPage() {
           <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Subscription</p>
 
           {isBeta ? (
-            /* Beta Subscription Card — $297/mo locked-in rate */
+            /* Beta Subscription Card - $297/mo locked-in rate */
             <div className="relative bg-white/[0.03] border border-[#55E039]/20 rounded-xl p-6 overflow-hidden shadow-[0_0_40px_rgba(85,224,57,0.08)]">
               {/* Subtle glow overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#55E039]/[0.04] to-transparent pointer-events-none" />
@@ -271,18 +271,18 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-white font-bold">Beta — $297/mo Locked-In Rate</h3>
+                      <h3 className="text-white font-bold">Beta - $297/mo Locked-In Rate</h3>
                       <Badge className="bg-[#55E039]/10 text-[#55E039] border-[#55E039]/20 text-xs">
                         <Crown className="h-3 w-3 mr-1" />
                         Founding Member
                       </Badge>
                     </div>
-                    <p className="text-white/70 text-sm mt-0.5">Your rate is locked at $297/mo for life — it will never increase</p>
+                    <p className="text-white/70 text-sm mt-0.5">Your rate is locked at $297/mo for life - it will never increase</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#55E039]/[0.06] rounded-lg border border-[#55E039]/10">
                   <Shield className="h-4 w-4 text-[#55E039]" />
-                  <span className="text-sm text-[#55E039]">$297/mo locked in — standard rate is $497/mo</span>
+                  <span className="text-sm text-[#55E039]">$297/mo locked in - standard rate is $497/mo</span>
                 </div>
                 <button
                   onClick={handlePortal}

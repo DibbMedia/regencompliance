@@ -15,7 +15,7 @@ const SERVICE_TEMPLATES: ContentTemplate[] = [
     category: "service",
     description:
       "Compliant service page copy for Platelet-Rich Plasma (PRP) therapy offerings.",
-    content: `[CLINIC NAME] — PRP Therapy Services
+    content: `[CLINIC NAME] - PRP Therapy Services
 
 Platelet-Rich Plasma (PRP) Therapy
 
@@ -58,7 +58,7 @@ IMPORTANT DISCLAIMERS:
     category: "service",
     description:
       "Educational, compliant content about stem cell therapy services.",
-    content: `[CLINIC NAME] — Stem Cell Therapy Information
+    content: `[CLINIC NAME] - Stem Cell Therapy Information
 
 Understanding Stem Cell Therapy
 
@@ -108,7 +108,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Education-only content about exosome therapy (no treatment claims per FDA guidance).",
-    content: `[CLINIC NAME] — Understanding Exosome Therapy
+    content: `[CLINIC NAME] - Understanding Exosome Therapy
 
 What Are Exosomes?
 
@@ -161,7 +161,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Education-only content for peptide therapy services.",
-    content: `[CLINIC NAME] — Peptide Therapy Information
+    content: `[CLINIC NAME] - Peptide Therapy Information
 
 Understanding Peptide Therapy
 
@@ -179,10 +179,10 @@ Our Approach to Peptide Therapy
 
 At [CLINIC NAME], we offer peptide therapy as part of a comprehensive, medically supervised wellness program. Our approach includes:
 
-1. Comprehensive Evaluation — A thorough review of your health history, current concerns, and goals
-2. Personalized Protocol — Customized peptide protocols based on your individual needs
-3. Medical Supervision — All treatments are overseen by licensed healthcare providers
-4. Ongoing Monitoring — Regular follow-up to assess progress and adjust protocols as needed
+1. Comprehensive Evaluation - A thorough review of your health history, current concerns, and goals
+2. Personalized Protocol - Customized peptide protocols based on your individual needs
+3. Medical Supervision - All treatments are overseen by licensed healthcare providers
+4. Ongoing Monitoring - Regular follow-up to assess progress and adjust protocols as needed
 
 Regulatory Information
 
@@ -214,7 +214,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Wellness-framed content for IV therapy and NAD+ infusion services.",
-    content: `[CLINIC NAME] — IV Therapy & NAD+ Services
+    content: `[CLINIC NAME] - IV Therapy & NAD+ Services
 
 Intravenous (IV) Wellness Therapy
 
@@ -224,13 +224,13 @@ Our IV Therapy Menu
 
 [CLINIC NAME] offers a variety of IV therapy formulations designed to support general wellness:
 
-Hydration & Recovery — A balanced electrolyte and vitamin formulation to support hydration and recovery after physical activity or illness.
+Hydration & Recovery - A balanced electrolyte and vitamin formulation to support hydration and recovery after physical activity or illness.
 
-Immune Support — A vitamin C and zinc-based formulation designed to support immune system function during cold and flu season.
+Immune Support - A vitamin C and zinc-based formulation designed to support immune system function during cold and flu season.
 
-Energy & Vitality — A B-vitamin complex formulation to help support energy levels and metabolic function.
+Energy & Vitality - A B-vitamin complex formulation to help support energy levels and metabolic function.
 
-Beauty & Skin Health — An antioxidant-rich formulation with biotin and vitamin C to support skin, hair, and nail health from within.
+Beauty & Skin Health - An antioxidant-rich formulation with biotin and vitamin C to support skin, hair, and nail health from within.
 
 NAD+ Infusion Therapy
 
@@ -266,7 +266,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Compliant service page for Botox, fillers, laser, and aesthetic treatments.",
-    content: `[CLINIC NAME] — Medical Spa Services
+    content: `[CLINIC NAME] - Medical Spa Services
 
 Aesthetic & Wellness Treatments
 
@@ -274,23 +274,23 @@ Aesthetic & Wellness Treatments
 
 Injectable Treatments
 
-Botulinum Toxin (Botox/Dysport) — FDA-approved injectable treatments that temporarily reduce the appearance of moderate to severe facial wrinkles, including frown lines, crow's feet, and forehead lines. Results typically last 3-4 months. Individual results may vary.
+Botulinum Toxin (Botox/Dysport) - FDA-approved injectable treatments that temporarily reduce the appearance of moderate to severe facial wrinkles, including frown lines, crow's feet, and forehead lines. Results typically last 3-4 months. Individual results may vary.
 
-Dermal Fillers — FDA-approved hyaluronic acid-based fillers used to restore volume, smooth wrinkles, and enhance facial contours. Common treatment areas include lips, cheeks, nasolabial folds, and jawline. Results are immediate and can last 6-18 months depending on the product and treatment area.
+Dermal Fillers - FDA-approved hyaluronic acid-based fillers used to restore volume, smooth wrinkles, and enhance facial contours. Common treatment areas include lips, cheeks, nasolabial folds, and jawline. Results are immediate and can last 6-18 months depending on the product and treatment area.
 
 Laser & Light Treatments
 
-Laser Hair Removal — FDA-cleared laser technology for long-term hair reduction. Multiple sessions are typically required for optimal results. Effectiveness may vary based on skin type and hair color.
+Laser Hair Removal - FDA-cleared laser technology for long-term hair reduction. Multiple sessions are typically required for optimal results. Effectiveness may vary based on skin type and hair color.
 
-Skin Resurfacing — Laser treatments designed to address skin texture, tone, and the appearance of fine lines, scars, and sun damage. Downtime varies by treatment intensity.
+Skin Resurfacing - Laser treatments designed to address skin texture, tone, and the appearance of fine lines, scars, and sun damage. Downtime varies by treatment intensity.
 
-IPL Photofacial — Intense Pulsed Light therapy to address the appearance of sun damage, redness, and uneven skin tone.
+IPL Photofacial - Intense Pulsed Light therapy to address the appearance of sun damage, redness, and uneven skin tone.
 
 Skin Treatments
 
-Chemical Peels — Professional-grade chemical exfoliation treatments customized to your skin type and concerns.
+Chemical Peels - Professional-grade chemical exfoliation treatments customized to your skin type and concerns.
 
-Microneedling — A collagen-induction therapy that uses fine needles to create micro-channels in the skin, supporting the body's natural skin renewal process.
+Microneedling - A collagen-induction therapy that uses fine needles to create micro-channels in the skin, supporting the body's natural skin renewal process.
 
 Your Consultation
 
@@ -311,7 +311,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "GLP-1, diet, and exercise framing for weight management services.",
-    content: `[CLINIC NAME] — Medical Weight Management Program
+    content: `[CLINIC NAME] - Medical Weight Management Program
 
 A Comprehensive Approach to Weight Management
 
@@ -319,19 +319,19 @@ A Comprehensive Approach to Weight Management
 
 Our Program Includes
 
-Medical Evaluation — A comprehensive health assessment including lab work, body composition analysis, and review of your medical history to identify factors that may affect your weight management journey.
+Medical Evaluation - A comprehensive health assessment including lab work, body composition analysis, and review of your medical history to identify factors that may affect your weight management journey.
 
-Personalized Nutrition Planning — Working with our team, you'll receive a customized nutrition plan based on your metabolic profile, preferences, and lifestyle.
+Personalized Nutrition Planning - Working with our team, you'll receive a customized nutrition plan based on your metabolic profile, preferences, and lifestyle.
 
-Physical Activity Guidance — Exercise recommendations tailored to your fitness level, physical abilities, and schedule.
+Physical Activity Guidance - Exercise recommendations tailored to your fitness level, physical abilities, and schedule.
 
-Behavioral Support — Strategies for building sustainable habits, managing emotional eating, and maintaining motivation throughout your journey.
+Behavioral Support - Strategies for building sustainable habits, managing emotional eating, and maintaining motivation throughout your journey.
 
 Medication Options (When Appropriate)
 
 For patients who meet specific medical criteria, prescription medications may be incorporated into their weight management plan. These may include FDA-approved GLP-1 receptor agonist medications, which have been shown in clinical studies to support weight management when combined with diet and exercise modifications.
 
-Medication is prescribed only after a thorough medical evaluation and is always used as part of a comprehensive program — not as a standalone solution. Our medical team will discuss:
+Medication is prescribed only after a thorough medical evaluation and is always used as part of a comprehensive program - not as a standalone solution. Our medical team will discuss:
 - Whether medication is appropriate for your situation
 - Expected outcomes based on clinical evidence
 - Potential side effects and monitoring requirements
@@ -358,7 +358,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Compliant service page for dental implant and cosmetic dentistry claims.",
-    content: `[CLINIC NAME] — Dental Implants & Cosmetic Dentistry
+    content: `[CLINIC NAME] - Dental Implants & Cosmetic Dentistry
 
 Restore Your Smile with Confidence
 
@@ -378,13 +378,13 @@ The implant process typically involves multiple appointments over several months
 
 Cosmetic Dentistry Services
 
-Teeth Whitening — Professional-grade whitening treatments that can lighten teeth by several shades. In-office and take-home options available.
+Teeth Whitening - Professional-grade whitening treatments that can lighten teeth by several shades. In-office and take-home options available.
 
-Porcelain Veneers — Custom-made thin shells bonded to the front of teeth to improve appearance, addressing chips, gaps, discoloration, and minor alignment concerns.
+Porcelain Veneers - Custom-made thin shells bonded to the front of teeth to improve appearance, addressing chips, gaps, discoloration, and minor alignment concerns.
 
-Dental Bonding — A tooth-colored resin material applied to teeth to repair chips, close gaps, or change tooth shape.
+Dental Bonding - A tooth-colored resin material applied to teeth to repair chips, close gaps, or change tooth shape.
 
-Invisalign / Clear Aligners — FDA-cleared clear aligner therapy for straightening teeth without traditional braces. Treatment time varies by case complexity.
+Invisalign / Clear Aligners - FDA-cleared clear aligner therapy for straightening teeth without traditional braces. Treatment time varies by case complexity.
 
 Your Consultation
 
@@ -406,7 +406,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Scope-of-practice compliant content for chiropractic services.",
-    content: `[CLINIC NAME] — Chiropractic Care
+    content: `[CLINIC NAME] - Chiropractic Care
 
 Evidence-Based Chiropractic Services
 
@@ -414,13 +414,13 @@ Evidence-Based Chiropractic Services
 
 Our Chiropractic Services
 
-Spinal Adjustments — Manual and instrument-assisted spinal manipulation techniques to address joint restrictions and improve spinal mobility.
+Spinal Adjustments - Manual and instrument-assisted spinal manipulation techniques to address joint restrictions and improve spinal mobility.
 
-Soft Tissue Therapy — Techniques including myofascial release and therapeutic massage to address muscle tension and soft tissue concerns.
+Soft Tissue Therapy - Techniques including myofascial release and therapeutic massage to address muscle tension and soft tissue concerns.
 
-Corrective Exercises — Personalized exercise programs designed to strengthen supporting muscles and improve posture.
+Corrective Exercises - Personalized exercise programs designed to strengthen supporting muscles and improve posture.
 
-Ergonomic & Lifestyle Counseling — Guidance on workplace ergonomics, posture, and daily habits that may affect your musculoskeletal health.
+Ergonomic & Lifestyle Counseling - Guidance on workplace ergonomics, posture, and daily habits that may affect your musculoskeletal health.
 
 Conditions We Commonly See
 
@@ -458,7 +458,7 @@ DISCLAIMERS:
     category: "service",
     description:
       "Cosmetic vs medical framing for dermatology service pages.",
-    content: `[CLINIC NAME] — Dermatology & Skin Care
+    content: `[CLINIC NAME] - Dermatology & Skin Care
 
 Comprehensive Dermatology Services
 
@@ -468,25 +468,25 @@ Medical Dermatology
 
 Our medical dermatology services address a wide range of skin conditions:
 
-Skin Cancer Screening — Regular skin examinations to detect potentially concerning lesions. Early detection is important for effective treatment. We recommend annual full-body skin checks.
+Skin Cancer Screening - Regular skin examinations to detect potentially concerning lesions. Early detection is important for effective treatment. We recommend annual full-body skin checks.
 
-Acne Management — Comprehensive acne treatment plans including topical medications, oral medications when appropriate, and procedural treatments.
+Acne Management - Comprehensive acne treatment plans including topical medications, oral medications when appropriate, and procedural treatments.
 
-Eczema & Psoriasis — Management of chronic inflammatory skin conditions using evidence-based treatment protocols, including topical therapies, phototherapy, and biologic medications when appropriate.
+Eczema & Psoriasis - Management of chronic inflammatory skin conditions using evidence-based treatment protocols, including topical therapies, phototherapy, and biologic medications when appropriate.
 
-Rash & Skin Condition Evaluation — Diagnosis and management of various skin conditions including rashes, infections, and other dermatologic concerns.
+Rash & Skin Condition Evaluation - Diagnosis and management of various skin conditions including rashes, infections, and other dermatologic concerns.
 
 Cosmetic Dermatology
 
 Our cosmetic services are designed to help you achieve your aesthetic goals:
 
-Chemical Peels — Professional-grade peels customized to your skin type and concerns, addressing texture, tone, and the appearance of fine lines.
+Chemical Peels - Professional-grade peels customized to your skin type and concerns, addressing texture, tone, and the appearance of fine lines.
 
-Laser Treatments — FDA-cleared laser technologies for hair removal, skin resurfacing, pigmentation concerns, and vascular lesions.
+Laser Treatments - FDA-cleared laser technologies for hair removal, skin resurfacing, pigmentation concerns, and vascular lesions.
 
-Injectable Treatments — Botox and dermal fillers administered by experienced providers for wrinkle reduction and facial rejuvenation.
+Injectable Treatments - Botox and dermal fillers administered by experienced providers for wrinkle reduction and facial rejuvenation.
 
-Skincare Programs — Medical-grade skincare recommendations tailored to your unique skin type and goals.
+Skincare Programs - Medical-grade skincare recommendations tailored to your unique skin type and goals.
 
 Medical vs. Cosmetic: Understanding the Difference
 
@@ -511,7 +511,7 @@ const MARKETING_TEMPLATES: ContentTemplate[] = [
     category: "marketing",
     description:
       "Compliant patient testimonial page with all required disclaimers.",
-    content: `[CLINIC NAME] — Patient Testimonials
+    content: `[CLINIC NAME] - Patient Testimonials
 
 What Our Patients Say
 
@@ -519,19 +519,19 @@ We value the trust our patients place in us. Below are testimonials from patient
 
 ---
 
-"I had a great experience at [CLINIC NAME]. The staff was professional and made me feel comfortable throughout my visit. I appreciated the thorough consultation and clear explanation of my treatment options." — [Patient Name], [City, State]
+"I had a great experience at [CLINIC NAME]. The staff was professional and made me feel comfortable throughout my visit. I appreciated the thorough consultation and clear explanation of my treatment options." - [Patient Name], [City, State]
 
 ---
 
-"After researching several providers, I chose [CLINIC NAME] because of their transparent approach. They took the time to explain what to expect and were honest about realistic outcomes." — [Patient Name], [City, State]
+"After researching several providers, I chose [CLINIC NAME] because of their transparent approach. They took the time to explain what to expect and were honest about realistic outcomes." - [Patient Name], [City, State]
 
 ---
 
-"The team at [CLINIC NAME] was attentive and knowledgeable. I felt confident in their expertise and appreciated their patient-centered approach to care." — [Patient Name], [City, State]
+"The team at [CLINIC NAME] was attentive and knowledgeable. I felt confident in their expertise and appreciated their patient-centered approach to care." - [Patient Name], [City, State]
 
 ---
 
-"I've been visiting [CLINIC NAME] for [treatment type] and have been pleased with my experience. The staff is always professional, and I feel well-cared for at every visit." — [Patient Name], [City, State]
+"I've been visiting [CLINIC NAME] for [treatment type] and have been pleased with my experience. The staff is always professional, and I feel well-cared for at every visit." - [Patient Name], [City, State]
 
 ---
 
@@ -558,7 +558,7 @@ REQUIRED DISCLAIMERS (must appear on testimonial page):
     category: "marketing",
     description:
       "Compliant before-and-after photo gallery with required disclosure.",
-    content: `[CLINIC NAME] — Before & After Gallery
+    content: `[CLINIC NAME] - Before & After Gallery
 
 Patient Results Gallery
 
@@ -578,22 +578,22 @@ REQUIRED DISCLOSURES (must appear prominently on the page):
 
 IMPORTANT NOTICE ABOUT BEFORE & AFTER PHOTOS:
 
-1. Individual Results Vary — The results shown in these photographs represent individual patient outcomes and are not a guarantee of similar results. Each patient's anatomy, health condition, and treatment response are unique.
+1. Individual Results Vary - The results shown in these photographs represent individual patient outcomes and are not a guarantee of similar results. Each patient's anatomy, health condition, and treatment response are unique.
 
-2. Patient Consent — All photographs are published with the written consent of the patients shown. Patient privacy is important to us.
+2. Patient Consent - All photographs are published with the written consent of the patients shown. Patient privacy is important to us.
 
-3. Unaltered Photos — Our before-and-after photographs are taken under consistent lighting and positioning conditions. Photos have not been digitally altered to change the appearance of treatment results. [NOTE: Only include this statement if true.]
+3. Unaltered Photos - Our before-and-after photographs are taken under consistent lighting and positioning conditions. Photos have not been digitally altered to change the appearance of treatment results. [NOTE: Only include this statement if true.]
 
-4. Typical vs. Exceptional Results — Some results shown may be exceptional and not representative of the typical patient experience. During your consultation, we will discuss realistic expectations for your specific situation.
+4. Typical vs. Exceptional Results - Some results shown may be exceptional and not representative of the typical patient experience. During your consultation, we will discuss realistic expectations for your specific situation.
 
-5. Not Medical Advice — These photographs are provided for illustrative purposes only and do not constitute medical advice. A consultation with our medical team is necessary to determine if a particular treatment is appropriate for you.
+5. Not Medical Advice - These photographs are provided for illustrative purposes only and do not constitute medical advice. A consultation with our medical team is necessary to determine if a particular treatment is appropriate for you.
 
-6. Timing of Results — Results may develop over time. The timeframe noted for each set of photos indicates when the after photo was taken relative to the treatment date.
+6. Timing of Results - Results may develop over time. The timeframe noted for each set of photos indicates when the after photo was taken relative to the treatment date.
 
 ADDITIONAL PLATFORM-SPECIFIC NOTES:
 - If sharing before/after photos on social media, all disclaimers must also appear in the post.
 - Some advertising platforms (Google, Meta) have specific policies about before/after images in paid advertisements. Check platform-specific guidelines before using these images in ads.
-- HIPAA applies — ensure you have proper written authorization before publishing any patient photographs.`,
+- HIPAA applies - ensure you have proper written authorization before publishing any patient photographs.`,
     notes:
       "Replace [CLINIC NAME] and fill in photo details. You MUST have signed photo release forms from every patient shown. Never digitally alter results photos. Include all 6 disclosure items. Check your state's specific regulations on before/after marketing.",
     wordCount: 0,
@@ -604,7 +604,7 @@ ADDITIONAL PLATFORM-SPECIFIC NOTES:
     category: "marketing",
     description:
       "Credentials and philosophy page template with compliant framing.",
-    content: `[CLINIC NAME] — About Us
+    content: `[CLINIC NAME] - About Us
 
 Our Mission
 
@@ -628,15 +628,15 @@ Our Approach
 
 We believe in:
 
-Evidence-Based Care — Our treatment recommendations are grounded in current medical research and clinical evidence. We stay current with the latest developments in our field through continuing education and professional development.
+Evidence-Based Care - Our treatment recommendations are grounded in current medical research and clinical evidence. We stay current with the latest developments in our field through continuing education and professional development.
 
-Patient Education — We take the time to explain your condition, treatment options, and realistic expectations. We believe informed patients make better healthcare decisions.
+Patient Education - We take the time to explain your condition, treatment options, and realistic expectations. We believe informed patients make better healthcare decisions.
 
-Transparent Communication — We are upfront about costs, expected outcomes, and the limitations of any treatment. We will tell you what we can and cannot do.
+Transparent Communication - We are upfront about costs, expected outcomes, and the limitations of any treatment. We will tell you what we can and cannot do.
 
-Personalized Treatment Plans — Every patient is unique. We develop individualized treatment plans based on your specific health status, goals, and preferences.
+Personalized Treatment Plans - Every patient is unique. We develop individualized treatment plans based on your specific health status, goals, and preferences.
 
-Safety First — Patient safety is our highest priority. We follow all applicable regulations, maintain proper certifications, and adhere to strict safety protocols.
+Safety First - Patient safety is our highest priority. We follow all applicable regulations, maintain proper certifications, and adhere to strict safety protocols.
 
 Our Facility
 
@@ -656,7 +656,7 @@ DISCLAIMERS:
     category: "marketing",
     description:
       "Common patient questions with compliant answers.",
-    content: `[CLINIC NAME] — Frequently Asked Questions
+    content: `[CLINIC NAME] - Frequently Asked Questions
 
 Frequently Asked Questions
 
@@ -716,15 +716,15 @@ const ADS_TEMPLATES: ContentTemplate[] = [
     category: "ads",
     description:
       "Platform-compliant healthcare ad text for Google Ads campaigns.",
-    content: `GOOGLE ADS — COMPLIANT HEALTHCARE AD COPY TEMPLATES
+    content: `GOOGLE ADS - COMPLIANT HEALTHCARE AD COPY TEMPLATES
 
 Important: Google has strict Healthcare and Medicines advertising policies. Review Google's current policies before running healthcare ads.
 
 ---
 
-SEARCH AD — General Practice Awareness
+SEARCH AD - General Practice Awareness
 
-Headline 1 (30 chars): [Clinic Name] — [City] Clinic
+Headline 1 (30 chars): [Clinic Name] - [City] Clinic
 Headline 2 (30 chars): Schedule Your Consultation
 Headline 3 (30 chars): Evidence-Based Care
 Description 1 (90 chars): Comprehensive [treatment type] services from licensed, experienced providers. Learn more.
@@ -732,7 +732,7 @@ Description 2 (90 chars): Personalized treatment plans tailored to your needs. S
 
 ---
 
-SEARCH AD — Specific Service
+SEARCH AD - Specific Service
 
 Headline 1 (30 chars): [Treatment] in [City]
 Headline 2 (30 chars): Licensed Medical Providers
@@ -742,10 +742,10 @@ Description 2 (90 chars): Results vary by individual. Schedule a consultation to
 
 ---
 
-SEARCH AD — Med Spa / Cosmetic
+SEARCH AD - Med Spa / Cosmetic
 
 Headline 1 (30 chars): [Clinic Name] Med Spa
-Headline 2 (30 chars): Botox & Fillers — [City]
+Headline 2 (30 chars): Botox & Fillers - [City]
 Headline 3 (30 chars): FDA-Approved Treatments
 Description 1 (90 chars): Professional aesthetic treatments from licensed providers. Natural-looking results.
 Description 2 (90 chars): Complimentary consultations available. Discover your personalized treatment plan today.
@@ -764,7 +764,7 @@ GOOGLE ADS COMPLIANCE CHECKLIST:
 - Avoid urgency tactics for medical decisions ("Limited time," "Act now")
 - Ensure ad extensions (callouts, sitelinks) are also compliant`,
     notes:
-      "Replace [BRACKETED] items. Google healthcare ad policies change frequently — verify current policies before running campaigns. Some healthcare categories require Google advertiser certification. Character counts are guidelines for responsive search ads.",
+      "Replace [BRACKETED] items. Google healthcare ad policies change frequently - verify current policies before running campaigns. Some healthcare categories require Google advertiser certification. Character counts are guidelines for responsive search ads.",
     wordCount: 0,
   },
   {
@@ -773,11 +773,11 @@ GOOGLE ADS COMPLIANCE CHECKLIST:
     category: "ads",
     description:
       "Social media compliance templates for healthcare practices.",
-    content: `SOCIAL MEDIA — COMPLIANT HEALTHCARE POST TEMPLATES
+    content: `SOCIAL MEDIA - COMPLIANT HEALTHCARE POST TEMPLATES
 
 ---
 
-POST 1 — Educational Content
+POST 1 - Educational Content
 
 [CLINIC NAME]
 
@@ -793,7 +793,7 @@ Schedule a consultation: [link]
 
 ---
 
-POST 2 — Service Highlight
+POST 2 - Service Highlight
 
 [CLINIC NAME]
 
@@ -802,7 +802,7 @@ Considering [treatment type]? Here's what you should know:
 [Checkmark emoji] Performed by licensed, experienced providers
 [Checkmark emoji] Personalized treatment plans
 [Checkmark emoji] Thorough consultation before any treatment
-[Checkmark emoji] Transparent pricing — no hidden fees
+[Checkmark emoji] Transparent pricing - no hidden fees
 
 Every patient's situation is unique, and results vary by individual. The best way to know if [treatment] is right for you is to schedule a consultation with our team.
 
@@ -812,7 +812,7 @@ Link in bio to book.
 
 ---
 
-POST 3 — Team/Culture
+POST 3 - Team/Culture
 
 [CLINIC NAME]
 
@@ -820,13 +820,13 @@ Meet [Provider Name], [Credentials]!
 
 [Provider Name] brings [X] years of experience in [specialty] to our team. [He/She/They] is passionate about [area of focus] and committed to providing personalized, evidence-based care.
 
-Fun fact: [Personal detail — hobby, volunteer work, etc.]
+Fun fact: [Personal detail - hobby, volunteer work, etc.]
 
 Ready to schedule? Visit [link]
 
 ---
 
-POST 4 — Patient Milestone (NO specific results)
+POST 4 - Patient Milestone (NO specific results)
 
 [CLINIC NAME]
 
@@ -850,9 +850,9 @@ SOCIAL MEDIA COMPLIANCE CHECKLIST:
 - Disclose any paid partnerships or sponsored content
 - Avoid commenting on specific medical conditions in post comments
 - Meta (Facebook/Instagram) restricts targeting for health-related ads
-- Monitor and moderate comments for medical advice requests — redirect to private consultation`,
+- Monitor and moderate comments for medical advice requests - redirect to private consultation`,
     notes:
-      "Replace all [BRACKETED] items. Customize hashtags for your market. Meta has specific ad targeting restrictions for healthcare — review current policies. Never respond to medical questions in public comments.",
+      "Replace all [BRACKETED] items. Customize hashtags for your market. Meta has specific ad targeting restrictions for healthcare - review current policies. Never respond to medical questions in public comments.",
     wordCount: 0,
   },
   {
@@ -861,14 +861,14 @@ SOCIAL MEDIA COMPLIANCE CHECKLIST:
     category: "ads",
     description:
       "CAN-SPAM compliant health content email template.",
-    content: `EMAIL NEWSLETTER — CAN-SPAM COMPLIANT TEMPLATE
+    content: `EMAIL NEWSLETTER - CAN-SPAM COMPLIANT TEMPLATE
 
 ---
 
 SUBJECT LINE OPTIONS:
-- "[Clinic Name] Monthly Update — [Month Year]"
+- "[Clinic Name] Monthly Update - [Month Year]"
 - "Your [Month] Health & Wellness Update from [Clinic Name]"
-- "What's New at [Clinic Name] — [Month Year]"
+- "What's New at [Clinic Name] - [Month Year]"
 
 [Avoid: misleading subject lines, ALL CAPS, excessive punctuation, spam trigger words like "FREE," "ACT NOW," "LIMITED TIME"]
 
@@ -901,7 +901,7 @@ This information is provided for educational purposes and is not a substitute fo
 
 PRACTICE NEWS
 
-[Any updates about your practice — new providers, new services, expanded hours, community involvement, etc.]
+[Any updates about your practice - new providers, new services, expanded hours, community involvement, etc.]
 
 ---
 
@@ -921,10 +921,10 @@ Location: [ADDRESS]
 
 ---
 
-[FOOTER — REQUIRED ELEMENTS:]
+[FOOTER - REQUIRED ELEMENTS:]
 
 [CLINIC NAME]
-[PHYSICAL MAILING ADDRESS — required by CAN-SPAM]
+[PHYSICAL MAILING ADDRESS - required by CAN-SPAM]
 
 You are receiving this email because you [opted in / are a patient / etc.].
 
@@ -939,13 +939,13 @@ Copyright [YEAR] [CLINIC NAME]. All rights reserved.
 ---
 
 CAN-SPAM COMPLIANCE REQUIREMENTS:
-1. Accurate "From" name and email address — do not disguise sender identity
-2. Non-deceptive subject line — must relate to email content
+1. Accurate "From" name and email address - do not disguise sender identity
+2. Non-deceptive subject line - must relate to email content
 3. Physical mailing address MUST be included in every email
-4. Clear, conspicuous unsubscribe mechanism — must be honored within 10 business days
+4. Clear, conspicuous unsubscribe mechanism - must be honored within 10 business days
 5. Identify the message as an advertisement if it is promotional
 6. You cannot send emails to purchased lists without proper consent
-7. Honor opt-out requests promptly — do not require login/payment to unsubscribe
+7. Honor opt-out requests promptly - do not require login/payment to unsubscribe
 8. Monitor what others are doing on your behalf (email marketing services)`,
     notes:
       "Replace all [BRACKETED] items. CAN-SPAM violations can result in penalties up to $50,120 per email. Ensure your email service provider handles unsubscribe processing. If you include health claims or promotions, all standard disclaimers apply.",

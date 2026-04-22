@@ -39,9 +39,9 @@ export default function Body() {
   return (
     <>
       <Lead>
-        Sleep dentistry &mdash; the provision of oral appliance
+        Sleep dentistry - the provision of oral appliance
         therapy and related services for sleep-disordered breathing
-        &mdash; operates at the boundary of dental and medical
+        - operates at the boundary of dental and medical
         practice. Marketing this service category requires
         navigating dental scope-of-practice rules, medical diagnosis
         considerations, FDA device considerations, and the specific
@@ -96,7 +96,7 @@ export default function Body() {
 
       <H3>Pattern 3: CPAP-alternative superiority</H3>
       <P>
-        &ldquo;Better than CPAP &mdash; no masks, no noise, no
+        &ldquo;Better than CPAP - no masks, no noise, no
         hassle.&rdquo; Comparative claims between treatment modalities
         require head-to-head substantiation. For appropriate
         candidates both treatments have roles; for many OSA
@@ -224,7 +224,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Sleep dentistry operates at the dental-medical boundary — dentists provide oral appliance therapy, physicians diagnose sleep apnea.",
+          "Sleep dentistry operates at the dental-medical boundary - dentists provide oral appliance therapy, physicians diagnose sleep apnea.",
           "Marketing that implies dentist diagnosis of sleep apnea crosses scope-of-practice lines and can produce state dental board attention.",
           "CPAP-alternative superiority claims and OSA-cure claims are substantiation-exposure areas.",
           "Medical-coordination framing is both clinically accurate and compliance-safer than standalone sleep apnea treatment marketing.",

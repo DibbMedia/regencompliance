@@ -4,7 +4,7 @@ import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
 import { isValidUUID } from "@/lib/validations"
 
-// GET — site detail with all pages and their scores
+// GET - site detail with all pages and their scores
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -50,7 +50,7 @@ export async function GET(
   }
 }
 
-// PATCH — update site (toggle active, rename, etc.)
+// PATCH - update site (toggle active, rename, etc.)
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -116,7 +116,7 @@ export async function PATCH(
   }
 }
 
-// DELETE — remove site and all its pages (cascade)
+// DELETE - remove site and all its pages (cascade)
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }

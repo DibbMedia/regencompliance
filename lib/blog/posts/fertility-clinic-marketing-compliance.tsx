@@ -113,7 +113,7 @@ export default function Body() {
       <UL>
         <LI>
           Future-pregnancy outcome marketing based on egg freezing
-          is speculative &mdash; actual outcomes depend on future
+          is speculative - actual outcomes depend on future
           uses that have not yet occurred.
         </LI>
         <LI>

@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { isValidUUID } from "@/lib/validations"
 
-// GET — list all pages for a site with compliance data
+// GET - list all pages for a site with compliance data
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

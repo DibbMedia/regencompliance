@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
   description:
     "Launching a new healthcare practice means setting up compliance infrastructure from scratch. Here's the comprehensive checklist covering FDA/FTC marketing compliance, HIPAA, state requirements, and platform setup.",
   excerpt:
-    "Launching a new practice? Here's the complete compliance infrastructure checklist to build before opening day — marketing, HIPAA, state requirements, platform accounts, and ongoing process.",
+    "Launching a new practice? Here's the complete compliance infrastructure checklist to build before opening day - marketing, HIPAA, state requirements, platform accounts, and ongoing process.",
   date: "2026-04-22",
   readingMinutes: 8,
   keywords: [
@@ -41,7 +41,7 @@ export default function Body() {
     <>
       <Lead>
         Launching a new healthcare practice means building
-        compliance infrastructure from scratch &mdash; and
+        compliance infrastructure from scratch - and
         doing it before marketing starts rather than retrofitting
         later. Marketing compliance decisions at launch ripple
         forward for the life of the practice. This checklist covers
@@ -386,13 +386,13 @@ export default function Body() {
         Launching right is dramatically cheaper than retrofitting.
         Practices that set up compliance infrastructure at launch
         spend a fraction of what practices that tried to bolt it
-        on later do &mdash; and they avoid the compliance issues
+        on later do - and they avoid the compliance issues
         that typically emerge from retrofitting.
       </BQ>
 
       <KeyTakeaways
         items={[
-          "Launch is the cheapest time to build compliance infrastructure — retrofitting is dramatically more expensive.",
+          "Launch is the cheapest time to build compliance infrastructure - retrofitting is dramatically more expensive.",
           "Legal entity, licensure, insurance, and counsel relationships should be established 60-90 days before opening.",
           "HIPAA infrastructure (documentation, BAAs, training, forms) needs to be operational before seeing patients.",
           "Compliance program (style guide, review process, software, training) needs to be operational before marketing launches.",

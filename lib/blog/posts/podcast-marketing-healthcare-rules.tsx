@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
   title:
     "Podcast Marketing for Healthcare Practices: Hosting, Guest Appearances, and Sponsorship Rules",
   description:
-    "Healthcare podcast marketing — hosting your own show, guest appearances on others, and sponsored content — operates under FTC, FDA, and HIPAA rules. Here's the compliance framework.",
+    "Healthcare podcast marketing - hosting your own show, guest appearances on others, and sponsored content - operates under FTC, FDA, and HIPAA rules. Here's the compliance framework.",
   excerpt:
     "Podcast marketing is long-form and conversational, which creates specific compliance challenges. Here's how practices can host, appear on, and sponsor podcasts compliantly.",
   date: "2026-04-22",
@@ -40,7 +40,7 @@ export default function Body() {
     <>
       <Lead>
         Podcast marketing has become an increasingly common healthcare
-        practice channel &mdash; either hosting your own show,
+        practice channel - either hosting your own show,
         appearing as a guest on others&rsquo;, or sponsoring
         healthcare-adjacent podcasts. The long-form conversational
         format creates specific compliance challenges: disclosures
@@ -56,7 +56,7 @@ export default function Body() {
       </P>
       <UL>
         <LI>
-          Content you publish is your marketing &mdash; subject to
+          Content you publish is your marketing - subject to
           standard FDA/FTC rules.
         </LI>
         <LI>

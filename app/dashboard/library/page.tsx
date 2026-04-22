@@ -66,7 +66,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 }
 
 function formatDate(date: string | null): string {
-  if (!date) return "—"
+  if (!date) return "-"
   return new Date(date).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -258,7 +258,7 @@ export default function LibraryPage() {
                       <TableCell className="align-top py-4">
                         <Link href={`/dashboard/library/${action.id}`} className="block">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${agencyStyle.badge}`}>
-                            {action.agency || "—"}
+                            {action.agency || "-"}
                           </span>
                         </Link>
                       </TableCell>
@@ -291,7 +291,7 @@ export default function LibraryPage() {
                           className="block text-sm text-white/60 leading-relaxed line-clamp-2"
                         >
                           {action.summary || (
-                            <span className="text-white/40 italic">No summary available — open to view violations.</span>
+                            <span className="text-white/40 italic">No summary available - open to view violations.</span>
                           )}
                         </Link>
                       </TableCell>
@@ -368,7 +368,7 @@ export default function LibraryPage() {
               >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${agencyStyle.badge}`}>
-                    {action.agency || "—"}
+                    {action.agency || "-"}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="inline-flex items-center justify-center min-w-[28px] px-2 py-0.5 rounded-md text-xs font-semibold bg-[#55E039]/10 text-[#55E039] border border-[#55E039]/20">
@@ -392,7 +392,7 @@ export default function LibraryPage() {
                 </div>
                 <p className="text-sm text-white/60 leading-relaxed line-clamp-2 mb-2">
                   {action.summary || (
-                    <span className="text-white/40 italic">No summary available — open to view violations.</span>
+                    <span className="text-white/40 italic">No summary available - open to view violations.</span>
                   )}
                 </p>
                 {categories.length > 0 && (

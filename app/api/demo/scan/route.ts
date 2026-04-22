@@ -86,7 +86,7 @@ export async function POST(request: Request) {
 
     const startTime = Date.now()
 
-    // Claude Haiku scan — demo uses general FDA/FTC knowledge only (no proprietary rules or compliance bible)
+    // Claude Haiku scan - demo uses general FDA/FTC knowledge only (no proprietary rules or compliance bible)
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 4096,
@@ -117,12 +117,12 @@ Analyze submitted content. Return ONLY valid JSON:
 }
 For each flag, include the full sentence or short surrounding text (up to ~200 chars) that contains the matched phrase, so the user sees how it's used in context.
 Score: 100=clean, 80-99=minor issues, 60-79=medium risk, 40-59=high risk, 0-39=multiple high risk.
-Match partial phrases, synonyms, and intent — not just exact strings.
+Match partial phrases, synonyms, and intent - not just exact strings.
 Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: text }],
     })
 
-    // Track API cost (non-blocking) — use "demo" as user_id
+    // Track API cost (non-blocking) - use "demo" as user_id
     const supabaseForTracking = createServiceClient()
     trackApiUsage(supabaseForTracking, "00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
 

@@ -18,9 +18,9 @@ import {
 export const meta: BlogPostMeta = {
   slug: "botox-advertising-compliance",
   title:
-    "Botox Advertising Compliance: Why 'Botox by Nurse Smith' Might Be an FDA Violation — and What to Say Instead",
+    "Botox Advertising Compliance: Why 'Botox by Nurse Smith' Might Be an FDA Violation - and What to Say Instead",
   description:
-    "A full breakdown of the FDA prescription-drug advertising rules that apply when med spas market Botox, Dysport, Xeomin, Jeuveau, and Daxxify by brand name — with compliant rewrites of the specific patterns that trigger enforcement.",
+    "A full breakdown of the FDA prescription-drug advertising rules that apply when med spas market Botox, Dysport, Xeomin, Jeuveau, and Daxxify by brand name - with compliant rewrites of the specific patterns that trigger enforcement.",
   excerpt:
     "Every med spa ad saying 'Botox by Nurse Smith' or 'Juvederm specials this month' is operating under rules most clinics don't know exist. Here's the full playbook for brand-name neurotoxin and filler advertising compliance.",
   date: "2026-04-22",
@@ -42,13 +42,13 @@ export default function Body() {
   return (
     <>
       <Lead>
-        Every major neurotoxin and filler brand &mdash; Botox, Dysport,
+        Every major neurotoxin and filler brand - Botox, Dysport,
         Xeomin, Jeuveau, Daxxify, Juvederm, Restylane, Belotero, Radiesse,
-        Sculptra, Bellafill, Revanesse &mdash; is a prescription drug or
+        Sculptra, Bellafill, Revanesse - is a prescription drug or
         medical device with a specific FDA approval for specific
         indications. When a med spa markets these products by brand name,
         the marketing becomes subject to the FDA&rsquo;s prescription drug
-        and device advertising rules &mdash; which are significantly
+        and device advertising rules - which are significantly
         stricter than the general marketing rules most clinics think of
         as their compliance surface.
       </Lead>
@@ -79,7 +79,7 @@ export default function Body() {
         <LI>
           <Strong>Prescription drug advertising (21 CFR 202.1).</Strong>
           Direct-to-consumer advertising of prescription drugs requires
-          specific format &mdash; fair balance between benefits and
+          specific format - fair balance between benefits and
           risks, risk information presented with equal prominence,
           disclosure of approved indications, and other structural
           requirements.
@@ -109,7 +109,7 @@ export default function Body() {
         The core confusion among med spas is thinking the brand-name
         advertising rules apply only to manufacturers. They apply to
         anyone whose advertising uses the brand name to promote the
-        product &mdash; including clinics.
+        product - including clinics.
       </P>
 
       <P>
@@ -127,13 +127,13 @@ export default function Body() {
       <H3>Pattern 1: Brand-name specials and discounts</H3>
       <BeforeAfter
         bad="Botox Tuesday! $12 per unit this week only."
-        good="Neurotoxin Tuesday — $12 per unit on neuromodulator treatments this week."
+        good="Neurotoxin Tuesday - $12 per unit on neuromodulator treatments this week."
         reason="Using brand names in discount marketing crosses into drug-advertising territory. The compliant framing uses generic treatment names while preserving the promotional message."
       />
 
       <H3>Pattern 2: Provider-linked brand marketing</H3>
       <BeforeAfter
-        bad="Botox by Nurse Smith — book directly!"
+        bad="Botox by Nurse Smith - book directly!"
         good="Neuromodulator injections by Nurse Smith (NP), performed under the supervision of our medical director."
         reason="Provider-linked brand marketing combines two compliance issues: brand advertising and supervision misrepresentation. The compliant version uses generic treatment language plus explicit supervision disclosure."
       />
@@ -141,21 +141,21 @@ export default function Body() {
       <H3>Pattern 3: Off-label indication promotion</H3>
       <BeforeAfter
         bad="Botox for non-surgical chin slimming and nose reshaping."
-        good="We offer neuromodulator and filler treatments for a range of concerns — candidacy and specific applications discussed at consultation. (Note: off-label use should be clinically appropriate and documented in patient records.)"
+        good="We offer neuromodulator and filler treatments for a range of concerns - candidacy and specific applications discussed at consultation. (Note: off-label use should be clinically appropriate and documented in patient records.)"
         reason="Marketing specific off-label indications for an FDA-approved drug is explicit off-label promotion, which the FDA has pursued against clinics directly."
       />
 
       <H3>Pattern 4: Before/after with brand attribution</H3>
       <BeforeAfter
-        bad="Maria's lips — 2 syringes of Juvederm. Book your Juvederm today!"
-        good="Maria, 6 weeks post-treatment. Individual results vary. Filler treatments with products selected based on candidacy — discussed at consultation."
+        bad="Maria's lips - 2 syringes of Juvederm. Book your Juvederm today!"
+        good="Maria, 6 weeks post-treatment. Individual results vary. Filler treatments with products selected based on candidacy - discussed at consultation."
         reason="Before/after attribution to specific brand products creates an implicit brand testimonial, which the manufacturer typically controls and which the FTC reads under Endorsement Guides."
       />
 
       <H3>Pattern 5: Brand comparative advertising</H3>
       <BeforeAfter
         bad="Why Dysport beats Botox at our clinic."
-        good="Why we may recommend one neuromodulator over another based on your specific treatment goals — learn more at consultation."
+        good="Why we may recommend one neuromodulator over another based on your specific treatment goals - learn more at consultation."
         reason="Direct brand comparisons in advertising implicate both FDA comparative-advertising rules and manufacturer trademark concerns. Non-branded discussion of why product choice matters preserves the message without the exposure."
       />
 
@@ -166,7 +166,7 @@ export default function Body() {
         reason="FDA-approved applied broadly misrepresents the specific labeled indications. The compliant version discloses the actual labeling, which is informative and defensible."
       />
 
-      <H2 id="compliant-framings">Compliant framing — the practical patterns</H2>
+      <H2 id="compliant-framings">Compliant framing - the practical patterns</H2>
       <P>
         There are several framings that preserve marketing message while
         keeping the brand-advertising exposure contained.
@@ -174,9 +174,9 @@ export default function Body() {
 
       <H3>Framing 1: Practice-promotion rather than product-promotion</H3>
       <P>
-        Market your practice &mdash; &ldquo;our aesthetic injectables
+        Market your practice - &ldquo;our aesthetic injectables
         team,&rdquo; &ldquo;neuromodulator treatments at our
-        clinic&rdquo; &mdash; rather than specific branded products.
+        clinic&rdquo; - rather than specific branded products.
         You can still mention the brands clients ask about or the
         specific products you stock when it&rsquo;s clinically
         relevant. But leading with the practice rather than the brand
@@ -218,7 +218,7 @@ export default function Body() {
         cease-and-desist letters from the manufacturer directly.
         Allergan, Galderma, Merz, and other manufacturers have
         internal compliance teams that monitor how their products are
-        being marketed &mdash; and they send cease-and-desist letters
+        being marketed - and they send cease-and-desist letters
         when clinic marketing crosses into trademark territory or
         creates false impressions about approved indications.
       </P>
@@ -284,7 +284,7 @@ export default function Body() {
 
       <H3>Can I say the word Botox at all?</H3>
       <P>
-        Yes &mdash; in appropriate contexts. Consent forms, educational
+        Yes - in appropriate contexts. Consent forms, educational
         content, in-consultation discussion, FAQs about specific
         products. The issue is using brand names in promotional
         contexts (ads, specials, before/after attribution, social
@@ -306,7 +306,7 @@ export default function Body() {
       <P>
         Yes, with some differences. Fillers are technically medical
         devices rather than drugs, but the marketing framework is
-        similar &mdash; brand-name specials, off-label promotion, and
+        similar - brand-name specials, off-label promotion, and
         comparative claims carry similar exposure. Some fillers have
         specific approved indications that are worth knowing (e.g.,
         lip augmentation, nasolabial folds).
@@ -326,8 +326,8 @@ export default function Body() {
         Manufacturers sometimes provide co-op marketing materials or
         approved templates. Using these as-provided is typically safe
         because the manufacturer has vetted the language. Modifying
-        them &mdash; adding your own claims, discount language, or
-        attribution &mdash; removes the vetting and puts you back in
+        them - adding your own claims, discount language, or
+        attribution - removes the vetting and puts you back in
         the standard compliance landscape.
       </P>
 
@@ -344,10 +344,10 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Brand-name neurotoxins and fillers are prescription drugs/devices with their own advertising rules — clinics marketing them by brand name are in that regulatory space.",
+          "Brand-name neurotoxins and fillers are prescription drugs/devices with their own advertising rules - clinics marketing them by brand name are in that regulatory space.",
           "Promotional contexts (discounts, specials, social captions) carry the exposure; informational contexts (consent forms, in-consultation) generally do not.",
           "Practice-promotion framing ('our injectables team') is stronger marketing and lower compliance risk than product-promotion framing ('our Botox').",
-          "Manufacturer cease-and-desist letters are a parallel enforcement path beyond FDA action — both need to be considered.",
+          "Manufacturer cease-and-desist letters are a parallel enforcement path beyond FDA action - both need to be considered.",
           "Off-label indication promotion ('Botox for chin slimming') is a specific enforcement target regardless of clinical appropriateness.",
         ]}
       />

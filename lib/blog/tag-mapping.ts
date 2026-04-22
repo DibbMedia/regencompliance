@@ -2,7 +2,7 @@
 // compare/. Used by BlogPostLayout to render a "Related in the platform"
 // section that cross-links from blog posts to commercial-intent pages.
 //
-// Ordering matters — earlier entries surface first.
+// Ordering matters - earlier entries surface first.
 
 export interface ProductLink {
   href: string

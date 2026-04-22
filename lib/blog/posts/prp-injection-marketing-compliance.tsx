@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   title:
     "PRP Injection Marketing Compliance: What Orthopedics, Sports Medicine, and Hair Restoration Practices Keep Getting Wrong",
   description:
-    "Platelet-rich plasma (PRP) marketing has its own compliance pattern — different from stem cell marketing, with specific off-label issues, FDA-cleared device vs biological-product distinctions, and indication-specific enforcement considerations.",
+    "Platelet-rich plasma (PRP) marketing has its own compliance pattern - different from stem cell marketing, with specific off-label issues, FDA-cleared device vs biological-product distinctions, and indication-specific enforcement considerations.",
   excerpt:
     "PRP marketing looks simpler than stem cell marketing but carries a distinct compliance pattern. Here's what orthopedic, sports medicine, hair restoration, and aesthetic practices need to know about marketing PRP compliantly.",
   date: "2026-04-22",
@@ -46,7 +46,7 @@ export default function Body() {
         sports medicine clinics, hair restoration practices, med
         spas, and aesthetic dermatology all use it. The marketing
         around PRP is typically less aggressive than stem cell or
-        exosome marketing &mdash; but it has its own specific
+        exosome marketing - but it has its own specific
         compliance pattern that practices regularly miss. This is the
         full breakdown for PRP marketing.
       </Lead>
@@ -97,14 +97,14 @@ export default function Body() {
 
       <H3>Pattern 3: Hair-regrowth specifics</H3>
       <BeforeAfter
-        bad="PRP hair restoration — regrow your hair guaranteed, or your money back."
+        bad="PRP hair restoration - regrow your hair guaranteed, or your money back."
         good="PRP-based hair restoration treatments are one option for patients experiencing hair thinning; individual results vary based on cause and candidacy, and we discuss expected outcomes at consultation."
         reason="Guarantee language is an FTC enforcement staple. Hair-regrowth specifics require substantiation. Candidacy-forward framing converts well and is compliant."
       />
 
       <H3>Pattern 4: Athletic performance claims</H3>
       <BeforeAfter
-        bad="PRP helps professional athletes recover faster — get your edge."
+        bad="PRP helps professional athletes recover faster - get your edge."
         good="Some patients, including active individuals, report improved comfort and function after PRP treatment as part of their recovery plan; outcomes vary by individual."
         reason="Performance-claim marketing runs into FTC substantiation rules. Celebrity/athlete name-drops without disclosure layer on additional issues."
       />
@@ -204,7 +204,7 @@ export default function Body() {
       <H3>Is PRP marketing safer than stem cell marketing?</H3>
       <P>
         Generally yes, but not because PRP is inherently lower-risk
-        &mdash; because most PRP marketing is less aggressive.
+        - because most PRP marketing is less aggressive.
         Aggressive PRP marketing with disease-treatment claims
         carries the same exposure as equivalent stem cell marketing.
       </P>
@@ -219,7 +219,7 @@ export default function Body() {
 
       <H3>Can I show PRP before/after hair images?</H3>
       <P>
-        Yes, with FTC-compliant framing &mdash; typical-experience
+        Yes, with FTC-compliant framing - typical-experience
         disclosure, individual-variation language, and avoidance of
         outcome guarantees. The same framing rules that apply to
         weight-loss or aesthetic before/after apply here.
@@ -229,7 +229,7 @@ export default function Body() {
       <P>
         Combination marketing adds the compliance complexity of each
         component. Claims about combination-protocol outcomes need
-        substantiation covering the combination &mdash; citations to
+        substantiation covering the combination - citations to
         single-component studies do not substantiate
         combination-specific claims.
       </P>
@@ -238,7 +238,7 @@ export default function Body() {
       <P>
         Same compliance framework; different terminology. The term
         &ldquo;vampire facial&rdquo; itself is trademarked in some
-        contexts &mdash; verify usage rights before marketing with
+        contexts - verify usage rights before marketing with
         that specific name. State medical boards in some jurisdictions
         have reviewed infection-control and supervision issues around
         PRP facials specifically.
@@ -254,7 +254,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "PRP is not FDA-approved — the centrifuge may be FDA-cleared, but the preparation operates under HCT/P rules and the therapeutic claims are separate.",
+          "PRP is not FDA-approved - the centrifuge may be FDA-cleared, but the preparation operates under HCT/P rules and the therapeutic claims are separate.",
           "Disease-specific claims (arthritis, tendonitis, ED) trigger FDA drug-claim rules regardless of the 361 status.",
           "Candidacy-forward marketing (vs outcome-forward) is both compliant and effective for PRP services.",
           "Hair restoration and sexual wellness PRP are higher-enforcement subcategories and warrant extra restraint.",

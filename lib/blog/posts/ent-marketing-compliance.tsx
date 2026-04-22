@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
   description:
     "ENT practices span medical otolaryngology, surgical procedures, balloon sinuplasty, hearing aid dispensing, sleep surgery, and facial plastic services. Each carries specific compliance considerations.",
   excerpt:
-    "ENT marketing has unique considerations — balloon sinuplasty outcome claims, hearing aid consumer protection rules, and facial plastic services that cross into aesthetic marketing framework.",
+    "ENT marketing has unique considerations - balloon sinuplasty outcome claims, hearing aid consumer protection rules, and facial plastic services that cross into aesthetic marketing framework.",
   date: "2026-04-22",
   readingMinutes: 7,
   keywords: [
@@ -247,7 +247,7 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "ENT marketing spans medical otolaryngology, surgical, hearing aids, sleep surgery, and facial plastic — each with its own framework.",
+          "ENT marketing spans medical otolaryngology, surgical, hearing aids, sleep surgery, and facial plastic - each with its own framework.",
           "Balloon sinuplasty marketing needs FDA-cleared indication accuracy and substantiated outcome claims.",
           "Hearing aid marketing has specific FDA device rules plus the 2022 OTC hearing aid rule creating additional considerations.",
           "Inspire sleep surgery marketing must reflect FDA-approved indication eligibility criteria.",

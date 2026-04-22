@@ -123,7 +123,7 @@ const SAMPLE_SCANS = [
     specialty: "Med Spa",
     badgeLabel: "Med risk",
     badgeClass: "text-amber-300 bg-amber-500/10 border-amber-500/20",
-    text: "Our groundbreaking Botox treatment eliminates wrinkles and reverses the signs of aging. Clinically proven to deliver a younger, more radiant appearance — risk-free and guaranteed.",
+    text: "Our groundbreaking Botox treatment eliminates wrinkles and reverses the signs of aging. Clinically proven to deliver a younger, more radiant appearance - risk-free and guaranteed.",
   },
   {
     slug: "weight-loss",
@@ -659,7 +659,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Trend Chart + Violations + Content Types — 3-column grid */}
+          {/* Trend Chart + Violations + Content Types - 3-column grid */}
           {trends && (
             <div className="grid gap-4 lg:grid-cols-3">
               {/* Weekly Trend Chart */}
@@ -725,7 +725,7 @@ export default function DashboardPage() {
             </div>
             <h2 className="text-xl font-bold text-white mb-2">Get started with your first scan</h2>
             <p className="text-sm text-white/65 max-w-md mx-auto mb-8">
-              Paste any marketing content — website copy, social posts, ad text, emails — and get instant FDA/FTC compliance analysis with actionable suggestions.
+              Paste any marketing content - website copy, social posts, ad text, emails - and get instant FDA/FTC compliance analysis with actionable suggestions.
             </p>
 
             <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto mb-8">
@@ -762,13 +762,13 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* Sample scans — zero-friction first click */}
+          {/* Sample scans - zero-friction first click */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">
                 Or try a sample
               </p>
-              <span className="text-[10px] text-white/50">No setup — one click scans real example copy</span>
+              <span className="text-[10px] text-white/50">No setup - one click scans real example copy</span>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
               {SAMPLE_SCANS.map((s) => (

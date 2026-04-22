@@ -247,7 +247,7 @@ export function BlogIndex({
             </h2>
             <p className="mt-4 text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
               RegenCompliance checks every word of your clinic&apos;s marketing
-              against live FDA and FTC enforcement data &mdash; and rewrites
+              against live FDA and FTC enforcement data - and rewrites
               violations automatically.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3">

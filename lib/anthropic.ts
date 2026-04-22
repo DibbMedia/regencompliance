@@ -6,7 +6,7 @@ export const anthropic = new Anthropic({
 })
 
 const originalCreate = anthropic.messages.create.bind(anthropic.messages)
-// Global spend-cap guard — every messages.create call goes through the
+// Global spend-cap guard - every messages.create call goes through the
 // kill-switch defined in lib/ai-spend-guard.ts. Disabled unless
 // AI_SPEND_DAILY_CAP_CENTS is set in env.
 // @ts-expect-error monkey-patch of SDK method for transparent wrapping

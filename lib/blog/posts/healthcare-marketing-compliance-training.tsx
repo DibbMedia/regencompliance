@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
   title:
     "Training Your Healthcare Marketing Team on FDA/FTC Compliance: The Curriculum That Actually Works",
   description:
-    "A concrete curriculum for training healthcare marketing staff, agency partners, and social media coordinators on FDA/FTC compliance — what to cover, how long it should take, and how to keep it current.",
+    "A concrete curriculum for training healthcare marketing staff, agency partners, and social media coordinators on FDA/FTC compliance - what to cover, how long it should take, and how to keep it current.",
   excerpt:
     "Most healthcare marketing compliance failures are individual-staff decisions that reflect a training gap, not a malicious intent. Here's the actual curriculum that turns a marketing team into a compliance-literate operation.",
   date: "2026-04-22",
@@ -46,7 +46,7 @@ export default function Body() {
         claiming &ldquo;FDA-approved&rdquo; because that&rsquo;s what
         the manufacturer brochure said. A content writer drafts a
         testimonial framing because that&rsquo;s what they do in
-        other industries. The fix is not hiring differently &mdash;
+        other industries. The fix is not hiring differently -
         it&rsquo;s training. Here&rsquo;s the curriculum that actually
         builds a compliance-literate marketing team.
       </Lead>
@@ -55,12 +55,12 @@ export default function Body() {
       <UL>
         <LI>
           <Strong>Marketing leadership.</Strong> CMO, VP Marketing,
-          marketing manager &mdash; the decision-makers on campaign
+          marketing manager - the decision-makers on campaign
           strategy.
         </LI>
         <LI>
           <Strong>Content producers.</Strong> Writers, social media
-          managers, graphic designers, videographers &mdash; everyone
+          managers, graphic designers, videographers - everyone
           producing public-facing content.
         </LI>
         <LI>
@@ -105,7 +105,7 @@ export default function Body() {
         Walk through specific pieces of the practice&rsquo;s own
         marketing (historical, current, and hypothetical), identify
         what&rsquo;s compliant and what isn&rsquo;t, and articulate
-        why. This is the module staff remembers &mdash; because it
+        why. This is the module staff remembers - because it
         connects the principles to their actual work.
       </P>
 
@@ -129,7 +129,7 @@ export default function Body() {
       <P>
         What happens if a flagged piece goes live. How to correct.
         What to document. Who to notify. When to involve counsel.
-        This module is uncomfortable but important &mdash; staff
+        This module is uncomfortable but important - staff
         needs to know the response protocol before they need it.
       </P>
 
@@ -154,7 +154,7 @@ export default function Body() {
         </LI>
         <LI>
           <Strong>Practical exercises.</Strong> Best results come from
-          combining any format above with practical exercises &mdash;
+          combining any format above with practical exercises -
           have staff scan their own recent work, identify issues,
           propose compliant rewrites.
         </LI>
@@ -210,7 +210,7 @@ export default function Body() {
         External agencies working on your marketing should either go
         through your training or demonstrate equivalent training of
         their own. &ldquo;Our agency handles compliance&rdquo; is not
-        a substitute &mdash; many agencies handle it worse than
+        a substitute - many agencies handle it worse than
         in-house teams. Verify before relying.
       </P>
 
@@ -218,7 +218,7 @@ export default function Body() {
 
       <H3>Pre/post assessment</H3>
       <P>
-        Short quiz before training and after &mdash; identify knowledge
+        Short quiz before training and after - identify knowledge
         gaps and verify training closed them. Not a formal test; a
         diagnostic.
       </P>
@@ -242,7 +242,7 @@ export default function Body() {
         is modest; the ROI is that the team stops generating the
         specific pre-training categories of mistakes. Most practices
         that treat training as optional also treat compliance
-        incidents as inevitable &mdash; which they&rsquo;re not, in
+        incidents as inevitable - which they&rsquo;re not, in
         trained teams.
       </BQ>
 
@@ -284,11 +284,11 @@ export default function Body() {
 
       <KeyTakeaways
         items={[
-          "Most healthcare marketing compliance failures are training gaps, not malicious behavior — fixing them is a curriculum problem.",
-          "Six modules, roughly 4 total hours, covers the core curriculum — regulatory landscape, claim categories, practice-specific examples, workflow, platform rules, incident response.",
+          "Most healthcare marketing compliance failures are training gaps, not malicious behavior - fixing them is a curriculum problem.",
+          "Six modules, roughly 4 total hours, covers the core curriculum - regulatory landscape, claim categories, practice-specific examples, workflow, platform rules, incident response.",
           "Annual refresh plus triggered updates for major enforcement or policy changes keeps training current.",
-          "New hires and external agencies need the same training as in-house team — verify, don't assume.",
-          "Document training delivery as a compliance-program record — this becomes valuable evidence in any regulatory response.",
+          "New hires and external agencies need the same training as in-house team - verify, don't assume.",
+          "Document training delivery as a compliance-program record - this becomes valuable evidence in any regulatory response.",
         ]}
       />
     </>

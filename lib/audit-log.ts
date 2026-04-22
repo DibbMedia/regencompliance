@@ -14,7 +14,7 @@ export interface AuditEntry {
 }
 
 /**
- * Log an audit event. Non-blocking — never throws.
+ * Log an audit event. Non-blocking - never throws.
  */
 export function logAudit(entry: AuditEntry): void {
   try {

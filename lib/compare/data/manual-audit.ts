@@ -7,14 +7,14 @@ export const meta: CompetitorMeta = {
   categoryLabel: "Third-party consulting engagement",
   title: "RegenCompliance vs Manual Agency Compliance Audits (2026)",
   description:
-    "Manual audits by a healthcare marketing agency catch what a human reviewer sees — often once or twice a year. Here is how continuous rule-based scanning compares to agency-led compliance audits.",
+    "Manual audits by a healthcare marketing agency catch what a human reviewer sees - often once or twice a year. Here is how continuous rule-based scanning compares to agency-led compliance audits.",
   heroBadge: "Head to head",
   heroTagline:
     "A manual audit captures a point in time. RegenCompliance captures every time you publish. Different cadence, different cost, different coverage.",
   bottomLine:
-    "Manual agency audits are genuinely useful for baseline assessment, training your team, and catching judgment-call issues that rule-based scanning misses. They are also expensive, slow, and fundamentally retrospective — they tell you what was wrong on the day of the audit, not what is wrong today. Continuous compliance scanning handles the day-to-day surface; periodic manual audits handle the strategic review. Combining them produces better coverage than either alone.",
+    "Manual agency audits are genuinely useful for baseline assessment, training your team, and catching judgment-call issues that rule-based scanning misses. They are also expensive, slow, and fundamentally retrospective - they tell you what was wrong on the day of the audit, not what is wrong today. Continuous compliance scanning handles the day-to-day surface; periodic manual audits handle the strategic review. Combining them produces better coverage than either alone.",
   shortVerdict:
-    "Manual audits are a snapshot. Software is a continuous check. Different problems, both useful — but only one is feasible to run every time you publish.",
+    "Manual audits are a snapshot. Software is a continuous check. Different problems, both useful - but only one is feasible to run every time you publish.",
   theirStrengths: [
     {
       title: "Human judgment on context and intent",
@@ -22,7 +22,7 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Strategic recommendations, not just findings",
-      body: "A good audit does not just list violations — it recommends structural changes: how the service pages should be organized, how the testimonial section should be restructured, what kind of content should exist and does not. Software does not do strategic recommendations.",
+      body: "A good audit does not just list violations - it recommends structural changes: how the service pages should be organized, how the testimonial section should be restructured, what kind of content should exist and does not. Software does not do strategic recommendations.",
     },
     {
       title: "Training as a byproduct",
@@ -30,36 +30,36 @@ export const meta: CompetitorMeta = {
     },
     {
       title: "Deep review of edge cases",
-      body: "Off-label communication, research-stage messaging, international marketing compliance, specialty-specific state medical board issues — experienced consultants have seen these and can advise. Rule-based scanning does not reach into every edge case.",
+      body: "Off-label communication, research-stage messaging, international marketing compliance, specialty-specific state medical board issues - experienced consultants have seen these and can advise. Rule-based scanning does not reach into every edge case.",
     },
   ],
   ourStrengths: [
     {
       title: "Continuous review, not point-in-time snapshot",
-      body: "A quarterly audit catches what exists on audit day. Between audits, your team publishes hundreds of new pieces of content. Continuous scanning means every piece gets reviewed before it goes live — which is the only cadence that matches the actual publishing schedule.",
+      body: "A quarterly audit catches what exists on audit day. Between audits, your team publishes hundreds of new pieces of content. Continuous scanning means every piece gets reviewed before it goes live - which is the only cadence that matches the actual publishing schedule.",
     },
     {
       title: "Economically feasible on every piece of content",
-      body: "Manual audits range from $5,000 to $25,000+ per engagement, typically 1–4 times per year. Continuous scanning is $297/mo for unlimited scans. The cost structure enables pre-publish review on every post, ad, email, and page — the cadence at which violations actually enter the public surface.",
+      body: "Manual audits range from $5,000 to $25,000+ per engagement, typically 1–4 times per year. Continuous scanning is $297/mo for unlimited scans. The cost structure enables pre-publish review on every post, ad, email, and page - the cadence at which violations actually enter the public surface.",
     },
     {
       title: "Consistent rule application at scale",
-      body: "A manual audit across 200 pages is a consistency challenge — different pages reviewed on different days, by reviewers at different energy levels, with different mental rule sets. Software applies the same rule set to every piece, every time, without fatigue.",
+      body: "A manual audit across 200 pages is a consistency challenge - different pages reviewed on different days, by reviewers at different energy levels, with different mental rule sets. Software applies the same rule set to every piece, every time, without fatigue.",
     },
     {
       title: "Rule set updated daily from live enforcement",
-      body: "The consultant who wrote your audit knows what they knew when they wrote it. Our rule set ingests FDA warning letters and FTC enforcement daily. A violation that becomes a rule on Tuesday gets applied to Wednesday's scans — no waiting for the next audit cycle.",
+      body: "The consultant who wrote your audit knows what they knew when they wrote it. Our rule set ingests FDA warning letters and FTC enforcement daily. A violation that becomes a rule on Tuesday gets applied to Wednesday's scans - no waiting for the next audit cycle.",
     },
     {
       title: "Audit trail as a byproduct, not a deliverable",
-      body: "A manual audit produces a report. Our tool produces one permanent audit record per scan — hundreds of records per month, all timestamped, all exportable. Designed to be evidence of a continuous program, not a one-time document.",
+      body: "A manual audit produces a report. Our tool produces one permanent audit record per scan - hundreds of records per month, all timestamped, all exportable. Designed to be evidence of a continuous program, not a one-time document.",
     },
   ],
   honestLimitations: [
     "Manual audits deliver strategic recommendations and structural feedback that software does not. If you need an experienced consultant to help reorganize your marketing program, that is not us.",
     "The 1:1 training value of a manual audit is real and hard to match.",
     "Manual auditors handle judgment calls and context-dependent nuance better than rule-based scanning.",
-    "Edge cases — off-label communication, state-specific medical board issues, specialty-specific nuance — get deeper treatment from a knowledgeable consultant than from any rule set.",
+    "Edge cases - off-label communication, state-specific medical board issues, specialty-specific nuance - get deeper treatment from a knowledgeable consultant than from any rule set.",
     "If you need a written audit report suitable for investor or board review, the manual audit deliverable is the right format.",
   ],
   useCases: [
@@ -73,7 +73,7 @@ export const meta: CompetitorMeta = {
       scenario: "Pre-publish review of every social post, ad, and email",
       winner: "us",
       recommendation:
-        "Not feasible with manual audits — cost and turnaround don't support per-item review. This is the workflow software is built for: paste, scan, fix, publish, in under a minute.",
+        "Not feasible with manual audits - cost and turnaround don't support per-item review. This is the workflow software is built for: paste, scan, fix, publish, in under a minute.",
     },
     {
       scenario: "Responding to an FDA warning letter",
@@ -128,7 +128,7 @@ export const meta: CompetitorMeta = {
   faqs: [
     {
       q: "Can I skip manual audits if I use RegenCompliance?",
-      a: "You can, but most clinics doing serious compliance work combine both. The software handles the per-piece pre-publish check — the cadence at which violations actually enter your public surface. A periodic manual audit catches the context-dependent and structural issues that rule sets do not model. The software reduces the workload of the audit (fewer findings) but does not replace the judgment layer.",
+      a: "You can, but most clinics doing serious compliance work combine both. The software handles the per-piece pre-publish check - the cadence at which violations actually enter your public surface. A periodic manual audit catches the context-dependent and structural issues that rule sets do not model. The software reduces the workload of the audit (fewer findings) but does not replace the judgment layer.",
     },
     {
       q: "What do manual auditors do that RegenCompliance cannot?",
@@ -136,15 +136,15 @@ export const meta: CompetitorMeta = {
     },
     {
       q: "How often do clinics actually run manual audits?",
-      a: "The honest answer is: less often than they planned to. Most clinics that buy a manual audit never buy the second one — because it is expensive, slow, and by the time the report arrives the team has already published three more months of content. That gap is exactly why continuous scanning became a category.",
+      a: "The honest answer is: less often than they planned to. Most clinics that buy a manual audit never buy the second one - because it is expensive, slow, and by the time the report arrives the team has already published three more months of content. That gap is exactly why continuous scanning became a category.",
     },
     {
       q: "Does RegenCompliance replace our marketing agency?",
-      a: "No. If your agency writes, manages ads, runs SEO, handles email — none of that is what we do. We are the compliance layer that sits between their output and your publishing. Many healthcare marketing agencies use RegenCompliance internally to check their own deliverables before sending to clinic clients.",
+      a: "No. If your agency writes, manages ads, runs SEO, handles email - none of that is what we do. We are the compliance layer that sits between their output and your publishing. Many healthcare marketing agencies use RegenCompliance internally to check their own deliverables before sending to clinic clients.",
     },
     {
       q: "Do you do one-time audits?",
-      a: "No. Our model is continuous — unlimited scans at a subscription rate. If you need a one-time written audit report for investor due diligence or a specific regulatory situation, the manual-audit model is the right format and we recommend an experienced consultant or law firm.",
+      a: "No. Our model is continuous - unlimited scans at a subscription rate. If you need a one-time written audit report for investor due diligence or a specific regulatory situation, the manual-audit model is the right format and we recommend an experienced consultant or law firm.",
     },
     {
       q: "What does a typical combined workflow look like?",

@@ -11,11 +11,11 @@ const canonical = "https://compliance.regenportal.com/compare"
 const HUB_FAQS = [
   {
     q: "Which tool should I choose first?",
-    a: "Depends on what's missing today. If you already have a marketing writer or agency producing copy, RegenCompliance is the gap — the compliance check between their output and publishing. If you're a solo-owner clinic writing everything yourself, pair a drafting tool (ChatGPT or Jasper) with RegenCompliance. The most common end state is two tools: one that generates copy fast, one that checks it against FDA/FTC rules before it goes live.",
+    a: "Depends on what's missing today. If you already have a marketing writer or agency producing copy, RegenCompliance is the gap - the compliance check between their output and publishing. If you're a solo-owner clinic writing everything yourself, pair a drafting tool (ChatGPT or Jasper) with RegenCompliance. The most common end state is two tools: one that generates copy fast, one that checks it against FDA/FTC rules before it goes live.",
   },
   {
     q: "Do I need multiple tools or can one do everything?",
-    a: "No single tool does drafting, compliance, grammar, and legal judgment at a best-in-class level. The practices that get this right typically run three to four tools in sequence — a drafting tool, a grammar tool, a compliance scanner, and a healthcare marketing attorney for edge cases. The combined monthly cost is still a small fraction of what one FDA warning letter response costs.",
+    a: "No single tool does drafting, compliance, grammar, and legal judgment at a best-in-class level. The practices that get this right typically run three to four tools in sequence - a drafting tool, a grammar tool, a compliance scanner, and a healthcare marketing attorney for edge cases. The combined monthly cost is still a small fraction of what one FDA warning letter response costs.",
   },
   {
     q: "Is RegenCompliance trying to replace my healthcare marketing attorney?",
@@ -23,20 +23,20 @@ const HUB_FAQS = [
   },
   {
     q: "How often does the underlying rule set change?",
-    a: "Daily. The FDA issues warning letters weekly and the FTC publishes enforcement actions continuously. Our ingestion pipeline adds new enforcement into the rule set within 24 hours of publication. This is the specific reason purpose-built tools outperform general AI on compliance — general models update on generational cycles, enforcement evolves in real time.",
+    a: "Daily. The FDA issues warning letters weekly and the FTC publishes enforcement actions continuously. Our ingestion pipeline adds new enforcement into the rule set within 24 hours of publication. This is the specific reason purpose-built tools outperform general AI on compliance - general models update on generational cycles, enforcement evolves in real time.",
   },
   {
     q: "What makes these comparisons 'honest' vs. sales pitches?",
-    a: "Every comparison page leads with where the competitor wins. ChatGPT really is better for drafting from scratch. Grammarly really is better for grammar. A healthcare attorney really is irreplaceable for warning-letter response. If we pretended otherwise, we'd lose credibility on the part we actually do better — the day-to-day FDA/FTC compliance check.",
+    a: "Every comparison page leads with where the competitor wins. ChatGPT really is better for drafting from scratch. Grammarly really is better for grammar. A healthcare attorney really is irreplaceable for warning-letter response. If we pretended otherwise, we'd lose credibility on the part we actually do better - the day-to-day FDA/FTC compliance check.",
   },
   {
     q: "Can I try the tool before committing?",
-    a: "Yes. The /demo scanner is free and requires no card — paste any marketing content and see a compliance report in 30 seconds. Founding-member signup still has 30-day money-back guarantee on top of that.",
+    a: "Yes. The /demo scanner is free and requires no card - paste any marketing content and see a compliance report in 30 seconds. Founding-member signup still has 30-day money-back guarantee on top of that.",
   },
 ]
 
 export const metadata: Metadata = {
-  title: "Healthcare Marketing Compliance Tools Compared — RegenCompliance vs Alternatives",
+  title: "Healthcare Marketing Compliance Tools Compared - RegenCompliance vs Alternatives",
   description:
     "Honest head-to-head comparisons of RegenCompliance vs ChatGPT, Jasper, Grammarly, Copy.ai, healthcare marketing attorneys, and manual agency audits. When to use which, and why.",
   keywords: [
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical },
   openGraph: {
-    title: "Healthcare Marketing Compliance Tools Compared — RegenCompliance vs Alternatives",
+    title: "Healthcare Marketing Compliance Tools Compared - RegenCompliance vs Alternatives",
     description:
-      "Honest head-to-head comparisons of RegenCompliance vs every alternative — AI writers, grammar tools, attorneys, and manual audits. When to use which.",
+      "Honest head-to-head comparisons of RegenCompliance vs every alternative - AI writers, grammar tools, attorneys, and manual audits. When to use which.",
     url: canonical,
     type: "website",
   },
@@ -128,7 +128,7 @@ export default function ComparePage() {
           </h1>
           <p className="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
             AI writing assistants, grammar tools, healthcare marketing attorneys, and manual
-            agency audits. Honest breakdowns — where each one wins, where RegenCompliance
+            agency audits. Honest breakdowns - where each one wins, where RegenCompliance
             wins, and when you actually need both.
           </p>
         </div>
@@ -144,7 +144,7 @@ export default function ComparePage() {
               </div>
               <p className="text-sm font-bold text-white mb-2">AI writing tools</p>
               <p className="text-xs text-white/60 leading-relaxed">
-                ChatGPT, Jasper, Copy.ai — great for drafting, not a compliance check.
+                ChatGPT, Jasper, Copy.ai - great for drafting, not a compliance check.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">

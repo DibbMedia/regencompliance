@@ -15,11 +15,11 @@ const SPECIALTY_HUB_FAQS = [
   },
   {
     q: "What if my specialty isn't listed?",
-    a: "The core FDA and FTC rules apply to every healthcare specialty — so the scanner still catches disease claims, testimonial-disclosure issues, and guarantee language regardless of specialty. Specialty-specific pages cover the claim categories unique to each area. Additional specialties are added as the rule set grows — functional medicine, hormone therapy, chiropractic, dermatology, and hair restoration are on the expansion list.",
+    a: "The core FDA and FTC rules apply to every healthcare specialty - so the scanner still catches disease claims, testimonial-disclosure issues, and guarantee language regardless of specialty. Specialty-specific pages cover the claim categories unique to each area. Additional specialties are added as the rule set grows - functional medicine, hormone therapy, chiropractic, dermatology, and hair restoration are on the expansion list.",
   },
   {
     q: "Can one practice use multiple specialty rule sets?",
-    a: "Yes. Practices that span specialties (e.g., a med spa that also offers weight loss programs) automatically get both rule sets applied. The scanner doesn't force you to pick one specialty — it applies every relevant rule based on content.",
+    a: "Yes. Practices that span specialties (e.g., a med spa that also offers weight loss programs) automatically get both rule sets applied. The scanner doesn't force you to pick one specialty - it applies every relevant rule based on content.",
   },
   {
     q: "Do DSOs and multi-location groups use these pages?",
@@ -36,9 +36,9 @@ const SPECIALTY_HUB_FAQS = [
 ]
 
 export const metadata: Metadata = {
-  title: "Compliance Software by Specialty — Med Spa, Regen, Weight Loss, Dental & More",
+  title: "Compliance Software by Specialty - Med Spa, Regen, Weight Loss, Dental & More",
   description:
-    "RegenCompliance specializes by specialty. Purpose-built compliance scanning for med spas, weight loss clinics, regen medicine, dental, IV therapy, and aesthetic practices — each with specialty-specific rule sets.",
+    "RegenCompliance specializes by specialty. Purpose-built compliance scanning for med spas, weight loss clinics, regen medicine, dental, IV therapy, and aesthetic practices - each with specialty-specific rule sets.",
   keywords: [
     "healthcare specialty compliance software",
     "med spa compliance",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical },
   openGraph: {
-    title: "Compliance Software by Healthcare Specialty — RegenCompliance",
+    title: "Compliance Software by Healthcare Specialty - RegenCompliance",
     description:
       "Purpose-built compliance scanning by specialty. Each rule set reflects the enforcement actually targeting your practice type.",
     url: canonical,
@@ -124,7 +124,7 @@ export default function SpecialtiesIndexPage() {
             Built for your specialty
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.08]">
-            Specialty-specific compliance —{" "}
+            Specialty-specific compliance -{" "}
             <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">
               not generic healthcare rules
             </span>
@@ -133,7 +133,7 @@ export default function SpecialtiesIndexPage() {
             Every healthcare specialty has its own enforcement surface. Med spas, weight
             loss clinics, and regen practices face different FDA patterns, different FTC
             rules, and different state medical board scrutiny. One rule set for all of
-            healthcare cannot model that — so we built one per specialty.
+            healthcare cannot model that - so we built one per specialty.
           </p>
         </div>
       </section>
@@ -193,7 +193,7 @@ export default function SpecialtiesIndexPage() {
               </p>
               <p className="text-base sm:text-[17px] text-white/80 leading-relaxed">
                 RegenCompliance is organized the same way regulators think about
-                enforcement — by specialty, by claim category, by device or drug
+                enforcement - by specialty, by claim category, by device or drug
                 classification. That specificity is what catches the violations generic
                 tools miss.
               </p>
@@ -239,7 +239,7 @@ export default function SpecialtiesIndexPage() {
           </h2>
           <p className="mt-4 text-base text-white/70 max-w-md mx-auto leading-relaxed">
             The rule set expands regularly. If your specialty isn't listed, the core
-            rules still apply — and new specialty pages go live as the rule set grows.
+            rules still apply - and new specialty pages go live as the rule set grows.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 sm:gap-4">
             <Link

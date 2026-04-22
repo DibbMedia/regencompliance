@@ -94,7 +94,7 @@ const FAQ_DATA: FaqSection[] = [
       {
         question: "Can I say 'FDA approved'?",
         answer:
-          "Only if the specific treatment for the specific indication you are describing is genuinely FDA-approved. Many popular treatments across healthcare — stem cell therapies, PRP, exosomes, many med spa injectables, off-label weight loss drugs, and certain dental products — are NOT FDA-approved for their commonly marketed uses. Saying \"FDA approved\" when a treatment is not approved for that use is one of the fastest ways to trigger an FDA warning letter. Instead, use accurate language like \"FDA-cleared device\" when applicable, or describe the treatment without referencing FDA status.",
+          "Only if the specific treatment for the specific indication you are describing is genuinely FDA-approved. Many popular treatments across healthcare - stem cell therapies, PRP, exosomes, many med spa injectables, off-label weight loss drugs, and certain dental products - are NOT FDA-approved for their commonly marketed uses. Saying \"FDA approved\" when a treatment is not approved for that use is one of the fastest ways to trigger an FDA warning letter. Instead, use accurate language like \"FDA-cleared device\" when applicable, or describe the treatment without referencing FDA status.",
       },
       {
         question: "Can I use patient testimonials?",
