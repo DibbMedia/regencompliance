@@ -92,6 +92,45 @@ import PeptideBody, {
 import HairRestorationBody, {
   meta as hairRestorationMeta,
 } from "./posts/hair-restoration-marketing-compliance"
+import TrainingBody, {
+  meta as trainingMeta,
+} from "./posts/healthcare-marketing-compliance-training"
+import StyleGuideBody, {
+  meta as styleGuideMeta,
+} from "./posts/healthcare-marketing-style-guide"
+import PrePublishBody, {
+  meta as prePublishMeta,
+} from "./posts/pre-publish-compliance-checklist"
+import NegativeReviewsBody, {
+  meta as negativeReviewsMeta,
+} from "./posts/responding-to-negative-reviews-hipaa-ftc"
+import AboutPageBody, {
+  meta as aboutPageMeta,
+} from "./posts/healthcare-about-page-compliance"
+import EndorsementGuides2023Body, {
+  meta as endorsementGuides2023Meta,
+} from "./posts/ftc-endorsement-guides-2023-update"
+import HipaaMarketingBody, {
+  meta as hipaaMarketingMeta,
+} from "./posts/hipaa-marketing-rule-healthcare-practices"
+import StateBoardsBody, {
+  meta as stateBoardsMeta,
+} from "./posts/state-medical-board-advertising-rules-overview"
+import RegenSciencesBody, {
+  meta as regenSciencesMeta,
+} from "./posts/regenerative-sciences-v-fda-case-study"
+import StateAgBody, {
+  meta as stateAgMeta,
+} from "./posts/state-ag-healthcare-enforcement-2024-2026"
+import EnforcementTrends2026Body, {
+  meta as enforcementTrends2026Meta,
+} from "./posts/2026-healthcare-enforcement-trends"
+import KimeraBody, {
+  meta as kimeraMeta,
+} from "./posts/kimera-labs-fda-enforcement-analysis"
+import MedSpaEnforcementBody, {
+  meta as medSpaEnforcementMeta,
+} from "./posts/ftc-med-spa-enforcement-patterns-2024-2026"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -125,6 +164,19 @@ export const POSTS: BlogPostModule[] = [
   { meta: ketamineMeta, Body: KetamineBody },
   { meta: peptideMeta, Body: PeptideBody },
   { meta: hairRestorationMeta, Body: HairRestorationBody },
+  { meta: trainingMeta, Body: TrainingBody },
+  { meta: styleGuideMeta, Body: StyleGuideBody },
+  { meta: prePublishMeta, Body: PrePublishBody },
+  { meta: negativeReviewsMeta, Body: NegativeReviewsBody },
+  { meta: aboutPageMeta, Body: AboutPageBody },
+  { meta: endorsementGuides2023Meta, Body: EndorsementGuides2023Body },
+  { meta: hipaaMarketingMeta, Body: HipaaMarketingBody },
+  { meta: stateBoardsMeta, Body: StateBoardsBody },
+  { meta: regenSciencesMeta, Body: RegenSciencesBody },
+  { meta: stateAgMeta, Body: StateAgBody },
+  { meta: enforcementTrends2026Meta, Body: EnforcementTrends2026Body },
+  { meta: kimeraMeta, Body: KimeraBody },
+  { meta: medSpaEnforcementMeta, Body: MedSpaEnforcementBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
