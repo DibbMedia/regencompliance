@@ -5,6 +5,7 @@ import {
   P,
   Lead,
   UL,
+  OL,
   LI,
   Strong,
   Em,
