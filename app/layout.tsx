@@ -14,7 +14,7 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
-const STRUCTURED_DATA_JSON = JSON.stringify({
+const SOFTWARE_APPLICATION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "RegenCompliance",
@@ -28,6 +28,46 @@ const STRUCTURED_DATA_JSON = JSON.stringify({
   },
   description: "FDA/FTC compliance scanner for healthcare practices",
   url: "https://compliance.regenportal.com",
+})
+
+const ORGANIZATION_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "RegenCompliance",
+  alternateName: "RegenCompliance by Dibb Media",
+  url: "https://compliance.regenportal.com",
+  logo: "https://compliance.regenportal.com/og-image.png",
+  description:
+    "FDA/FTC compliance scanning software purpose-built for healthcare practices — regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "support@regencompliance.com",
+    contactType: "customer support",
+    availableLanguage: ["English"],
+  },
+  knowsAbout: [
+    "FDA warning letters",
+    "FTC Endorsement Guides",
+    "healthcare marketing compliance",
+    "structure-function claims",
+    "HCT/P regulation",
+    "state medical board advertising rules",
+  ],
+})
+
+const WEBSITE_JSON = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "RegenCompliance",
+  url: "https://compliance.regenportal.com",
+  description:
+    "FDA/FTC compliance scanning for healthcare marketing.",
+  publisher: {
+    "@type": "Organization",
+    name: "RegenCompliance",
+    url: "https://compliance.regenportal.com",
+  },
+  inLanguage: "en-US",
 })
 
 export const metadata: Metadata = {
@@ -95,7 +135,17 @@ export default async function RootLayout({
         <script
           nonce={nonce}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: STRUCTURED_DATA_JSON }}
+          dangerouslySetInnerHTML={{ __html: SOFTWARE_APPLICATION_JSON }}
+        />
+        <script
+          nonce={nonce}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: ORGANIZATION_JSON }}
+        />
+        <script
+          nonce={nonce}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: WEBSITE_JSON }}
         />
       </head>
       <body id="main-content" className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>

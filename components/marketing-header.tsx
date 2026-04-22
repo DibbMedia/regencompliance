@@ -21,11 +21,12 @@ export function MarketingHeader() {
             </div>
             <span className="text-[15px] font-bold tracking-tight text-white">RegenCompliance</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-7">
             <Link href="/features" className="text-sm text-white/75 hover:text-white transition-colors">Features</Link>
             <Link href="/pricing" className="text-sm text-white/75 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/for" className="text-sm text-white/75 hover:text-white transition-colors">For clinics</Link>
+            <Link href="/compare" className="text-sm text-white/75 hover:text-white transition-colors">Compare</Link>
             <Link href="/blog" className="text-sm text-white/75 hover:text-white transition-colors">Blog</Link>
-            <Link href="/faq" className="text-sm text-white/75 hover:text-white transition-colors">FAQ</Link>
             <Link href="/demo" className="text-sm text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Try Demo</Link>
           </nav>
           <div className="hidden md:flex items-center gap-3">
@@ -53,7 +54,10 @@ export function MarketingHeader() {
           <div className="md:hidden border-t border-white/10 py-4 space-y-1 bg-[#0a0a0a]/90 backdrop-blur-xl -mx-6 px-6">
             <Link href="/features" className="block text-sm text-white/75 hover:text-white py-2.5">Features</Link>
             <Link href="/pricing" className="block text-sm text-white/75 hover:text-white py-2.5">Pricing</Link>
+            <Link href="/for" className="block text-sm text-white/75 hover:text-white py-2.5">For clinics</Link>
+            <Link href="/compare" className="block text-sm text-white/75 hover:text-white py-2.5">Compare</Link>
             <Link href="/blog" className="block text-sm text-white/75 hover:text-white py-2.5">Blog</Link>
+            <Link href="/glossary" className="block text-sm text-white/75 hover:text-white py-2.5">Glossary</Link>
             <Link href="/faq" className="block text-sm text-white/75 hover:text-white py-2.5">FAQ</Link>
             <Link href="/demo" className="block text-sm text-[#55E039] font-semibold py-2.5">Try Demo</Link>
             <Link href="/login" className="block text-sm text-white/75 py-2.5">Log In</Link>
