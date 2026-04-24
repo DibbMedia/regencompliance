@@ -30,14 +30,18 @@ Check exactly these in the Stripe Restricted Key creation form. Leave everything
 
 ### Core resources
 
-| Resource | Permission |
+| Resource (current Stripe UI label) | Permission |
 | --- | --- |
 | **Checkout Sessions** | Write |
 | **Customers** | Write |
 | **Subscriptions** | Write |
-| **Billing Portal Sessions** | Write |
+| **Customer portal** (API name: `billingPortal.sessions`) | Write |
 | **Prices** | Read |
 | **Products** | Read |
+
+Note: Stripe renamed "Billing Portal Sessions" to "Customer portal" in
+the restricted-key UI at some point. The API call in `lib/stripe.ts`
+(`stripe.billingPortal.sessions.create`) is unchanged.
 
 ### Everything else — `None`
 
