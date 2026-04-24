@@ -1,14 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
 // ─── Supabase mock ─────────────────────────────────────────────
-let mockSignUp: ReturnType<typeof vi.fn>
-beforeEach(() => {
-  mockSignUp = vi.fn().mockResolvedValue({ data: { user: { id: "u1" }, session: null }, error: null })
-})
+type SignUpArgs = { email: string; password: string; options?: unknown }
+type SignUpResult = {
+  data: { user: { id: string } | null; session: unknown } | null
+  error: { message: string; status?: number } | null
+}
+
+const mockSignUp = vi.fn<(args: SignUpArgs) => Promise<SignUpResult>>()
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: async () => ({
-    auth: { signUp: (args: unknown) => mockSignUp(args) },
+    auth: { signUp: (args: SignUpArgs) => mockSignUp(args) },
   }),
 }))
 
@@ -40,6 +43,8 @@ async function loadRoute() {
 describe("POST /api/auth/signup", () => {
   beforeEach(() => {
     rateLimitState.allowed = true
+    mockSignUp.mockReset()
+    mockSignUp.mockResolvedValue({ data: { user: { id: "u1" }, session: null }, error: null })
   })
 
   it("rejects when per-IP rate limit exceeded", async () => {
