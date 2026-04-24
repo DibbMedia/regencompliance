@@ -15,6 +15,10 @@ import { checkRateLimit } from "@/lib/rate-limit"
 export const maxDuration = 5
 
 interface NormalizedReport {
+  // Index signature makes the shape assignable to the Record<string, unknown>
+  // expected by logAudit's `details` param. Named fields below are just the
+  // subset we actually care about surfacing.
+  [key: string]: unknown
   document_url?: string
   violated_directive?: string
   effective_directive?: string
