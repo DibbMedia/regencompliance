@@ -5,7 +5,7 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 export type AdminRole = "developer" | "support"
 
 export function getAdminEmail(): string {
-  return process.env.ADMIN_EMAIL || "isaac@dibbenterprizes.com"
+  return process.env.ADMIN_EMAIL?.trim() || ""
 }
 
 export async function getAdminRole(
@@ -13,7 +13,8 @@ export async function getAdminRole(
 ): Promise<AdminRole | null> {
   if (!email) return null
   const normalized = email.toLowerCase().trim()
-  if (process.env.ADMIN_EMAIL && process.env.ADMIN_EMAIL.toLowerCase() === normalized) {
+  const envAdmin = process.env.ADMIN_EMAIL?.trim().toLowerCase()
+  if (envAdmin && envAdmin === normalized) {
     return "developer"
   }
   try {
