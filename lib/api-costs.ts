@@ -46,13 +46,22 @@ export function trackApiUsage(
   const outputTokens = response.usage?.output_tokens || 0
   const costCents = estimateCost(model, inputTokens, outputTokens)
 
-  // Fire and forget - never block the main request
-  supabase.from("api_usage").insert({
-    user_id: userId,
-    endpoint,
-    model,
-    input_tokens: inputTokens,
-    output_tokens: outputTokens,
-    estimated_cost_cents: costCents,
-  }).then(() => {}).catch((e: unknown) => console.error("[API Cost] Failed to track:", e))
+  // Fire and forget - never block the main request. Supabase's builder
+  // returns PromiseLike (no .catch), so wrap in an async IIFE to handle
+  // both resolved errors (via { error }) and rejections uniformly.
+  void (async () => {
+    try {
+      const { error } = await supabase.from("api_usage").insert({
+        user_id: userId,
+        endpoint,
+        model,
+        input_tokens: inputTokens,
+        output_tokens: outputTokens,
+        estimated_cost_cents: costCents,
+      })
+      if (error) console.error("[API Cost] Failed to track:", error)
+    } catch (e) {
+      console.error("[API Cost] Failed to track:", e)
+    }
+  })()
 }
