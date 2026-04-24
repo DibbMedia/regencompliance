@@ -20,6 +20,10 @@ function buildCsp(nonce: string): string {
     "form-action 'self'",
     "object-src 'none'",
     "upgrade-insecure-requests",
+    // Legacy report-uri is still what most browsers honor; report-to is the
+    // modern replacement, wired via the Reporting-Endpoints header below.
+    "report-uri /api/csp-report",
+    "report-to csp-endpoint",
   ].join("; ")
 }
 
@@ -43,6 +47,12 @@ export async function proxy(request: NextRequest) {
   const applyCsp = (response: NextResponse): NextResponse => {
     response.headers.set("Content-Security-Policy", csp)
     response.headers.set("x-nonce", nonce)
+    // Reporting-Endpoints names the endpoint referenced by `report-to` in CSP.
+    // Must be a same-origin absolute or a relative URL on HTTPS.
+    response.headers.set(
+      "Reporting-Endpoints",
+      'csp-endpoint="/api/csp-report"',
+    )
     return response
   }
 
@@ -50,13 +60,15 @@ export async function proxy(request: NextRequest) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
   }
 
-  // Origin enforcement runs on every mutating /api/ request except the two
-  // routes called by external origins that don't send an Origin header.
+  // Origin enforcement runs on every mutating /api/ request except the
+  // routes called by external origins (Stripe webhook, Vercel cron) or by
+  // browser internals (CSP violation reports don't always include Origin).
   // GET/HEAD/OPTIONS pass automatically (see lib/security/origin.ts).
   if (
     pathname.startsWith("/api/") &&
     !pathname.startsWith("/api/stripe/webhook") &&
-    !pathname.startsWith("/api/cron/")
+    !pathname.startsWith("/api/cron/") &&
+    pathname !== "/api/csp-report"
   ) {
     const originBlock = enforceOrigin(request)
     if (originBlock) return applyCsp(originBlock)
@@ -74,7 +86,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/demo/") ||
     pathname.startsWith("/api/auth/") ||
     pathname === "/api/waitlist" ||
-    pathname === "/api/newsletter"
+    pathname === "/api/newsletter" ||
+    pathname === "/api/csp-report"
   ) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
   }
