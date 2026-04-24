@@ -8,6 +8,9 @@ export async function GET(request: Request) {
   const health: Record<string, unknown> = {
     status: "ok",
     timestamp: new Date().toISOString(),
+    // Short commit SHA of the deployed build, or "dev" locally. Lets you
+    // verify at a glance which commit prod is actually running.
+    version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "dev",
   }
 
   if (deep) {
