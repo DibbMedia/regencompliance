@@ -25,6 +25,12 @@ vi.mock("@/lib/ip", () => ({
   getClientIp: () => "1.2.3.4",
 }))
 
+// ─── HIBP mock — default not breached ──────────────────────────
+const breachState: { breached: boolean } = { breached: false }
+vi.mock("@/lib/password-breach", () => ({
+  checkPasswordBreach: async () => ({ breached: breachState.breached }),
+}))
+
 const STRONG_PASSWORD = "Strong!Pass123"
 
 function jsonReq(body: unknown): Request {
@@ -43,6 +49,7 @@ async function loadRoute() {
 describe("POST /api/auth/signup", () => {
   beforeEach(() => {
     rateLimitState.allowed = true
+    breachState.breached = false
     mockSignUp.mockReset()
     mockSignUp.mockResolvedValue({ data: { user: { id: "u1" }, session: null }, error: null })
   })
@@ -83,6 +90,16 @@ describe("POST /api/auth/signup", () => {
     expect(res.status).toBe(400)
     const json = await res.json()
     expect(json.error).toMatch(/do not match/i)
+  })
+
+  it("rejects passwords found in HIBP breach datasets", async () => {
+    breachState.breached = true
+    const { POST } = await loadRoute()
+    const res = await POST(jsonReq({ email: "a@b.com", password: STRONG_PASSWORD, confirmPassword: STRONG_PASSWORD }))
+    expect(res.status).toBe(400)
+    const json = await res.json()
+    expect(json.error).toMatch(/known data breach/i)
+    expect(mockSignUp).not.toHaveBeenCalled()
   })
 
   it("returns a generic message on Supabase error, never the raw message", async () => {

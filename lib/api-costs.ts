@@ -3,6 +3,7 @@
  * Tracks input/output tokens and estimated costs per API call.
  * Non-blocking - errors are caught silently to never break the main flow.
  */
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 export interface ApiUsageRecord {
   user_id: string
@@ -34,9 +35,8 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
   return Math.round((inputTokens * rates.input + outputTokens * rates.output) / 1_000_000)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function trackApiUsage(
-  supabase: any,
+  supabase: SupabaseClient,
   userId: string,
   endpoint: string,
   model: string,

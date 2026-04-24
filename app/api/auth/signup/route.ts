@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { signupSchema } from "@/lib/validations"
+import { checkPasswordBreach } from "@/lib/password-breach"
 
 export async function POST(request: Request) {
   const ip = getClientIp(request)
@@ -22,6 +23,21 @@ export async function POST(request: Request) {
   const parsed = signupSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Invalid input" }, { status: 400 })
+  }
+
+  // Defense-in-depth: reject passwords that appear in known-breach
+  // datasets via HIBP k-anonymity (password itself never leaves the
+  // server). Fails open on network error so a HIBP outage doesn't
+  // block legitimate signups; zod's complexity rules are still enforced.
+  const breach = await checkPasswordBreach(parsed.data.password)
+  if (breach.breached) {
+    return NextResponse.json(
+      {
+        error:
+          "This password has appeared in a known data breach. Please choose a different password.",
+      },
+      { status: 400 },
+    )
   }
 
   const supabase = await createClient()

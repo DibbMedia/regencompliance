@@ -53,6 +53,20 @@ export async function proxy(request: NextRequest) {
       "Reporting-Endpoints",
       'csp-endpoint="/api/csp-report"',
     )
+    // Trusted Types in Report-Only mode: violations surface to
+    // /api/csp-report without blocking page render. Once the reports
+    // confirm no first-party or third-party code (Stripe.js, Vercel
+    // Analytics) is writing unsafe HTML, move these directives into
+    // the enforcing CSP above.
+    response.headers.set(
+      "Content-Security-Policy-Report-Only",
+      [
+        "require-trusted-types-for 'script'",
+        "trusted-types 'allow-duplicates' default react nextjs#bundler",
+        "report-uri /api/csp-report",
+        "report-to csp-endpoint",
+      ].join("; "),
+    )
     return response
   }
 

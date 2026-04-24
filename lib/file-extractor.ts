@@ -112,8 +112,13 @@ export async function extractTextFromFile(
         for (let i = 1; i <= pageCount; i++) {
           const page = await doc.getPage(i)
           const content = await page.getTextContent()
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const pageText = content.items.map((item: any) => item.str).join(" ")
+          // pdfjs TextContent.items is a union of TextItem | TextMarkedContent.
+          // Only TextItem has .str. Narrow by checking the property rather than
+          // by type import (pdfjs types live in a subpath that drifts between
+          // versions).
+          const pageText = content.items
+            .map((item) => (typeof (item as { str?: unknown }).str === "string" ? (item as { str: string }).str : ""))
+            .join(" ")
           chunks.push(pageText)
         }
 

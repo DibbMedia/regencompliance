@@ -34,6 +34,23 @@ export async function checkLoginAllowed(email: string): Promise<{ allowed: boole
 export async function recordFailedLogin(email: string): Promise<void> {
   try {
     const supabase = createServiceClient()
+    // Short-circuit if the email is already locked. Without this guard a
+    // flood of failed attempts against a known email would keep resetting
+    // the lockout window to "now + 30 min", letting an attacker keep a
+    // victim's account locked out indefinitely (low-bandwidth DoS).
+    const { data: existing } = await supabase
+      .from("rate_limits")
+      .select("count, expires_at")
+      .eq("key", key(email))
+      .maybeSingle()
+    if (
+      existing &&
+      Number(existing.count ?? 0) >= MAX_ATTEMPTS &&
+      new Date(existing.expires_at as string).getTime() > Date.now()
+    ) {
+      return
+    }
+
     const { data } = await supabase.rpc("increment_rate_limit", {
       p_key: key(email),
       p_window_ms: WINDOW_MS,
