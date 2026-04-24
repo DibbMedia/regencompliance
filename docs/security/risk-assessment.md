@@ -33,7 +33,7 @@
 | R17 | Admin credential compromise | 1 | 4 | 4 | 2FA on GitHub/Vercel/Supabase/Namecheap; 2 admins in `platform_admins`; impersonation audit trail | Dibb Media |
 | R18 | CI/CD pipeline compromise | 1 | 4 | 4 | GitHub 2FA + SHA-pinned actions + secretlint + CodeQL + branch protection (pending) | Dibb Media |
 | R19 | Regulatory non-compliance (GDPR / CCPA) | 2 | 3 | 6 | Privacy Policy + ToS + cookie consent live; data-export + delete endpoints shipped; no PHI handled | Dibb Media |
-| R20 | Client-side lockout bypass | 3 | 2 | 6 | **Known gap.** Client calls `signInWithPassword` directly; advisory check-login. Server proxy on roadmap. | Dibb Media |
+| R20 | Client-side lockout bypass | 2 | 2 | 4 | Server proxy shipped at `/api/auth/login` (commit `6613a94`, 2026-04-24) with mandatory lockout. Login page migration to call it is a pending UI-only change. | Dibb Media |
 
 ## High-risk items needing attention
 

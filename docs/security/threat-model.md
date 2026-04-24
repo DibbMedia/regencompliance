@@ -38,7 +38,7 @@
 | User enumeration via signup error | Generic "Could not create account" response (`app/api/auth/signup/route.ts`); Supabase "prevent user enumeration" also ON in dashboard |
 | CSRF on auth POSTs | Origin enforcement on `/api/auth/*` (`proxy.ts`) |
 | Session hijacking | HttpOnly + Secure cookies; SameSite=Lax on session; SameSite=Strict on impersonation |
-| Client-side bypass of lockout | **Known gap** — `signInWithPassword` is client-direct; advisory check-login only. Planned: server-side login proxy. |
+| Client-side bypass of lockout | Shipped server-side login proxy at `/api/auth/login` (2026-04-24). Client login page migration pending — until then `/api/auth/check-login` advisory path stays the primary enforcer. |
 
 ### 2. Scanner (paid)
 

@@ -130,7 +130,7 @@
 | Audit log of auth events | `audit_log` rows with `action = 'auth.login.success|failed'` |
 
 **Residual gaps:**
-- Client calls `supabase.auth.signInWithPassword` directly; `/api/auth/check-login` is advisory (client reports outcome, server records). An attacker can skip the tell and burn through Supabase's own rate limit. Defense: ensure Supabase Auth rate limit is tight (Supabase dashboard setting). Roadmap: server-side login proxy.
+- Server-side login proxy is shipped at `/api/auth/login` (commit `6613a94`, 2026-04-24) with full test coverage. Client login page still uses `signInWithPassword` directly — migration is a UI change only. Until the client flips, the `/api/auth/check-login` advisory path remains the primary lockout enforcer.
 - Customer-facing MFA not yet enforced. Supabase Auth supports TOTP out of box; enrollment UI is a product decision.
 
 ---
