@@ -50,6 +50,22 @@ export async function proxy(request: NextRequest) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
   }
 
+  // Origin enforcement runs on every mutating /api/ request except the two
+  // routes called by external origins that don't send an Origin header.
+  // GET/HEAD/OPTIONS pass automatically (see lib/security/origin.ts).
+  if (
+    pathname.startsWith("/api/") &&
+    !pathname.startsWith("/api/stripe/webhook") &&
+    !pathname.startsWith("/api/cron/")
+  ) {
+    const originBlock = enforceOrigin(request)
+    if (originBlock) return applyCsp(originBlock)
+  }
+
+  // Auth-check skip: public endpoints that must work for anon visitors.
+  // Newsletter capture runs on blog posts served to logged-out readers -
+  // without this skip the proxy redirects the POST to /login and the form
+  // silently fails.
   if (
     pathname.startsWith("/api/stripe/webhook") ||
     pathname.startsWith("/api/stripe/checkout-guest") ||
@@ -57,14 +73,10 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/cron/") ||
     pathname.startsWith("/api/demo/") ||
     pathname.startsWith("/api/auth/") ||
-    pathname === "/api/waitlist"
+    pathname === "/api/waitlist" ||
+    pathname === "/api/newsletter"
   ) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
-  }
-
-  if (pathname.startsWith("/api/")) {
-    const originBlock = enforceOrigin(request)
-    if (originBlock) return applyCsp(originBlock)
   }
 
   let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
