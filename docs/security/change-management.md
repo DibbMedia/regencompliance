@@ -75,7 +75,7 @@ Manual review required for:
 - Any package with a history of supply-chain incidents
 
 Merge blockers:
-- `npm audit --omit=dev --audit-level=high` must pass (CI enforces)
+- `npm audit --omit=dev --audit-level=critical` must pass (CI enforces). High/moderate CVEs surface in the job log and are picked up by the weekly Dependabot group; run `npm audit --omit=dev` locally to see the full report.
 - CodeQL must pass
 - Tests + type-check must pass
 

@@ -107,7 +107,7 @@
 | Dependabot weekly for npm | `.github/dependabot.yml` |
 | Dependabot monthly for GitHub Actions | same |
 | CodeQL on every push + weekly schedule | `.github/workflows/codeql.yml` |
-| `npm audit` in CI (high + critical) | `.github/workflows/tests.yml:npm-audit` |
+| `npm audit` in CI (critical threshold) | `.github/workflows/tests.yml:npm-audit` — high/moderate track via weekly Dependabot, not block CI |
 | SHA-pinned GitHub Actions | `.github/workflows/*.yml` — all pinned to commit SHAs |
 | Secretlint in CI | `.github/workflows/secretlint.yml` |
 

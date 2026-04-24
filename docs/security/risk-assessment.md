@@ -26,7 +26,7 @@
 | R10 | Prompt injection into scanner | 3 | 2 | 6 | System-prompt preamble instructs Claude to ignore instructions in content; output is constrained JSON | Dibb Media |
 | R11 | PHI leakage into Claude or logs | 2 | 4 | 8 | `lib/phi-filter.ts` rejects on all scan routes; Sentry would scrub sensitive paths; we block PHI upstream | Dibb Media + customer |
 | R12 | DDoS / public endpoint flooding | 3 | 2 | 6 | Vercel DDoS protection; per-IP + global rate caps on waitlist/newsletter/csp-report | Vercel + Dibb Media |
-| R13 | Dependency vulnerability (known CVE) | 3 | 3 | 9 | Dependabot weekly + CodeQL on every push + npm audit in CI (high+) | Dibb Media |
+| R13 | Dependency vulnerability (known CVE) | 3 | 3 | 9 | Dependabot weekly + CodeQL on every push + `npm audit --audit-level=critical` in CI. High/moderate tracked via Dependabot group, not CI-blocking. | Dibb Media |
 | R14 | Supply-chain attack via GitHub Action | 1 | 4 | 4 | All actions pinned to commit SHA, Dependabot bumps | Dibb Media |
 | R15 | Vercel or Supabase outage | 2 | 3 | 6 | Vendor redundancy; no active failover. Recovery depends on vendor SLA | Vendor |
 | R16 | Data loss (accidental delete, migration bug) | 2 | 4 | 8 | Supabase daily backups + PITR (once enabled in dashboard) | Dibb Media + Supabase |
