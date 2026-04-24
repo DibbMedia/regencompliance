@@ -4,10 +4,6 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 
 export type AdminRole = "developer" | "support"
 
-export function getAdminEmail(): string {
-  return process.env.ADMIN_EMAIL?.trim() || ""
-}
-
 export async function getAdminRole(
   email: string | undefined | null,
 ): Promise<AdminRole | null> {

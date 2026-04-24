@@ -34,7 +34,14 @@ export async function POST(request: Request) {
   })
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 })
+    // Generic response prevents user-enumeration: "User already registered"
+    // would tell an attacker which emails are in use. Real error is logged
+    // server-side only.
+    console.error("[signup] supabase error:", error.message, error.status)
+    return NextResponse.json(
+      { error: "Could not create account. If the problem persists, contact support." },
+      { status: 400 },
+    )
   }
 
   return NextResponse.json({ user: data.user, session: data.session })
