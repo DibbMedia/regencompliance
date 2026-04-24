@@ -10,6 +10,7 @@ Operational and SOC-2-relevant security policies and procedures.
 - [Data Classification](data-classification.md) — L1-L4 tiers and per-tier controls
 - [Data Retention](data-retention.md) — retention windows and GDPR Article 15/17 handling
 - [Incident Response](incident-response.md) — severity tiers + playbooks
+- [OWASP Top 10 Matrix](owasp-top-10.md) — per-category control mapping to code + residual gaps
 - [Risk Assessment](risk-assessment.md) — 20-item risk register with likelihood × impact scoring
 - [Rotation Schedule](rotation-schedule.md) — secret-rotation cadence and procedure
 - [Threat Model](threat-model.md) — STRIDE-lite pass over every major flow
