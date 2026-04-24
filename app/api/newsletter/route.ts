@@ -10,6 +10,16 @@ export async function POST(request: Request) {
   try {
     const ip = getClientIp(request)
 
+    // Global cap first - 500/hour across all IPs blocks bot networks that
+    // churn IPs. Generic 429 so probes can't tell which cap they hit.
+    const global = await checkRateLimit("newsletter-global", 500, 60 * 60 * 1000)
+    if (!global.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in a few minutes." },
+        { status: 429 }
+      )
+    }
+
     const limit = await checkRateLimit(`newsletter:${ip}`, 5, 10 * 60 * 1000)
     if (!limit.allowed) {
       return NextResponse.json(

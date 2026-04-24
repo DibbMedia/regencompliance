@@ -10,6 +10,17 @@ export async function POST(request: Request) {
   try {
     const ip = getClientIp(request)
 
+    // Global cap first — 200 signups/hour across all IPs blunts IP-churning
+    // bot networks. Returns the same generic 429 so probes can't tell whether
+    // they hit the per-IP or the global cap.
+    const global = await checkRateLimit("waitlist-global", 200, 60 * 60 * 1000)
+    if (!global.allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in a few minutes." },
+        { status: 429 }
+      )
+    }
+
     // 5 signups per IP per 10 minutes
     const limit = await checkRateLimit(`waitlist:${ip}`, 5, 10 * 60 * 1000)
     if (!limit.allowed) {
