@@ -49,6 +49,13 @@ const envSchema = z
     AI_SPEND_DAILY_CAP_CENTS: z
       .preprocess((v) => (typeof v === 'string' ? v.trim() : v), z.coerce.number().int().nonnegative())
       .optional(),
+
+    // Application-layer encryption key (see lib/crypto.ts). Optional until
+    // a caller needs encrypt/decrypt/hmac. Must be 64 lowercase hex chars
+    // (32 bytes / 256 bits) — generate with `openssl rand -hex 32`.
+    ENCRYPTION_KEY_V1: z
+      .preprocess((v) => (typeof v === 'string' ? v.trim() : v), z.string().regex(/^[0-9a-f]{64}$/i, 'ENCRYPTION_KEY_V1 must be 64 lowercase hex chars'))
+      .optional(),
   })
   .superRefine((env, ctx) => {
     if (!env.STRIPE_SECRET_KEY && !env.STRIPE_RESTRICTED_KEY) {

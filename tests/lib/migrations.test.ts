@@ -130,3 +130,30 @@ describe("migration 023 - newsletter_subscribers", () => {
     expect(sql).toMatch(/CREATE POLICY "Service role only"[\s\S]*FOR ALL[\s\S]*USING \(false\)/)
   })
 })
+
+// ============================================================
+// Migration 024: RLS completeness sweep
+// ============================================================
+// Adds the two missing user-data-ownership DELETE policies. Lock
+// the shape so a later refactor can't silently drop them.
+describe("migration 024 - RLS completeness", () => {
+  const sql = readMigration("024_rls_completeness.sql")
+
+  it("adds DELETE policy on scans scoped to owner or team", () => {
+    expect(sql).toMatch(
+      /CREATE POLICY "Users can delete own scans" ON scans[\s\S]*FOR DELETE[\s\S]*profile_id = auth\.uid\(\)/,
+    )
+    expect(sql).toMatch(/FROM team_members WHERE user_id = auth\.uid\(\)/)
+  })
+
+  it("adds DELETE policy on notifications scoped to owner or team", () => {
+    expect(sql).toMatch(
+      /CREATE POLICY "Users can delete own notifications" ON notifications[\s\S]*FOR DELETE[\s\S]*profile_id = auth\.uid\(\)/,
+    )
+  })
+
+  it("uses DROP POLICY IF EXISTS so the migration is idempotent", () => {
+    expect(sql).toMatch(/DROP POLICY IF EXISTS "Users can delete own scans" ON scans/)
+    expect(sql).toMatch(/DROP POLICY IF EXISTS "Users can delete own notifications" ON notifications/)
+  })
+})
