@@ -68,17 +68,18 @@ describe("getComplianceBiblePrompt", () => {
 
   it("includes red light section", () => {
     const prompt = getComplianceBiblePrompt()
-    expect(prompt).toContain("RED LIGHT")
+    // The prompt uses HIGH/MEDIUM/APPROVED framing to match scan output.
+    expect(prompt).toContain("HIGH RISK")
   })
 
   it("includes yellow light section", () => {
     const prompt = getComplianceBiblePrompt()
-    expect(prompt).toContain("YELLOW LIGHT")
+    expect(prompt).toContain("MEDIUM RISK")
   })
 
   it("includes green light section", () => {
     const prompt = getComplianceBiblePrompt()
-    expect(prompt).toContain("GREEN LIGHT")
+    expect(prompt).toContain("APPROVED PATTERNS")
   })
 
   it("includes modality rules", () => {
@@ -112,7 +113,8 @@ describe("getComplianceBibleRewriteGuidance", () => {
 
   it("references red and yellow light handling", () => {
     const guidance = getComplianceBibleRewriteGuidance()
-    expect(guidance).toContain("RED LIGHT")
-    expect(guidance).toContain("YELLOW LIGHT")
+    // Guidance uses "High-risk" / "Medium-risk" phrasing, not RED/YELLOW.
+    expect(guidance).toContain("High-risk")
+    expect(guidance).toContain("Medium-risk")
   })
 })

@@ -1,24 +1,32 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-// Mock Supabase to force in-memory fallback (no DB in tests)
+// Mock Supabase. lib/rate-limit uses .rpc("increment_rate_limit") since
+// migration 017; emulate the atomic upsert by tracking counts in-memory
+// keyed by the p_key argument.
+const counts = new Map<string, { count: number; expiresAt: number }>()
+
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
-    from: () => ({
-      select: () => ({
-        eq: () => ({
-          gt: () => ({
-            maybeSingle: async () => ({ data: null, error: { code: "42P01", message: "table does not exist" } }),
-          }),
-        }),
-      }),
-    }),
+    rpc: async (
+      _name: string,
+      args: { p_key: string; p_window_ms: number },
+    ): Promise<{ data: number; error: null }> => {
+      const now = Date.now()
+      const existing = counts.get(args.p_key)
+      if (!existing || existing.expiresAt < now) {
+        counts.set(args.p_key, { count: 1, expiresAt: now + args.p_window_ms })
+        return { data: 1, error: null }
+      }
+      existing.count += 1
+      return { data: existing.count, error: null }
+    },
   }),
 }))
 
-// We need a fresh module for each test to reset the internal Map
 let checkRateLimit: typeof import("@/lib/rate-limit").checkRateLimit
 
 beforeEach(async () => {
+  counts.clear()
   vi.resetModules()
   const mod = await import("@/lib/rate-limit")
   checkRateLimit = mod.checkRateLimit
@@ -55,16 +63,15 @@ describe("checkRateLimit", () => {
 
   it("resets after window expires", async () => {
     vi.useFakeTimers()
+    vi.setSystemTime(new Date("2026-01-01T00:00:00Z"))
     const key = "test-key-reset"
 
-    // Use up all requests
     for (let i = 0; i < 3; i++) {
       await checkRateLimit(key, 3, 1000)
     }
     const blocked = await checkRateLimit(key, 3, 1000)
     expect(blocked.allowed).toBe(false)
 
-    // Advance time past the window
     vi.advanceTimersByTime(1500)
 
     const result = await checkRateLimit(key, 3, 1000)
