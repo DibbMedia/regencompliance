@@ -353,6 +353,31 @@ export async function GET() {
       // api_usage table may not exist
     }
 
+    // Waitlist
+    let waitlistTotal = 0
+    let recentWaitlist: Array<{
+      id: string
+      name: string
+      email: string
+      source: string | null
+      created_at: string
+    }> = []
+    try {
+      const { count: wlCount } = await serviceClient
+        .from("waitlist")
+        .select("*", { count: "exact", head: true })
+      waitlistTotal = wlCount || 0
+
+      const { data: wlRows } = await serviceClient
+        .from("waitlist")
+        .select("id, name, email, source, created_at")
+        .order("created_at", { ascending: false })
+        .limit(10)
+      recentWaitlist = wlRows || []
+    } catch {
+      // waitlist table may not exist
+    }
+
     // User growth (new users last 7 days vs prior 7 days)
     const fourteenDaysAgo = new Date()
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 13)
@@ -409,6 +434,8 @@ export async function GET() {
       apiCostThisMonth,
       apiCallsToday,
       cronStatus,
+      waitlistTotal,
+      recentWaitlist,
     })
   } catch (error) {
     console.error("Admin stats error:", error)

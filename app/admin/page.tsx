@@ -23,6 +23,7 @@ import {
   BookOpen,
   MessageSquare,
   Flame,
+  ListChecks,
 } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -80,6 +81,14 @@ interface Stats {
     deepScrape: { name: string; status: string }
     siteMonitor: { name: string; status: string }
   }
+  waitlistTotal: number
+  recentWaitlist: {
+    id: string
+    name: string
+    email: string
+    source: string | null
+    created_at: string
+  }[]
 }
 
 export default function AdminDashboardPage() {
@@ -158,7 +167,25 @@ export default function AdminDashboardPage() {
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
           Key Metrics
         </p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {/* Waitlist */}
+          <Link
+            href="/admin/waitlist"
+            className="rounded-xl border border-white/10 bg-white/[0.03] p-5 relative overflow-hidden hover:border-[#55E039]/30 hover:bg-white/[0.05] transition-all group"
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-[#55E039]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="flex items-center justify-between relative">
+              <span className="text-sm text-white/60">Waitlist</span>
+              <ListChecks className="h-5 w-5 text-[#55E039]" />
+            </div>
+            <p className="mt-2 text-3xl font-bold text-white">
+              {stats.waitlistTotal}
+            </p>
+            <p className="mt-2 text-xs text-white/40 group-hover:text-[#55E039] transition-colors">
+              View all signups -&gt;
+            </p>
+          </Link>
+
           {/* Total Users */}
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-20 h-20 bg-[#55E039]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -641,6 +668,68 @@ export default function AdminDashboardPage() {
               </Link>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* RECENT WAITLIST SIGNUPS */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">
+            Recent Waitlist Signups
+          </p>
+          <Link
+            href="/admin/waitlist"
+            className="text-xs text-white/50 hover:text-[#55E039] transition-colors"
+          >
+            View all ({stats.waitlistTotal}) -&gt;
+          </Link>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/10 text-left">
+                <th className="px-4 py-3 text-xs font-medium text-white/40">
+                  Name
+                </th>
+                <th className="px-4 py-3 text-xs font-medium text-white/40">
+                  Email
+                </th>
+                <th className="px-4 py-3 text-xs font-medium text-white/40">
+                  Source
+                </th>
+                <th className="px-4 py-3 text-xs font-medium text-white/40">
+                  Signed Up
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats.recentWaitlist.map((entry) => (
+                <tr
+                  key={entry.id}
+                  className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]"
+                >
+                  <td className="px-4 py-3 text-white/80">{entry.name}</td>
+                  <td className="px-4 py-3 text-white/60">{entry.email}</td>
+                  <td className="px-4 py-3 text-white/40 text-xs">
+                    {entry.source || "—"}
+                  </td>
+                  <td className="px-4 py-3 text-white/40 text-xs">
+                    {formatRelativeTime(entry.created_at)}
+                  </td>
+                </tr>
+              ))}
+              {stats.recentWaitlist.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-4 py-8 text-center text-white/40"
+                  >
+                    No waitlist signups yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
