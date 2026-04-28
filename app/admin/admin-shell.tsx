@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 import useSWR from "swr"
 import {
   LayoutDashboard,
@@ -17,6 +18,8 @@ import {
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
+const WAITLIST_LAST_SEEN_KEY = "admin:waitlist:lastSeen"
+
 import { ShieldPlus, Library } from "lucide-react"
 import type { AdminRole } from "@/lib/admin"
 import type { LucideIcon } from "lucide-react"
@@ -25,13 +28,13 @@ interface NavItem {
   title: string
   href: string
   icon: LucideIcon
-  badgeKey?: "openTickets"
+  badgeKey?: "openTickets" | "waitlistNew"
 }
 
 const baseNavItems: NavItem[] = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { title: "Users", href: "/admin/users", icon: Users },
-  { title: "Waitlist", href: "/admin/waitlist", icon: ListChecks },
+  { title: "Waitlist", href: "/admin/waitlist", icon: ListChecks, badgeKey: "waitlistNew" },
   { title: "Scans", href: "/admin/scans", icon: ScanSearch },
   {
     title: "Tickets",
@@ -51,11 +54,35 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
   const pathname = usePathname()
   const navItems = role === "developer" ? [...baseNavItems, ...developerOnlyNavItems] : baseNavItems
 
-  const { data: stats } = useSWR("/api/admin/stats", fetcher, {
+  // Read the "last seen" stamp from localStorage so the API can count entries
+  // newer than that. Done in useEffect to keep SSR/CSR markup identical.
+  const [waitlistLastSeen, setWaitlistLastSeen] = useState<string | null>(null)
+  useEffect(() => {
+    setWaitlistLastSeen(
+      window.localStorage.getItem(WAITLIST_LAST_SEEN_KEY) ||
+        new Date(0).toISOString()
+    )
+  }, [])
+
+  const statsKey = waitlistLastSeen
+    ? `/api/admin/stats?waitlistSince=${encodeURIComponent(waitlistLastSeen)}`
+    : null
+  const { data: stats, mutate: mutateStats } = useSWR(statsKey, fetcher, {
     refreshInterval: 60000,
   })
 
   const openTicketCount = stats?.openTickets || 0
+  const waitlistNewCount = stats?.waitlistNew || 0
+
+  // Clear the unread badge whenever the admin lands on /admin/waitlist
+  useEffect(() => {
+    if (pathname?.startsWith("/admin/waitlist")) {
+      const now = new Date().toISOString()
+      window.localStorage.setItem(WAITLIST_LAST_SEEN_KEY, now)
+      setWaitlistLastSeen(now)
+      mutateStats()
+    }
+  }, [pathname, mutateStats])
 
   return (
     <div className="flex min-h-screen bg-[#0a0a0a]">
@@ -87,7 +114,16 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
               item.href === "/admin"
                 ? pathname === "/admin"
                 : pathname.startsWith(item.href)
-            const showBadge = item.badgeKey && openTicketCount > 0
+            const badgeCount =
+              item.badgeKey === "openTickets"
+                ? openTicketCount
+                : item.badgeKey === "waitlistNew"
+                  ? waitlistNewCount
+                  : 0
+            const badgeStyle =
+              item.badgeKey === "waitlistNew"
+                ? "bg-[#55E039]/15 text-[#55E039] border-[#55E039]/30"
+                : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
             return (
               <Link
                 key={item.href}
@@ -102,9 +138,11 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
                   <item.icon className="h-4 w-4" />
                   {item.title}
                 </span>
-                {showBadge && (
-                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-yellow-500/20 px-1.5 text-[10px] font-bold text-yellow-400 border border-yellow-500/30">
-                    {openTicketCount}
+                {badgeCount > 0 && (
+                  <span
+                    className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-[10px] font-bold ${badgeStyle}`}
+                  >
+                    {badgeCount}
                   </span>
                 )}
               </Link>

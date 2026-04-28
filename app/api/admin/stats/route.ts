@@ -5,11 +5,18 @@ const BETA_PRICE = 297
 const STANDARD_PRICE = 497
 const BETA_SPOTS = 25
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const auth = await verifyAdmin()
     if ("error" in auth) return auth.error
     const { serviceClient } = auth
+
+    const url = new URL(request.url)
+    const waitlistSinceRaw = url.searchParams.get("waitlistSince")
+    const waitlistSince =
+      waitlistSinceRaw && !Number.isNaN(Date.parse(waitlistSinceRaw))
+        ? new Date(waitlistSinceRaw).toISOString()
+        : null
 
     // Total users
     const { count: totalUsers } = await serviceClient
@@ -355,6 +362,7 @@ export async function GET() {
 
     // Waitlist
     let waitlistTotal = 0
+    let waitlistNew = 0
     let recentWaitlist: Array<{
       id: string
       name: string
@@ -367,6 +375,14 @@ export async function GET() {
         .from("waitlist")
         .select("*", { count: "exact", head: true })
       waitlistTotal = wlCount || 0
+
+      if (waitlistSince) {
+        const { count: newCount } = await serviceClient
+          .from("waitlist")
+          .select("*", { count: "exact", head: true })
+          .gt("created_at", waitlistSince)
+        waitlistNew = newCount || 0
+      }
 
       const { data: wlRows } = await serviceClient
         .from("waitlist")
@@ -435,6 +451,7 @@ export async function GET() {
       apiCallsToday,
       cronStatus,
       waitlistTotal,
+      waitlistNew,
       recentWaitlist,
     })
   } catch (error) {
