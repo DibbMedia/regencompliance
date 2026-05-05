@@ -114,8 +114,13 @@ export async function GET(
         site: {
           domain: site.domain,
           name: site.name,
-          compliance_score: site.compliance_score,
-          last_scanned_at: site.last_scanned_at,
+          // monitored_sites column names are avg_compliance_score / last_crawl_at
+          // (per migration 005). Pre-2026-05-05 this passed site.compliance_score
+          // and site.last_scanned_at - both undefined - so the PDF fell back to
+          // recomputing from pages with a missing "last scanned" date. Use the
+          // real columns and let SitePdfDocument fall back if null.
+          compliance_score: site.avg_compliance_score,
+          last_scanned_at: site.last_crawl_at,
           pages: pageData,
         },
         clinicName,

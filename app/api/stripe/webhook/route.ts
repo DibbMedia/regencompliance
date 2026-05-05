@@ -291,6 +291,9 @@ export async function POST(request: Request) {
             .update({
               subscription_status: "active",
               stripe_subscription_id: subscriptionId,
+              // Reactivation - clear the cancelled-at clock so the
+              // purge-cancelled cron doesn't sweep this user up.
+              cancelled_at: null,
             })
             .eq("id", checkoutProfile.id)
 
@@ -401,9 +404,15 @@ export async function POST(request: Request) {
           break
         }
 
+        // Stamp cancelled_at explicitly. The purge-cancelled cron reads this
+        // column for the 30-day grace cutoff (migration 029) - using
+        // profiles.updated_at would let unrelated admin tweaks reset the clock.
         await supabase
           .from("profiles")
-          .update({ subscription_status: "cancelled" })
+          .update({
+            subscription_status: "cancelled",
+            cancelled_at: new Date().toISOString(),
+          })
           .eq("stripe_customer_id", customerId)
 
         await supabase.from("notifications").insert({

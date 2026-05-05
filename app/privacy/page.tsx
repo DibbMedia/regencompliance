@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <p className="mt-6 text-lg text-white/70 leading-relaxed max-w-2xl">
             Your privacy matters. This policy explains what data we collect, how we use it, and your rights as a user of RegenCompliance.
           </p>
-          <p className="mt-4 text-sm text-white/60">Last Updated: April 2026</p>
+          <p className="mt-4 text-sm text-white/60">Last Updated: May 5, 2026</p>
         </div>
       </section>
 
@@ -144,7 +144,27 @@ export default function PrivacyPage() {
                   {
                     name: "Vercel",
                     role: "Hosting and Deployment",
-                    detail: "Hosts the RegenCompliance web application. Vercel provides edge network delivery and serverless function execution for the Service.",
+                    detail: "Hosts the RegenCompliance web application. Vercel provides edge network delivery, serverless function execution, and aggregate Web Analytics (Speed Insights and basic page-view counts collected without third-party cookies).",
+                  },
+                  {
+                    name: "Resend",
+                    role: "Transactional Email (when activated)",
+                    detail: "Delivers transactional emails such as account confirmations, password resets, and billing notifications. Currently inactive; transactional email may be routed through GoHighLevel instead. Activated by the operator when configured.",
+                  },
+                  {
+                    name: "GoHighLevel (GHL)",
+                    role: "CRM and Marketing Automation (when activated)",
+                    detail: "Receives contact records and pipeline events (signup, application, subscription lifecycle, account deletion) for sales follow-up and marketing sequences. Each event is opt-in via webhook configuration; missing webhook config means no data is sent.",
+                  },
+                  {
+                    name: "Sentry",
+                    role: "Error Monitoring (optional)",
+                    detail: "Infrastructure is in place for error and performance monitoring. PII (email, IP, request bodies on auth/payment paths) is scrubbed before events reach Sentry. Currently disabled; enabled only when the operator configures the Sentry DSN.",
+                  },
+                  {
+                    name: "Have I Been Pwned (HIBP)",
+                    role: "Password Breach Check",
+                    detail: "During signup and password reset, the SHA-1 prefix of the candidate password (first 5 characters) is sent to HIBP's k-anonymity API to check whether that password appears in a known breach. The full password and full hash never leave our server.",
                   },
                 ].map((service) => (
                   <div key={service.name} className="rounded-xl bg-white/[0.03] border border-white/10 p-5">
@@ -182,16 +202,26 @@ export default function PrivacyPage() {
                       <td className="py-3 pr-4">Supabase authentication and session management</td>
                       <td className="py-3">Session / persistent</td>
                     </tr>
-                    <tr>
+                    <tr className="border-b border-white/[0.05]">
                       <td className="py-3 pr-4 font-mono text-xs text-[#55E039]/70">cookie_consent</td>
                       <td className="py-3 pr-4">Records your cookie consent preference</td>
                       <td className="py-3">1 year</td>
+                    </tr>
+                    <tr className="border-b border-white/[0.05]">
+                      <td className="py-3 pr-4 font-mono text-xs text-[#55E039]/70">__stripe_*</td>
+                      <td className="py-3 pr-4">Set by Stripe.js when you visit a checkout page or open the Customer Portal. Used for payment-fraud detection.</td>
+                      <td className="py-3">Session / 1 year</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 pr-4 font-mono text-xs text-[#55E039]/70">_vercel_*</td>
+                      <td className="py-3 pr-4">Vercel infrastructure cookies (deployment routing, Speed Insights aggregation). No personal identifiers.</td>
+                      <td className="py-3">Session</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <p className="mt-4 text-[15px] text-white/70 leading-relaxed">
-                We do not use third-party advertising cookies, tracking pixels, or analytics cookies that share data with external parties.
+                We do not use third-party advertising cookies, tracking pixels, or behavioral analytics cookies that share identifiable data with external parties.
               </p>
             </div>
 

@@ -3,9 +3,21 @@ import { verifyAdmin } from "@/lib/admin"
 
 export const maxDuration = 60
 
+/**
+ * Escape a value for CSV output AND neutralize formula injection.
+ *
+ * Excel / Google Sheets / Numbers all interpret cells starting with `=`, `+`,
+ * `-`, `@`, tab, or carriage-return as formulas, which means a malicious
+ * waitlist signup with name `=cmd|'/c calc'!A1` could execute on the admin's
+ * machine when the CSV is opened. Per OWASP CSV-injection guidance, prefix
+ * any cell starting with one of those characters with a single quote.
+ */
 function csvEscape(value: string | null | undefined): string {
   if (value == null) return ""
-  const s = String(value)
+  let s = String(value)
+  if (/^[=+\-@\t\r]/.test(s)) {
+    s = `'${s}`
+  }
   if (/[",\n\r]/.test(s)) {
     return `"${s.replace(/"/g, '""')}"`
   }

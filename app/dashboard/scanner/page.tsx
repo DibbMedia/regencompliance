@@ -579,12 +579,12 @@ export default function ScannerPage() {
               <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
               <Textarea
                 value={text}
-                onChange={(e) => setText(e.target.value.slice(0, 5000))}
+                onChange={(e) => setText(e.target.value.slice(0, 10000))}
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
                 className="relative min-h-[140px] sm:min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
               />
-              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 4500 ? "text-red-400 font-semibold" : "text-white/60"}`}>
-                {charCount.toLocaleString()}/5,000
+              <span aria-live="polite" className={`absolute bottom-3 right-3 text-xs font-medium ${charCount >= 9000 ? "text-red-400 font-semibold" : "text-white/60"}`}>
+                {charCount.toLocaleString()}/10,000
               </span>
             </div>
 
