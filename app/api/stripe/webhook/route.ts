@@ -195,12 +195,24 @@ export async function POST(request: Request) {
               })
               .eq("id", betaProfile.id)
 
-            // Mark beta_purchases record as claimed
-            await supabase
-              .from("beta_purchases")
-              .update({ claimed: true, claimed_by: betaProfile.id })
-              .eq("email", customerEmail)
-              .eq("claimed", false)
+            // Mark beta_purchases record as claimed. Prefer the
+            // reservation_token path (post-2026-05-05 atomic-reserve flow)
+            // when present so we touch exactly one row. Fall back to
+            // (email, stripe_customer_id) tuple to avoid the bug-#24 case
+            // where two rows can share an email after a refund + repurchase.
+            if (reservationToken) {
+              await supabase
+                .from("beta_purchases")
+                .update({ claimed: true, claimed_by: betaProfile.id })
+                .eq("reservation_token", reservationToken)
+            } else {
+              await supabase
+                .from("beta_purchases")
+                .update({ claimed: true, claimed_by: betaProfile.id })
+                .eq("email", customerEmail)
+                .eq("stripe_customer_id", customerId)
+                .eq("claimed", false)
+            }
 
             await supabase.from("notifications").insert({
               profile_id: betaProfile.id,
