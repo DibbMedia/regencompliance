@@ -43,9 +43,26 @@
  *     regen_low_risk_count    - free_audit
  *     regen_tier              - subscription_active ("beta" or "standard")
  *     regen_monthly_price_cents     - subscription_active
- *     regen_stripe_customer_id      - subscription_active / cancelled / payment_failed
+ *     regen_stripe_customer_id      - subscription_active / cancelled / payment_failed / invoice_paid
  *     regen_stripe_subscription_id  - subscription_active
  *     regen_amount_due_cents  - payment_failed
+ *     regen_subscription_status     - reflects local profiles.subscription_status
+ *                                     (active | past_due | cancelled | inactive).
+ *                                     Updated on every Stripe -> GHL event so
+ *                                     workflows can branch on current status
+ *                                     without calling back into our API.
+ *
+ *   Receipt / invoice (drives the receipt workflow - GHL sends the email
+ *   using GHL's own email step, not Resend):
+ *     regen_invoice_id              - invoice_paid
+ *     regen_invoice_number          - invoice_paid (human-readable, e.g. "INV-0001")
+ *     regen_invoice_amount_cents    - invoice_paid
+ *     regen_invoice_currency        - invoice_paid (lowercased ISO, e.g. "usd")
+ *     regen_invoice_url             - invoice_paid (Stripe-hosted invoice page)
+ *     regen_invoice_pdf_url         - invoice_paid (direct PDF link)
+ *     regen_invoice_period_start    - invoice_paid (ISO timestamp)
+ *     regen_invoice_period_end      - invoice_paid (ISO timestamp)
+ *     regen_invoice_paid_at         - invoice_paid (ISO timestamp)
  *
  * Tags fired per event (workflows trigger on "Tag Added"):
  *   signup                 -> regen-signup, regen-lifecycle:signup
@@ -56,6 +73,7 @@
  *                             regen-tier:beta | regen-tier:standard
  *   subscription_cancelled -> regen-cancelled, regen-lifecycle:cancelled
  *   payment_failed         -> regen-payment-failed
+ *   invoice_paid           -> regen-invoice-paid
  *   account_deleted        -> regen-deleted, regen-lifecycle:deleted
  */
 
@@ -67,6 +85,8 @@ export type GhlEvent =
   | "subscription_active"
   | "subscription_cancelled"
   | "payment_failed"
+  | "invoice_paid"
+  | "data_exported"
   | "account_deleted"
 
 export interface GhlContact {
@@ -92,6 +112,8 @@ const EVENT_TAGS: Record<GhlEvent, string[]> = {
   subscription_active: ["regen-subscriber", "regen-lifecycle:subscribed"],
   subscription_cancelled: ["regen-cancelled", "regen-lifecycle:cancelled"],
   payment_failed: ["regen-payment-failed"],
+  invoice_paid: ["regen-invoice-paid"],
+  data_exported: ["regen-data-exported"],
   account_deleted: ["regen-deleted", "regen-lifecycle:deleted"],
 }
 

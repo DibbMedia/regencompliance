@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/server"
-import { sendEmail } from "@/lib/email"
-import { betaWelcomeEmail } from "@/lib/email-templates"
 import { sendToGhl } from "@/lib/ghl"
 
 export async function GET(request: Request) {
@@ -135,18 +133,17 @@ async function claimBetaPurchase(userId: string, email: string | undefined) {
     action_url: "/dashboard/scanner",
   })
 
-  // Send beta welcome email (only if webhook didn't already)
+  // GHL fires the beta welcome email. Mirrors the Stripe-webhook path;
+  // dedup at the GHL workflow level via stripe_customer_id since both
+  // paths can fire for the same customer (depending on whether the
+  // profile already existed when checkout completed).
   const clinicName = existingProfile?.clinic_name || "there"
-  const template = betaWelcomeEmail(clinicName)
-  await sendEmail(userEmail, template.subject, template.html)
-
-  // GHL pipeline event for beta activation. Mirrors the Stripe-webhook
-  // path; dedup at the GHL workflow level via stripe_customer_id.
   void sendToGhl("subscription_active", {
     email: userEmail,
     company: clinicName === "there" ? null : clinicName,
     tier: "beta",
     monthly_price_cents: 29700,
+    subscription_status: "active",
     stripe_customer_id: betaPurchase.stripe_customer_id,
   })
 }

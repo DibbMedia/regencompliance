@@ -66,9 +66,25 @@ The code populates these fields on the contact record. Skip any you don't care a
 |---|---|---|
 | `regen_tier` | Single Line | `subscription_active` (`beta` or `standard`) |
 | `regen_monthly_price_cents` | Number | `subscription_active` |
-| `regen_stripe_customer_id` | Single Line | `subscription_active` / cancelled / payment_failed |
+| `regen_stripe_customer_id` | Single Line | `subscription_active` / cancelled / payment_failed / invoice_paid |
 | `regen_stripe_subscription_id` | Single Line | `subscription_active` |
 | `regen_amount_due_cents` | Number | `payment_failed` |
+| `regen_subscription_status` | Single Line | every billing event - `active`, `past_due`, `cancelled` |
+
+**Receipt / invoice (drives the receipt workflow - GHL sends the email
+using its own email step, not Resend):**
+
+| Field name | Type | Used by |
+|---|---|---|
+| `regen_invoice_id` | Single Line | `invoice_paid` |
+| `regen_invoice_number` | Single Line | `invoice_paid` (e.g. `INV-0001`) |
+| `regen_invoice_amount_cents` | Number | `invoice_paid` |
+| `regen_invoice_currency` | Single Line | `invoice_paid` (`usd`) |
+| `regen_invoice_url` | Single Line | `invoice_paid` (Stripe-hosted invoice page) |
+| `regen_invoice_pdf_url` | Single Line | `invoice_paid` (direct PDF link) |
+| `regen_invoice_period_start` | Single Line | `invoice_paid` (ISO timestamp) |
+| `regen_invoice_period_end` | Single Line | `invoice_paid` (ISO timestamp) |
+| `regen_invoice_paid_at` | Single Line | `invoice_paid` (ISO timestamp) |
 
 **Signup:**
 
@@ -92,6 +108,8 @@ Workflows trigger off "Contact Tag - Tag Added". Branch on custom field values i
 | `subscription_active` | `regen-subscriber`, `regen-lifecycle:subscribed`, **plus** `regen-tier:beta` or `regen-tier:standard` |
 | `subscription_cancelled` | `regen-cancelled`, `regen-lifecycle:cancelled` |
 | `payment_failed` | `regen-payment-failed` |
+| `invoice_paid` | `regen-invoice-paid` |
+| `data_exported` | `regen-data-exported` |
 | `account_deleted` | `regen-deleted`, `regen-lifecycle:deleted` |
 
 ### E. Where each event fires from in code
@@ -105,11 +123,38 @@ Workflows trigger off "Contact Tag - Tag Added". Branch on custom field values i
 | `subscription_active` | Stripe `checkout.session.completed` (both tiers) **and** `/auth/callback` claimBetaPurchase |
 | `subscription_cancelled` | Stripe `customer.subscription.deleted` |
 | `payment_failed` | Stripe `invoice.payment_failed` |
+| `invoice_paid` | Stripe `invoice.paid` (initial subscription **and** every renewal) |
+| `data_exported` | `POST /api/user/export` |
 | `account_deleted` | `POST /api/user/delete` |
+
+### E2. Receipt workflow (recommended GHL setup)
+
+GHL sends the receipt email - we do not use Resend or any other provider.
+
+1. **Trigger:** Contact Tag - Tag Added = `regen-invoice-paid`
+2. **Filter (optional):** `regen_invoice_amount_cents > 0` to skip $0 invoices.
+3. **Action:** Send Email. In the email body use GHL custom-field merge tokens:
+   - Amount: `{{contact.regen_invoice_amount_cents}}` (you can format with a custom code action if you want dollars)
+   - Invoice link: `{{contact.regen_invoice_url}}` for the Stripe-hosted page
+   - PDF: `{{contact.regen_invoice_pdf_url}}` for direct download
+   - Period: `{{contact.regen_invoice_period_start}}` to `{{contact.regen_invoice_period_end}}`
+4. **Recommended subject:** `Receipt for RegenCompliance - {{contact.regen_invoice_number}}`
+
+The same workflow handles initial subscription invoices and recurring renewals - the only difference is whether `regen_lifecycle:subscribed` was tagged immediately before (initial) or not (renewal). If you want different copy for the first one, branch on tag history or use a separate workflow filtered to `regen-lifecycle:subscribed` added in the last 5 minutes.
+
+### E3. Subscription-status reads from GHL
+
+GHL workflows read the current subscription state from the contact record:
+
+- **Active subscriber check:** branch on tag `regen-subscriber` present + `regen-cancelled` absent.
+- **Tier check:** `regen-tier:beta` or `regen-tier:standard` tag, or the `regen_tier` custom field.
+- **Live status:** `regen_subscription_status` custom field is updated on every Stripe event - `active`, `past_due`, `cancelled`. Branch directly on this for renewal-thank-you, dunning, win-back, etc.
+
+No callback into our API is required - all the data lives on the contact record.
 
 ### F. Notes
 
-- Per `CLAUDE.md` Email Policy: transactional + marketing email goes through GHL, not Resend. The code keeps Resend wired (env-gated, currently inert) for the legacy launch-announcement path; everything new should route through GHL.
+- **GHL is the only transactional email path.** Welcome, beta-welcome, payment-failed, cancellation, account-deleted, data-export confirmation, and receipts all run as GHL workflows triggered by the matching tag. The Resend dependency is retained only for the admin waitlist launch-announcement broadcast (`/api/admin/waitlist/send-launch`); every other route now drops into GHL.
 - `subscription_active` fires from two paths for beta tier (Stripe webhook + callback claim). Dedup at the GHL workflow level via `regen_stripe_customer_id` so the same customer doesn't trigger the welcome sequence twice.
 - All GHL calls are fire-and-forget with a 5-second timeout. They never block the user-facing flow. Failures are logged and don't propagate.
 - The contact upsert API tolerates missing custom fields - if you haven't created `regen_specialty` yet, the beta-apply event still upserts the contact and applies tags; you just don't get that field populated. Add it later in GHL and the next event picks it up.

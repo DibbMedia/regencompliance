@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { requireWriteMode } from "@/lib/impersonation"
-import { sendEmail } from "@/lib/email"
-import { dataExportEmail } from "@/lib/email-templates"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { logAudit } from "@/lib/audit-log"
-import { SITE_URL } from "@/lib/site-url"
+import { sendToGhl } from "@/lib/ghl"
 
 export async function POST() {
   try {
@@ -53,11 +51,14 @@ export async function POST() {
     team_members: teamMembers || [],
   }
 
-  // Send notification email
+  // GHL fires a confirmation email if the operator wires the
+  // regen-data-exported workflow. The user already has the export
+  // downloaded by the time this runs - the email is informational.
   if (user.email) {
-    const clinicName = profile?.clinic_name || "there"
-    const template = dataExportEmail(clinicName, `${SITE_URL}/dashboard/account`)
-    await sendEmail(user.email, template.subject, template.html)
+    void sendToGhl("data_exported", {
+      email: user.email,
+      company: profile?.clinic_name ?? null,
+    })
   }
 
   logAudit({ user_id: user.id, user_email: user.email, action: "data.exported", resource_type: "profile" })

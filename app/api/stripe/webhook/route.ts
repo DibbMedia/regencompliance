@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
-import { sendEmail } from "@/lib/email"
-import { welcomeEmail, betaWelcomeEmail, paymentFailedEmail, subscriptionCancelledEmail } from "@/lib/email-templates"
 import { logAudit } from "@/lib/audit-log"
 import { sendToGhl } from "@/lib/ghl"
 import type Stripe from "stripe"
@@ -222,25 +220,24 @@ export async function POST(request: Request) {
               action_url: "/dashboard/scanner",
             })
 
-            // Send beta welcome email + GHL pipeline event (tier=beta).
-            // Dedup is handled at the GHL workflow level via
-            // stripe_customer_id - the callback claim path also fires this
-            // event when activation happens later (e.g. customer paid before
-            // creating their account).
+            // GHL fires the founder-beta welcome email (Resend path is
+            // deprecated). Dedup at the GHL workflow level via
+            // stripe_customer_id - the /auth/callback claim path also
+            // fires this event when activation happens later (e.g.
+            // customer paid before creating their account).
             if (customerEmail) {
               const { data: betaFullProfile } = await supabase
                 .from("profiles")
                 .select("clinic_name")
                 .eq("id", betaProfile.id)
                 .maybeSingle()
-              const template = betaWelcomeEmail(betaFullProfile?.clinic_name || "there")
-              await sendEmail(customerEmail, template.subject, template.html)
 
               void sendToGhl("subscription_active", {
                 email: customerEmail,
                 company: betaFullProfile?.clinic_name ?? null,
                 tier: "beta",
                 monthly_price_cents: 29700,
+                subscription_status: "active",
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
               })
@@ -330,7 +327,8 @@ export async function POST(request: Request) {
             action_url: "/dashboard/scanner",
           })
 
-          // Send welcome email + GHL pipeline event
+          // GHL fires the welcome email (Resend path is deprecated;
+          // operator runs all transactional email through GHL workflows).
           try {
             const stripeCustomerObj = await stripe.customers.retrieve(customerId)
             if (!stripeCustomerObj.deleted && stripeCustomerObj.email) {
@@ -339,20 +337,19 @@ export async function POST(request: Request) {
                 .select("clinic_name")
                 .eq("id", checkoutProfile.id)
                 .maybeSingle()
-              const template = welcomeEmail(subProfile?.clinic_name || "there")
-              await sendEmail(stripeCustomerObj.email, template.subject, template.html)
 
               void sendToGhl("subscription_active", {
                 email: stripeCustomerObj.email,
                 company: subProfile?.clinic_name ?? null,
                 tier: "standard",
                 monthly_price_cents: 49700,
+                subscription_status: "active",
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
               })
             }
           } catch (emailErr) {
-            console.error("[Stripe Webhook] Welcome email failed (non-blocking):", emailErr)
+            console.error("[Stripe Webhook] Customer fetch failed (non-blocking):", emailErr)
           }
         }
         break
@@ -448,7 +445,7 @@ export async function POST(request: Request) {
           action_url: "/dashboard/account",
         })
 
-        // Send cancellation email + GHL pipeline event
+        // GHL fires the cancellation email (Resend path is deprecated).
         try {
           const cancelCustomerObj = await stripe.customers.retrieve(customerId)
           if (!cancelCustomerObj.deleted && cancelCustomerObj.email) {
@@ -457,17 +454,16 @@ export async function POST(request: Request) {
               .select("clinic_name")
               .eq("id", deletedProfile.id)
               .maybeSingle()
-            const template = subscriptionCancelledEmail(cancelProfile?.clinic_name || "there")
-            await sendEmail(cancelCustomerObj.email, template.subject, template.html)
 
             void sendToGhl("subscription_cancelled", {
               email: cancelCustomerObj.email,
               company: cancelProfile?.clinic_name ?? null,
               stripe_customer_id: customerId,
+              subscription_status: "cancelled",
             })
           }
         } catch (emailErr) {
-          console.error("[Stripe Webhook] Cancellation email failed (non-blocking):", emailErr)
+          console.error("[Stripe Webhook] Customer fetch failed (non-blocking):", emailErr)
         }
         break
       }
@@ -507,7 +503,8 @@ export async function POST(request: Request) {
           action_url: "/dashboard/account",
         })
 
-        // Send payment failed email + GHL recovery sequence trigger
+        // GHL fires the recovery sequence (Resend path is deprecated; the
+        // operator runs all transactional email through GHL workflows).
         try {
           const failedCustomerObj = await stripe.customers.retrieve(customerId)
           if (!failedCustomerObj.deleted && failedCustomerObj.email) {
@@ -516,18 +513,82 @@ export async function POST(request: Request) {
               .select("clinic_name")
               .eq("id", failedProfile.id)
               .maybeSingle()
-            const template = paymentFailedEmail(failedFullProfile?.clinic_name || "there")
-            await sendEmail(failedCustomerObj.email, template.subject, template.html)
 
             void sendToGhl("payment_failed", {
               email: failedCustomerObj.email,
               company: failedFullProfile?.clinic_name ?? null,
               stripe_customer_id: customerId,
+              subscription_status: "past_due",
               amount_due_cents: invoice.amount_due ?? null,
             })
           }
         } catch (emailErr) {
-          console.error("[Stripe Webhook] Payment failed email failed (non-blocking):", emailErr)
+          console.error("[Stripe Webhook] Payment failed customer fetch failed (non-blocking):", emailErr)
+        }
+        break
+      }
+
+      case "invoice.paid": {
+        // Fires for the initial subscription invoice AND every recurring
+        // renewal. GHL workflow handles the receipt email using the
+        // hosted invoice URL + PDF link from the payload.
+        const invoice = event.data.object as Stripe.Invoice
+        if (!invoice.customer) {
+          console.error("[Stripe Webhook] invoice.paid: missing customer")
+          break
+        }
+        const customerId = invoice.customer as string
+        console.log(
+          `[Stripe Webhook] invoice.paid: customer=[redacted:${customerId.slice(-4)}] amount=${invoice.amount_paid}`,
+        )
+
+        const { data: paidProfile } = await supabase
+          .from("profiles")
+          .select("id, clinic_name, subscription_status")
+          .eq("stripe_customer_id", customerId)
+          .maybeSingle()
+
+        if (!paidProfile) {
+          // Customer paid but profile not yet linked - claimBetaPurchase or
+          // a subsequent webhook fires shortly. GHL still gets the receipt
+          // event below if we can resolve the email via Stripe.
+          console.log(
+            `[Stripe Webhook] invoice.paid: no profile yet for customer=[redacted:${customerId.slice(-4)}], pushing GHL anyway`,
+          )
+        } else {
+          // Successful payment implies active subscription - clear any
+          // past_due / cancelled flags.
+          await supabase
+            .from("profiles")
+            .update({ subscription_status: "active", cancelled_at: null })
+            .eq("id", paidProfile.id)
+        }
+
+        try {
+          const paidCustomerObj = await stripe.customers.retrieve(customerId)
+          if (paidCustomerObj.deleted || !paidCustomerObj.email) break
+
+          void sendToGhl("invoice_paid", {
+            email: paidCustomerObj.email,
+            company: paidProfile?.clinic_name ?? null,
+            stripe_customer_id: customerId,
+            subscription_status: "active",
+            invoice_id: invoice.id,
+            invoice_number: invoice.number ?? null,
+            invoice_amount_cents: invoice.amount_paid ?? 0,
+            invoice_currency: (invoice.currency ?? "usd").toLowerCase(),
+            invoice_url: invoice.hosted_invoice_url ?? null,
+            invoice_pdf_url: invoice.invoice_pdf ?? null,
+            invoice_period_start: invoice.period_start
+              ? new Date(invoice.period_start * 1000).toISOString()
+              : null,
+            invoice_period_end: invoice.period_end
+              ? new Date(invoice.period_end * 1000).toISOString()
+              : null,
+            invoice_paid_at: new Date().toISOString(),
+          })
+        } catch (err) {
+          console.error("[Stripe Webhook] invoice.paid customer fetch failed (non-blocking):", err)
         }
         break
       }

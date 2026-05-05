@@ -40,11 +40,13 @@ Primary stack: TypeScript (main), Python (scraping/scripts), WordPress/PHP (plug
 
 ### Email policy (load-bearing — read before proposing email anywhere)
 
-Transactional + marketing email will go through **GoHighLevel (GHL)** when the user wires up the workflows. **Do NOT propose Resend, nodemailer/SMTP, AWS SES, or any new email provider as a launch dependency** — Resend is in `package.json` and `lib/email.ts` because the launch-announcement code uses it, but the user has explicitly chosen to wait on activating Resend in favor of GHL.
+**GHL is the canonical email + CRM path.** All transactional email (welcome, beta-welcome, payment-failed, cancellation, account-deleted, data-export confirmation, receipts) runs as a GHL workflow triggered by the matching `regen-*` tag. The integration is a Private Integration Token + Contacts API upsert (see `lib/ghl.ts` + `docs/operator-setup.md`); **do NOT propose Resend, nodemailer/SMTP, AWS SES, or any new email provider** for new email work.
 
-When a feature needs an email-shaped notification before GHL is wired (e.g. "alert me when a new waitlist signup lands"), default to **in-app mechanisms**: sidebar badges, dashboard counters, unread tracking via `localStorage` `last_seen` patterns. The pattern is already in place for the Waitlist nav item in `app/admin/admin-shell.tsx` (key: `admin:waitlist:lastSeen`, paired with `?waitlistSince=<iso>` on `/api/admin/stats`).
+The Resend dependency is retained only for `app/api/admin/waitlist/send-launch/route.ts` (the one-time launch-announcement broadcast) and `lib/emails/launch-announcement.ts`. `lib/email.ts` and `lib/email-templates.ts` are kept as reference but no longer wired into any webhook/route. If you find yourself importing them in a new path, redirect that path through `sendToGhl(event, payload)` instead.
 
-Only add an outbound email pathway when the user explicitly names a GHL workflow ID and adds the corresponding env var (e.g. `GHL_WORKFLOW_TRIAL_ENDING` on RoofKnockers). When you write code that POSTs to a GHL webhook, env-gate it so missing config logs a warning and no-ops rather than throwing.
+When a feature needs an email-shaped notification before the operator finishes wiring the GHL workflows, default to **in-app mechanisms**: sidebar badges, dashboard counters, unread tracking via `localStorage` `last_seen` patterns. The pattern is already in place for the Waitlist nav item in `app/admin/admin-shell.tsx` (key: `admin:waitlist:lastSeen`, paired with `?waitlistSince=<iso>` on `/api/admin/stats`).
+
+Adding a new event type: extend `GhlEvent` in `lib/ghl.ts` + `EVENT_TAGS`, fire `void sendToGhl("your_event", { email, ...customFields })` from the route, and document the new tag + custom fields in `docs/operator-setup.md`. The operator creates the matching custom fields and workflow in GHL Settings.
 
 ### Verification & build flow
 

@@ -2,8 +2,6 @@ import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { requireWriteMode } from "@/lib/impersonation"
 import { stripe } from "@/lib/stripe"
-import { sendEmail } from "@/lib/email"
-import { accountDeletedEmail } from "@/lib/email-templates"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 import { sendToGhl } from "@/lib/ghl"
 
@@ -103,11 +101,10 @@ export async function POST(request: Request) {
       console.error("[Delete] Auth user deletion failed:", authDeleteError)
     }
 
-    // 8. Send confirmation email + GHL pipeline event (best-effort,
-    // account is already gone so failures here can't roll anything back).
+    // 8. GHL fires the deletion confirmation email (Resend path is deprecated).
+    // Best-effort - account is already gone so failures here can't roll
+    // anything back.
     if (userEmail) {
-      const template = accountDeletedEmail(clinicName)
-      await sendEmail(userEmail, template.subject, template.html)
       void sendToGhl("account_deleted", {
         email: userEmail,
         company: clinicName === "there" ? null : clinicName,
