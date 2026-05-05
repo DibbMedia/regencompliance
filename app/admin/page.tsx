@@ -81,6 +81,7 @@ interface Stats {
     deepScrape: { name: string; status: string }
     siteMonitor: { name: string; status: string }
   }
+  cspViolations24h: number
   waitlistTotal: number
   recentWaitlist: {
     id: string
