@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 import { headers } from "next/headers"
+import { SITE_URL } from "@/lib/site-url"
 import "./globals.css"
 
 const poppins = Poppins({
@@ -27,7 +28,7 @@ const SOFTWARE_APPLICATION_JSON = JSON.stringify({
     description: "Beta rate - $297/mo locked in for life",
   },
   description: "FDA/FTC compliance scanner for healthcare practices",
-  url: "https://compliance.regenportal.com",
+  url: SITE_URL,
 })
 
 const ORGANIZATION_JSON = JSON.stringify({
@@ -35,8 +36,8 @@ const ORGANIZATION_JSON = JSON.stringify({
   "@type": "Organization",
   name: "RegenCompliance",
   alternateName: "RegenCompliance by Dibb Media",
-  url: "https://compliance.regenportal.com",
-  logo: "https://compliance.regenportal.com/og-image.png",
+  url: SITE_URL,
+  logo: `${SITE_URL}/og-image.png`,
   description:
     "FDA/FTC compliance scanning software purpose-built for healthcare practices - regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
   contactPoint: {
@@ -59,13 +60,13 @@ const WEBSITE_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "RegenCompliance",
-  url: "https://compliance.regenportal.com",
+  url: SITE_URL,
   description:
     "FDA/FTC compliance scanning for healthcare marketing.",
   publisher: {
     "@type": "Organization",
     name: "RegenCompliance",
-    url: "https://compliance.regenportal.com",
+    url: SITE_URL,
   },
   inLanguage: "en-US",
 })
@@ -77,11 +78,11 @@ export const metadata: Metadata = {
   },
   description:
     "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for healthcare practices.",
-  metadataBase: new URL("https://compliance.regenportal.com"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://compliance.regenportal.com",
+    url: SITE_URL,
     siteName: "RegenCompliance",
     title: "RegenCompliance - FDA/FTC Compliance Scanner",
     description:
@@ -103,7 +104,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://compliance.regenportal.com",
+    canonical: SITE_URL,
   },
   robots: {
     index: true,

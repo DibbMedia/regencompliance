@@ -4,7 +4,8 @@ import { useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Shield, Loader2, Eye, EyeOff, AlertCircle } from "lucide-react"
+import { Loader2, Eye, EyeOff, AlertCircle } from "lucide-react"
+import { BrandIcon } from "@/components/brand-icon"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -50,53 +51,38 @@ function LoginContent() {
     setLoading(true)
     setFormError(null)
 
-    // Check if account is locked
-    try {
-      const lockCheck = await fetch("/api/auth/check-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email }),
-      })
-      const lockData = await lockCheck.json()
-      if (!lockData.allowed) {
-        setLoading(false)
-        setFormError("Account temporarily locked due to too many failed login attempts. Please try again in 30 minutes.")
-        return
-      }
-    } catch {
-      // Continue if check fails
-    }
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
+    // Server-side login proxy enforces lockout + IP rate limits authoritatively.
+    // Pre-2026-05-05 this used signInWithPassword from the client + an advisory
+    // check-login endpoint, which was bypassable.
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
+    const body = await res.json().catch(() => ({}))
 
-    if (error) {
+    if (!res.ok) {
       setLoading(false)
-      // Record failed attempt
-      fetch("/api/auth/check-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email, success: false }),
-      }).catch(() => {})
-
-      if (error.message.includes("Invalid login")) {
-        setFormError("Invalid email or password.")
+      if (res.status === 429) {
+        setFormError("Too many login attempts. Please wait a few minutes and try again.")
+      } else if (body?.allowed === false || body?.lockedUntil) {
+        setFormError("Account temporarily locked due to too many failed attempts. Please try again in 30 minutes.")
       } else {
-        setFormError(error.message)
+        setFormError(body?.error || "Invalid email or password.")
       }
       return
     }
 
-    // Clear failed attempts on success
-    fetch("/api/auth/check-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data.email, success: true }),
-    }).catch(() => {})
+    // Server set the auth cookies via @supabase/ssr; sync the client SDK so
+    // subsequent reads (profile, subscription) hit the same session.
+    if (body?.session?.access_token && body?.session?.refresh_token) {
+      await supabase.auth.setSession({
+        access_token: body.session.access_token,
+        refresh_token: body.session.refresh_token,
+      })
+    }
 
-    // Check subscription status and show appropriate welcome message
+    // Subscription-aware welcome toast.
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
@@ -117,11 +103,7 @@ function LoginContent() {
     }
 
     // Attempt to claim beta purchase if one exists for this email (non-blocking)
-    try {
-      fetch("/api/beta/claim", { method: "POST" })
-    } catch {
-      // Non-blocking
-    }
+    fetch("/api/beta/claim", { method: "POST" }).catch(() => {})
 
     setRedirecting(true)
     router.push("/dashboard/scanner")
@@ -159,9 +141,7 @@ function LoginContent() {
       <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden flex items-center justify-center px-3 sm:px-4">
         <MarketingBg />
         <div className="relative flex flex-col items-center gap-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-lg shadow-[#55E039]/25">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
+          <BrandIcon className="h-10 w-10" />
           <Loader2 className="h-6 w-6 animate-spin text-[#55E039]" />
           <p className="text-sm text-white/60">Redirecting to dashboard...</p>
         </div>
@@ -178,9 +158,7 @@ function LoginContent() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-lg shadow-[#55E039]/25">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
+          <BrandIcon className="h-10 w-10" />
           <span className="text-xl font-bold text-white">RegenCompliance</span>
         </div>
 

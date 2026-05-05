@@ -1,5 +1,8 @@
 import { ImageResponse } from "next/og"
 import { getPostBySlug } from "@/lib/blog/registry"
+import { SITE_URL } from "@/lib/site-url"
+
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, "")
 
 export const alt = "RegenCompliance blog post"
 export const size = { width: 1200, height: 630 }
@@ -176,7 +179,7 @@ export default async function Image({
               letterSpacing: "0.02em",
             }}
           >
-            compliance.regenportal.com/blog
+            {SITE_HOST}/blog
           </div>
           {readingMinutes != null && (
             <div

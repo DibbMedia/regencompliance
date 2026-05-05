@@ -122,9 +122,8 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       messages: [{ role: "user", content: text }],
     })
 
-    // Track API cost (non-blocking) - use "demo" as user_id
-    const supabaseForTracking = createServiceClient()
-    trackApiUsage(supabaseForTracking, "00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
+    // Track API cost (non-blocking) - demo runs use a sentinel user_id
+    trackApiUsage("00000000-0000-0000-0000-000000000000", "/api/demo/scan", "claude-haiku-4-5-20251001", response)
 
     const scanDuration = Date.now() - startTime
     const responseText = response.content.find((b) => b.type === "text")?.text ?? ""

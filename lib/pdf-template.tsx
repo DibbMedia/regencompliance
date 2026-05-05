@@ -1,6 +1,12 @@
 import React from "react"
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer"
 import type { Scan, ScanFlag } from "./types"
+import { SITE_URL } from "./site-url"
+
+// Brand host shown in PDF footers (e.g. "regencompliance.ai"). PDFs already
+// printed and sent to customers retain whatever host string was in effect at
+// generation time - they are immutable artefacts.
+const PDF_BRAND_HOST = SITE_URL.replace(/^https?:\/\//, "")
 
 /* ─── Color palette ──────────────────────────────────────── */
 const COLORS = {
@@ -455,7 +461,7 @@ export function ScanPdfDocument({ scan, clinicName }: { scan: Scan; clinicName: 
           <View>
             <Text style={s.coverBrand}>Prepared by</Text>
             <Text style={s.coverBrandName}>RegenCompliance</Text>
-            <Text style={s.coverBrand}>compliance.regenportal.com</Text>
+            <Text style={s.coverBrand}>{PDF_BRAND_HOST}</Text>
           </View>
           <Text style={s.coverBrand}>Confidential</Text>
         </View>
@@ -611,7 +617,7 @@ export function ScanPdfDocument({ scan, clinicName }: { scan: Scan; clinicName: 
             Powered by RegenCompliance
           </Text>
           <Text style={{ fontSize: 8, color: COLORS.lightGray, marginTop: 2 }}>
-            compliance.regenportal.com
+            {PDF_BRAND_HOST}
           </Text>
         </View>
 
@@ -724,7 +730,7 @@ export function SitePdfDocument({
           <View>
             <Text style={s.coverBrand}>Prepared by</Text>
             <Text style={s.coverBrandName}>RegenCompliance</Text>
-            <Text style={s.coverBrand}>compliance.regenportal.com</Text>
+            <Text style={s.coverBrand}>{PDF_BRAND_HOST}</Text>
           </View>
           <Text style={s.coverBrand}>Confidential</Text>
         </View>
@@ -903,7 +909,7 @@ export function SitePdfDocument({
             Powered by RegenCompliance
           </Text>
           <Text style={{ fontSize: 8, color: COLORS.lightGray, marginTop: 2 }}>
-            compliance.regenportal.com
+            {PDF_BRAND_HOST}
           </Text>
         </View>
 

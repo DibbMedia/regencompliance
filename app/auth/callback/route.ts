@@ -20,7 +20,7 @@ export async function GET(request: Request) {
           const adminClient = createServiceClient()
           const { data: teamMember } = await adminClient
             .from("team_members")
-            .select("email, created_at")
+            .select("email, invited_at")
             .eq("invite_token", inviteToken)
             .eq("accepted", false)
             .maybeSingle()
@@ -31,9 +31,12 @@ export async function GET(request: Request) {
             )
           }
 
-          const createdAt = new Date(teamMember.created_at).getTime()
+          // 72-hour invite expiry. Pre-2026-05-05 this read team_members.created_at,
+          // which doesn't exist - so Date.now() - NaN was always false and tokens
+          // never expired. The actual column is invited_at (migration 001:62).
+          const invitedAt = new Date(teamMember.invited_at).getTime()
           const seventyTwoHours = 72 * 60 * 60 * 1000
-          if (Date.now() - createdAt > seventyTwoHours) {
+          if (Number.isNaN(invitedAt) || Date.now() - invitedAt > seventyTwoHours) {
             return NextResponse.redirect(
               `${origin}/login?error=invite_expired`
             )

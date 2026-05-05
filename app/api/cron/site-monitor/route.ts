@@ -6,6 +6,7 @@ import { anthropic } from "@/lib/anthropic"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { extractPageContent } from "@/lib/site-crawler"
 import { createUserNotification } from "@/lib/notifications"
+import { isCronAuthorized } from "@/lib/cron-auth"
 
 const MAX_SITES_PER_RUN = 10
 const MAX_PAGES_PER_SITE = 20
@@ -13,7 +14,7 @@ const MAX_PAGES_PER_SITE = 20
 export async function GET(request: Request) {
   // Verify cron secret
   const authHeader = request.headers.get("authorization")
-  if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isCronAuthorized(authHeader)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

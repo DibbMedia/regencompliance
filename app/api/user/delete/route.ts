@@ -5,6 +5,7 @@ import { stripe } from "@/lib/stripe"
 import { sendEmail } from "@/lib/email"
 import { accountDeletedEmail } from "@/lib/email-templates"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
+import { sendToGhl } from "@/lib/ghl"
 
 export async function POST(request: Request) {
   const { ip, userAgent } = getRequestMeta(request)
@@ -54,6 +55,17 @@ export async function POST(request: Request) {
       }
     }
 
+    // 1b. Null beta_purchases.claimed_by ahead of profile delete - migration 026
+    // sets ON DELETE SET NULL for the FK, but doing it explicitly here keeps
+    // the row's claim history visible (vs the auth user vanishing under it).
+    await serviceClient
+      .from("beta_purchases")
+      .update({ claimed_by: null })
+      .eq("claimed_by", user.id)
+
+    // 1c. Purge user-keyed rate-limit rows (PII: user uuid in the key string)
+    await serviceClient.from("rate_limits").delete().like("key", `%${user.id}%`)
+
     // 2. Delete all user's scans
     await serviceClient.from("scans").delete().eq("profile_id", user.id)
 
@@ -91,10 +103,15 @@ export async function POST(request: Request) {
       console.error("[Delete] Auth user deletion failed:", authDeleteError)
     }
 
-    // 8. Send confirmation email (best-effort, account is already gone)
+    // 8. Send confirmation email + GHL pipeline event (best-effort,
+    // account is already gone so failures here can't roll anything back).
     if (userEmail) {
       const template = accountDeletedEmail(clinicName)
       await sendEmail(userEmail, template.subject, template.html)
+      void sendToGhl("account_deleted", {
+        email: userEmail,
+        company: clinicName === "there" ? null : clinicName,
+      })
     }
 
     logAudit({ user_id: user.id, user_email: user.email, action: "account.deleted", details: { clinic_name: clinicName }, ip_address: ip, user_agent: userAgent })

@@ -4,7 +4,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Shield, Loader2, ArrowLeft, CheckCircle2 } from "lucide-react"
+import { Loader2, ArrowLeft, CheckCircle2 } from "lucide-react"
+import { BrandIcon } from "@/components/brand-icon"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -52,9 +53,7 @@ export default function ForgotPasswordPage() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-lg shadow-[#55E039]/25">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
+          <BrandIcon className="h-10 w-10" />
           <span className="text-xl font-bold text-white">RegenCompliance</span>
         </div>
 

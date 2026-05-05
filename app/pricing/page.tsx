@@ -29,7 +29,7 @@ import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
 
 const includedFeatures = [
-  { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content - website pages, ads, emails, social posts, scripts - as many times as you need, no limits." },
+  { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content - website pages, ads, emails, social posts, scripts - up to 200 scans/day, plenty for every clinic we've worked with." },
   { icon: Pencil, title: "AI-Powered Compliant Rewrites", desc: "One-click rewriting of flagged content into compliant alternatives that preserve your clinic's voice and messaging." },
   { icon: BookOpen, title: "Full Compliance Library (300+ Rules)", desc: "Searchable database of banned phrases, compliant alternatives, risk ratings, and source citations from real enforcement actions." },
   { icon: Bell, title: "Daily FDA/FTC Rule Updates", desc: "Automated monitoring adds new violations to your ruleset within 24 hours of enforcement. Always current, never outdated." },
@@ -344,15 +344,24 @@ export default function PricingPage() {
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
-                Join the Waitlist
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              <>
+                <Link href="/apply" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-3">
+                  Apply for Founder Beta
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <p className="text-center text-[11px] text-white/50 mb-6">
+                  Or{" "}
+                  <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+                    join the waitlist
+                  </Link>{" "}
+                  for general access.
+                </p>
+              </>
             )}
             <p className="text-center text-xs text-white/40 mb-8">
               {IS_LAUNCHED
                 ? "Cancel anytime. Founding rate locked at $297/mo for life."
-                : "Pre-release access. Founding rate locked at $297/mo for life when invited."}
+                : "Founder beta = 25 seats. Active participation required to keep $297/mo for life."}
             </p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
@@ -658,8 +667,8 @@ export default function PricingPage() {
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-                Join the Waitlist
+              <Link href="/apply" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+                Apply for Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}

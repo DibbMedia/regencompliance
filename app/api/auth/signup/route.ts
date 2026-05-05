@@ -4,6 +4,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { signupSchema } from "@/lib/validations"
 import { checkPasswordBreach } from "@/lib/password-breach"
+import { sendToGhl } from "@/lib/ghl"
 
 export async function POST(request: Request) {
   const ip = getClientIp(request)
@@ -59,6 +60,14 @@ export async function POST(request: Request) {
       { status: 400 },
     )
   }
+
+  // GHL contact-create webhook (fire-and-forget; no-ops if env unset).
+  // Marketing/onboarding sequences live in GHL per the Email Policy in CLAUDE.md.
+  void sendToGhl("signup", {
+    email: parsed.data.email,
+    user_id: data.user?.id ?? null,
+    confirmed_at: data.user?.confirmed_at ?? null,
+  })
 
   return NextResponse.json({ user: data.user, session: data.session })
 }

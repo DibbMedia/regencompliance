@@ -130,7 +130,7 @@
 | Audit log of auth events | `audit_log` rows with `action = 'auth.login.success|failed'` |
 
 **Residual gaps:**
-- Server-side login proxy is shipped at `/api/auth/login` (commit `6613a94`, 2026-04-24) with full test coverage. Client login page still uses `signInWithPassword` directly — migration is a UI change only. Until the client flips, the `/api/auth/check-login` advisory path remains the primary lockout enforcer.
+- Server-side login proxy at `/api/auth/login` is the sole login path as of 2026-05-05. Client `app/login/page.tsx` POSTs credentials directly; lockout enforcement is mandatory. The legacy advisory `/api/auth/check-login` route was deleted because its `success: true` handling let any unauthenticated caller reset another user's lockout counter.
 - Customer-facing MFA not yet enforced. Supabase Auth supports TOTP out of box; enrollment UI is a product decision.
 
 ---

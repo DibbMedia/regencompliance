@@ -5,6 +5,7 @@ import { sendEmail } from "@/lib/email"
 import { dataExportEmail } from "@/lib/email-templates"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { logAudit } from "@/lib/audit-log"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function POST() {
   try {
@@ -55,7 +56,7 @@ export async function POST() {
   // Send notification email
   if (user.email) {
     const clinicName = profile?.clinic_name || "there"
-    const template = dataExportEmail(clinicName, "https://compliance.regenportal.com/dashboard/account")
+    const template = dataExportEmail(clinicName, `${SITE_URL}/dashboard/account`)
     await sendEmail(user.email, template.subject, template.html)
   }
 

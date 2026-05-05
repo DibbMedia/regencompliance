@@ -5,9 +5,10 @@ import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
 import { TOOLS } from "@/lib/tools/registry"
 import { POSTS_PER_PAGE } from "@/components/blog/blog-index"
+import { SITE_URL } from "@/lib/site-url"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://compliance.regenportal.com"
+  const baseUrl = SITE_URL
   const now = new Date()
 
   // Blog pagination (page 1 lives at /blog, pages 2..N at /blog/page/[n])

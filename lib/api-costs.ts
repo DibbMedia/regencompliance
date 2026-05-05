@@ -3,7 +3,7 @@
  * Tracks input/output tokens and estimated costs per API call.
  * Non-blocking - errors are caught silently to never break the main flow.
  */
-import type { SupabaseClient } from "@supabase/supabase-js"
+import { createServiceClient } from "@/lib/supabase/server"
 
 export interface ApiUsageRecord {
   user_id: string
@@ -35,23 +35,27 @@ export function estimateCost(model: string, inputTokens: number, outputTokens: n
   return Math.round((inputTokens * rates.input + outputTokens * rates.output) / 1_000_000)
 }
 
+/**
+ * Record API usage to drive the daily AI spend cap. Always uses the service
+ * client - api_usage RLS is service-role-only, so user-scoped writes silently
+ * fail. (Pre-fix all paid scan/rewrite paths were dropping their cost rows on
+ * the floor, leaving assertAiSpendAllowed() reading $0/day forever.)
+ */
 export function trackApiUsage(
-  supabase: SupabaseClient,
   userId: string,
   endpoint: string,
   model: string,
-  response: { usage?: { input_tokens?: number; output_tokens?: number } }
+  response: { usage?: { input_tokens?: number; output_tokens?: number } },
 ) {
   const inputTokens = response.usage?.input_tokens || 0
   const outputTokens = response.usage?.output_tokens || 0
   const costCents = estimateCost(model, inputTokens, outputTokens)
 
-  // Fire and forget - never block the main request. Supabase's builder
-  // returns PromiseLike (no .catch), so wrap in an async IIFE to handle
-  // both resolved errors (via { error }) and rejections uniformly.
+  // Fire and forget - never block the main request.
   void (async () => {
     try {
-      const { error } = await supabase.from("api_usage").insert({
+      const service = createServiceClient()
+      const { error } = await service.from("api_usage").insert({
         user_id: userId,
         endpoint,
         model,

@@ -1,4 +1,7 @@
 import { ImageResponse } from "next/og"
+import { SITE_URL } from "@/lib/site-url"
+
+const SITE_HOST = SITE_URL.replace(/^https?:\/\//, "")
 
 export const alt = "RegenCompliance - FDA/FTC Compliance Scanner"
 export const size = { width: 1200, height: 630 }
@@ -167,7 +170,7 @@ export default async function Image() {
             letterSpacing: "0.05em",
           }}
         >
-          compliance.regenportal.com
+          {SITE_HOST}
         </div>
       </div>
     ),

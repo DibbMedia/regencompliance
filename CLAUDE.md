@@ -60,9 +60,24 @@ Only add an outbound email pathway when the user explicitly names a GHL workflow
 - **Command Center surface:** `app/admin/page.tsx` Key Metrics row has a Waitlist tile linking to `/admin/waitlist`; "Recent Waitlist Signups" table sits above the Recent Signups table. Stats served by `app/api/admin/stats/route.ts`.
 - **Sidebar unread badge:** green count badge on the "Waitlist" nav item in `app/admin/admin-shell.tsx`. Counts entries with `created_at > localStorage[admin:waitlist:lastSeen]`. Clears on navigation to `/admin/waitlist`.
 
+### Lead-magnet free-audit lander (added 2026-05-05)
+
+- **Public form:** `app/free-audit/page.tsx` → `POST /api/free-audit` → `free_audit_leads` table (migration 027, RLS service-role-only). Anonymous prospects enter URL + email and get a teaser report: full violation count + severity breakdown + first 2 violations expanded, the rest are returned with `locked: true`. Rate limits: 50/hour global, 3/hour per IP, 5/day per host.
+- **GHL event:** `GHL_WEBHOOK_FREE_AUDIT` fires with `email, name, company, website_url, score, severity counts`.
+
+### Founder-beta application (added 2026-05-05)
+
+- **Public form:** `app/apply/page.tsx` → `POST /api/beta-apply` → `beta_applications` table (migration 025). Eight fields + a required terms checkbox spelling out the founder commitment: active use, monthly Zoom, feedback tickets, in exchange for $297/mo locked for life with seat-loss for inactivity.
+- **Marketing CTAs:** `MarketingHeader` shows "Apply for Beta" as primary green button + "Waitlist" secondary text link when `IS_LAUNCHED=false`. Landing hero + pricing page mirror the dual-CTA pattern. Free-audit lander pushes the audit-failed prospect into the same Apply flow.
+- **GHL event:** `GHL_WEBHOOK_BETA_APPLY` fires with full application payload.
+
+### GHL customer-data plumbing (added 2026-05-05)
+
+`lib/ghl.ts` exposes `sendToGhl(event, contact)` — fire-and-forget, env-gated, 5s timeout. Each event maps to its own webhook env var so the operator can wire workflows piecemeal. Wired callsites: signup, beta-apply, waitlist, free-audit, stripe checkout-completed (standard tier), stripe subscription-deleted, stripe payment-failed, account-deleted. Beta-tier subscription activation goes through `claimBetaPurchase` in `app/auth/callback/route.ts` and does NOT currently fire a GHL event - add `GHL_WEBHOOK_BETA_ACTIVATED` there if needed. See `docs/operator-setup.md` for the full env var inventory.
+
 ### Things that aren't done / known gaps
 
-- Confirmation email to waitlist signers — deferred to GHL.
-- Admin email/Slack notification when a new signup lands — deferred (in-app badge above is the current substitute).
-- Source/UTM tracking on waitlist signups (currently hardcoded `"website"` in `/api/waitlist`).
-- Some marketing pages still say "Start Free Trial" near a `/waitlist` button — copy scrub pending. Search for `Start Free Trial` and consider whether each instance should say "Join the Waitlist" instead.
+- Source/UTM tracking on waitlist + free-audit + beta-apply (currently hardcoded `"website"`).
+- Resend / GHL transactional email is still operator-action: `lib/email.ts` no-ops without `RESEND_API_KEY`. Beta launch can ship inert; activate when GHL workflows are configured.
+- Domain cutover to `regencompliance.ai` is queued. Load-bearing files (sitemap, robots, llms.txt, layout metadataBase, badge route, email templates, PDF templates, opengraph images) all read from `lib/site-url.ts` which reads `NEXT_PUBLIC_APP_URL`. Per-page canonical URLs in `app/(marketing)/**/page.tsx` are still literal `compliance.regenportal.com` strings - bulk-flip at cutover (the domain-migration agent's runbook covers it).
+- Several HIGH-priority code-quality items remain in backlog: N+1 in `/api/admin/users`, beta seat oversell race in `/api/stripe/checkout-beta`, onboarding writes bypassing `profileSchema`, onboarding-checklist accepts arbitrary fields, forgot-password lacks HIBP + per-IP rate-limit, triple-duplicated scan loop across `sites/[id]/scan` + `sites/[id]/crawl` + cron `site-monitor`. None are launch-blocking; tracked in the May 2026 audit synthesis.

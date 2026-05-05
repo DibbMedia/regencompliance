@@ -56,8 +56,7 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
     })
 
     // Track API cost (non-blocking)
-    const supabase = createServiceClient()
-    trackApiUsage(supabase, "00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-sonnet-4-5-20250929", response)
+    trackApiUsage("00000000-0000-0000-0000-000000000000", "/api/demo/rewrite", "claude-sonnet-4-5-20250929", response)
 
     const rewrittenText = response.content.find((b) => b.type === "text")?.text ?? ""
 

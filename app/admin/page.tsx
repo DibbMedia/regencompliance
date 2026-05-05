@@ -711,7 +711,7 @@ export default function AdminDashboardPage() {
                   <td className="px-4 py-3 text-white/80">{entry.name}</td>
                   <td className="px-4 py-3 text-white/60">{entry.email}</td>
                   <td className="px-4 py-3 text-white/40 text-xs">
-                    {entry.source || "—"}
+                    {entry.source || "-"}
                   </td>
                   <td className="px-4 py-3 text-white/40 text-xs">
                     {formatRelativeTime(entry.created_at)}

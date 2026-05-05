@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Shield } from "lucide-react"
+import { BrandIcon } from "@/components/brand-icon"
 
 export function MarketingFooter() {
   return (
@@ -8,9 +8,7 @@ export function MarketingFooter() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#55E039] to-[#3BB82A]">
-                <Shield className="h-4 w-4 text-white" />
-              </div>
+              <BrandIcon className="h-8 w-8" />
               <span className="text-[15px] font-bold text-white">RegenCompliance</span>
             </div>
             <p className="text-sm text-white/60 leading-relaxed max-w-xs">

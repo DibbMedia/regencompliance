@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { sendEmail } from "@/lib/email"
 import { welcomeEmail, betaWelcomeEmail, paymentFailedEmail, subscriptionCancelledEmail } from "@/lib/email-templates"
 import { logAudit } from "@/lib/audit-log"
+import { sendToGhl } from "@/lib/ghl"
 import type Stripe from "stripe"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
@@ -277,7 +278,7 @@ export async function POST(request: Request) {
             action_url: "/dashboard/scanner",
           })
 
-          // Send welcome email
+          // Send welcome email + GHL pipeline event
           try {
             const stripeCustomerObj = await stripe.customers.retrieve(customerId)
             if (!stripeCustomerObj.deleted && stripeCustomerObj.email) {
@@ -288,6 +289,15 @@ export async function POST(request: Request) {
                 .maybeSingle()
               const template = welcomeEmail(subProfile?.clinic_name || "there")
               await sendEmail(stripeCustomerObj.email, template.subject, template.html)
+
+              void sendToGhl("subscription_active", {
+                email: stripeCustomerObj.email,
+                company: subProfile?.clinic_name ?? null,
+                tier: "standard",
+                monthly_price_cents: 49700,
+                stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
+              })
             }
           } catch (emailErr) {
             console.error("[Stripe Webhook] Welcome email failed (non-blocking):", emailErr)
@@ -380,7 +390,7 @@ export async function POST(request: Request) {
           action_url: "/dashboard/account",
         })
 
-        // Send cancellation email
+        // Send cancellation email + GHL pipeline event
         try {
           const cancelCustomerObj = await stripe.customers.retrieve(customerId)
           if (!cancelCustomerObj.deleted && cancelCustomerObj.email) {
@@ -391,6 +401,12 @@ export async function POST(request: Request) {
               .maybeSingle()
             const template = subscriptionCancelledEmail(cancelProfile?.clinic_name || "there")
             await sendEmail(cancelCustomerObj.email, template.subject, template.html)
+
+            void sendToGhl("subscription_cancelled", {
+              email: cancelCustomerObj.email,
+              company: cancelProfile?.clinic_name ?? null,
+              stripe_customer_id: customerId,
+            })
           }
         } catch (emailErr) {
           console.error("[Stripe Webhook] Cancellation email failed (non-blocking):", emailErr)
@@ -433,7 +449,7 @@ export async function POST(request: Request) {
           action_url: "/dashboard/account",
         })
 
-        // Send payment failed email
+        // Send payment failed email + GHL recovery sequence trigger
         try {
           const failedCustomerObj = await stripe.customers.retrieve(customerId)
           if (!failedCustomerObj.deleted && failedCustomerObj.email) {
@@ -444,6 +460,13 @@ export async function POST(request: Request) {
               .maybeSingle()
             const template = paymentFailedEmail(failedFullProfile?.clinic_name || "there")
             await sendEmail(failedCustomerObj.email, template.subject, template.html)
+
+            void sendToGhl("payment_failed", {
+              email: failedCustomerObj.email,
+              company: failedFullProfile?.clinic_name ?? null,
+              stripe_customer_id: customerId,
+              amount_due_cents: invoice.amount_due ?? null,
+            })
           }
         } catch (emailErr) {
           console.error("[Stripe Webhook] Payment failed email failed (non-blocking):", emailErr)

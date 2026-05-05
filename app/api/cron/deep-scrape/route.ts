@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { createBroadcastNotification } from "@/lib/notifications"
 import { anthropic } from "@/lib/anthropic"
+import { isCronAuthorized } from "@/lib/cron-auth"
 import {
   COMPLIANCE_SOURCES,
   extractRegenLinks,
@@ -56,7 +57,7 @@ function parseClaudeJson<T>(text: string): T | null {
 export async function GET(request: Request) {
   // 1. Auth check
   const authHeader = request.headers.get("authorization")
-  if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isCronAuthorized(authHeader)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

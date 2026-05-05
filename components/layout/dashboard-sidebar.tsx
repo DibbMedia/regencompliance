@@ -32,6 +32,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { BrandIcon } from "@/components/brand-icon"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import useSWR from "swr"
@@ -104,9 +105,7 @@ export function DashboardSidebar({ clinicName, userEmail }: DashboardSidebarProp
       {/* Brand */}
       <SidebarHeader className="border-b border-white/[0.06] px-5 py-4">
         <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-[0_0_20px_rgba(85,224,57,0.2)]">
-            <Shield className="h-4 w-4 text-[#0a0a0a]" />
-          </div>
+          <BrandIcon className="h-8 w-8 shrink-0" />
           <div className="flex flex-col">
             <span className="text-sm font-bold text-white tracking-tight leading-none">
               Regen<span className="text-[#55E039]">Compliance</span>

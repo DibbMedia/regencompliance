@@ -35,18 +35,16 @@ export async function GET(request: Request) {
       .select("*", { count: "exact", head: true })
       .eq("subscription_status", "cancelled")
 
-    // Beta subscribers - profiles with is_beta = true and active status
-    let betaSubscribers = 0
-    try {
-      const { count: betaCount } = await serviceClient
-        .from("profiles")
-        .select("*", { count: "exact", head: true })
-        .eq("is_beta", true)
-        .eq("subscription_status", "active")
-      betaSubscribers = betaCount || 0
-    } catch {
-      // is_beta column may not exist
-    }
+    // Beta subscribers - profiles with is_beta_subscriber = true and active status.
+    // Pre-2026-05-05 this filtered by `is_beta` (no such column); the try/catch
+    // swallowed the error so betaSubscribers was always 0 and standardMrr was
+    // overstated by counting beta subs at the $497 price.
+    const { count: betaCount } = await serviceClient
+      .from("profiles")
+      .select("*", { count: "exact", head: true })
+      .eq("is_beta_subscriber", true)
+      .eq("subscription_status", "active")
+    const betaSubscribers = betaCount || 0
 
     // Total scans
     const { count: totalScans } = await serviceClient

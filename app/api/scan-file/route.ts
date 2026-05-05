@@ -179,7 +179,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     })
 
     // Track API cost (non-blocking)
-    trackApiUsage(supabase, user.id, "/api/scan-file", "claude-haiku-4-5-20251001", response)
+    trackApiUsage(user.id, "/api/scan-file", "claude-haiku-4-5-20251001", response)
 
     const scanDuration = Date.now() - startTime
     const responseText = response.content.find((b) => b.type === "text")?.text ?? ""

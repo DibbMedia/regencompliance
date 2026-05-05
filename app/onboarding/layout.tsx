@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react"
+import { BrandIcon } from "@/components/brand-icon"
 
 export default function OnboardingLayout({
   children,
@@ -10,9 +10,7 @@ export default function OnboardingLayout({
       <div className="w-full max-w-lg">
         {/* Brand */}
         <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#55E039] to-[#3BB82A] shadow-[0_0_20px_rgba(85,224,57,0.2)]">
-            <Shield className="h-4.5 w-4.5 text-[#0a0a0a]" />
-          </div>
+          <BrandIcon className="h-9 w-9" />
           <span className="text-lg font-bold text-white tracking-tight">
             Regen<span className="text-[#55E039]">Compliance</span>
           </span>

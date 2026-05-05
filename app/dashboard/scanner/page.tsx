@@ -497,7 +497,7 @@ export default function ScannerPage() {
                       <span className="hidden sm:inline">Drop your file here or </span>
                       <span className="text-[#55E039] hover:text-[#6FF055]">click to browse</span>
                     </p>
-                    <p className="text-xs text-white/55 mt-1">.docx, .pdf, or .txt - max 10MB</p>
+                    <p className="text-xs text-white/55 mt-1">.docx, .pdf, or .txt - max 5MB</p>
                   </div>
                 </div>
               </div>

@@ -8,7 +8,7 @@ function getResend(): Resend | null {
   return resend
 }
 
-const FROM_EMAIL = process.env.FROM_EMAIL || "RegenCompliance <noreply@regenportal.com>"
+const FROM_EMAIL = process.env.FROM_EMAIL || "RegenCompliance <noreply@regencompliance.ai>"
 
 export async function sendEmail(to: string, subject: string, html: string) {
   const client = getResend()

@@ -3,6 +3,7 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { waitlistSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
+import { sendToGhl } from "@/lib/ghl"
 
 export const maxDuration = 10
 
@@ -68,6 +69,11 @@ export async function POST(request: Request) {
         { status: 500 }
       )
     }
+
+    // GHL pipeline: tag the waitlist contact and drop into the nurture workflow.
+    // Only fires on first-time signups (the unique-violation branch above
+    // skipped this path) so the GHL workflow doesn't double-trigger nurture.
+    void sendToGhl("waitlist", { email, name })
 
     return NextResponse.json({ success: true })
   } catch (error) {

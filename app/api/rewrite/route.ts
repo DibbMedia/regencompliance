@@ -98,7 +98,7 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
     })
 
     // Track API cost (non-blocking)
-    trackApiUsage(supabase, user.id, "/api/rewrite", "claude-sonnet-4-5-20250929", response)
+    trackApiUsage(user.id, "/api/rewrite", "claude-sonnet-4-5-20250929", response)
 
     const rewrittenText = response.content.find((b) => b.type === "text")?.text ?? ""
 

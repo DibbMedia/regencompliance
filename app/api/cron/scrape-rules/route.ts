@@ -3,6 +3,7 @@ export const maxDuration = 300
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { createBroadcastNotification } from "@/lib/notifications"
+import { isCronAuthorized } from "@/lib/cron-auth"
 import {
   COMPLIANCE_SOURCES,
   extractRegenLinks,
@@ -22,7 +23,7 @@ interface SourceResult {
 export async function GET(request: Request) {
   // Verify cron secret
   const authHeader = request.headers.get("authorization")
-  if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isCronAuthorized(authHeader)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

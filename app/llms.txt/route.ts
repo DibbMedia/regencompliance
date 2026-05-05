@@ -5,8 +5,9 @@ import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
 import { GLOSSARY } from "@/lib/glossary/terms"
 import { TOOLS } from "@/lib/tools/registry"
+import { SITE_URL } from "@/lib/site-url"
 
-const baseUrl = "https://compliance.regenportal.com"
+const baseUrl = SITE_URL
 
 export async function GET() {
   const content = buildLlmsTxt()
@@ -28,7 +29,7 @@ function buildLlmsTxt(): string {
   )
   lines.push("")
   lines.push(
-    "RegenCompliance is live at compliance.regenportal.com. Founding-member pricing is $297/month locked for life; standard pricing is $497/month. Unlimited scans, 3 team seats, daily rule updates sourced from actual FDA warning letters and FTC settlements, permanent audit trail with PDF export, 30-day money-back guarantee."
+    `RegenCompliance is live at ${baseUrl.replace(/^https?:\/\//, "")}. Founding-member pricing is $297/month locked for life; standard pricing is $497/month. Unlimited scans, 3 team seats, daily rule updates sourced from actual FDA warning letters and FTC settlements, permanent audit trail with PDF export, 30-day money-back guarantee.`
   )
   lines.push("")
 

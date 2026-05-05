@@ -25,6 +25,51 @@ export const newsletterSchema = z.object({
   sourceSlug: z.string().trim().max(200).optional(),
 })
 
+export const SPECIALTY_OPTIONS = [
+  'regen_medicine',
+  'med_spa',
+  'weight_loss',
+  'dental',
+  'dermatology',
+  'aesthetic_plastic',
+  'iv_therapy',
+  'hormone_bhrt',
+  'chiropractic',
+  'wellness',
+  'other',
+] as const
+
+export const ROLE_OPTIONS = [
+  'owner',
+  'practice_manager',
+  'marketing_lead',
+  'content_writer',
+  'agency_partner',
+  'compliance_officer',
+  'other',
+] as const
+
+export const VOLUME_OPTIONS = ['0-5', '6-15', '16-50', '50+'] as const
+
+export const freeAuditSchema = z.object({
+  website_url: z.string().trim().min(1, 'Website URL is required').max(2048).url('Please enter a valid URL'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+  name: z.string().trim().max(100).optional().or(z.literal('')),
+  clinic_name: z.string().trim().max(200).optional().or(z.literal('')),
+})
+
+export const betaApplicationSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be under 100 characters'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+  clinic_name: z.string().trim().min(1, 'Clinic or practice name is required').max(200, 'Must be under 200 characters'),
+  specialty: z.enum(SPECIALTY_OPTIONS),
+  role: z.enum(ROLE_OPTIONS),
+  website: z.string().trim().max(2048).url('Please enter a valid URL').optional().or(z.literal('')),
+  monthly_volume: z.enum(VOLUME_OPTIONS),
+  why_apply: z.string().trim().min(50, 'Tell us a bit more (at least 50 characters)').max(1000, 'Must be under 1,000 characters'),
+  accept_terms: z.literal(true, { errorMap: () => ({ message: 'Please confirm you agree to the founder-beta terms' }) }),
+})
+
 /** Block private/internal IPs in a URL string */
 function isPrivateUrl(urlStr: string): boolean {
   try {
@@ -151,6 +196,8 @@ export type RewriteInput = z.infer<typeof rewriteSchema>
 export type InviteInput = z.infer<typeof inviteSchema>
 export type WaitlistInput = z.infer<typeof waitlistSchema>
 export type NewsletterInput = z.infer<typeof newsletterSchema>
+export type BetaApplicationInput = z.infer<typeof betaApplicationSchema>
+export type FreeAuditInput = z.infer<typeof freeAuditSchema>
 export type ProfileInput = z.infer<typeof profileSchema>
 export type TicketCreateInput = z.infer<typeof ticketCreateSchema>
 export type TicketMessageInput = z.infer<typeof ticketMessageSchema>

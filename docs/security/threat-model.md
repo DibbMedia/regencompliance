@@ -34,11 +34,11 @@
 | Threat | Mitigation |
 |---|---|
 | Brute-force password | 5-attempt lockout per email + 30-min lock (`lib/login-protection.ts`); strong password policy in zod |
-| Credential stuffing / IP churn | Per-IP rate limit on signup (5/hr), check-login (30/15min) |
+| Credential stuffing / IP churn | Per-IP rate limit on signup (5/hr), `/api/auth/login` proxy (30/15min) |
 | User enumeration via signup error | Generic "Could not create account" response (`app/api/auth/signup/route.ts`); Supabase "prevent user enumeration" also ON in dashboard |
 | CSRF on auth POSTs | Origin enforcement on `/api/auth/*` (`proxy.ts`) |
 | Session hijacking | HttpOnly + Secure cookies; SameSite=Lax on session; SameSite=Strict on impersonation |
-| Client-side bypass of lockout | Shipped server-side login proxy at `/api/auth/login` (2026-04-24). Client login page migration pending — until then `/api/auth/check-login` advisory path stays the primary enforcer. |
+| Client-side bypass of lockout | Server-side login proxy at `/api/auth/login` is the only login path as of 2026-05-05. Legacy `/api/auth/check-login` deleted because its `success: true` parameter let unauthenticated callers clear any account's failed-attempt counter. |
 
 ### 2. Scanner (paid)
 

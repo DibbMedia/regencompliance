@@ -350,16 +350,27 @@ export default function DashboardPage() {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return
 
+        // Resolve effective workspace owner: a team member's scans live under
+        // the owner's profile_id, not their own auth.uid. Mirrors the server
+        // resolveProfile helper but stays client-side for this RSC-less page.
+        const { data: teamRow } = await supabase
+          .from("team_members")
+          .select("profile_id")
+          .eq("user_id", user.id)
+          .eq("accepted", true)
+          .maybeSingle()
+        const workspaceProfileId = teamRow?.profile_id ?? user.id
+
         const { data: profile } = await supabase
           .from("profiles")
           .select("clinic_name, subscription_status, is_beta_subscriber")
-          .eq("id", user.id)
-          .single()
+          .eq("id", workspaceProfileId)
+          .maybeSingle()
 
         const { data: scans } = await supabase
           .from("scans")
           .select("id, compliance_score, content_type, flag_count, created_at")
-          .eq("user_id", user.id)
+          .eq("profile_id", workspaceProfileId)
           .order("created_at", { ascending: false })
           .limit(50)
 

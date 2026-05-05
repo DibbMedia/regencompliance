@@ -22,7 +22,7 @@ const FAQ_DATA: FaqSection[] = [
       {
         question: "How do I run my first scan?",
         answer:
-          "RegenCompliance offers three ways to scan your content. Paste mode lets you copy and paste text directly into the scanner. URL mode lets you enter any webpage URL and we will extract and scan the content automatically. File upload mode accepts .docx, .pdf, and .txt files up to 10MB. Choose your content type, hit Scan, and your compliance report will be ready in seconds.",
+          "RegenCompliance offers three ways to scan your content. Paste mode lets you copy and paste text directly into the scanner. URL mode lets you enter any webpage URL and we will extract and scan the content automatically. File upload mode accepts .docx, .pdf, and .txt files up to 5MB. Choose your content type, hit Scan, and your compliance report will be ready in seconds.",
       },
       {
         question: "What do compliance scores mean?",
@@ -120,7 +120,7 @@ const FAQ_DATA: FaqSection[] = [
       {
         question: "What file types can I upload?",
         answer:
-          "The scanner accepts .docx (Microsoft Word), .pdf (Adobe PDF), and .txt (plain text) files up to 10MB in size. We extract the text content from these files and run the same comprehensive compliance analysis as our paste and URL scanning modes. For best results with PDFs, use text-based PDFs rather than scanned images.",
+          "The scanner accepts .docx (Microsoft Word), .pdf (Adobe PDF), and .txt (plain text) files up to 5MB in size. We extract the text content from these files and run the same comprehensive compliance analysis as our paste and URL scanning modes. For best results with PDFs, use text-based PDFs rather than scanned images.",
       },
       {
         question: "How often are compliance rules updated?",
