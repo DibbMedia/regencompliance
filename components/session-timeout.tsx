@@ -13,6 +13,7 @@ export function SessionTimeout() {
   const lastActivity = useRef(Date.now())
   const warningTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const logoutTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const resetTimersRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     function resetTimers() {
@@ -30,6 +31,10 @@ export function SessionTimeout() {
         handleLogout()
       }, IDLE_TIMEOUT_MS)
     }
+    // Expose resetTimers to the dialog button below via the closure-captured
+    // function reference. Stored on a ref so the button click can reach the
+    // current function without re-rendering on every reset.
+    resetTimersRef.current = resetTimers
 
     async function handleLogout() {
       const supabase = createBrowserClient(
@@ -70,7 +75,10 @@ export function SessionTimeout() {
         </p>
         <button
           onClick={() => {
-            // Any interaction resets timers via the event listeners
+            // Explicit reset on Stay-signed-in. The mousedown listener also
+            // triggers resetTimers, but click bubbling order isn't guaranteed
+            // across browsers - calling explicitly avoids relying on it.
+            resetTimersRef.current?.()
             setShowWarning(false)
           }}
           className="h-10 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer"

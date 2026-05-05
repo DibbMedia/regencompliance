@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@/lib/supabase/server"
+import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
 import { ticketCreateSchema, parsePagination } from "@/lib/validations"
@@ -100,8 +100,18 @@ export async function POST(request: Request) {
       })
 
     if (messageError) {
+      // Compensating delete: orphaned tickets with no body confuse the
+      // support UI and leave a permanent dead row. Use service client so
+      // RLS doesn't block the cleanup if the user-bound client is in a
+      // weird state.
       console.error("Ticket message creation error:", messageError)
-      return NextResponse.json({ error: "Ticket created but failed to add message" }, { status: 500 })
+      try {
+        const service = createServiceClient()
+        await service.from("support_tickets").delete().eq("id", ticket.id)
+      } catch (rollbackErr) {
+        console.error("Ticket rollback error:", rollbackErr)
+      }
+      return NextResponse.json({ error: "Failed to create ticket. Please try again." }, { status: 500 })
     }
 
     return NextResponse.json({ ticket }, { status: 201 })

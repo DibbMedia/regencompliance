@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
-import { parsePagination } from "@/lib/validations"
+import { parsePagination, isValidUUID } from "@/lib/validations"
 
 export const maxDuration = 30
 
@@ -48,8 +48,11 @@ export async function DELETE(request: Request) {
   const body = await request.json().catch(() => null)
   const id = body?.id
 
-  if (!id || typeof id !== "string") {
-    return NextResponse.json({ error: "id required" }, { status: 400 })
+  // Validate UUID format up front so a non-UUID surfaces as a clean 400
+  // (consistent with every other admin DELETE route - prevents Postgres
+  // errors from leaking type/format details through the 500 path).
+  if (!id || typeof id !== "string" || !isValidUUID(id)) {
+    return NextResponse.json({ error: "Valid UUID id required" }, { status: 400 })
   }
 
   const { error } = await serviceClient.from("waitlist").delete().eq("id", id)
