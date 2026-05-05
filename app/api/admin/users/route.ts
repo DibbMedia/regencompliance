@@ -1,6 +1,69 @@
 import { NextResponse } from "next/server"
+import type { SupabaseClient } from "@supabase/supabase-js"
 import { verifyAdmin } from "@/lib/admin"
 import { adminSearchSchema } from "@/lib/validations"
+
+interface ProfileRow {
+  id: string
+  clinic_name: string | null
+  subscription_status: string | null
+  created_at: string
+}
+
+interface ScanInfo {
+  count: number
+  lastScanAt: string | null
+}
+
+/**
+ * Build the {scan_count, last_scan_at, email} attachments for a page of profiles.
+ *
+ * Pre-2026-05-05 this ran 3 queries per profile sequentially: count, last
+ * scan, getUserById. With page sizes up to 50 that meant ~150 round trips on
+ * the hot admin path, with auth.admin lookups adding the most latency. Now
+ * we batch:
+ *   - All scans for the page in one ordered query, aggregated in JS.
+ *   - All getUserById calls in parallel via Promise.all.
+ */
+async function attachUserMetadata(
+  serviceClient: SupabaseClient,
+  profiles: ProfileRow[],
+) {
+  const profileIds = profiles.map((p) => p.id)
+  if (profileIds.length === 0) return []
+
+  const [scanRowsResult, emailEntries] = await Promise.all([
+    serviceClient
+      .from("scans")
+      .select("profile_id, created_at")
+      .in("profile_id", profileIds)
+      .order("created_at", { ascending: false }),
+    Promise.all(
+      profileIds.map(async (id) => {
+        const { data } = await serviceClient.auth.admin.getUserById(id)
+        return [id, data?.user?.email ?? "unknown"] as const
+      }),
+    ),
+  ])
+
+  const scanInfo: Record<string, ScanInfo> = {}
+  for (const id of profileIds) scanInfo[id] = { count: 0, lastScanAt: null }
+  for (const row of scanRowsResult.data ?? []) {
+    const info = scanInfo[row.profile_id]
+    if (!info) continue
+    info.count++
+    // First row per profile is the newest (we ordered desc).
+    if (!info.lastScanAt) info.lastScanAt = row.created_at
+  }
+
+  const emailMap = new Map(emailEntries)
+  return profiles.map((p) => ({
+    ...p,
+    email: emailMap.get(p.id) ?? "unknown",
+    scan_count: scanInfo[p.id]?.count ?? 0,
+    last_scan_at: scanInfo[p.id]?.lastScanAt ?? null,
+  }))
+}
 
 export async function GET(request: Request) {
   try {
@@ -43,52 +106,12 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error("Admin users fetch error:", error)
-      return NextResponse.json(
-        { error: "Failed to fetch users" },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 })
     }
 
-    // Get scan counts and last scan date per profile
-    const profileIds = (profiles || []).map((p) => p.id)
-    const scanInfo: Record<string, { count: number; lastScanAt: string | null }> = {}
+    const usersWithEmail = await attachUserMetadata(serviceClient, (profiles ?? []) as ProfileRow[])
 
-    if (profileIds.length > 0) {
-      for (const pid of profileIds) {
-        const { count: scanCount } = await serviceClient
-          .from("scans")
-          .select("*", { count: "exact", head: true })
-          .eq("profile_id", pid)
-
-        const { data: lastScan } = await serviceClient
-          .from("scans")
-          .select("created_at")
-          .eq("profile_id", pid)
-          .order("created_at", { ascending: false })
-          .limit(1)
-
-        scanInfo[pid] = {
-          count: scanCount || 0,
-          lastScanAt: lastScan?.[0]?.created_at || null,
-        }
-      }
-    }
-
-    // Resolve emails
-    const usersWithEmail = []
-    for (const profile of profiles || []) {
-      const {
-        data: { user },
-      } = await serviceClient.auth.admin.getUserById(profile.id)
-      usersWithEmail.push({
-        ...profile,
-        email: user?.email || "unknown",
-        scan_count: scanInfo[profile.id]?.count || 0,
-        last_scan_at: scanInfo[profile.id]?.lastScanAt || null,
-      })
-    }
-
-    // If searching by email and no clinic_name results, try email search
+    // Email-search fallback when clinic_name search returned nothing.
     if (search && usersWithEmail.length === 0) {
       const {
         data: { users: authUsers },
@@ -113,29 +136,10 @@ export async function GET(request: Request) {
         }
 
         const { data: emailProfiles, count: emailCount } = await emailQuery
-
-        const results = []
-        for (const profile of emailProfiles || []) {
-          const {
-            data: { user },
-          } = await serviceClient.auth.admin.getUserById(profile.id)
-          const { count: scanCount } = await serviceClient
-            .from("scans")
-            .select("*", { count: "exact", head: true })
-            .eq("profile_id", profile.id)
-          const { data: lastScan } = await serviceClient
-            .from("scans")
-            .select("created_at")
-            .eq("profile_id", profile.id)
-            .order("created_at", { ascending: false })
-            .limit(1)
-          results.push({
-            ...profile,
-            email: user?.email || "unknown",
-            scan_count: scanCount || 0,
-            last_scan_at: lastScan?.[0]?.created_at || null,
-          })
-        }
+        const results = await attachUserMetadata(
+          serviceClient,
+          (emailProfiles ?? []) as ProfileRow[],
+        )
 
         return NextResponse.json({
           users: results,
@@ -156,10 +160,7 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error("Admin users error:", error)
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
 
