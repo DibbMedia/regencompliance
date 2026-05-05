@@ -238,6 +238,7 @@ export async function POST(request: Request) {
                 tier: "beta",
                 monthly_price_cents: 29700,
                 subscription_status: "active",
+                subscription_started_at: new Date().toISOString(),
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
               })
@@ -344,6 +345,7 @@ export async function POST(request: Request) {
                 tier: "standard",
                 monthly_price_cents: 49700,
                 subscription_status: "active",
+                subscription_started_at: new Date().toISOString(),
                 stripe_customer_id: customerId,
                 stripe_subscription_id: subscriptionId,
               })
@@ -460,6 +462,7 @@ export async function POST(request: Request) {
               company: cancelProfile?.clinic_name ?? null,
               stripe_customer_id: customerId,
               subscription_status: "cancelled",
+              cancelled_at: new Date().toISOString(),
             })
           }
         } catch (emailErr) {

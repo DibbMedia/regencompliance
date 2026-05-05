@@ -144,6 +144,7 @@ async function claimBetaPurchase(userId: string, email: string | undefined) {
     tier: "beta",
     monthly_price_cents: 29700,
     subscription_status: "active",
+    subscription_started_at: new Date().toISOString(),
     stripe_customer_id: betaPurchase.stripe_customer_id,
   })
 }

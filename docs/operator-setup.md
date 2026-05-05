@@ -70,6 +70,8 @@ The code populates these fields on the contact record. Skip any you don't care a
 | `regen_stripe_subscription_id` | Single Line | `subscription_active` |
 | `regen_amount_due_cents` | Number | `payment_failed` |
 | `regen_subscription_status` | Single Line | every billing event - `active`, `past_due`, `cancelled` |
+| `regen_subscription_started_at` | Single Line | `subscription_active` (ISO timestamp) - drives anniversary workflows |
+| `regen_cancelled_at` | Single Line | `subscription_cancelled` (ISO timestamp) |
 
 **Receipt / invoice (drives the receipt workflow - GHL sends the email
 using its own email step, not Resend):**

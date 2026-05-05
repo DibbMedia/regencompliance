@@ -51,6 +51,11 @@
  *                                     Updated on every Stripe -> GHL event so
  *                                     workflows can branch on current status
  *                                     without calling back into our API.
+ *     regen_subscription_started_at - ISO timestamp; first time the subscription
+ *                                     went active (set on subscription_active).
+ *                                     Useful for "thanks for X months as a
+ *                                     subscriber" anniversary workflows.
+ *     regen_cancelled_at            - ISO timestamp; subscription_cancelled.
  *
  *   Receipt / invoice (drives the receipt workflow - GHL sends the email
  *   using GHL's own email step, not Resend):
