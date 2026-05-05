@@ -67,7 +67,9 @@ export const betaApplicationSchema = z.object({
   website: z.string().trim().max(2048).url('Please enter a valid URL').optional().or(z.literal('')),
   monthly_volume: z.enum(VOLUME_OPTIONS),
   why_apply: z.string().trim().min(50, 'Tell us a bit more (at least 50 characters)').max(1000, 'Must be under 1,000 characters'),
-  accept_terms: z.literal(true, { errorMap: () => ({ message: 'Please confirm you agree to the founder-beta terms' }) }),
+  // Zod v4 dropped `errorMap` from the simple-overload params for z.literal -
+  // the supported keys are { error?, message? }. Use `message` directly.
+  accept_terms: z.literal(true, { message: 'Please confirm you agree to the founder-beta terms' }),
 })
 
 /** Block private/internal IPs in a URL string */
