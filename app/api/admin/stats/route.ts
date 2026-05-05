@@ -415,6 +415,17 @@ export async function GET(request: Request) {
       siteMonitor: { name: "site-monitor", status: "configured" },
     }
 
+    // CSP violation count over the last 24h. Most violations are noise
+    // (browser extensions, ad-blocker shims) but a sudden spike is worth
+    // looking at - the stat tile links to the audit log filtered to
+    // action=csp.violation.
+    const cspWindow = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { count: cspViolations24h } = await serviceClient
+      .from("audit_log")
+      .select("*", { count: "exact", head: true })
+      .eq("action", "csp.violation")
+      .gte("created_at", cspWindow)
+
     return NextResponse.json({
       totalUsers: totalUsers || 0,
       activeSubscribers: activeSubs,
@@ -448,6 +459,7 @@ export async function GET(request: Request) {
       apiCostThisMonth,
       apiCallsToday,
       cronStatus,
+      cspViolations24h: cspViolations24h ?? 0,
       waitlistTotal,
       waitlistNew,
       recentWaitlist,

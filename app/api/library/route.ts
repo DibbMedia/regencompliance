@@ -52,19 +52,29 @@ export async function GET(request: Request) {
       const pattern = `%${escaped}%`
 
       // Query A: parent fields match (company_name, summary, source_name)
-      const { data: parentMatches } = await buildBase().or(
+      const parentResult = await buildBase().or(
         `company_name.ilike.${pattern},summary.ilike.${pattern},source_name.ilike.${pattern}`,
       )
 
       // Query B: child rule fields match (banned_phrase, compliant_alternative)
-      const { data: childMatches } = await buildBase().or(
+      const childResult = await buildBase().or(
         `banned_phrase.ilike.${pattern},compliant_alternative.ilike.${pattern}`,
         { referencedTable: "compliance_rules" },
       )
 
+      // Pre-2026-05-05 these silently swallowed query errors. If both fail
+      // we surface the failure; if one fails we log + continue with the
+      // partial result so users see something rather than an empty list.
+      if (parentResult.error && childResult.error) {
+        console.error("Library search both queries failed:", parentResult.error, childResult.error)
+        return NextResponse.json({ error: "Failed to search library" }, { status: 500 })
+      }
+      if (parentResult.error) console.error("Library parent search error:", parentResult.error)
+      if (childResult.error) console.error("Library child search error:", childResult.error)
+
       const byId = new Map<string, EnforcementActionWithRules>()
-      for (const a of (parentMatches ?? []) as EnforcementActionWithRules[]) byId.set(a.id, a)
-      for (const a of (childMatches ?? []) as EnforcementActionWithRules[]) {
+      for (const a of (parentResult.data ?? []) as EnforcementActionWithRules[]) byId.set(a.id, a)
+      for (const a of (childResult.data ?? []) as EnforcementActionWithRules[]) {
         if (!byId.has(a.id)) byId.set(a.id, a)
       }
       actions = Array.from(byId.values()).sort((a, b) => {

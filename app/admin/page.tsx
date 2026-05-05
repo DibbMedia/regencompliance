@@ -558,6 +558,21 @@ export default function AdminDashboardPage() {
                 </span>
               </div>
             ))}
+            <Link
+              href="/admin/audit-log?action=csp.violation"
+              className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5 hover:bg-white/[0.04] transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Cpu className="h-4 w-4 text-white/40" />
+                <span className="text-sm text-white/70">CSP violations (24h)</span>
+              </div>
+              <span className="flex items-center gap-1.5 text-xs">
+                <span className={`h-1.5 w-1.5 rounded-full ${(stats.cspViolations24h ?? 0) > 100 ? "bg-orange-400" : "bg-[#55E039]"}`} />
+                <span className={(stats.cspViolations24h ?? 0) > 100 ? "text-orange-300" : "text-[#55E039]"}>
+                  {stats.cspViolations24h ?? 0}
+                </span>
+              </span>
+            </Link>
             <div className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5">
               <div className="flex items-center gap-2">
                 <Activity className="h-4 w-4 text-white/40" />

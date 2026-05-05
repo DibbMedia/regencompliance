@@ -72,26 +72,33 @@ export async function GET() {
 
     // --- Weekly scores (last 12 weeks) ---
     const now = new Date()
+    // Week buckets in UTC. Pre-2026-05-05 used local getDay()/setDate()
+    // which made bucket boundaries timezone-dependent - server time on
+    // Vercel is UTC, but a customer in PT could see scans drift to the
+    // adjacent week around the day boundary. UTC math everywhere keeps
+    // the visualization stable per scan timestamp.
     const weeklyMap: Record<string, { total: number; count: number }> = {}
     const weekLabels: string[] = []
+    const MS_PER_DAY = 24 * 60 * 60 * 1000
+
+    // Anchor the most recent week to the Sunday-aligned UTC date that
+    // contains `now`.
+    const nowUtc = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+    const currentSundayUtcMs = nowUtc.getTime() - nowUtc.getUTCDay() * MS_PER_DAY
 
     for (let w = 11; w >= 0; w--) {
-      const weekStart = new Date(now)
-      weekStart.setDate(weekStart.getDate() - weekStart.getDay() - w * 7)
-      weekStart.setHours(0, 0, 0, 0)
-      const label = weekStart.toISOString().split("T")[0]
+      const weekStartMs = currentSundayUtcMs - w * 7 * MS_PER_DAY
+      const label = new Date(weekStartMs).toISOString().split("T")[0]
       weekLabels.push(label)
       weeklyMap[label] = { total: 0, count: 0 }
     }
 
     for (const scan of allScans) {
-      const scanDate = new Date(scan.created_at)
-      // Find which week bucket this scan belongs to
+      const scanMs = new Date(scan.created_at).getTime()
       for (let w = weekLabels.length - 1; w >= 0; w--) {
-        const weekStart = new Date(weekLabels[w])
-        const weekEnd = new Date(weekStart)
-        weekEnd.setDate(weekEnd.getDate() + 7)
-        if (scanDate >= weekStart && scanDate < weekEnd) {
+        const weekStartMs = currentSundayUtcMs - (weekLabels.length - 1 - w) * 7 * MS_PER_DAY
+        const weekEndMs = weekStartMs + 7 * MS_PER_DAY
+        if (scanMs >= weekStartMs && scanMs < weekEndMs) {
           weeklyMap[weekLabels[w]].total += scan.compliance_score || 0
           weeklyMap[weekLabels[w]].count += 1
           break
