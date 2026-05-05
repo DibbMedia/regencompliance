@@ -9,8 +9,9 @@ import {
   TERMS_BY_CATEGORY,
   type GlossaryTerm,
 } from "@/lib/glossary/terms"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/glossary"
+const canonical = `${SITE_URL}/glossary`
 
 export const metadata: Metadata = {
   title:
@@ -60,7 +61,7 @@ export default function GlossaryPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",

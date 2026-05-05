@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { BlogPostLayout } from "@/components/blog/post-layout"
 import { POSTS, getPostBySlug, getRelated } from "@/lib/blog/registry"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.meta.slug }))
@@ -16,7 +17,7 @@ export async function generateMetadata({
   const post = getPostBySlug(slug)
   if (!post) return { title: "Not found" }
 
-  const canonical = `https://compliance.regenportal.com/blog/${post.meta.slug}`
+  const canonical = `${SITE_URL}/blog/${post.meta.slug}`
   return {
     title: post.meta.title,
     description: post.meta.description,
@@ -52,7 +53,7 @@ export default async function BlogPostPage({
   const { Body, meta } = post
   const related = getRelated(slug)
 
-  const canonical = `https://compliance.regenportal.com/blog/${meta.slug}`
+  const canonical = `${SITE_URL}/blog/${meta.slug}`
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -64,7 +65,7 @@ export default async function BlogPostPage({
     publisher: {
       "@type": "Organization",
       name: "RegenCompliance",
-      url: "https://compliance.regenportal.com",
+      url: `${SITE_URL}`,
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     keywords: meta.keywords.join(", "),
@@ -78,13 +79,13 @@ export default async function BlogPostPage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://compliance.regenportal.com/blog",
+        item: `${SITE_URL}/blog`,
       },
       {
         "@type": "ListItem",

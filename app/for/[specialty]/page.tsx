@@ -7,6 +7,7 @@ import {
   getRelatedSpecialties,
 } from "@/lib/specialty/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function generateStaticParams() {
   return SPECIALTIES.map((s) => ({ specialty: s.slug }))
@@ -21,7 +22,7 @@ export async function generateMetadata({
   const meta = getSpecialtyBySlug(specialty)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `https://compliance.regenportal.com/for/${meta.slug}`
+  const canonical = `${SITE_URL}/for/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -52,7 +53,7 @@ export default async function SpecialtyPage({
 
   const related = getRelatedSpecialties(specialty)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `https://compliance.regenportal.com/for/${meta.slug}`
+  const canonical = `${SITE_URL}/for/${meta.slug}`
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -72,13 +73,13 @@ export default async function SpecialtyPage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "For specialties",
-        item: "https://compliance.regenportal.com/for",
+        item: `${SITE_URL}/for`,
       },
       {
         "@type": "ListItem",
@@ -97,7 +98,7 @@ export default async function SpecialtyPage({
     provider: {
       "@type": "Organization",
       name: "RegenCompliance",
-      url: "https://compliance.regenportal.com",
+      url: `${SITE_URL}`,
     },
     areaServed: {
       "@type": "Country",

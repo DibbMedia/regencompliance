@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import HowItWorksClient from "./how-it-works-client"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/how-it-works"
+const canonical = `${SITE_URL}/how-it-works`
 
 export const metadata: Metadata = {
   title: "How RegenCompliance Works - 6 Steps, Under 5 Minutes",

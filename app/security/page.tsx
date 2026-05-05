@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import SecurityClient from "./security-client"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/security"
+const canonical = `${SITE_URL}/security`
 
 export const metadata: Metadata = {
   title: "Security &amp; Data Handling - RegenCompliance",

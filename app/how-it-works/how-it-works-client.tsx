@@ -20,6 +20,7 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
+import { SITE_URL } from "@/lib/site-url"
 
 const STEPS = [
   {
@@ -153,7 +154,7 @@ const HOWTO_JSONLD = JSON.stringify({
     position: i + 1,
     name: s.title,
     text: s.body.replace(/&rsquo;/g, "'"),
-    url: `https://compliance.regenportal.com/how-it-works#step-${i + 1}`,
+    url: `${SITE_URL}/how-it-works#step-${i + 1}`,
   })),
 })
 

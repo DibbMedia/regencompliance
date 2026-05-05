@@ -2,6 +2,7 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
+import { SITE_URL } from "@/lib/site-url"
 
 export const metadata = {
   title: "Terms of Service - RegenCompliance",
@@ -37,7 +38,7 @@ export default function TermsPage() {
             <div>
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">1. Acceptance of Terms</h2>
               <p className="text-[15px] text-white/70 leading-relaxed">
-                These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Dibb Enterprises LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), operating as RegenCompliance. By creating an account, accessing, or using the RegenCompliance platform at compliance.regenportal.com (the &quot;Service&quot;), you agree to be bound by these Terms. If you do not agree to these Terms, do not use the Service.
+                These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Dibb Enterprises LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), operating as RegenCompliance. By creating an account, accessing, or using the RegenCompliance platform at {SITE_URL.replace(/^https?:\/\//, "")} (the &quot;Service&quot;), you agree to be bound by these Terms. If you do not agree to these Terms, do not use the Service.
               </p>
             </div>
 
@@ -254,7 +255,7 @@ export default function TermsPage() {
                 </p>
                 <p className="text-sm text-white/60 mt-1">
                   Website:{" "}
-                  <a href="https://compliance.regenportal.com" className="text-[#55E039] hover:underline">compliance.regenportal.com</a>
+                  <a href={SITE_URL} className="text-[#55E039] hover:underline">{SITE_URL.replace(/^https?:\/\//, "")}</a>
                 </p>
               </div>
             </div>

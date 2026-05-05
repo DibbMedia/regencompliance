@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { ToolLayout } from "@/components/tools/tool-layout"
 import { TOOLS, getToolBySlug, getRelatedTools } from "@/lib/tools/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function generateStaticParams() {
   return TOOLS.map((t) => ({ tool: t.slug }))
@@ -17,7 +18,7 @@ export async function generateMetadata({
   const meta = getToolBySlug(tool)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `https://compliance.regenportal.com/tools/${meta.slug}`
+  const canonical = `${SITE_URL}/tools/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -48,7 +49,7 @@ export default async function ToolPage({
 
   const related = getRelatedTools(tool)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `https://compliance.regenportal.com/tools/${meta.slug}`
+  const canonical = `${SITE_URL}/tools/${meta.slug}`
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -68,13 +69,13 @@ export default async function ToolPage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Tools",
-        item: "https://compliance.regenportal.com/tools",
+        item: `${SITE_URL}/tools`,
       },
       {
         "@type": "ListItem",

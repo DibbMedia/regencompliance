@@ -2,6 +2,7 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
+import { SITE_URL } from "@/lib/site-url"
 
 export const metadata = {
   title: "Privacy Policy - RegenCompliance",
@@ -38,7 +39,7 @@ export default function PrivacyPage() {
               <h2 className="text-xl font-extrabold tracking-tight text-white mb-4">1. Introduction</h2>
               <p className="text-[15px] text-white/70 leading-relaxed">
                 Dibb Enterprises LLC (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), operating as RegenCompliance, provides an FDA/FTC compliance scanning platform for healthcare practices at{" "}
-                <span className="text-[#55E039]">compliance.regenportal.com</span>. This Privacy Policy describes how we collect, use, disclose, and protect your personal information when you use our website and services (collectively, the &quot;Service&quot;). By using the Service, you agree to the practices described in this policy.
+                <span className="text-[#55E039]">{SITE_URL.replace(/^https?:\/\//, "")}</span>. This Privacy Policy describes how we collect, use, disclose, and protect your personal information when you use our website and services (collectively, the &quot;Service&quot;). By using the Service, you agree to the practices described in this policy.
               </p>
             </div>
 
@@ -326,7 +327,7 @@ export default function PrivacyPage() {
                 </p>
                 <p className="text-sm text-white/60 mt-1">
                   Website:{" "}
-                  <a href="https://compliance.regenportal.com" className="text-[#55E039] hover:underline">compliance.regenportal.com</a>
+                  <a href={SITE_URL} className="text-[#55E039] hover:underline">{SITE_URL.replace(/^https?:\/\//, "")}</a>
                 </p>
               </div>
             </div>

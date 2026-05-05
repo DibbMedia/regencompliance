@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { POSTS_SORTED } from "@/lib/blog/registry"
 import { BlogIndex, POSTS_PER_PAGE } from "@/components/blog/blog-index"
+import { SITE_URL } from "@/lib/site-url"
 
 // On page 1 we also render a featured post, so page-1 content excludes the
 // first sorted post. Subsequent pages are straight 9-per-page slices of the
@@ -38,7 +39,8 @@ export async function generateMetadata({
     return { title: "Not found" }
   }
 
-  const canonical = `https://compliance.regenportal.com/blog/page/${pageNum}`
+  // SITE_URL flips with NEXT_PUBLIC_APP_URL at domain cutover.
+  const canonical = `${SITE_URL}/blog/page/${pageNum}`
   return {
     title: `Blog - Page ${pageNum}`,
     description:

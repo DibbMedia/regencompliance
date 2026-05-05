@@ -12,8 +12,9 @@ import {
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/about"
+const canonical = `${SITE_URL}/about`
 
 export const metadata: Metadata = {
   title: "About RegenCompliance - Built for Real Healthcare Compliance Work",
@@ -70,7 +71,7 @@ export default function AboutPage() {
       "@type": "Organization",
       name: "RegenCompliance",
       parentOrganization: { "@type": "Organization", name: "Dibb Media" },
-      url: "https://compliance.regenportal.com",
+      url: `${SITE_URL}`,
     },
   }
 
@@ -82,7 +83,7 @@ export default function AboutPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",

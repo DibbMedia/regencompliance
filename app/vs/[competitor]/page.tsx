@@ -7,6 +7,7 @@ import {
   getRelatedCompetitors,
 } from "@/lib/compare/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function generateStaticParams() {
   return COMPETITORS.map((c) => ({ competitor: c.slug }))
@@ -21,7 +22,7 @@ export async function generateMetadata({
   const meta = getCompetitorBySlug(competitor)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `https://compliance.regenportal.com/vs/${meta.slug}`
+  const canonical = `${SITE_URL}/vs/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -52,7 +53,7 @@ export default async function CompetitorPage({
 
   const related = getRelatedCompetitors(competitor)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `https://compliance.regenportal.com/vs/${meta.slug}`
+  const canonical = `${SITE_URL}/vs/${meta.slug}`
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -72,13 +73,13 @@ export default async function CompetitorPage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Compare",
-        item: "https://compliance.regenportal.com/compare",
+        item: `${SITE_URL}/compare`,
       },
       {
         "@type": "ListItem",

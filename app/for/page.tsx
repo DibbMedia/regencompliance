@@ -5,8 +5,9 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { SPECIALTIES } from "@/lib/specialty/registry"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/for"
+const canonical = `${SITE_URL}/for`
 
 const SPECIALTY_HUB_FAQS = [
   {
@@ -67,7 +68,7 @@ export default function SpecialtiesIndexPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
@@ -84,7 +85,7 @@ export default function SpecialtiesIndexPage() {
     itemListElement: SPECIALTIES.map((s, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://compliance.regenportal.com/for/${s.slug}`,
+      url: `${SITE_URL}/for/${s.slug}`,
       name: `Compliance software for ${s.specialty}`,
     })),
   }

@@ -16,6 +16,7 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { STATES, getStateBySlug, getRelatedStates } from "@/lib/state/data"
 import { SPECIALTIES } from "@/lib/specialty/registry"
+import { SITE_URL } from "@/lib/site-url"
 
 export async function generateStaticParams() {
   return STATES.map((s) => ({ state: s.slug }))
@@ -30,7 +31,7 @@ export async function generateMetadata({
   const meta = getStateBySlug(state)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `https://compliance.regenportal.com/state/${meta.slug}`
+  const canonical = `${SITE_URL}/state/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -55,7 +56,7 @@ export default async function StatePage({
   if (!meta) notFound()
 
   const related = getRelatedStates(state)
-  const canonical = `https://compliance.regenportal.com/state/${meta.slug}`
+  const canonical = `${SITE_URL}/state/${meta.slug}`
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -65,13 +66,13 @@ export default async function StatePage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "State rules",
-        item: "https://compliance.regenportal.com/state",
+        item: `${SITE_URL}/state`,
       },
       {
         "@type": "ListItem",

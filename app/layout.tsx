@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Poppins } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "sonner"
+import { Analytics } from "@vercel/analytics/next"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
@@ -162,6 +163,8 @@ export default async function RootLayout({
           </TooltipProvider>
           <Toaster richColors position="top-right" />
           <CookieConsent />
+          {/* Vercel Web Analytics: cookieless aggregate page-view counts. */}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

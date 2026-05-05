@@ -31,6 +31,7 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
+import { SITE_URL } from "@/lib/site-url"
 
 const scannerCapabilities = [
   "Website copy and landing pages",
@@ -77,13 +78,13 @@ export default function FeaturesPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Features",
-        item: "https://compliance.regenportal.com/features",
+        item: `${SITE_URL}/features`,
       },
     ],
   })
@@ -94,7 +95,7 @@ export default function FeaturesPage() {
     name: "RegenCompliance Features",
     description:
       "Full feature breakdown for RegenCompliance - compliance scanner, AI rewriter, audit trail, 300+ rule library, enforcement alerts, and team collaboration.",
-    url: "https://compliance.regenportal.com/features",
+    url: `${SITE_URL}/features`,
     about: {
       "@type": "SoftwareApplication",
       name: "RegenCompliance",

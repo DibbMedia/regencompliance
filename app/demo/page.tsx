@@ -11,6 +11,7 @@ import { IS_LAUNCHED } from "@/lib/env"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import type { ScanFlag } from "@/lib/types"
+import { SITE_URL } from "@/lib/site-url"
 
 const CONTENT_TYPES = [
   { value: "website_copy", label: "Website Copy" },
@@ -175,7 +176,7 @@ export default function DemoPage() {
     name: "RegenCompliance Free Demo",
     description:
       "Free compliance scanner demo. Paste any healthcare marketing content and get an instant FDA/FTC compliance report with flagged phrases, risk levels, and compliant rewrites.",
-    url: "https://compliance.regenportal.com/demo",
+    url: `${SITE_URL}/demo`,
     about: {
       "@type": "SoftwareApplication",
       name: "RegenCompliance",
@@ -191,13 +192,13 @@ export default function DemoPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Demo",
-        item: "https://compliance.regenportal.com/demo",
+        item: `${SITE_URL}/demo`,
       },
     ],
   })

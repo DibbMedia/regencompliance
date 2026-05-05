@@ -13,8 +13,9 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { TOOLS } from "@/lib/tools/registry"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/tools"
+const canonical = `${SITE_URL}/tools`
 
 const HUB_FAQS = [
   {
@@ -80,7 +81,7 @@ export default function ToolsIndexPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
@@ -97,7 +98,7 @@ export default function ToolsIndexPage() {
     itemListElement: TOOLS.map((t, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://compliance.regenportal.com/tools/${t.slug}`,
+      url: `${SITE_URL}/tools/${t.slug}`,
       name: t.name,
     })),
   }

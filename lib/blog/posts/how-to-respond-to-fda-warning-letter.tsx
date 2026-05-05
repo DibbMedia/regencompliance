@@ -13,6 +13,7 @@ import {
   Callout,
   KeyTakeaways,
 } from "@/components/blog/prose"
+import { SITE_URL } from "@/lib/site-url"
 
 export const meta: BlogPostMeta = {
   slug: "how-to-respond-to-fda-warning-letter",
@@ -48,42 +49,42 @@ export const meta: BlogPostMeta = {
           position: 1,
           name: "Call a healthcare regulatory attorney the same day",
           text: "Contact an attorney experienced with FDA enforcement immediately. Do not respond directly to the FDA without legal representation. Do not make public statements. Do not delete cited content until counsel advises.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-1-attorney",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-1-attorney`,
         },
         {
           "@type": "HowToStep",
           position: 2,
           name: "Preserve all marketing records",
           text: "Preserve every marketing surface cited in the letter and related materials. Preserve business records relevant to the claims at issue. Instruct staff to preserve rather than delete or alter anything.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-2-preserve",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-2-preserve`,
         },
         {
           "@type": "HowToStep",
           position: 3,
           name: "Map the full scope of the letter",
           text: "Identify each specific violation cited, the regulatory basis for each, the evidence the FDA apparently relied on, and the corrective actions expected. Work with counsel to develop a complete scope map before corrective action begins.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-3-scope",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-3-scope`,
         },
         {
           "@type": "HowToStep",
           position: 4,
           name: "Execute immediate corrective actions",
           text: "Under attorney direction, correct the cited violations on each surface where they appear. Document what was changed, when, and by whom. This documentation is part of the response package.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-4-correct",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-4-correct`,
         },
         {
           "@type": "HowToStep",
           position: 5,
           name: "Build the structural corrective plan",
           text: "Beyond individual corrections, develop the systemic changes that will prevent recurrence - compliance training, pre-publish review processes, staff accountability, documentation practices. The FDA expects structural change, not just surface-level fixes.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-5-structural",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-5-structural`,
         },
         {
           "@type": "HowToStep",
           position: 6,
           name: "Submit the written response",
           text: "Submit the formal written response within 15 business days. The response should include an acknowledgment of each cited violation, the corrective action taken, the structural changes made, and evidence of compliance going forward.",
-          url: "https://compliance.regenportal.com/blog/how-to-respond-to-fda-warning-letter#step-6-submit",
+          url: `${SITE_URL}/blog/how-to-respond-to-fda-warning-letter#step-6-submit`,
         },
       ],
     },

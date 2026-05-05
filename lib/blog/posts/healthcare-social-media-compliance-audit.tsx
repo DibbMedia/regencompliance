@@ -13,6 +13,7 @@ import {
   Callout,
   KeyTakeaways,
 } from "@/components/blog/prose"
+import { SITE_URL } from "@/lib/site-url"
 
 export const meta: BlogPostMeta = {
   slug: "healthcare-social-media-compliance-audit",
@@ -48,42 +49,42 @@ export const meta: BlogPostMeta = {
           position: 1,
           name: "Inventory every account",
           text: "List every public-facing social account associated with the practice, including physician personal accounts, nurse injector personal accounts, and any staff accounts that mention the practice. All of these are in scope.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-1-inventory",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-1-inventory`,
         },
         {
           "@type": "HowToStep",
           position: 2,
           name: "Pull content export or screenshot history",
           text: "For each account, export or screenshot the last 12 months of posts, stories, highlights, and ad creative. For platforms without export, use a third-party archiving tool.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-2-export",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-2-export`,
         },
         {
           "@type": "HowToStep",
           position: 3,
           name: "Scan for specific claim categories",
           text: "Run each piece of content through a compliance scan covering: disease-treatment claims, FDA-approved misuse, safety absolutes, outcome guarantees, typical-experience gaps, material-connection disclosures, and brand-name advertising compliance.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-3-scan",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-3-scan`,
         },
         {
           "@type": "HowToStep",
           position: 4,
           name: "Triage by reach and risk",
           text: "Prioritize corrections by the product of reach and risk. High-reach posts with HIGH-risk flags come first; LOW-risk flags on low-reach posts can wait.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-4-triage",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-4-triage`,
         },
         {
           "@type": "HowToStep",
           position: 5,
           name: "Correct or retire content",
           text: "For each flagged piece of content, either edit it to remove the violation, add required disclosures, or delete it. Document what was changed on each piece and why.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-5-correct",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-5-correct`,
         },
         {
           "@type": "HowToStep",
           position: 6,
           name: "Update the publish process",
           text: "Implement a pre-publish compliance check going forward so the same categories of issues don't reappear in new content. This is the structural change that prevents recurrence.",
-          url: "https://compliance.regenportal.com/blog/healthcare-social-media-compliance-audit#step-6-update-process",
+          url: `${SITE_URL}/blog/healthcare-social-media-compliance-audit#step-6-update-process`,
         },
       ],
     },

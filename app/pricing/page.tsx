@@ -27,6 +27,7 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
+import { SITE_URL } from "@/lib/site-url"
 
 const includedFeatures = [
   { icon: Scan, title: "Unlimited Compliance Scans", desc: "Scan any content - website pages, ads, emails, social posts, scripts - up to 200 scans/day, plenty for every clinic we've worked with." },
@@ -267,13 +268,13 @@ export default function PricingPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Pricing",
-        item: "https://compliance.regenportal.com/pricing",
+        item: `${SITE_URL}/pricing`,
       },
     ],
   })

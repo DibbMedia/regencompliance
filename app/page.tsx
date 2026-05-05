@@ -6,6 +6,9 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
+import { SITE_URL } from "@/lib/site-url"
+
+const BROWSER_HOST = SITE_URL.replace(/^https?:\/\//, "")
 import {
   Shield,
   ArrowRight,
@@ -154,7 +157,7 @@ export default function LandingPage() {
               </div>
               <div className="mx-auto flex h-7 min-w-0 max-w-full items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 sm:px-4 text-[10px] sm:text-[11px] text-white/25 font-mono">
                 <Lock className="h-3 w-3 mr-1.5 text-[#28C840] shrink-0" />
-                <span className="truncate">compliance.regenportal.com/dashboard/scanner</span>
+                <span className="truncate">{BROWSER_HOST}/dashboard/scanner</span>
               </div>
               <div className="hidden sm:block w-[52px] shrink-0" />
             </div>

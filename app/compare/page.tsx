@@ -5,8 +5,9 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { COMPETITORS } from "@/lib/compare/registry"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/compare"
+const canonical = `${SITE_URL}/compare`
 
 const HUB_FAQS = [
   {
@@ -64,7 +65,7 @@ export default function ComparePage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
@@ -81,7 +82,7 @@ export default function ComparePage() {
     itemListElement: COMPETITORS.map((c, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://compliance.regenportal.com/vs/${c.slug}`,
+      url: `${SITE_URL}/vs/${c.slug}`,
       name: `RegenCompliance vs ${c.competitor}`,
     })),
   }

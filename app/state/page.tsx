@@ -5,8 +5,9 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { STATES } from "@/lib/state/data"
+import { SITE_URL } from "@/lib/site-url"
 
-const canonical = "https://compliance.regenportal.com/state"
+const canonical = `${SITE_URL}/state`
 
 export const metadata: Metadata = {
   title: "State-by-State Healthcare Marketing Compliance Rules - RegenCompliance",
@@ -37,7 +38,7 @@ export default function StateIndexPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://compliance.regenportal.com",
+        item: `${SITE_URL}`,
       },
       {
         "@type": "ListItem",
@@ -54,7 +55,7 @@ export default function StateIndexPage() {
     itemListElement: STATES.map((s, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://compliance.regenportal.com/state/${s.slug}`,
+      url: `${SITE_URL}/state/${s.slug}`,
       name: `${s.state} healthcare marketing rules`,
     })),
   }
