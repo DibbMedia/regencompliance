@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { sendEmail } from "@/lib/email"
 import { betaWelcomeEmail } from "@/lib/email-templates"
+import { sendToGhl } from "@/lib/ghl"
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -138,4 +139,14 @@ async function claimBetaPurchase(userId: string, email: string | undefined) {
   const clinicName = existingProfile?.clinic_name || "there"
   const template = betaWelcomeEmail(clinicName)
   await sendEmail(userEmail, template.subject, template.html)
+
+  // GHL pipeline event for beta activation. Mirrors the Stripe-webhook
+  // path; dedup at the GHL workflow level via stripe_customer_id.
+  void sendToGhl("subscription_active", {
+    email: userEmail,
+    company: clinicName === "there" ? null : clinicName,
+    tier: "beta",
+    monthly_price_cents: 29700,
+    stripe_customer_id: betaPurchase.stripe_customer_id,
+  })
 }

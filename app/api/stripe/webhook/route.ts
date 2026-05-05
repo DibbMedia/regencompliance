@@ -222,7 +222,11 @@ export async function POST(request: Request) {
               action_url: "/dashboard/scanner",
             })
 
-            // Send beta welcome email
+            // Send beta welcome email + GHL pipeline event (tier=beta).
+            // Dedup is handled at the GHL workflow level via
+            // stripe_customer_id - the callback claim path also fires this
+            // event when activation happens later (e.g. customer paid before
+            // creating their account).
             if (customerEmail) {
               const { data: betaFullProfile } = await supabase
                 .from("profiles")
@@ -231,6 +235,15 @@ export async function POST(request: Request) {
                 .maybeSingle()
               const template = betaWelcomeEmail(betaFullProfile?.clinic_name || "there")
               await sendEmail(customerEmail, template.subject, template.html)
+
+              void sendToGhl("subscription_active", {
+                email: customerEmail,
+                company: betaFullProfile?.clinic_name ?? null,
+                tier: "beta",
+                monthly_price_cents: 29700,
+                stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
+              })
             }
           } else {
             console.log(

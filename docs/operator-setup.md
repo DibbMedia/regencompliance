@@ -15,7 +15,7 @@ All code-side wiring is done; flipping these switches activates each integration
 | `GHL_WEBHOOK_BETA_APPLY` | `POST /api/beta-apply` | email, name, company (clinic), specialty, role, website, monthly_volume, why_apply |
 | `GHL_WEBHOOK_WAITLIST` | `POST /api/waitlist` (first-time only - duplicates skipped) | email, name |
 | `GHL_WEBHOOK_FREE_AUDIT` | Free-audit lead magnet (lander route, when shipped) | email, website_url, score, top_violations |
-| `GHL_WEBHOOK_SUBSCRIPTION_ACTIVE` | Stripe `checkout.session.completed` (standard tier) | email, company, tier, monthly_price_cents, stripe_customer_id, stripe_subscription_id |
+| `GHL_WEBHOOK_SUBSCRIPTION_ACTIVE` | Stripe `checkout.session.completed` (standard or beta tier) **and** `/auth/callback` claimBetaPurchase | email, company, tier ("beta" or "standard"), monthly_price_cents, stripe_customer_id, stripe_subscription_id |
 | `GHL_WEBHOOK_SUBSCRIPTION_CANCELLED` | Stripe `customer.subscription.deleted` | email, company, stripe_customer_id |
 | `GHL_WEBHOOK_PAYMENT_FAILED` | Stripe `invoice.payment_failed` | email, company, stripe_customer_id, amount_due_cents |
 | `GHL_WEBHOOK_ACCOUNT_DELETED` | `POST /api/user/delete` | email, company |
@@ -31,7 +31,7 @@ All code-side wiring is done; flipping these switches activates each integration
 **Notes:**
 
 - Per `CLAUDE.md` Email Policy: transactional + marketing email goes through GHL, not Resend. The code keeps Resend wired (env-gated, currently inert) for the legacy launch-announcement path; everything new should route through GHL.
-- The subscription-active webhook only fires for **standard** tier ($497). Beta tier ($297) goes through `claimBetaPurchase` in `app/auth/callback/route.ts` after signup-link click - if you want a GHL event there too, add the call there. Recommend a dedicated `GHL_WEBHOOK_BETA_ACTIVATED` event for that flow.
+- `subscription_active` fires for both tiers; the `tier` field on the payload distinguishes ("beta" or "standard"). For founder-beta the event can fire from two paths: the Stripe webhook (when the customer's profile already exists at checkout time) or the `/auth/callback` claim path (when the customer paid before creating their account). Dedup at the GHL workflow level via `stripe_customer_id` since both paths can fire for the same customer.
 - All GHL calls are fire-and-forget with a 5-second timeout. They never block the user-facing flow.
 - Custom field mapping: GHL workflows can read any field from the payload. Map `name`/`first_name`/`last_name`/`company`/`phone` to GHL contact properties; everything else goes into custom fields.
 

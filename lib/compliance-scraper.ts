@@ -360,27 +360,69 @@ function isSimpleDuplicate(a: string, b: string): boolean {
   return false
 }
 
+const STOP_WORDS = new Set([
+  "the", "a", "an", "and", "or", "but", "of", "in", "on", "at", "to", "for",
+  "with", "by", "from", "as", "is", "are", "was", "were", "be", "been",
+  "being", "have", "has", "had", "do", "does", "did", "this", "that", "these",
+  "those", "i", "you", "he", "she", "it", "we", "they", "what", "which",
+])
+
+function tokenize(phrase: string): Set<string> {
+  return new Set(
+    phrase
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((t) => t.length > 2 && !STOP_WORDS.has(t)),
+  )
+}
+
+/** Jaccard similarity over content-bearing tokens (drops stop-words + 1-2 char tokens). */
+function tokenOverlap(aTokens: Set<string>, b: string): number {
+  const bTokens = tokenize(b)
+  if (aTokens.size === 0 || bTokens.size === 0) return 0
+  let intersection = 0
+  for (const t of aTokens) if (bTokens.has(t)) intersection++
+  const union = aTokens.size + bTokens.size - intersection
+  return union > 0 ? intersection / union : 0
+}
+
 /**
  * Check if a new rule is semantically duplicate of any existing rules.
+ *
+ * Cost-control redesign (post-2026-05-05): pre-filter candidates by Jaccard
+ * token overlap before falling back to Claude. Most "obviously different"
+ * pairs share <0.2 of content-bearing tokens, so the model only sees the
+ * ambiguous middle. Drops per-cron-run Claude cost from ~150 calls to ~5-15.
  */
 export async function isDuplicateRule(
   newPhrase: string,
   existingPhrases: string[],
 ): Promise<boolean> {
-  // Quick string check first
+  // Quick string check first - covers exact + substring overlap.
   for (const existing of existingPhrases) {
     if (isSimpleDuplicate(newPhrase, existing)) return true
   }
 
-  // No simple match found - batch check the closest candidates with Claude
-  // Only check against a reasonable subset to avoid excessive API calls
-  const candidates = existingPhrases.slice(0, 50)
-  if (candidates.length === 0) return false
+  if (existingPhrases.length === 0) return false
+
+  // Token-overlap pre-filter. Only phrases sharing significant content-
+  // bearing token overlap make it to the Claude call.
+  const newTokens = tokenize(newPhrase)
+  if (newTokens.size === 0) return false
+
+  const SIMILARITY_THRESHOLD = 0.4
+  const MAX_CANDIDATES = 10
+  const ranked = existingPhrases
+    .map((p) => ({ phrase: p, score: tokenOverlap(newTokens, p) }))
+    .filter((c) => c.score >= SIMILARITY_THRESHOLD)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_CANDIDATES)
+
+  if (ranked.length === 0) return false
 
   try {
-    const ruleList = candidates
-      .map((p, i) => `${i + 1}. ${p}`)
-      .join("\n")
+    const ruleList = ranked.map((c, i) => `${i + 1}. ${c.phrase}`).join("\n")
 
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
@@ -686,10 +728,14 @@ export async function insertRulesWithDedup(
 ): Promise<number> {
   if (rules.length === 0) return 0
 
-  // Fetch all existing banned phrases
+  // Fetch existing banned phrases. Bounded to last 5000 rules ordered by
+  // created_at so this stays O(1) regardless of total rule count - older
+  // rules are unlikely to be the target of new-rule semantic dedup.
   const { data: existing } = await supabase
     .from("compliance_rules")
     .select("banned_phrase")
+    .order("created_at", { ascending: false })
+    .limit(5000)
 
   const existingPhrases = (existing ?? []).map(
     (r: { banned_phrase: string }) => r.banned_phrase,
