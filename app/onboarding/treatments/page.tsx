@@ -91,19 +91,23 @@ export default function OnboardingTreatmentsPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setLoading(false); return }
 
-    const updates: Record<string, unknown> = { onboarding_complete: true }
+    const payload: Record<string, unknown> = { onboarding_complete: true }
     if (!skip && selected.length > 0) {
-      updates.treatments = [...new Set(selected)]
+      // Cap + dedupe + trim defensively; profileSchema enforces the same caps
+      // server-side but trimming here keeps the UI honest.
+      payload.treatments = Array.from(new Set(selected.map((s) => s.trim()).filter(Boolean))).slice(0, 20)
     }
 
-    const { error } = await supabase
-      .from("profiles")
-      .update(updates)
-      .eq("id", user.id)
+    const res = await fetch("/api/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
 
-    if (error) {
+    if (!res.ok) {
       setLoading(false)
-      toast.error("Failed to save. Please try again.")
+      const body = await res.json().catch(() => ({}))
+      toast.error(body?.error || "Failed to save. Please try again.")
       return
     }
 

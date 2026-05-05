@@ -53,6 +53,10 @@ export default function OnboardingClinicPage() {
 
     let logoUrl: string | null = null
     if (logoFile) {
+      // Storage RLS pins the path prefix to auth.uid (migration 022) so the
+      // upload itself is access-controlled. Content-type validation is best-
+      // effort here; if we move to server-side ingestion later, route this
+      // through /api/profile/logo with magic-byte validation.
       const ext = logoFile.name.split(".").pop()
       const path = `${user.id}/logo.${ext}`
       const { error: uploadError } = await supabase.storage
@@ -64,14 +68,19 @@ export default function OnboardingClinicPage() {
       }
     }
 
-    const { error } = await supabase
-      .from("profiles")
-      .update({ clinic_name: clinicName, ...(logoUrl && { logo_url: logoUrl }) })
-      .eq("id", user.id)
+    // Route the profile write through the validated PATCH endpoint instead
+    // of writing directly via the user-bound supabase client. The endpoint
+    // runs profileSchema and the impersonation write-mode guard.
+    const res = await fetch("/api/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clinic_name: clinicName.trim(), ...(logoUrl && { logo_url: logoUrl }) }),
+    })
 
-    if (error) {
+    if (!res.ok) {
       setLoading(false)
-      toast.error("Failed to save. Please try again.")
+      const body = await res.json().catch(() => ({}))
+      toast.error(body?.error || "Failed to save. Please try again.")
       return
     }
 

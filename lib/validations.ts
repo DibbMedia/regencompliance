@@ -105,8 +105,12 @@ export const profileSchema = z.object({
     (url) => !isPrivateUrl(url),
     { message: "Logo URL must not point to a private or internal network" }
   ).optional(),
-  treatments: z.array(z.string().max(100)).max(20, 'Maximum 20 treatments allowed').optional(),
+  treatments: z.array(z.string().trim().min(1).max(100)).max(20, 'Maximum 20 treatments allowed').optional(),
   theme_preference: z.enum(['light', 'dark', 'system']).optional(),
+  // Onboarding flow finalizer. Allowed via this route so the onboarding pages
+  // don't need a dedicated endpoint; user toggling this back-and-forth is
+  // harmless (only effect is the auth callback redirect target).
+  onboarding_complete: z.boolean().optional(),
 })
 
 export const ticketCreateSchema = z.object({

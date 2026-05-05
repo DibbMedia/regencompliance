@@ -10,7 +10,6 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { createClient } from "@/lib/supabase/client"
 import { MarketingBg } from "@/components/marketing-bg"
 import Link from "next/link"
 
@@ -23,7 +22,6 @@ type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
 export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
-  const supabase = createClient()
 
   const form = useForm<ForgotPasswordInput>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -32,17 +30,25 @@ export default function ForgotPasswordPage() {
 
   async function handleSubmit(data: ForgotPasswordInput) {
     setLoading(true)
-    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+    const res = await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
 
     setLoading(false)
 
-    if (error) {
-      toast.error("Something went wrong. Please try again.")
+    if (!res.ok) {
+      if (res.status === 429) {
+        toast.error("Too many requests. Please wait a few minutes and try again.")
+      } else {
+        toast.error("Something went wrong. Please try again.")
+      }
       return
     }
 
+    // Always show "check your email" - the proxy returns 200 for unknown
+    // emails too so a probe can't tell which inboxes exist.
     setSent(true)
   }
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
+import { z } from "zod"
 
 interface ChecklistState {
   first_scan?: boolean
@@ -13,6 +14,23 @@ interface ChecklistState {
   dismissed?: boolean
   tutorial_completed?: boolean
 }
+
+// Whitelist of accepted PATCH keys. Pre-2026-05-05 the route did
+// `{...current, ...body}` with no validation, letting authenticated users
+// pollute the JSONB column with arbitrary keys (e.g. `{ rate_limit_bypass: true }`).
+// Schema is intentionally `.strict()` so unknown keys fail validation.
+const checklistPatchSchema = z
+  .object({
+    first_scan: z.boolean().optional(),
+    review_score: z.boolean().optional(),
+    try_rewrite: z.boolean().optional(),
+    add_site: z.boolean().optional(),
+    invite_team: z.boolean().optional(),
+    explore_library: z.boolean().optional(),
+    dismissed: z.boolean().optional(),
+    tutorial_completed: z.boolean().optional(),
+  })
+  .strict()
 
 export async function GET() {
   try {
@@ -101,7 +119,17 @@ export async function PATCH(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const body = await request.json()
+    const raw = await request.json().catch(() => null)
+    if (!raw) {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
+    }
+    const parsed = checklistPatchSchema.safeParse(raw)
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid checklist payload" },
+        { status: 400 },
+      )
+    }
 
     const { data: profile } = await supabase
       .from("profiles")
@@ -111,7 +139,7 @@ export async function PATCH(request: Request) {
 
     const current: ChecklistState = (profile?.onboarding_checklist as ChecklistState) || {}
 
-    const updated = { ...current, ...body }
+    const updated = { ...current, ...parsed.data }
 
     const { error } = await supabase
       .from("profiles")

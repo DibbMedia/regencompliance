@@ -125,12 +125,36 @@ export async function POST(request: Request) {
             customer?.email || fullSession.customer_details?.email || ""
           ).toLowerCase()
 
-          // Record the beta purchase
-          await supabase.from("beta_purchases").insert({
-            email: customerEmail,
-            stripe_customer_id: customerId,
-            stripe_subscription_id: subscriptionId,
-          })
+          // Reservation flow (post-2026-05-05): the checkout-beta route inserted
+          // a placeholder beta_purchases row keyed by reservation_token. Find
+          // and finalize that row instead of inserting a duplicate.
+          const reservationToken =
+            typeof session.metadata?.reservation_token === "string"
+              ? session.metadata.reservation_token
+              : null
+
+          let finalized = false
+          if (reservationToken) {
+            const { error: updErr } = await supabase
+              .from("beta_purchases")
+              .update({
+                email: customerEmail,
+                stripe_customer_id: customerId,
+                stripe_subscription_id: subscriptionId,
+              })
+              .eq("reservation_token", reservationToken)
+              .eq("claimed", false)
+            if (!updErr) finalized = true
+          }
+
+          // Legacy / no-token fallback: insert a fresh row.
+          if (!finalized) {
+            await supabase.from("beta_purchases").insert({
+              email: customerEmail,
+              stripe_customer_id: customerId,
+              stripe_subscription_id: subscriptionId,
+            })
+          }
 
           // Try to find existing profile by stripe_customer_id
           let betaProfile: { id: string } | null = null
