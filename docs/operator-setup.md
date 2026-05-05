@@ -3,37 +3,116 @@
 This doc is the canonical "things only the user can do in dashboards" list.
 All code-side wiring is done; flipping these switches activates each integration.
 
-## 1. GoHighLevel (GHL) workflow webhooks
+## 1. GoHighLevel (GHL) Private Integration
 
-**Why:** Customer data flows into GHL for marketing sequences (welcome, nurture, recovery, churn). Code is wired but each event silently no-ops until the matching env var holds a webhook URL.
+**Why:** Customer data flows into GHL via the Contacts API. Every event upserts the contact by email, applies tags so workflows trigger on tag-add, and writes data to custom fields so workflows can branch on values. Code is wired; everything no-ops until you set two env vars.
 
-**Where each env var fires from:**
+### A. Create the Private Integration Token
 
-| Env var | Triggered by | Payload includes |
+1. In GHL: **Settings -> Private Integrations -> Create new integration**.
+2. **Required scopes** (paste these exact slugs):
+   - `contacts.write` — upsert contacts
+   - `contacts.readonly` — defensive, some upsert flows need it
+   - `locations/customFields.readonly` — let our code resolve custom-field names to IDs (no manual UUID mapping)
+3. **Recommended for future expansion** (skip for now if you want the minimum):
+   - `opportunities.write` — push subscribers/leads into a pipeline as opportunities
+4. Copy the generated token.
+
+### B. Vercel env vars (Production + Preview)
+
+| Env var | Value |
+|---|---|
+| `GHL_API_TOKEN` | The PIT token from step A4 |
+| `GHL_LOCATION_ID` | Your GHL sub-account / location UUID (Settings -> Business Profile -> Location ID) |
+
+That's it. Everything no-ops with a logged warning until both are set; the moment you set them and redeploy, all 8 event types start firing.
+
+### C. Custom fields to create in GHL (Settings -> Custom Fields)
+
+The code populates these fields on the contact record. Skip any you don't care about - the upsert succeeds either way and tags still fire.
+
+**Standard (every event):**
+
+| Field name | Type | Purpose |
 |---|---|---|
-| `GHL_WEBHOOK_SIGNUP` | `POST /api/auth/signup` | email, user_id, confirmed_at |
-| `GHL_WEBHOOK_BETA_APPLY` | `POST /api/beta-apply` | email, name, company (clinic), specialty, role, website, monthly_volume, why_apply |
-| `GHL_WEBHOOK_WAITLIST` | `POST /api/waitlist` (first-time only - duplicates skipped) | email, name |
-| `GHL_WEBHOOK_FREE_AUDIT` | Free-audit lead magnet (lander route, when shipped) | email, website_url, score, top_violations |
-| `GHL_WEBHOOK_SUBSCRIPTION_ACTIVE` | Stripe `checkout.session.completed` (standard or beta tier) **and** `/auth/callback` claimBetaPurchase | email, company, tier ("beta" or "standard"), monthly_price_cents, stripe_customer_id, stripe_subscription_id |
-| `GHL_WEBHOOK_SUBSCRIPTION_CANCELLED` | Stripe `customer.subscription.deleted` | email, company, stripe_customer_id |
-| `GHL_WEBHOOK_PAYMENT_FAILED` | Stripe `invoice.payment_failed` | email, company, stripe_customer_id, amount_due_cents |
-| `GHL_WEBHOOK_ACCOUNT_DELETED` | `POST /api/user/delete` | email, company |
+| `regen_event` | Single Line | Latest event name (e.g. `signup`, `beta_apply`) |
+| `regen_source` | Single Line | Acquisition source (`website` by default) |
+| `regen_event_at` | Date / Single Line | ISO timestamp of the latest event |
 
-**Setup steps (per workflow):**
+**Beta application (`beta_apply`):**
 
-1. In GHL, create a workflow for the event (e.g. "Founder Beta - New Application").
-2. Set the **trigger** to `Inbound Webhook`. GHL gives you a webhook URL.
-3. Copy the URL into Vercel env (Production + Preview, all environments).
-4. Trigger the event once (e.g. submit a test waitlist signup) and verify GHL received it.
-5. Build out the workflow steps: tag the contact, send an email, add to a pipeline, etc.
+| Field name | Type |
+|---|---|
+| `regen_specialty` | Single Line |
+| `regen_role` | Single Line |
+| `regen_website` | Single Line |
+| `regen_monthly_volume` | Single Line |
+| `regen_why_apply` | Multi Line |
 
-**Notes:**
+**Free audit (`free_audit`):**
+
+| Field name | Type |
+|---|---|
+| `regen_website_url` | Single Line |
+| `regen_compliance_score` | Number |
+| `regen_flag_count` | Number |
+| `regen_high_risk_count` | Number |
+| `regen_medium_risk_count` | Number |
+| `regen_low_risk_count` | Number |
+
+**Subscription / billing:**
+
+| Field name | Type | Used by |
+|---|---|---|
+| `regen_tier` | Single Line | `subscription_active` (`beta` or `standard`) |
+| `regen_monthly_price_cents` | Number | `subscription_active` |
+| `regen_stripe_customer_id` | Single Line | `subscription_active` / cancelled / payment_failed |
+| `regen_stripe_subscription_id` | Single Line | `subscription_active` |
+| `regen_amount_due_cents` | Number | `payment_failed` |
+
+**Signup:**
+
+| Field name | Type |
+|---|---|
+| `regen_user_id` | Single Line |
+| `regen_confirmed_at` | Single Line |
+
+The code matches by either the slugified field name (`regen_event`) or GHL's full key (`contact.regen_event`), so you can name the field anything as long as the slug ends up matching. Field names are cached in-process for 10 minutes so newly-created fields propagate without a redeploy.
+
+### D. Tags fired per event
+
+Workflows trigger off "Contact Tag - Tag Added". Branch on custom field values inside the workflow.
+
+| Event | Tags applied |
+|---|---|
+| `signup` | `regen-signup`, `regen-lifecycle:signup` |
+| `beta_apply` | `regen-beta-applicant`, `regen-lifecycle:beta-applied` |
+| `waitlist` | `regen-waitlist`, `regen-lifecycle:waitlist` |
+| `free_audit` | `regen-free-audit`, `regen-lifecycle:audit-completed` |
+| `subscription_active` | `regen-subscriber`, `regen-lifecycle:subscribed`, **plus** `regen-tier:beta` or `regen-tier:standard` |
+| `subscription_cancelled` | `regen-cancelled`, `regen-lifecycle:cancelled` |
+| `payment_failed` | `regen-payment-failed` |
+| `account_deleted` | `regen-deleted`, `regen-lifecycle:deleted` |
+
+### E. Where each event fires from in code
+
+| Event | Triggered by |
+|---|---|
+| `signup` | `POST /api/auth/signup` |
+| `beta_apply` | `POST /api/beta-apply` |
+| `waitlist` | `POST /api/waitlist` (first-time only - duplicates skipped) |
+| `free_audit` | `POST /api/free-audit` |
+| `subscription_active` | Stripe `checkout.session.completed` (both tiers) **and** `/auth/callback` claimBetaPurchase |
+| `subscription_cancelled` | Stripe `customer.subscription.deleted` |
+| `payment_failed` | Stripe `invoice.payment_failed` |
+| `account_deleted` | `POST /api/user/delete` |
+
+### F. Notes
 
 - Per `CLAUDE.md` Email Policy: transactional + marketing email goes through GHL, not Resend. The code keeps Resend wired (env-gated, currently inert) for the legacy launch-announcement path; everything new should route through GHL.
-- `subscription_active` fires for both tiers; the `tier` field on the payload distinguishes ("beta" or "standard"). For founder-beta the event can fire from two paths: the Stripe webhook (when the customer's profile already exists at checkout time) or the `/auth/callback` claim path (when the customer paid before creating their account). Dedup at the GHL workflow level via `stripe_customer_id` since both paths can fire for the same customer.
-- All GHL calls are fire-and-forget with a 5-second timeout. They never block the user-facing flow.
-- Custom field mapping: GHL workflows can read any field from the payload. Map `name`/`first_name`/`last_name`/`company`/`phone` to GHL contact properties; everything else goes into custom fields.
+- `subscription_active` fires from two paths for beta tier (Stripe webhook + callback claim). Dedup at the GHL workflow level via `regen_stripe_customer_id` so the same customer doesn't trigger the welcome sequence twice.
+- All GHL calls are fire-and-forget with a 5-second timeout. They never block the user-facing flow. Failures are logged and don't propagate.
+- The contact upsert API tolerates missing custom fields - if you haven't created `regen_specialty` yet, the beta-apply event still upserts the contact and applies tags; you just don't get that field populated. Add it later in GHL and the next event picks it up.
 
 ## 2. Stripe (triple-check)
 
