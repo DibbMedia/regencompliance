@@ -18,6 +18,7 @@ import {
   HelpCircle,
   Award,
   FileText,
+  ShieldCheck,
 } from "lucide-react"
 import {
   Sidebar,
@@ -61,6 +62,7 @@ const navSections = [
       { title: "Account & Billing", href: "/dashboard/account", icon: Settings },
       { title: "Compliance Badge", href: "/dashboard/badge", icon: Award },
       { title: "Team", href: "/dashboard/account/team", icon: Users },
+      { title: "Security", href: "/dashboard/account/security", icon: ShieldCheck },
       { title: "Support", href: "/dashboard/support", icon: LifeBuoy },
       { title: "Help", href: "/dashboard/help", icon: HelpCircle },
     ],

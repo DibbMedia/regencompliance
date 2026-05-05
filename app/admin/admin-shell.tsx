@@ -14,6 +14,7 @@ import {
   MessageSquare,
   Zap,
   ListChecks,
+  ScrollText,
 } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -44,6 +45,7 @@ const baseNavItems: NavItem[] = [
   },
   { title: "Rules", href: "/admin/rules", icon: BookOpen },
   { title: "Library", href: "/admin/library", icon: Library },
+  { title: "Audit Log", href: "/admin/audit-log", icon: ScrollText },
 ]
 
 const developerOnlyNavItems: NavItem[] = [
