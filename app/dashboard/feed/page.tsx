@@ -7,7 +7,6 @@ import {
   AlertTriangle,
   Lightbulb,
   Megaphone,
-  ExternalLink,
 } from "lucide-react"
 import type { FeedItem } from "@/app/api/feed/route"
 
@@ -106,17 +105,6 @@ function FeedCard({ item }: { item: FeedItem }) {
           </div>
           <h3 className="text-sm sm:text-base font-semibold text-white leading-snug">{item.title}</h3>
           <p className="text-sm text-white/70 leading-relaxed">{item.body}</p>
-          {(item as any).source_url && (
-            <a
-              href={(item as any).source_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-[#55E039]/70 hover:text-[#55E039] transition-colors mt-1"
-            >
-              <ExternalLink className="h-3 w-3" />
-              View source
-            </a>
-          )}
         </div>
       </div>
     </div>

@@ -132,6 +132,16 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
 
     if (!res.ok) return null
 
+    // Reject non-HTML responses. Without this guard a target server can
+    // serve any binary as text/html and we burn the 2 MB cap parsing it.
+    // Combined with the per-user crawl cap this is a defensive cost ceiling
+    // - cheerio handles malformed HTML gracefully but a 2 MB binary still
+    // eats CPU.
+    const ct = (res.headers.get("content-type") || "").toLowerCase()
+    if (ct && !ct.includes("text/html") && !ct.includes("application/xhtml") && !ct.includes("text/plain")) {
+      return null
+    }
+
     const declared = res.headers.get("content-length")
     if (declared && Number(declared) > MAX_RESPONSE_BYTES) return null
 

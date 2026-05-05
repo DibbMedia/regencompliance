@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { requireWriteMode } from "@/lib/impersonation"
 import { stripe } from "@/lib/stripe"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function POST() {
   try {
@@ -14,6 +15,17 @@ export async function POST() {
 
     const blocked = await requireWriteMode()
     if (blocked) return blocked
+
+    // Per-user cap. Stripe imposes its own throttles; this keeps the pattern
+    // consistent with every other paid action and prevents an authenticated
+    // session from rapid-firing portal sessions.
+    const { allowed } = await checkRateLimit(`stripe-portal:${user.id}`, 20, 60 * 60 * 1000)
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Too many billing portal requests. Please wait a few minutes and try again." },
+        { status: 429 },
+      )
+    }
 
     const { data: profile } = await supabase
       .from("profiles")
