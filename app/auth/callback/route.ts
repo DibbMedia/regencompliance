@@ -57,11 +57,15 @@ export async function GET(request: Request) {
       // Check if onboarding is complete
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        // ─── CLAIM BETA PURCHASE (non-blocking) ───
-        // Fire and forget - don't slow down the redirect
-        claimBetaPurchase(user.id, user.email).catch((err) =>
-          console.error("Beta claim check failed (non-blocking):", err)
-        )
+        // Block on beta claim so the user lands on an already-activated
+        // dashboard instead of hitting "subscription required" while the
+        // claim runs in the background. Errors here fall through to the
+        // redirect; /api/beta/claim on the login page is the safety net.
+        try {
+          await claimBetaPurchase(user.id, user.email)
+        } catch (err) {
+          console.error("Beta claim check failed:", err)
+        }
 
         const { data: profile } = await supabase
           .from("profiles")

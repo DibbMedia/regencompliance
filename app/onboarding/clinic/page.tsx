@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2, Upload, ImageIcon, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
@@ -10,10 +10,39 @@ export default function OnboardingClinicPage() {
   const [clinicName, setClinicName] = useState("")
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
+  const [existingLogoUrl, setExistingLogoUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [hydrating, setHydrating] = useState(true)
   const [dragOver, setDragOver] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+
+  // Hydrate from existing profile so back/refresh doesn't lose state.
+  // Server saves clinic_name + logo_url via PATCH; the client just
+  // wasn't re-reading it on mount.
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("clinic_name, logo_url")
+          .eq("id", user.id)
+          .maybeSingle()
+        if (cancelled) return
+        if (profile?.clinic_name) setClinicName(profile.clinic_name)
+        if (profile?.logo_url) {
+          setExistingLogoUrl(profile.logo_url)
+          setLogoPreview(profile.logo_url)
+        }
+      } finally {
+        if (!cancelled) setHydrating(false)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [supabase])
 
   function processFile(file: File) {
     if (file.size > 2 * 1024 * 1024) {
@@ -51,7 +80,7 @@ export default function OnboardingClinicPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { setLoading(false); return }
 
-    let logoUrl: string | null = null
+    let logoUrl: string | null = existingLogoUrl
     if (logoFile) {
       // Storage RLS pins the path prefix to auth.uid (migration 022) so the
       // upload itself is access-controlled. Content-type validation is best-
@@ -156,14 +185,14 @@ export default function OnboardingClinicPage() {
               <div className="flex items-center gap-4 rounded-xl bg-white/[0.03] border border-white/10 p-4">
                 <img src={logoPreview} alt="Logo preview" className="h-14 w-14 rounded-lg object-cover border border-white/10" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-white font-medium truncate">{logoFile?.name}</p>
-                  <p className="text-xs text-white/30">{logoFile ? `${(logoFile.size / 1024).toFixed(0)} KB` : ""}</p>
+                  <p className="text-sm text-white font-medium truncate">{logoFile?.name || "Saved logo"}</p>
+                  <p className="text-xs text-white/55">{logoFile ? `${(logoFile.size / 1024).toFixed(0)} KB` : "Tap remove to replace"}</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => { setLogoFile(null); setLogoPreview(null) }}
+                  onClick={() => { setLogoFile(null); setLogoPreview(null); setExistingLogoUrl(null) }}
                   disabled={loading}
-                  className="text-xs text-white/30 hover:text-red-400 transition-colors"
+                  className="text-xs text-white/55 hover:text-red-400 transition-colors"
                 >
                   Remove
                 </button>
@@ -173,7 +202,7 @@ export default function OnboardingClinicPage() {
 
           <button
             type="submit"
-            disabled={loading || !clinicName.trim()}
+            disabled={loading || hydrating || !clinicName.trim()}
             className="w-full h-12 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] font-semibold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.45)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (

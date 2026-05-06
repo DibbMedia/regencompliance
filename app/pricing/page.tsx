@@ -413,7 +413,7 @@ export default function PricingPage() {
                     <CheckCircle2 className="h-5 w-5 text-white/40 shrink-0 mt-0.5" />
                     <div>
                       <span className="text-[15px] text-white/65 font-medium">{item.title}</span>
-                      <p className="text-xs text-white/20 mt-0.5 leading-relaxed">{item.desc}</p>
+                      <p className="text-xs text-white/55 mt-0.5 leading-relaxed">{item.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -550,14 +550,14 @@ export default function PricingPage() {
                         ) : typeof row.us === "string" ? (
                           <span className="text-xs sm:text-sm font-bold text-[#55E039]">{row.us}</span>
                         ) : (
-                          <X className="h-5 w-5 text-white/20 mx-auto" />
+                          <X className="h-5 w-5 text-white/55 mx-auto" />
                         )}
                       </td>
                       <td className="text-center p-2 sm:p-4">
                         {row.attorney === true ? (
                           <CheckCircle2 className="h-5 w-5 text-white/40 mx-auto" />
                         ) : row.attorney === false ? (
-                          <X className="h-5 w-5 text-white/20 mx-auto" />
+                          <X className="h-5 w-5 text-white/55 mx-auto" />
                         ) : (
                           <span className="text-xs sm:text-sm text-white/40">{row.attorney}</span>
                         )}
@@ -566,7 +566,7 @@ export default function PricingPage() {
                         {row.diy === true ? (
                           <CheckCircle2 className="h-5 w-5 text-white/40 mx-auto" />
                         ) : row.diy === false ? (
-                          <X className="h-5 w-5 text-white/20 mx-auto" />
+                          <X className="h-5 w-5 text-white/55 mx-auto" />
                         ) : (
                           <span className="text-xs sm:text-sm text-white/40">{row.diy}</span>
                         )}

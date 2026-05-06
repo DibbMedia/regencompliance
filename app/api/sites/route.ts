@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server"
-import { createClient } from "@/lib/supabase/server"
+import { NextResponse, after } from "next/server"
+import { createClient, createServiceClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
 import { checkRateLimit } from "@/lib/rate-limit"
@@ -75,21 +75,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Domain is required" }, { status: 400 })
     }
 
-    // Normalize domain - strip protocol and trailing slash
-    const normalizedDomain = domain
-      .replace(/^(https?:\/\/)/, "")
-      .replace(/\/+$/, "")
-      .toLowerCase()
+    // Normalize - parse as URL to peel off protocol, port, path, query.
+    // Lets users paste "https://www.foo.com/services?utm=x" and just store
+    // the host. Falls back to manual strip for inputs that aren't URL-shaped.
+    let normalizedDomain: string
+    try {
+      const candidate = /^https?:\/\//i.test(domain) ? domain : `https://${domain}`
+      const parsed = new URL(candidate)
+      normalizedDomain = parsed.hostname.toLowerCase()
+    } catch {
+      normalizedDomain = domain
+        .replace(/^(https?:\/\/)/i, "")
+        .replace(/\/.*$/, "")
+        .toLowerCase()
+    }
 
     // Basic domain validation
     if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(normalizedDomain)) {
       return NextResponse.json({ error: "Invalid domain format" }, { status: 400 })
-    }
-
-    try {
-      new URL(`https://${normalizedDomain}`)
-    } catch {
-      return NextResponse.json({ error: "Invalid domain" }, { status: 400 })
     }
 
     const ssrfCheck = await assertSafeUrl(`https://${normalizedDomain}`)
@@ -136,11 +139,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to add site" }, { status: 500 })
     }
 
-    // Discover pages in the background and insert as "pending"
-    try {
-      const discovered = await discoverPages(normalizedDomain, 50)
+    // Run discovery AFTER the response is sent. The synchronous version
+    // blocked the request for up to ~30s with no client feedback and
+    // swallowed errors (returning total_pages: 0). With after() the user
+    // gets an immediate 201 and the client polls for total_pages updates.
+    after(async () => {
+      try {
+        const discovered = await discoverPages(normalizedDomain, 50)
+        if (discovered.length === 0) return
 
-      if (discovered.length > 0) {
+        const serviceClient = createServiceClient()
         const pageRows = discovered.map((p) => ({
           site_id: site.id,
           url: p.url,
@@ -148,20 +156,22 @@ export async function POST(request: Request) {
           status: "pending",
         }))
 
-        await supabase.from("site_pages").insert(pageRows)
+        const { error: pagesError } = await serviceClient
+          .from("site_pages")
+          .insert(pageRows)
+        if (pagesError) {
+          console.error("Background page insert failed:", pagesError)
+          return
+        }
 
-        // Update total_pages count
-        await supabase
+        await serviceClient
           .from("monitored_sites")
           .update({ total_pages: discovered.length })
           .eq("id", site.id)
-
-        site.total_pages = discovered.length
+      } catch (crawlError) {
+        console.error("Background page discovery error:", crawlError)
       }
-    } catch (crawlError) {
-      console.error("Page discovery error (non-fatal):", crawlError)
-      // Non-fatal - site is still added, pages can be discovered on first crawl
-    }
+    })
 
     return NextResponse.json({ site }, { status: 201 })
   } catch (error) {

@@ -57,6 +57,74 @@ const checklist = [
   "Light & dark mode dashboard",
 ]
 
+const COST_COMPARISON_ROWS = [
+  {
+    approach: "Responding to a warning letter",
+    desc: "Attorney, CMO response filing, evidence package. Everything you're paying for after the fact.",
+    cost: "$50K-$150K",
+    costNote: "Per letter",
+    turnaround: "15 business days",
+    freshness: "Reactive only",
+    highlight: false,
+    titleColor: "text-red-300",
+    costColor: "text-red-300",
+    turnaroundColor: "text-white/85",
+    freshnessColor: "text-white/70",
+  },
+  {
+    approach: "Full healthcare marketing attorney review",
+    desc: "Pre-publish review of every marketing asset by outside counsel billed hourly.",
+    cost: "$400-$800/hr",
+    costNote: "$25K+/yr at 30 hrs",
+    turnaround: "3-7 days",
+    freshness: "Quarterly guidance updates",
+    highlight: false,
+    titleColor: "text-white/85",
+    costColor: "text-white/85",
+    turnaroundColor: "text-white/80",
+    freshnessColor: "text-white/70",
+  },
+  {
+    approach: "In-house compliance manager",
+    desc: "Full-time hire with healthcare-marketing regulatory background.",
+    cost: "$90K-$150K/yr",
+    costNote: "Plus benefits",
+    turnaround: "Same-day",
+    freshness: "As good as the hire",
+    highlight: false,
+    titleColor: "text-white/85",
+    costColor: "text-white/85",
+    turnaroundColor: "text-white/80",
+    freshnessColor: "text-white/70",
+  },
+  {
+    approach: "Generic AI writing tool",
+    desc: "ChatGPT, Jasper, Copy.ai - helpful for copy, zero healthcare regulatory knowledge.",
+    cost: "$20-$100/mo",
+    costNote: "Plus human review",
+    turnaround: "Instant",
+    freshness: "Writes violations by default",
+    highlight: false,
+    titleColor: "text-white/85",
+    costColor: "text-white/85",
+    turnaroundColor: "text-white/80",
+    freshnessColor: "text-amber-300",
+  },
+  {
+    approach: "RegenCompliance",
+    desc: "Pre-publish scan against live FDA/FTC enforcement data. AI rewrites included.",
+    cost: "$297/mo",
+    costNote: "Founding rate, locked in",
+    turnaround: "30 seconds",
+    freshness: "Daily automated updates",
+    highlight: true,
+    titleColor: "text-[#55E039]",
+    costColor: "text-[#55E039]",
+    turnaroundColor: "text-[#55E039] font-semibold",
+    freshnessColor: "text-[#55E039]",
+  },
+] as const
+
 const faqs = [
   { q: "Is this actual legal advice?", a: "No. RegenCompliance is an educational compliance tool. We strongly recommend having all final content reviewed by qualified healthcare marketing counsel." },
   { q: "Does this access any patient data?", a: "Never. We analyze marketing text only - no PHI, no patient records, no clinical data. Zero HIPAA implications." },
@@ -155,7 +223,7 @@ export default function LandingPage() {
                 <div className="h-3 w-3 rounded-full bg-[#FEBC2E]" />
                 <div className="h-3 w-3 rounded-full bg-[#28C840]" />
               </div>
-              <div className="mx-auto flex h-7 min-w-0 max-w-full items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 sm:px-4 text-[10px] sm:text-[11px] text-white/25 font-mono">
+              <div className="mx-auto flex h-7 min-w-0 max-w-full items-center rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 sm:px-4 text-[10px] sm:text-[11px] text-white/55 font-mono">
                 <Lock className="h-3 w-3 mr-1.5 text-[#28C840] shrink-0" />
                 <span className="truncate">{BROWSER_HOST}/dashboard/scanner</span>
               </div>
@@ -207,7 +275,7 @@ export default function LandingPage() {
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                       <span className="text-3xl font-extrabold text-red-400">25</span>
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-bold mt-0.5">Score</span>
+                      <span className="text-[8px] text-white/65 uppercase tracking-[0.2em] font-bold mt-0.5">Score</span>
                     </div>
                   </div>
                 </div>
@@ -289,7 +357,8 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.02]">
+          {/* Desktop / tablet table */}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.02]">
             <table className="w-full text-left min-w-[640px]">
               <thead>
                 <tr className="border-b border-white/10 bg-white/[0.03]">
@@ -300,81 +369,52 @@ export default function LandingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
-                <tr>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-bold text-red-300">Responding to a warning letter</p>
-                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Attorney, CMO response filing, evidence package. Everything you&rsquo;re paying for after the fact.</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-red-300">$50K&ndash;$150K</p>
-                    <p className="text-[11px] text-white/55 mt-1">Per letter</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-white/85">15 business days</p>
-                    <p className="text-[11px] text-white/55 mt-1">Federally mandated</p>
-                  </td>
-                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
-                    Reactive only
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-bold text-white/85">Full healthcare marketing attorney review</p>
-                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Pre-publish review of every marketing asset by outside counsel billed hourly.</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-white/85">$400&ndash;$800/hr</p>
-                    <p className="text-[11px] text-white/55 mt-1">$25K+/yr at 30 hrs</p>
-                  </td>
-                  <td className="px-5 py-4 align-top text-[15px] text-white/80">3&ndash;7 days</td>
-                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
-                    Quarterly guidance updates
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-bold text-white/85">In-house compliance manager</p>
-                    <p className="text-xs text-white/60 mt-1 leading-relaxed">Full-time hire with healthcare-marketing regulatory background.</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-white/85">$90K&ndash;$150K/yr</p>
-                    <p className="text-[11px] text-white/55 mt-1">Plus benefits</p>
-                  </td>
-                  <td className="px-5 py-4 align-top text-[15px] text-white/80">Same-day</td>
-                  <td className="px-5 py-4 align-top text-[13px] text-white/70">
-                    As good as the hire
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-bold text-white/85">Generic AI writing tool</p>
-                    <p className="text-xs text-white/60 mt-1 leading-relaxed">ChatGPT, Jasper, Copy.ai - helpful for copy, zero healthcare regulatory knowledge.</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-white/85">$20&ndash;$100/mo</p>
-                    <p className="text-[11px] text-white/55 mt-1">Plus human review</p>
-                  </td>
-                  <td className="px-5 py-4 align-top text-[15px] text-white/80">Instant</td>
-                  <td className="px-5 py-4 align-top text-[13px] text-amber-300">
-                    Writes violations by default
-                  </td>
-                </tr>
-                <tr className="bg-[#55E039]/[0.04]">
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-bold text-[#55E039]">RegenCompliance</p>
-                    <p className="text-xs text-white/70 mt-1 leading-relaxed">Pre-publish scan against live FDA/FTC enforcement data. AI rewrites included.</p>
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <p className="text-[15px] font-semibold text-[#55E039]">$297/mo</p>
-                    <p className="text-[11px] text-white/70 mt-1">Founding rate, locked in</p>
-                  </td>
-                  <td className="px-5 py-4 align-top text-[15px] font-semibold text-[#55E039]">30 seconds</td>
-                  <td className="px-5 py-4 align-top text-[13px] text-[#55E039]">
-                    Daily automated updates
-                  </td>
-                </tr>
+                {COST_COMPARISON_ROWS.map((row) => (
+                  <tr key={row.approach} className={row.highlight ? "bg-[#55E039]/[0.04]" : undefined}>
+                    <td className="px-5 py-4 align-top">
+                      <p className={`text-[15px] font-bold ${row.titleColor}`}>{row.approach}</p>
+                      <p className={`text-xs ${row.highlight ? "text-white/70" : "text-white/60"} mt-1 leading-relaxed`}>{row.desc}</p>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <p className={`text-[15px] font-semibold ${row.costColor}`}>{row.cost}</p>
+                      <p className={`text-[11px] ${row.highlight ? "text-white/70" : "text-white/55"} mt-1`}>{row.costNote}</p>
+                    </td>
+                    <td className={`px-5 py-4 align-top text-[15px] ${row.turnaroundColor}`}>{row.turnaround}</td>
+                    <td className={`px-5 py-4 align-top text-[13px] ${row.freshnessColor}`}>{row.freshness}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile card stack */}
+          <div className="sm:hidden space-y-3">
+            {COST_COMPARISON_ROWS.map((row) => (
+              <div
+                key={row.approach}
+                className={`rounded-2xl border p-5 ${row.highlight ? "border-[#55E039]/30 bg-[#55E039]/[0.04]" : "border-white/10 bg-white/[0.02]"}`}
+              >
+                <p className={`text-[15px] font-bold ${row.titleColor}`}>{row.approach}</p>
+                <p className={`text-xs ${row.highlight ? "text-white/70" : "text-white/60"} mt-1 leading-relaxed`}>{row.desc}</p>
+                <dl className="mt-4 grid grid-cols-1 gap-3 text-sm">
+                  <div className="flex items-baseline justify-between gap-3 border-t border-white/[0.06] pt-3">
+                    <dt className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/55">Cost</dt>
+                    <dd className="text-right">
+                      <p className={`text-[15px] font-semibold ${row.costColor}`}>{row.cost}</p>
+                      <p className={`text-[11px] ${row.highlight ? "text-white/70" : "text-white/55"}`}>{row.costNote}</p>
+                    </dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-3 border-t border-white/[0.06] pt-3">
+                    <dt className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/55">Turnaround</dt>
+                    <dd className={`text-[15px] font-semibold ${row.turnaroundColor}`}>{row.turnaround}</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-3 border-t border-white/[0.06] pt-3">
+                    <dt className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/55">Rule freshness</dt>
+                    <dd className={`text-[13px] text-right ${row.freshnessColor}`}>{row.freshness}</dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
           </div>
 
           <p className="mt-6 text-center text-sm text-white/60 max-w-2xl mx-auto leading-relaxed">
@@ -489,7 +529,7 @@ export default function LandingPage() {
                   <span className={`text-[10px] font-bold tracking-[0.15em] px-2.5 py-1 rounded-full uppercase ${ex.risk === "HIGH" ? "text-red-400 bg-red-500/10 border border-red-500/15" : "text-amber-400 bg-amber-500/10 border border-amber-500/15"}`}>
                     {ex.risk} risk
                   </span>
-                  <span className="text-[11px] text-white/30">{ex.source}</span>
+                  <span className="text-[11px] text-white/60">{ex.source}</span>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
@@ -563,7 +603,7 @@ export default function LandingPage() {
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               )}
-              <p className="mt-4 text-center text-xs text-white/30">
+              <p className="mt-4 text-center text-xs text-white/60">
                 {IS_LAUNCHED
                   ? "Cancel anytime. Rate locked at $297/mo for life."
                   : "Pre-release access. Rate locked at $297/mo for life when you're invited."}
@@ -580,21 +620,21 @@ export default function LandingPage() {
               </div>
               <div className="relative text-center mb-8 pt-4">
                 <p className="text-xs font-bold text-white/40 uppercase tracking-widest mb-3">Standard</p>
-                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight text-white/40">$497<span className="text-lg font-normal text-white/30 ml-1">/mo</span></p>
-                <p className="mt-2 text-sm text-white/30">Available after beta ends.</p>
+                <p className="text-5xl sm:text-6xl font-extrabold tracking-tight text-white/55">$497<span className="text-lg font-normal text-white/55 ml-1">/mo</span></p>
+                <p className="mt-2 text-sm text-white/55">Available after beta ends.</p>
               </div>
               <ul className="space-y-4 mb-8">
                 {checklist.map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-white/20 shrink-0" />
-                    <span className="text-[15px] text-white/30">{item}</span>
+                    <CheckCircle2 className="h-5 w-5 text-white/45 shrink-0" />
+                    <span className="text-[15px] text-white/65">{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/30 cursor-not-allowed select-none">
+              <div className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/55 cursor-not-allowed select-none">
                 Coming Soon
               </div>
-              <p className="mt-4 text-center text-xs text-white/20">
+              <p className="mt-4 text-center text-xs text-white/60">
                 Lock in $297/mo now - rate goes to $497/mo after beta.
               </p>
             </div>

@@ -780,7 +780,7 @@ export default function AdminDashboardPage() {
                 >
                   <td className="px-4 py-3 text-white/80">{user.email}</td>
                   <td className="px-4 py-3 text-white/50">
-                    {user.clinic_name || "\u2014"}
+                    {user.clinic_name || "-"}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={user.subscription_status} />

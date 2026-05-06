@@ -113,13 +113,35 @@ export async function GET(request: Request) {
 
     // Email-search fallback when clinic_name search returned nothing.
     if (search && usersWithEmail.length === 0) {
-      const {
-        data: { users: authUsers },
-      } = await serviceClient.auth.admin.listUsers({ perPage: 100 })
+      const matchingIds: string[] = []
 
-      const matchingIds = (authUsers || [])
-        .filter((u) => u.email?.toLowerCase().includes(search.toLowerCase()))
-        .map((u) => u.id)
+      // Exact-email lookup via the indexed RPC from migration 030. This is
+      // the common case when the admin pastes a full email and avoids the
+      // listUsers 100-row ceiling that silently broke search past 100 users.
+      if (search.includes("@")) {
+        const { data: exactId } = await serviceClient.rpc(
+          "find_auth_user_id_by_email",
+          { p_email: search.trim() },
+        )
+        if (typeof exactId === "string" && exactId.length > 0) {
+          matchingIds.push(exactId)
+        }
+      }
+
+      // Fall back to a substring scan of the first page for partial queries.
+      // Documented limitation: only sees the most-recent 200 auth users.
+      // For deployments past this scale, add a substring RPC against
+      // auth.users with a trigram index.
+      if (matchingIds.length === 0) {
+        const {
+          data: { users: authUsers },
+        } = await serviceClient.auth.admin.listUsers({ perPage: 200 })
+        for (const u of authUsers || []) {
+          if (u.email?.toLowerCase().includes(search.toLowerCase())) {
+            matchingIds.push(u.id)
+          }
+        }
+      }
 
       if (matchingIds.length > 0) {
         let emailQuery = serviceClient

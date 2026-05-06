@@ -100,7 +100,7 @@ export default function SitesPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          domain: addDomain.trim().replace(/^https?:\/\//, "").replace(/\/$/, ""),
+          domain: addDomain.trim(),
           name: addName.trim() || null,
         }),
       })
@@ -111,11 +111,14 @@ export default function SitesPage() {
         return
       }
 
-      toast.success("Site added! Initial scan starting...")
+      toast.success("Site added! Discovering pages in the background.")
       setShowAddDialog(false)
       setAddDomain("")
       setAddName("")
+      // Discovery runs after the response is sent; refresh once now and
+      // again in 10s so total_pages updates without a manual reload.
       mutate("/api/sites")
+      setTimeout(() => mutate("/api/sites"), 10000)
     } catch {
       toast.error("Network error. Please try again.")
     } finally {
@@ -176,7 +179,7 @@ export default function SitesPage() {
           </p>
           <h1 className="text-3xl font-bold text-white">Monitored Sites</h1>
           <p className="text-white/60 mt-1">Monitor your clinic websites for compliance issues. Weekly automated scans.</p>
-          <p className="text-xs text-white/30 italic mt-2">
+          <p className="text-xs text-white/60 italic mt-2">
             Automated compliance monitoring is educational guidance only, not a substitute for legal review.
           </p>
         </div>
@@ -270,7 +273,7 @@ export default function SitesPage() {
             <Globe className="h-8 w-8 text-[#55E039]/30" />
           </div>
           <p className="text-white/50 font-medium mb-1">No sites monitored yet</p>
-          <p className="text-white/30 text-sm mb-4">Add your first site to get started.</p>
+          <p className="text-white/60 text-sm mb-4">Add your first site to get started.</p>
           <button
             onClick={() => setShowAddDialog(true)}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"

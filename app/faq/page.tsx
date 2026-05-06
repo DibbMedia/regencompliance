@@ -102,7 +102,7 @@ const faqCategories: FaqCategory[] = [
     faqs: [
       {
         q: "How much does RegenCompliance cost?",
-        a: "RegenCompliance is $497 per month. This is a single plan that includes every feature - unlimited scans, AI-powered rewrites, the full compliance library with 300+ rules, daily rule updates, complete audit trail with PDF/CSV export, real-time enforcement alerts, and 3 team seats. There are no tiers, no hidden fees, no add-ons, and no per-scan charges. The price is the same for every clinic regardless of size or scan volume.",
+        a: "Founder beta is $297/mo, locked for life on the first 25 seats. Standard pricing after the beta closes is $497/mo. Both include every feature - unlimited scans, AI-powered rewrites, the full compliance library with 300+ rules, daily rule updates, complete audit trail with PDF/CSV export, real-time enforcement alerts, and 3 team seats. No tiers, no hidden fees, no add-ons, no per-scan charges. Founder-beta members keep the $297 rate even after standard pricing kicks in.",
       },
       {
         q: "Is there a contract or long-term commitment?",

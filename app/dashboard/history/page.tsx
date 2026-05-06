@@ -133,7 +133,7 @@ export default function HistoryPage() {
             <Clock className="h-8 w-8 text-white/20" />
           </div>
           <p className="text-white/50 font-medium mb-1">No scans yet</p>
-          <p className="text-white/30 text-sm mb-4">Head to the Scanner to check your first piece of content.</p>
+          <p className="text-white/60 text-sm mb-4">Head to the Scanner to check your first piece of content.</p>
           <Link
             href="/dashboard/scanner"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300"

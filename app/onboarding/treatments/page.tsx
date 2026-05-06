@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2, Check, Sparkles, Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -68,9 +68,38 @@ export default function OnboardingTreatmentsPage() {
   const [customTreatment, setCustomTreatment] = useState("")
   const [customTreatments, setCustomTreatments] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [hydrating, setHydrating] = useState(true)
   const [redirecting, setRedirecting] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+
+  // Hydrate from existing profile so back/refresh doesn't lose state.
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("treatments")
+          .eq("id", user.id)
+          .maybeSingle()
+        if (cancelled) return
+        const stored = (profile?.treatments as string[] | null) ?? []
+        if (stored.length === 0) return
+        const knownSlugs = new Set(
+          TREATMENT_CATEGORIES.flatMap((cat) => cat.treatments.map((t) => t.slug))
+        )
+        const customs = stored.filter((s) => !knownSlugs.has(s))
+        setSelected(stored)
+        if (customs.length > 0) setCustomTreatments(customs)
+      } finally {
+        if (!cancelled) setHydrating(false)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [supabase])
 
   function addCustom() {
     const trimmed = customTreatment.trim()
@@ -116,7 +145,7 @@ export default function OnboardingTreatmentsPage() {
     router.push("/dashboard/scanner")
   }
 
-  const isDisabled = loading || redirecting
+  const isDisabled = loading || redirecting || hydrating
 
   if (redirecting) {
     return (
@@ -151,7 +180,7 @@ export default function OnboardingTreatmentsPage() {
         <div className="space-y-5 mb-6">
           {TREATMENT_CATEGORIES.map((cat) => (
             <div key={cat.label}>
-              <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">{cat.label}</p>
+              <p className="text-xs font-bold text-white/55 uppercase tracking-wider mb-2">{cat.label}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {cat.treatments.map((t) => {
                   const isSelected = selected.includes(t.slug)
@@ -183,7 +212,7 @@ export default function OnboardingTreatmentsPage() {
           {/* Custom treatments */}
           {customTreatments.length > 0 && (
             <div>
-              <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">Your Custom Services</p>
+              <p className="text-xs font-bold text-white/55 uppercase tracking-wider mb-2">Your Custom Services</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {customTreatments.map((t) => (
                   <div
@@ -202,7 +231,7 @@ export default function OnboardingTreatmentsPage() {
 
           {/* Add custom */}
           <div>
-            <p className="text-xs font-bold text-white/30 uppercase tracking-wider mb-2">Add Your Own</p>
+            <p className="text-xs font-bold text-white/55 uppercase tracking-wider mb-2">Add Your Own</p>
             <div className="flex gap-2">
               <input
                 type="text"

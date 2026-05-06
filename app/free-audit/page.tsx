@@ -247,7 +247,7 @@ export default function FreeAuditPage() {
                     <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider">Compliance score</p>
                     <p className={`text-5xl font-extrabold ${scoreColor(result.compliance_score)}`}>
                       {result.compliance_score ?? "-"}
-                      <span className="text-2xl text-white/30">/100</span>
+                      <span className="text-2xl text-white/55">/100</span>
                     </p>
                   </div>
                 </div>
@@ -358,12 +358,12 @@ function FlagCard({ flag, index }: { flag: PublicFlag; index: number }) {
                 {RISK_LABEL[flag.risk_level]}
               </span>
               {flag.element_type && (
-                <span className="text-[10px] text-white/30 font-mono uppercase">&lt;{flag.element_type}&gt;</span>
+                <span className="text-[10px] text-white/60 font-mono uppercase">&lt;{flag.element_type}&gt;</span>
               )}
             </div>
             <div className="flex items-center gap-2">
-              <Lock className="h-4 w-4 text-white/30 shrink-0" />
-              <p className="text-sm text-white/40 italic">
+              <Lock className="h-4 w-4 text-white/55 shrink-0" />
+              <p className="text-sm text-white/65 italic">
                 Violation #{index + 1} - sign up to reveal the matched phrase, why it&apos;s flagged, and a compliant rewrite.
               </p>
             </div>
@@ -384,7 +384,7 @@ function FlagCard({ flag, index }: { flag: PublicFlag; index: number }) {
             <span className="text-[10px] text-white/30 font-mono uppercase">&lt;{flag.element_type}&gt;</span>
           )}
         </div>
-        <span className="text-[10px] text-white/30">Violation #{index + 1}</span>
+        <span className="text-[10px] text-white/60">Violation #{index + 1}</span>
       </div>
       {flag.matched_text && (
         <div className="mb-3">

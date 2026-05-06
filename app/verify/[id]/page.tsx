@@ -104,7 +104,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
             {/* Clinic Name */}
             <div>
-              <p className="text-xs font-bold text-white/25 uppercase tracking-[0.2em] mb-1">
+              <p className="text-xs font-bold text-white/55 uppercase tracking-[0.2em] mb-1">
                 Clinic
               </p>
               <p className="text-xl font-bold text-white">
@@ -156,7 +156,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
           {/* Footer */}
           <div className="border-t border-white/[0.06] px-8 py-4 flex items-center justify-between">
-            <p className="text-xs text-white/30">
+            <p className="text-xs text-white/60">
               Badge ID: {badgeId}
             </p>
             <Link

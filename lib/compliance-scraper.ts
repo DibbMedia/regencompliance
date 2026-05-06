@@ -3,6 +3,7 @@ import { anthropic } from "@/lib/anthropic"
 import { createServiceClient } from "@/lib/supabase/server"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { assertSafeUrl } from "@/lib/ssrf"
+import { pinnedFetch } from "@/lib/safe-fetch"
 
 // ---------------------------------------------------------------------------
 // 1. Source Configuration
@@ -111,9 +112,11 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
   let current = url
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
     const gate = await assertSafeUrl(current)
-    if (!gate.ok) return null
+    if (!gate.ok || !gate.resolvedIps?.length) return null
 
-    const res = await fetch(current, {
+    // pinnedFetch connects to the IP we just validated, so a hostile DNS
+    // server can't swap in a private IP between assertSafeUrl and fetch.
+    const res = await pinnedFetch(current, gate.resolvedIps, {
       signal: AbortSignal.timeout(timeoutMs),
       redirect: "manual",
       headers: {

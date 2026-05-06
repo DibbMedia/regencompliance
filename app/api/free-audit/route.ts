@@ -71,6 +71,16 @@ export async function POST(request: Request) {
       )
     }
 
+    // Daily global cap. Ceiling on cost-amplification even if an attacker
+    // rotates IPs across the hourly window.
+    const globalDay = await checkRateLimit("free-audit-global-day", 500, 24 * 60 * 60 * 1000)
+    if (!globalDay.allowed) {
+      return NextResponse.json(
+        { error: "Free audit is over today's cap. Try again tomorrow or apply for the beta." },
+        { status: 429 },
+      )
+    }
+
     const body = await request.json().catch(() => null)
     if (!body) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
@@ -84,6 +94,19 @@ export async function POST(request: Request) {
       )
     }
     const { website_url, email, name, clinic_name } = parsed.data
+    const emailKey = email.toLowerCase().trim()
+
+    // Per-email daily cap. Without this, an attacker can stuff the lead
+    // pipeline with the same email across 1,200+ different URLs/day inside
+    // the per-IP and per-host caps. 5/day is generous for a real prospect
+    // re-running their audit across a few pages.
+    const perEmail = await checkRateLimit(`free-audit-email:${emailKey}`, 5, 24 * 60 * 60 * 1000)
+    if (!perEmail.allowed) {
+      return NextResponse.json(
+        { error: "You've used your free audits for today. Apply for the beta to scan unlimited pages." },
+        { status: 429 },
+      )
+    }
 
     // SSRF guard: reject private IPs, localhost, link-local, etc.
     const safe = await assertSafeUrl(website_url)
@@ -112,9 +135,11 @@ export async function POST(request: Request) {
     }
 
     // PHI guard: refuse to scan pages that look like patient records.
+    // Don't echo phi.patterns back - the client logs the JSON response in
+    // analytics/Sentry and we'd be re-leaking the PHI we just blocked.
     const phi = detectPhi(pageContent.text)
     if (phi.detected) {
-      return NextResponse.json({ error: PHI_ERROR_MESSAGE, phi_patterns: phi.patterns }, { status: 400 })
+      return NextResponse.json({ error: PHI_ERROR_MESSAGE }, { status: 400 })
     }
 
     const startTime = Date.now()
@@ -228,11 +253,13 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       }
     })
 
-    // Persist the lead. Insert is fire-and-forget for the response speed
-    // (we still await for retention but ignore non-fatal errors).
+    // Persist the lead. The unique index on (lower(email), lower(website_url),
+    // date_trunc('day', created_at)) prevents same-day dupes - the insert
+    // fails with 23505 and we treat it as success since the rate limits have
+    // already let the request through.
     const userAgent = request.headers.get("user-agent")?.slice(0, 500) || null
     const { error: insertErr } = await supabase.from("free_audit_leads").insert({
-      email,
+      email: emailKey,
       website_url,
       page_title: pageContent.title || null,
       compliance_score: score,
@@ -245,7 +272,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       user_agent: userAgent,
       source: "website",
     })
-    if (insertErr) {
+    if (insertErr && insertErr.code !== "23505") {
       console.error("[free-audit] lead insert error:", insertErr)
     }
 

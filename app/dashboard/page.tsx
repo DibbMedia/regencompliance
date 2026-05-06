@@ -167,7 +167,7 @@ function WeeklyTrendChart({ weeks }: { weeks: TrendsData["weekly_scores"] }) {
           const label = `${weekDate.getMonth() + 1}/${weekDate.getDate()}`
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-white/30 tabular-nums">
+              <span className="text-[10px] text-white/60 tabular-nums">
                 {w.scan_count > 0 ? w.avg_score : ""}
               </span>
               <div className="w-full flex items-end" style={{ height: "80px" }}>
@@ -176,12 +176,12 @@ function WeeklyTrendChart({ weeks }: { weeks: TrendsData["weekly_scores"] }) {
                   style={{ height: `${height}%`, minHeight: w.scan_count > 0 ? "3px" : "0" }}
                 />
               </div>
-              <span className="text-[9px] text-white/20 tabular-nums">{label}</span>
+              <span className="text-[9px] text-white/55 tabular-nums">{label}</span>
             </div>
           )
         })}
       </div>
-      <p className="text-[10px] text-white/20 mt-2 text-center">Last 12 weeks</p>
+      <p className="text-[10px] text-white/55 mt-2 text-center">Last 12 weeks</p>
     </div>
   )
 }
@@ -197,7 +197,7 @@ function TopViolationsWidget({
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-4">
           Most Common Violations
         </p>
-        <p className="text-sm text-white/30">No violations found yet. Run some scans to see trends.</p>
+        <p className="text-sm text-white/60">No violations found yet. Run some scans to see trends.</p>
       </div>
     )
   }
@@ -274,7 +274,7 @@ function ContentTypeBreakdown({
                 <span className="text-sm text-white/60">
                   {formatContentType(ct.content_type)}
                 </span>
-                <span className="text-[10px] text-white/20">
+                <span className="text-[10px] text-white/55">
                   ({ct.scan_count} scan{ct.scan_count !== 1 ? "s" : ""})
                 </span>
               </div>
@@ -322,7 +322,7 @@ function MonitoredSitesSummary({
         </div>
         <Link
           href="/dashboard/sites"
-          className="text-xs text-white/30 hover:text-[#55E039] transition-colors flex items-center gap-1"
+          className="text-xs text-white/60 hover:text-[#55E039] transition-colors flex items-center gap-1"
         >
           View <ArrowRight className="h-3 w-3" />
         </Link>
@@ -691,7 +691,7 @@ export default function DashboardPage() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em]">Recent Scans</p>
-              <Link href="/dashboard/history" className="text-xs text-white/30 hover:text-[#55E039] transition-colors flex items-center gap-1">
+              <Link href="/dashboard/history" className="text-xs text-white/60 hover:text-[#55E039] transition-colors flex items-center gap-1">
                 View all <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -709,7 +709,7 @@ export default function DashboardPage() {
                     <p className="text-sm font-medium text-white truncate">
                       {formatContentType(scan.content_type)} Scan
                     </p>
-                    <p className="text-xs text-white/30">
+                    <p className="text-xs text-white/60">
                       {formatDate(scan.created_at)} &middot; {scan.flag_count} flag{scan.flag_count !== 1 ? "s" : ""}
                     </p>
                   </div>
@@ -721,7 +721,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Disclaimer */}
-          <p className="text-xs text-white/30 italic">
+          <p className="text-xs text-white/60 italic">
             Compliance scores are educational guidance only and do not constitute legal advice. Always consult qualified healthcare marketing counsel for regulatory decisions.
           </p>
         </>

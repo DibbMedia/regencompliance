@@ -10,26 +10,17 @@ async function findAuthUserIdByEmail(
   supabase: SupabaseClient,
   email: string,
 ): Promise<string | null> {
-  const target = email.toLowerCase()
-  const PAGE_SIZE = 200
-  const MAX_PAGES = 25
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const { data, error } = await supabase.auth.admin.listUsers({
-      page,
-      perPage: PAGE_SIZE,
-    })
-    if (error) {
-      console.error("[Stripe Webhook] listUsers page error:", error)
-      return null
-    }
-    const users = data?.users ?? []
-    const hit = users.find((u) => u.email?.toLowerCase() === target)
-    if (hit) return hit.id
-    if (users.length < PAGE_SIZE) return null
+  // Indexed RPC from migration 030. Replaces the listUsers paginator that
+  // silently failed past 5000 users (200 perPage * 25 pages). The function
+  // is SECURITY DEFINER, restricted to service-role callers only.
+  const { data, error } = await supabase.rpc("find_auth_user_id_by_email", {
+    p_email: email,
+  })
+  if (error) {
+    console.error("[Stripe Webhook] find_auth_user_id_by_email rpc error:", error)
+    return null
   }
-  console.warn(
-    `[Stripe Webhook] findAuthUserIdByEmail: exceeded MAX_PAGES=${MAX_PAGES} without match`,
-  )
+  if (typeof data === "string" && data.length > 0) return data
   return null
 }
 
