@@ -56,7 +56,9 @@ export async function POST(request: Request) {
 
     if (error) {
       if (error.code === "23505") {
-        return NextResponse.json({ success: true, alreadySubscribed: true })
+        // Uniform success - alreadySubscribed:true on its own leaks
+        // existence to any caller checking response shape.
+        return NextResponse.json({ success: true })
       }
       console.error("Newsletter insert error:", error)
       return NextResponse.json(

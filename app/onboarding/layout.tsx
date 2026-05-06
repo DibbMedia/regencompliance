@@ -6,7 +6,9 @@ export default function OnboardingLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] px-4 py-6 sm:py-12">
+    <div className="flex min-h-[100dvh] items-center justify-center bg-[#0a0a0a] px-4 py-6 sm:py-12">
+      {/* min-h-[100dvh] gives iOS Safari the toolbar-aware height instead
+          of the static viewport that 100vh references. */}
       <div className="w-full max-w-lg">
         {/* Brand */}
         <div className="flex items-center justify-center gap-2.5 mb-8">

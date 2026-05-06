@@ -11,6 +11,7 @@ export function MarketingHeader() {
   const [mobileMenu, setMobileMenu] = useState(false)
 
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#55E039] focus:text-[#0a0a0a] focus:rounded-lg focus:font-bold focus:text-sm">Skip to content</a>
       <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-2xl border-b border-white/10 pointer-events-none" />
@@ -20,7 +21,7 @@ export function MarketingHeader() {
             <BrandIcon className="h-9 w-9" />
             <span className="text-[15px] font-bold tracking-tight text-white">RegenCompliance</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-5 lg:gap-6">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-6">
             <Link href="/tools" className="text-sm text-white/75 hover:text-white transition-colors">Tools</Link>
             <Link href="/pricing" className="text-sm text-white/75 hover:text-white transition-colors">Pricing</Link>
             <Link href="/for" className="text-sm text-white/75 hover:text-white transition-colors">For clinics</Link>
@@ -28,7 +29,7 @@ export function MarketingHeader() {
             <Link href="/blog" className="text-sm text-white/75 hover:text-white transition-colors">Blog</Link>
             <Link href="/free-audit" className="text-sm text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Free Audit</Link>
           </nav>
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <Link href="/login" className="text-sm text-white/75 hover:text-white transition-colors px-4 py-2">Log In</Link>
             {!IS_LAUNCHED && (
               <Link href="/waitlist" className="text-sm text-white/75 hover:text-white transition-colors px-2 py-2">Waitlist</Link>
@@ -48,12 +49,12 @@ export function MarketingHeader() {
               </Link>
             )}
           </div>
-          <button className="md:hidden -m-2.5 p-2.5 text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Close menu" : "Open menu"} aria-expanded={mobileMenu}>
+          <button className="lg:hidden -m-2.5 p-2.5 text-white/60 hover:text-white" onClick={() => setMobileMenu(!mobileMenu)} aria-label={mobileMenu ? "Close menu" : "Open menu"} aria-expanded={mobileMenu}>
             {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
         {mobileMenu && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-1 bg-[#0a0a0a]/90 backdrop-blur-xl -mx-6 px-6">
+          <div className="lg:hidden border-t border-white/10 py-4 space-y-1 bg-[#0a0a0a]/90 backdrop-blur-xl -mx-6 px-6">
             <Link href="/tools" className="block text-sm text-white/75 hover:text-white py-2.5">Tools</Link>
             <Link href="/how-it-works" className="block text-sm text-white/75 hover:text-white py-2.5">How it works</Link>
             <Link href="/pricing" className="block text-sm text-white/75 hover:text-white py-2.5">Pricing</Link>
@@ -79,5 +80,9 @@ export function MarketingHeader() {
         )}
       </div>
     </header>
+    {/* Skip-link target. Sits between the fixed header and the page
+        content so the "Skip to content" jump lands past the nav. */}
+    <span id="main-content" tabIndex={-1} className="sr-only" aria-hidden="true">Main content</span>
+    </>
   )
 }

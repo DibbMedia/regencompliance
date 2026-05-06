@@ -73,6 +73,9 @@ export default function ForgotPasswordPage() {
               <p className="text-sm text-white/60 leading-relaxed">
                 If an account exists with that email, we sent a password reset link. Check your inbox and spam folder.
               </p>
+              <p className="text-xs text-white/55 leading-relaxed">
+                Didn&apos;t arrive? We limit reset emails to 3 per hour for security. Wait a bit before retrying, or contact support if you&apos;re locked out.
+              </p>
               <Link
                 href="/login"
                 className="inline-flex items-center gap-1.5 text-sm text-[#55E039]/80 hover:text-[#55E039] transition-colors mt-2"

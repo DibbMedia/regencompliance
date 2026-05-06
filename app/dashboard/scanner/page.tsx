@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import { Shield, Loader2, Copy, Check, RefreshCw, CheckCircle2, Sparkles, FileText, Share2, Megaphone, Mail, Clapperboard, MoreHorizontal, Globe, Link2, Upload, X, ExternalLink } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -110,6 +110,8 @@ function RiskBadge({ level }: { level: string }) {
 
 export default function ScannerPage() {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const [scanMode, setScanMode] = useState<ScanMode>("paste")
   const [text, setText] = useState("")
   const [url, setUrl] = useState("")
@@ -127,8 +129,13 @@ export default function ScannerPage() {
   useEffect(() => {
     if (searchParams.get("subscribed") === "true") {
       toast.success("Subscription active! Start scanning.")
+      // Drop the param so back-button or refresh doesn't replay the toast.
+      const params = new URLSearchParams(Array.from(searchParams.entries()))
+      params.delete("subscribed")
+      const next = params.toString()
+      router.replace(next ? `${pathname}?${next}` : pathname, { scroll: false })
     }
-  }, [searchParams])
+  }, [searchParams, router, pathname])
 
   useEffect(() => {
     // Prefill from ?prefill= query (templates + dashboard sample scans use this)

@@ -150,7 +150,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: WEBSITE_JSON }}
         />
       </head>
-      <body id="main-content" className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

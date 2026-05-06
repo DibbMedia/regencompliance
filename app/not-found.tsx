@@ -40,7 +40,7 @@ export default function NotFoundPage() {
       <MarketingBg />
       <MarketingHeader />
 
-      <main id="main-content" className="relative z-10 pt-32 pb-20">
+      <main className="relative z-10 pt-32 pb-20">
         <div className="mx-auto max-w-3xl px-6">
           <div className="text-center">
             <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#55E039]/10 border border-[#55E039]/20 mb-6 shadow-[0_0_40px_rgba(85,224,57,0.12)]">

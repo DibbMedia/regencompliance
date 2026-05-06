@@ -32,7 +32,7 @@ export function BlogPostLayout({
       <MarketingBg />
       <MarketingHeader />
 
-      <main id="main-content" className="relative z-10">
+      <main className="relative z-10">
         {/* Article header */}
         <header className="pt-32 pb-10 sm:pt-36">
           <div className="mx-auto max-w-3xl px-6">

@@ -68,13 +68,16 @@ describe("POST /api/newsletter", () => {
     expect(res.status).toBe(400)
   })
 
-  it("returns alreadySubscribed on duplicate email (23505)", async () => {
+  it("returns uniform success on duplicate email (23505)", async () => {
     dbState.insertError = { code: "23505" }
     const { POST } = await loadRoute()
     const res = await POST(req({ email: "dup@example.com" }))
     expect(res.status).toBe(200)
     const json = await res.json()
-    expect(json.alreadySubscribed).toBe(true)
+    expect(json.success).toBe(true)
+    // alreadySubscribed flag dropped - identical shape to fresh insert
+    // so a probe can't enumerate existing subscribers.
+    expect(json.alreadySubscribed).toBeUndefined()
   })
 
   it("accepts optional sourceSlug for blog-post attribution", async () => {

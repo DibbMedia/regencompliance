@@ -79,14 +79,15 @@ describe("POST /api/waitlist", () => {
     expect(res.status).toBe(400)
   })
 
-  it("returns alreadyOnList on duplicate (23505) without leaking existence", async () => {
+  it("returns uniform success on duplicate (23505) without leaking existence", async () => {
     dbState.insertError = { code: "23505" }
     const { POST } = await loadRoute()
     const res = await POST(req({ name: "Test", email: "dup@example.com" }))
     expect(res.status).toBe(200)
     const json = await res.json()
     expect(json.success).toBe(true)
-    expect(json.alreadyOnList).toBe(true)
+    // No alreadyOnList flag - same shape as a fresh insert so probes can't enumerate.
+    expect(json.alreadyOnList).toBeUndefined()
   })
 
   it("inserts new entry with IP and user-agent captured", async () => {

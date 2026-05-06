@@ -31,7 +31,11 @@ export async function POST(
     const blocked = await requireWriteMode()
     if (blocked) return blocked
 
-    const { allowed } = await checkRateLimit(`crawl:${id}`, 3, 24 * 60 * 60 * 1000)
+    // Rate-limit key is scoped to (user, site) so an attacker who learns
+    // a site UUID can't burn through another tenant's daily crawl quota.
+    // The user.id prefix also doubles as a write-attribution check; only
+    // the owning user can hit the limit for their own sites.
+    const { allowed } = await checkRateLimit(`crawl:${user.id}:${id}`, 3, 24 * 60 * 60 * 1000)
     if (!allowed) {
       return NextResponse.json({ error: "Rate limit exceeded. Maximum 3 crawls per site per day." }, { status: 429 })
     }

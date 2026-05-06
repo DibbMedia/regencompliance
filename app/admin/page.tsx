@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
             <p className="text-sm text-white/40 mt-1">Loading metrics...</p>
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
@@ -116,7 +116,7 @@ export default function AdminDashboardPage() {
             />
           ))}
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
@@ -168,7 +168,7 @@ export default function AdminDashboardPage() {
         <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
           Key Metrics
         </p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {/* Waitlist */}
           <Link
             href="/admin/waitlist"

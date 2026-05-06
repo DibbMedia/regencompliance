@@ -62,6 +62,7 @@ const VOLUME_LABELS: Record<BetaApplicationInput["monthly_volume"], string> = {
 
 export default function BetaApplyPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [alreadyApplied, setAlreadyApplied] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const form = useForm<BetaApplicationInput>({
@@ -92,6 +93,7 @@ export default function BetaApplyPage() {
         return
       }
 
+      setAlreadyApplied(Boolean(data?.alreadyApplied))
       setSubmitted(true)
     } catch {
       toast.error("Network error. Please try again.")
@@ -190,9 +192,13 @@ export default function BetaApplyPage() {
                       <CheckCircle2 className="h-8 w-8 text-[#55E039]" />
                     </div>
                   </div>
-                  <h2 className="mt-5 text-xl font-bold text-white">Application received</h2>
+                  <h2 className="mt-5 text-xl font-bold text-white">
+                    {alreadyApplied ? "We already have your application" : "Application received"}
+                  </h2>
                   <p className="mt-2 text-sm text-white/60 max-w-sm">
-                    Thanks - we&apos;ll review your application and reach out within 48 hours. If you&apos;re a fit for one of the 25 founder seats, we&apos;ll send a personal invite link.
+                    {alreadyApplied
+                      ? "Looks like you've already applied with this email. We're still reviewing - we'll reach out within 48 hours if you're a fit for one of the 25 founder seats. If anything's changed about your application, email seo@dibbmedia.com and we'll update it manually."
+                      : "Thanks - we'll review your application and reach out within 48 hours. If you're a fit for one of the 25 founder seats, we'll send a personal invite link."}
                   </p>
                   <Link
                     href="/"

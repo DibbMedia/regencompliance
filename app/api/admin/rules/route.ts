@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { verifyAdmin } from "@/lib/admin"
+import { verifyAdmin, verifyDeveloperAdmin } from "@/lib/admin"
 import { adminSearchSchema, adminRulePatchSchema } from "@/lib/validations"
 
 export async function GET(request: Request) {
@@ -67,7 +67,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const auth = await verifyAdmin()
+    // Developer-only: rule mutations affect every paying tenant's scan
+    // results and Anthropic spend. Support admins should not be able to
+    // create or disable global compliance rules.
+    const auth = await verifyDeveloperAdmin()
     if ("error" in auth) return auth.error
     const { serviceClient } = auth
 
@@ -171,7 +174,8 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const auth = await verifyAdmin()
+    // Developer-only - see POST handler.
+    const auth = await verifyDeveloperAdmin()
     if ("error" in auth) return auth.error
     const { serviceClient } = auth
 

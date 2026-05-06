@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
-import { isValidUUID } from "@/lib/validations"
+import { isValidUUID, ticketMessageSchema } from "@/lib/validations"
 
 export async function GET(
   _request: Request,
@@ -60,12 +60,18 @@ export async function POST(
       return NextResponse.json({ error: "Invalid ticket ID format" }, { status: 400 })
     }
 
-    const body = await request.json()
-    const { message } = body
+    const body = await request.json().catch(() => null)
+    if (!body) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 })
+    }
 
-    if (!message || !message.trim()) {
+    // Mirror the customer-side schema: 1-5000 chars. Without this cap an
+    // admin reply could be arbitrarily large and the customer's ticket
+    // fetch would render the whole blob client-side.
+    const parsed = ticketMessageSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Message is required" },
+        { error: parsed.error.issues[0]?.message ?? "Invalid message" },
         { status: 400 }
       )
     }
@@ -76,7 +82,7 @@ export async function POST(
       .insert({
         ticket_id: ticketId,
         user_id: user.id,
-        message: message.trim(),
+        message: parsed.data.message.trim(),
         is_admin: true,
       })
       .select()

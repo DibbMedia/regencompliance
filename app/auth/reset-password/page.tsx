@@ -45,33 +45,48 @@ export default function ResetPasswordPage() {
   })
 
   useEffect(() => {
-    // Supabase automatically picks up the recovery token from the URL hash
-    // and establishes a session via onAuthStateChange
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setReady(true)
+    let cancelled = false
+    let fallback: ReturnType<typeof setTimeout> | null = null
+
+    const finalizeReady = () => {
+      if (cancelled) return
+      if (fallback) {
+        clearTimeout(fallback)
+        fallback = null
+      }
+      setReady(true)
+    }
+
+    // Supabase processes the recovery token from the URL hash and emits
+    // PASSWORD_RECOVERY when the session is ready. Listen for that AND
+    // poll getSession in case the user reloaded post-recovery.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY" || (event === "INITIAL_SESSION" && session)) {
+        finalizeReady()
       }
     })
 
-    // Also check if we already have a session (e.g. page reload)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setReady(true)
-      } else {
-        // Give a moment for the hash to be processed
-        setTimeout(() => {
-          supabase.auth.getSession().then(({ data: { session: s } }) => {
-            if (s) {
-              setReady(true)
-            } else {
-              setSessionError(true)
-            }
-          })
-        }, 2000)
-      }
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) finalizeReady()
     })
 
-    return () => subscription.unsubscribe()
+    // Long fallback: if the hash hasn't processed in 8 seconds (slow
+    // network, broken JS), THEN show the invalid-link state. Old code
+    // bailed at 2s which flickered "Invalid link" on slow connections.
+    fallback = setTimeout(() => {
+      if (cancelled) return
+      void supabase.auth.getSession().then(({ data: { session } }) => {
+        if (cancelled) return
+        if (session) finalizeReady()
+        else setSessionError(true)
+      })
+    }, 8000)
+
+    return () => {
+      cancelled = true
+      if (fallback) clearTimeout(fallback)
+      subscription.unsubscribe()
+    }
   }, [supabase.auth])
 
   async function handleSubmit(data: ResetPasswordInput) {

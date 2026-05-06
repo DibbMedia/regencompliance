@@ -45,7 +45,7 @@ export default async function DashboardLayout({
   return (
     <SidebarProvider>
       <NavigationProgress />
-      <div className="flex min-h-screen w-full bg-[#0a0a0a]">
+      <div className="flex min-h-[100dvh] w-full bg-[#0a0a0a]">
         <DashboardSidebar
           clinicName={profile?.clinic_name}
           userEmail={user.email}

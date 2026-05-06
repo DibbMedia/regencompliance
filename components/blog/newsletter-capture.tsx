@@ -48,12 +48,11 @@ export function NewsletterCapture({
         return
       }
 
+      // Uniform success message - revealing alreadySubscribed lets an
+      // attacker enumerate which emails are on the list. Send the same
+      // wording whether the email is new or already subscribed.
       setStatus("success")
-      setMessage(
-        json.alreadySubscribed
-          ? "You're already on the list."
-          : "You're in. Check your inbox for the next issue."
-      )
+      setMessage("You're in. Check your inbox for the next issue.")
       setEmail("")
     } catch {
       setStatus("error")

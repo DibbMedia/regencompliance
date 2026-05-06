@@ -12,7 +12,8 @@ export function HelpButton() {
       href="/dashboard/help"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
-      className="fixed bottom-6 right-6 z-[90] flex h-12 w-12 items-center justify-center rounded-full bg-[#55E039] text-[#0a0a0a] shadow-lg shadow-[#55E039]/20 hover:shadow-[#55E039]/40 hover:scale-105 transition-all duration-200"
+      className="fixed right-6 z-[90] flex h-12 w-12 items-center justify-center rounded-full bg-[#55E039] text-[#0a0a0a] shadow-lg shadow-[#55E039]/20 hover:shadow-[#55E039]/40 hover:scale-105 transition-all duration-200"
+      style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
     >
       <HelpCircle className="h-5 w-5" />
       {showTooltip && (

@@ -60,8 +60,11 @@ export async function POST(request: Request) {
     if (error) {
       // Postgres unique_violation
       if (error.code === "23505") {
-        // Idempotent: pretend success so we don't leak which emails exist
-        return NextResponse.json({ success: true, alreadyOnList: true })
+        // Idempotent: return uniform success. The previous response
+        // included alreadyOnList:true which itself leaked existence -
+        // a probe could see the boolean and confirm the email was
+        // already in the table.
+        return NextResponse.json({ success: true })
       }
       console.error("Waitlist insert error:", error)
       return NextResponse.json(

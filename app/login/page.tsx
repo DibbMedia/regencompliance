@@ -123,11 +123,12 @@ function LoginContent() {
       setLoading(false)
       const body = await res.json().catch(() => ({}))
       const msg = body.error || "Signup failed. Please try again."
-      if (typeof msg === "string" && msg.toLowerCase().includes("already registered")) {
-        setFormError("An account with this email already exists. Try logging in.")
-      } else {
-        setFormError(msg)
-      }
+      // The signup endpoint deliberately returns a generic error to prevent
+      // user enumeration, so we can't tell here whether the email was
+      // already in use. Append the "try logging in" nudge unconditionally
+      // so existing-account users have a path forward without leaking
+      // which case they hit.
+      setFormError(`${msg} If you already have an account, try logging in instead.`)
       return
     }
 

@@ -194,7 +194,7 @@ export function BlogIndex({
       <MarketingBg />
       <MarketingHeader />
 
-      <main id="main-content" className="relative z-10">
+      <main className="relative z-10">
         <header className="pt-32 pb-10 sm:pt-36">
           <div className="mx-auto max-w-6xl px-6">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#55E039]">

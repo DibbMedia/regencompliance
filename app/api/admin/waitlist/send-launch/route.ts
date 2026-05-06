@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server"
-import { verifyAdmin } from "@/lib/admin"
+import { verifyDeveloperAdmin } from "@/lib/admin"
 import { sendEmail } from "@/lib/email"
 import { renderLaunchEmail, LAUNCH_EMAIL_SUBJECT } from "@/lib/emails/launch-announcement"
 
 export const maxDuration = 300
 
 export async function POST() {
-  const auth = await verifyAdmin()
+  // Developer-only: a compromised support admin should not be able to
+  // broadcast to the entire waitlist. Combined with the per-email idempotency
+  // (launch_email_sent_at is set after first send), the blast radius is
+  // bounded but the action is still high-impact.
+  const auth = await verifyDeveloperAdmin()
   if ("error" in auth) return auth.error
 
   const { serviceClient } = auth

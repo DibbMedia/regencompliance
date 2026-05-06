@@ -78,7 +78,7 @@
 | Threat | Mitigation |
 |---|---|
 | Spam flooding | Per-IP rate limit (5/10min) + global cap (200-500/hr) |
-| User enumeration via duplicate detection | Idempotent success response on 23505 ("alreadyOnList" / "alreadySubscribed") never reveals whether email pre-existed |
+| User enumeration via duplicate detection | Idempotent uniform `{ success: true }` response on 23505 - the route returns identical shape whether the row was inserted or already existed (no `alreadyOnList` / `alreadySubscribed` flag) |
 | XSS via name/email | zod schema + React auto-escape + CSP |
 
 ### 6. Cron pipelines

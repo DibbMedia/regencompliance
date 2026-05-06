@@ -124,7 +124,7 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[#0a0a0a]">
+      <div className="flex min-h-[100dvh] w-full bg-[#0a0a0a]">
         <Sidebar>
           <SidebarHeader className="border-b border-white/[0.06] px-5 py-4">
             <Link href="/admin" className="flex items-center gap-3 group">

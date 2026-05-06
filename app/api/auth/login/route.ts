@@ -51,6 +51,10 @@ export async function POST(request: Request) {
   const { email, password } = parsed.data
 
   // 3. Pre-check lockout. Locked accounts skip the Supabase call entirely.
+  // Don't expose remainingAttempts or lockedUntil until the lockout
+  // actually triggers - they reveal whether the email exists ("Account
+  // locked" with a specific timestamp tells an attacker the email is
+  // real).
   const preCheck = await checkLoginAllowed(email)
   if (!preCheck.allowed) {
     logAudit({
@@ -62,10 +66,8 @@ export async function POST(request: Request) {
     })
     return NextResponse.json(
       {
-        error: "Account temporarily locked due to too many failed attempts.",
+        error: "Too many failed attempts. Try again later.",
         allowed: false,
-        remainingAttempts: 0,
-        lockedUntil: preCheck.lockedUntil,
       },
       { status: 401 },
     )
@@ -87,15 +89,16 @@ export async function POST(request: Request) {
       ip_address: ip,
       user_agent: userAgent,
     })
-    // Generic message - do not leak whether the email exists. Supabase
-    // typically returns "Invalid login credentials" uniformly, but we
-    // normalize in case that changes.
+    // Generic message + suppress lockout details until the user is
+    // actually locked. Returning lockedUntil on every 401 lets an
+    // attacker enumerate emails by watching for the timestamp shape.
     return NextResponse.json(
       {
         error: "Invalid email or password.",
         allowed: after.allowed,
-        remainingAttempts: after.remainingAttempts,
-        lockedUntil: after.lockedUntil,
+        ...(after.allowed
+          ? {}
+          : { lockedUntil: after.lockedUntil }),
       },
       { status: 401 },
     )
