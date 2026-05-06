@@ -144,6 +144,9 @@ export default function ScannerPage() {
       try {
         const decoded = decodeURIComponent(prefill)
         if (decoded.trim()) {
+          if (decoded.length > 5000) {
+            toast.info("Pre-filled content was trimmed to 5,000 characters.")
+          }
           setText(decoded.slice(0, 5000))
           setScanMode("paste")
           return
@@ -586,7 +589,19 @@ export default function ScannerPage() {
               <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[#55E039]/0 via-[#55E039]/0 to-[#55E039]/0 group-focus-within:from-[#55E039]/20 group-focus-within:via-[#55E039]/10 group-focus-within:to-[#55E039]/20 transition-all duration-500 blur-[1px]" />
               <Textarea
                 value={text}
-                onChange={(e) => setText(e.target.value.slice(0, 10000))}
+                onChange={(e) => {
+                  const next = e.target.value
+                  if (next.length > 10000) {
+                    // Surface the truncation so users know their last 2K of
+                    // pasted copy didn't make it. Once per overflow event.
+                    if (text.length <= 10000) {
+                      toast.warning("Trimmed to 10,000 characters. Split larger copy into separate scans.")
+                    }
+                    setText(next.slice(0, 10000))
+                  } else {
+                    setText(next)
+                  }
+                }}
                 placeholder="Paste your website copy, social caption, ad text, email, or any marketing content here..."
                 className="relative min-h-[140px] sm:min-h-[220px] resize-y bg-white/[0.03] border-white/10 rounded-xl text-white/90 placeholder:text-white/30 focus-visible:border-[#55E039]/30 focus-visible:ring-[#55E039]/10 transition-all duration-300"
               />

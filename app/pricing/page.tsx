@@ -445,27 +445,27 @@ export default function PricingPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">FDA warning letter legal response</span>
-                  <span className="text-sm font-bold text-red-400">$50,000 - $150,000</span>
+                  <span className="text-sm font-bold text-red-300">$50,000 - $150,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">FTC consent decree compliance</span>
-                  <span className="text-sm font-bold text-red-400">$100,000 - $500,000</span>
+                  <span className="text-sm font-bold text-red-300">$100,000 - $500,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Website takedown + rebuilding</span>
-                  <span className="text-sm font-bold text-red-400">$15,000 - $40,000</span>
+                  <span className="text-sm font-bold text-red-300">$15,000 - $40,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Lost revenue during remediation</span>
-                  <span className="text-sm font-bold text-red-400">$50,000 - $200,000</span>
+                  <span className="text-sm font-bold text-red-300">$50,000 - $200,000</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
                   <span className="text-sm text-white/60">Reputation damage (est. patient loss)</span>
-                  <span className="text-sm font-bold text-red-400">Incalculable</span>
+                  <span className="text-sm font-bold text-red-300">Incalculable</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-sm font-extrabold text-white">Potential total exposure</span>
-                  <span className="text-lg font-extrabold text-red-400">$215,000 - $890,000</span>
+                  <span className="text-lg font-extrabold text-red-300">$215,000 - $890,000</span>
                 </div>
               </div>
             </div>

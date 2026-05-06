@@ -521,7 +521,7 @@ export default function FeaturesPage() {
               {
                 n: "04",
                 title: "Severity + score",
-                desc: "Violations are classified as High / Medium / Low risk based on the original enforcement source and contextual severity. A 0–100 compliance score rolls up all flags, weighted by risk level and content length.",
+                desc: "Violations are classified as High / Medium / Low risk based on the original enforcement source and contextual severity. A 0-100 compliance score rolls up all flags, weighted by risk level and content length.",
               },
               {
                 n: "05",

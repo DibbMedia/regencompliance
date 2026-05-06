@@ -104,12 +104,18 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
   const statsKey = waitlistLastSeen
     ? `/api/admin/stats?waitlistSince=${encodeURIComponent(waitlistLastSeen)}`
     : null
-  const { data: stats, mutate: mutateStats } = useSWR(statsKey, fetcher, {
+  const { data: stats, error: statsError, isLoading: statsLoading, mutate: mutateStats } = useSWR(statsKey, fetcher, {
     refreshInterval: 60000,
   })
 
   const openTicketCount = stats?.openTickets || 0
   const waitlistNewCount = stats?.waitlistNew || 0
+
+  // Drive the footer indicator off the actual /api/admin/stats poll
+  // instead of a hardcoded green dot. If SWR errors (auth issue, API
+  // outage) we surface that, not a fake "all good" signal.
+  const systemStatus: "online" | "loading" | "error" =
+    statsError ? "error" : statsLoading || !stats ? "loading" : "online"
 
   useEffect(() => {
     if (pathname?.startsWith("/admin/waitlist")) {
@@ -197,9 +203,21 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
 
           <SidebarFooter className="border-t border-white/[0.06] px-3 py-3 gap-2">
             <div className="flex items-center gap-2 rounded-lg bg-white/[0.03] border border-white/5 px-3 py-2">
-              <Zap className="h-3.5 w-3.5 text-[#55E039]" />
-              <span className="text-[11px] text-white/60">System Online</span>
-              <span className="ml-auto h-2 w-2 rounded-full bg-[#55E039] shadow-[0_0_6px_rgba(85,224,57,0.5)]" />
+              <Zap className={`h-3.5 w-3.5 ${
+                systemStatus === "online" ? "text-[#55E039]" :
+                systemStatus === "loading" ? "text-white/55" :
+                "text-red-400"
+              }`} />
+              <span className="text-[11px] text-white/60">
+                {systemStatus === "online" && "Stats live"}
+                {systemStatus === "loading" && "Loading stats..."}
+                {systemStatus === "error" && "Stats failed"}
+              </span>
+              <span className={`ml-auto h-2 w-2 rounded-full ${
+                systemStatus === "online" ? "bg-[#55E039] shadow-[0_0_6px_rgba(85,224,57,0.5)]" :
+                systemStatus === "loading" ? "bg-white/40" :
+                "bg-red-400 shadow-[0_0_6px_rgba(248,113,113,0.5)]"
+              }`} />
             </div>
             <Link
               href="/dashboard"

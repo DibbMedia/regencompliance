@@ -46,10 +46,27 @@ export default function AccountPage() {
 
       setEmail(user.email || "")
 
+      // Look up the team membership first - members need the workspace
+      // owner's profile to surface the right clinic name.
+      const { data: member } = await supabase
+        .from("team_members")
+        .select("role, profile_id")
+        .eq("user_id", user.id)
+        .maybeSingle()
+
+      if (member) setRole(member.role)
+
+      // For members, load the workspace owner's profile (the clinic they
+      // belong to). For owners, load their own. Pre-fix this always loaded
+      // the user's own profile, so members saw their (empty) clinic name.
+      const profileIdToLoad = member?.role === "member" && member.profile_id
+        ? member.profile_id
+        : user.id
+
       const { data: p } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user.id)
+        .eq("id", profileIdToLoad)
         .single()
 
       if (p) {
@@ -57,14 +74,6 @@ export default function AccountPage() {
         setClinicName(p.clinic_name || "")
         setTreatments(p.treatments || [])
       }
-
-      const { data: member } = await supabase
-        .from("team_members")
-        .select("role")
-        .eq("user_id", user.id)
-        .single()
-
-      if (member) setRole(member.role)
     }
     load()
   }, [supabase])

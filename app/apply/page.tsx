@@ -431,7 +431,7 @@ export default function BetaApplyPage() {
                         </>
                       ) : (
                         <>
-                          Submit application
+                          Apply for one of 25 founder seats
                           <ArrowRight className="h-4 w-4" />
                         </>
                       )}

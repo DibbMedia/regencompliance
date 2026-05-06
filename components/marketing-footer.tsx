@@ -73,7 +73,7 @@ export function MarketingFooter() {
           <div>
             <p className="text-xs font-bold text-white/70 uppercase tracking-[0.15em] mb-3">Trust</p>
             <p className="text-xs text-white/55 leading-relaxed">
-              Zero patient data. Daily rule updates. SOC-aligned data handling. Audit trail on every scan.
+              Zero patient data. Daily rule updates. SOC 2 controls in pre-audit; subprocessors are SOC 2 audited. Audit trail on every scan.
             </p>
           </div>
         </div>

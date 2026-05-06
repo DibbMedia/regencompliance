@@ -39,25 +39,30 @@ export function CookieConsent() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-[100] p-4 sm:p-6">
+    <div
+      className="fixed inset-x-0 z-[100] p-4 sm:p-6"
+      style={{ bottom: "env(safe-area-inset-bottom)" }}
+    >
       <div className="mx-auto max-w-3xl rounded-2xl bg-[#111111]/95 backdrop-blur-md border border-white/10 px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-[0_-4px_30px_rgba(0,0,0,0.5)]">
         <p className="text-sm text-white/70 leading-relaxed flex-1">
-          We use cookies to improve your experience. See our{" "}
+          We set a cookie to keep you logged in and use Vercel Analytics for
+          aggregate page-view counts. No third-party tracking pixels. Full
+          details in our{" "}
           <Link href="/privacy" className="text-[#55E039] hover:underline">
             Privacy Policy
-          </Link>{" "}
-          for details.
+          </Link>
+          .
         </p>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full sm:w-auto">
           <button
             onClick={() => handleConsent("declined")}
-            className="h-9 rounded-lg border border-white/10 bg-transparent px-5 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"
+            className="h-11 sm:h-9 rounded-lg border border-white/10 bg-transparent px-5 text-sm font-medium text-white/60 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"
           >
             Decline
           </button>
           <button
             onClick={() => handleConsent("accepted")}
-            className="h-9 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-bold text-[#0a0a0a] shadow-[0_2px_12px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer"
+            className="h-11 sm:h-9 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-bold text-[#0a0a0a] shadow-[0_2px_12px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer"
           >
             Accept
           </button>

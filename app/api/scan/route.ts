@@ -12,6 +12,7 @@ import { trackApiUsage } from "@/lib/api-costs"
 import { hashContent } from "@/lib/scan-cache"
 import { captureError } from "@/lib/error-tracking"
 import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
+import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 
 export async function POST(request: Request) {
   try {
@@ -84,17 +85,14 @@ export async function POST(request: Request) {
 
     const startTime = Date.now()
 
-    // Fetch active compliance rules
-    const { data: rules } = await supabase
-      .from("compliance_rules")
-      .select("id, banned_phrase, banned_phrase_variants, compliant_alternative, risk_level, applies_to, category")
-      .eq("is_active", true)
+    // Active compliance rules, cached in-process for 60s.
+    const rules = await getActiveComplianceRules(supabase)
 
     const treatments = profile.treatments || []
     // Scope rules to clinic's services: include general rules (empty applies_to) always;
     // include treatment-specific rules only if they overlap the clinic's treatments.
     // Fallback: if clinic hasn't selected any treatments yet, include all rules.
-    const allRules = (rules || []).filter((r) => {
+    const allRules = rules.filter((r) => {
       const appliesTo = r.applies_to || []
       if (appliesTo.length === 0) return true
       if (treatments.length === 0) return true

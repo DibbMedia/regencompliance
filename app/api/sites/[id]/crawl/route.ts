@@ -8,6 +8,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { createUserNotification } from "@/lib/notifications"
 import { isValidUUID } from "@/lib/validations"
 import { scanSitePages, type RuleForPrompt } from "@/lib/scan/run-site-crawl"
+import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 
 const MAX_PAGES_PER_CRAWL = 20
 
@@ -66,12 +67,9 @@ export async function POST(
       return NextResponse.json({ error: "Site not found" }, { status: 404 })
     }
 
-    const { data: rules } = await supabase
-      .from("compliance_rules")
-      .select("id, banned_phrase, banned_phrase_variants, compliant_alternative, risk_level, applies_to, category")
-      .eq("is_active", true)
+    const rules = await getActiveComplianceRules(supabase)
 
-    const rulesForPrompt: RuleForPrompt[] = (rules ?? []).map((r) => ({
+    const rulesForPrompt: RuleForPrompt[] = rules.map((r) => ({
       id: r.id,
       phrase: r.banned_phrase,
       variants: r.banned_phrase_variants,

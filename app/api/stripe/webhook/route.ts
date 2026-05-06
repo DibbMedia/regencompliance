@@ -41,7 +41,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 })
   }
 
-  const REPLAY_MAX_AGE_SECONDS = 60 * 60
+  // Replay protection. Stripe queues events up to 24h on outage, so a
+  // 60-min cap silently drops legit subscription events during a Stripe
+  // delivery backlog. 24h matches Stripe's max retention; idempotency
+  // via webhook_events covers actual replay attacks.
+  const REPLAY_MAX_AGE_SECONDS = 24 * 60 * 60
   const eventAgeSeconds = Math.floor(Date.now() / 1000) - event.created
   if (eventAgeSeconds > REPLAY_MAX_AGE_SECONDS) {
     console.warn(

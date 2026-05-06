@@ -2,6 +2,7 @@ export const maxDuration = 60
 
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
+import { createHmac, timingSafeEqual } from "node:crypto"
 import { anthropic } from "@/lib/anthropic"
 import { createServiceClient } from "@/lib/supabase/server"
 import { scanSchema } from "@/lib/validations"
@@ -19,13 +20,72 @@ interface DemoCookie {
   started_at: string
 }
 
+// HMAC-sign demo cookies so users can't reset scans_used by editing the
+// cookie (or replay an older lower-count payload). Falls back to the
+// session secret if a dedicated key isn't set; both are server-only.
+function demoSecret(): string {
+  return (
+    process.env.DEMO_COOKIE_SECRET?.trim() ||
+    process.env.NEXTAUTH_SECRET?.trim() ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() ||
+    ""
+  )
+}
+
+function signPayload(payload: string): string {
+  return createHmac("sha256", demoSecret()).update(payload).digest("base64url")
+}
+
+function encodeDemoCookie(state: DemoCookie): string {
+  const payload = JSON.stringify(state)
+  const sig = signPayload(payload)
+  return `${Buffer.from(payload).toString("base64url")}.${sig}`
+}
+
+function decodeDemoCookie(raw: string | undefined): DemoCookie | null {
+  if (!raw || !demoSecret()) return null
+  const [body, sig] = raw.split(".")
+  if (!body || !sig) return null
+  let payload: string
+  try {
+    payload = Buffer.from(body, "base64url").toString("utf8")
+  } catch {
+    return null
+  }
+  const expected = signPayload(payload)
+  // Constant-time compare so a forger can't time-attack the suffix.
+  const sigBuf = Buffer.from(sig)
+  const expBuf = Buffer.from(expected)
+  if (sigBuf.length !== expBuf.length || !timingSafeEqual(sigBuf, expBuf)) {
+    return null
+  }
+  try {
+    const parsed = JSON.parse(payload)
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      typeof parsed.scans_used !== "number" ||
+      !Number.isFinite(parsed.scans_used) ||
+      parsed.scans_used < 0 ||
+      parsed.scans_used > MAX_DEMO_SCANS ||
+      typeof parsed.started_at !== "string"
+    ) return null
+    return { scans_used: Math.floor(parsed.scans_used), started_at: parsed.started_at }
+  } catch {
+    return null
+  }
+}
+
 function getDemoState(cookieValue: string | undefined): DemoCookie {
+  // Try the new signed format first. Fall back to plain-JSON for cookies
+  // set by older clients - they expire over the next 90d.
+  const signed = decodeDemoCookie(cookieValue)
+  if (signed) return signed
   if (!cookieValue) {
     return { scans_used: 0, started_at: new Date().toISOString() }
   }
   try {
     const parsed = JSON.parse(cookieValue)
-    // Validate cookie structure
     if (
       typeof parsed !== "object" ||
       parsed === null ||
@@ -170,7 +230,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       },
     })
 
-    res.cookies.set("regen_demo", JSON.stringify(newDemoState), {
+    res.cookies.set("regen_demo", encodeDemoCookie(newDemoState), {
       httpOnly: true,
       secure: true,
       sameSite: "lax",

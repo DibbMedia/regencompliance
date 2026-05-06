@@ -23,6 +23,7 @@ import { assertSafeUrl } from "@/lib/ssrf"
 import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { trackApiUsage } from "@/lib/api-costs"
+import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 import { sendToGhl } from "@/lib/ghl"
 import { captureError } from "@/lib/error-tracking"
 
@@ -115,11 +116,14 @@ export async function POST(request: Request) {
     }
 
     // Per-domain throttle so a script can't hammer one URL through different IPs.
+    // Window is 6h (was 24h - too aggressive for legit prospects who fix
+    // copy and want to verify). Combined with per-IP/hour and per-email/day
+    // this is enough to prevent abuse while letting real users iterate.
     const host = new URL(website_url).hostname.toLowerCase()
-    const perHost = await checkRateLimit(`free-audit-host:${host}`, 5, 24 * 60 * 60 * 1000)
+    const perHost = await checkRateLimit(`free-audit-host:${host}`, 5, 6 * 60 * 60 * 1000)
     if (!perHost.allowed) {
       return NextResponse.json(
-        { error: "This domain has hit its free-audit cap for today." },
+        { error: "This domain has hit its free-audit cap. Try again in a few hours." },
         { status: 429 },
       )
     }
@@ -147,12 +151,10 @@ export async function POST(request: Request) {
 
     // Active rules. No treatment scoping (we don't know the prospect's services
     // yet) - fall back to the full active set so the teaser is comprehensive.
-    const { data: rules } = await supabase
-      .from("compliance_rules")
-      .select("id, banned_phrase, banned_phrase_variants, compliant_alternative, risk_level, applies_to, category")
-      .eq("is_active", true)
+    // Cached in-process for 60s to absorb the per-request DB cost.
+    const rules = await getActiveComplianceRules(supabase)
 
-    const rulesForPrompt = (rules ?? []).map((r) => ({
+    const rulesForPrompt = rules.map((r) => ({
       id: r.id,
       phrase: r.banned_phrase,
       variants: r.banned_phrase_variants,

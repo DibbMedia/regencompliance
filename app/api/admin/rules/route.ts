@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin, verifyDeveloperAdmin } from "@/lib/admin"
 import { adminSearchSchema, adminRulePatchSchema } from "@/lib/validations"
+import { invalidateComplianceRules } from "@/lib/compliance-rules-cache"
 
 export async function GET(request: Request) {
   try {
@@ -162,6 +163,7 @@ export async function POST(request: Request) {
       )
     }
 
+    invalidateComplianceRules()
     return NextResponse.json({ rule: data }, { status: 201 })
   } catch (error) {
     console.error("Admin rules POST error:", error)
@@ -205,6 +207,7 @@ export async function PATCH(request: Request) {
       )
     }
 
+    invalidateComplianceRules()
     return NextResponse.json({ rule: data })
   } catch (error) {
     console.error("Admin rules PATCH error:", error)

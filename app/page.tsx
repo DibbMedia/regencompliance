@@ -433,7 +433,7 @@ export default function LandingPage() {
           <div className="grid gap-5 sm:grid-cols-3">
             {[
               { n: "01", title: "Paste your content", desc: "Website copy, social posts, ad text, emails, call scripts - anything that represents your clinic publicly." },
-              { n: "02", title: "Review your score", desc: "Instant 0–100 compliance score with every flagged phrase highlighted by risk level and clearly explained." },
+              { n: "02", title: "Review your score", desc: "Instant 0-100 compliance score with every flagged phrase highlighted by risk level and clearly explained." },
               { n: "03", title: "Rewrite automatically", desc: "AI rewrites your entire content to meet FDA/FTC standards - keeping your tone, message, and voice intact." },
             ].map((s) => (
               <div key={s.n} className="rounded-2xl bg-white/[0.03] border border-white/10 p-7 hover:border-[#55E039]/20 hover:bg-white/[0.06] transition-all duration-300 group">
@@ -480,7 +480,7 @@ export default function LandingPage() {
                 <h3 className="text-base font-bold text-white group-hover:text-[#55E039] transition-colors">{t.title}</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{t.desc}</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
-                  Learn more
+                  Open the {t.title.toLowerCase()}
                   <ChevronRight className="h-3 w-3" />
                 </span>
               </Link>
@@ -506,7 +506,7 @@ export default function LandingPage() {
                 <h3 className="text-base font-bold text-white">{f.title}</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{f.desc}</p>
                 <Link href="/features" className="inline-flex items-center gap-1 mt-4 text-xs text-[#55E039]/60 hover:text-[#55E039] transition-colors font-medium">
-                  Learn more <ChevronRight className="h-3 w-3" />
+                  See all features <ChevronRight className="h-3 w-3" />
                 </Link>
               </div>
             ))}
