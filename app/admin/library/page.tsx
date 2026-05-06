@@ -66,7 +66,7 @@ export default function AdminLibraryPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
+      <div className="hidden md:block rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 text-left">
@@ -140,6 +140,65 @@ export default function AdminLibraryPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile card stack */}
+      <div className="md:hidden space-y-2">
+        {isLoading ? (
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55">
+            <Loader2 className="h-5 w-5 mx-auto animate-spin" />
+          </div>
+        ) : actions.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] py-10 px-6 text-center text-white/55">
+            <Library className="h-6 w-6 mx-auto mb-2 text-white/30" />
+            No actions.
+          </div>
+        ) : (
+          actions.map((a) => (
+            <div key={a.id} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-white/70">
+                  {a.agency ?? "-"}
+                </span>
+                {a.is_published ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-[#55E039]/20 bg-[#55E039]/10 px-2 py-0.5 text-[10px] font-medium text-[#55E039]">
+                    <Eye className="h-3 w-3" /> published
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-medium text-white/55">
+                    <EyeOff className="h-3 w-3" /> hidden
+                  </span>
+                )}
+              </div>
+              <p className="text-sm font-semibold text-white">{a.company_name ?? a.source_name}</p>
+              <p className="text-xs text-white/55 mt-1 line-clamp-3">
+                {a.summary ?? <span className="italic text-white/40">Missing summary</span>}
+              </p>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/55">
+                <span>
+                  {a.source_date ? new Date(a.source_date).toLocaleDateString() : "-"} - {a.rule_count} rule{a.rule_count === 1 ? "" : "s"}
+                </span>
+                <div className="flex gap-2">
+                  <a
+                    href={a.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-[11px] text-white/70 hover:bg-white/[0.06]"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    Source
+                  </a>
+                  <button
+                    onClick={() => togglePublish(a)}
+                    className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-[11px] text-white/70 hover:bg-white/[0.08]"
+                  >
+                    {a.is_published ? "Unpublish" : "Publish"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )

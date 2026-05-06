@@ -339,13 +339,13 @@ export default function AdminRulesPage() {
               <th className="px-4 py-3 text-xs font-medium text-white/40">
                 Banned Phrase
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Alternative
               </th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">
                 Risk
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Category
               </th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">
@@ -392,8 +392,16 @@ export default function AdminRulesPage() {
                   </td>
                   <td className="px-4 py-3 font-medium text-white/80">
                     {rule.banned_phrase}
+                    {/* Mobile-only: surface alternative + category since
+                        their columns are hidden at this breakpoint. */}
+                    <div className="lg:hidden mt-0.5 text-[11px] text-white/55 truncate">
+                      → {rule.compliant_alternative}
+                    </div>
+                    <div className="md:hidden mt-0.5 text-[11px] text-white/45">
+                      {rule.category}
+                    </div>
                   </td>
-                  <td className="px-4 py-3 text-white/50 max-w-xs truncate">
+                  <td className="hidden lg:table-cell px-4 py-3 text-white/50 max-w-xs truncate">
                     {rule.compliant_alternative}
                   </td>
                   <td className="px-4 py-3">
@@ -405,7 +413,7 @@ export default function AdminRulesPage() {
                       {rule.risk_level}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-white/50 text-xs">
+                  <td className="hidden md:table-cell px-4 py-3 text-white/50 text-xs">
                     {rule.category}
                   </td>
                   <td className="px-4 py-3">

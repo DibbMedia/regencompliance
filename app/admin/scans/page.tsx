@@ -174,19 +174,19 @@ export default function AdminScansPage() {
           <thead>
             <tr className="border-b border-white/10 text-left">
               <th className="px-4 py-3 text-xs font-medium text-white/40 w-8" />
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Date
               </th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">
                 User
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Content Type
               </th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">
                 Score
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Flags
               </th>
             </tr>
@@ -286,11 +286,16 @@ function ScanRow({
             <ChevronDown className="h-4 w-4 text-white/40" />
           )}
         </td>
-        <td className="px-4 py-3 text-white/50 text-xs">
+        <td className="hidden md:table-cell px-4 py-3 text-white/50 text-xs">
           {formatDate(scan.created_at)}
         </td>
-        <td className="px-4 py-3 text-white/80">{scan.user_email}</td>
-        <td className="px-4 py-3">
+        <td className="px-4 py-3 text-white/80">
+          {scan.user_email}
+          <div className="md:hidden mt-0.5 text-[11px] text-white/55">
+            {formatDate(scan.created_at)}
+          </div>
+        </td>
+        <td className="hidden lg:table-cell px-4 py-3">
           <span className="rounded-full bg-white/[0.05] border border-white/10 px-2.5 py-0.5 text-xs text-white/60 capitalize">
             {scan.content_type.replace(/_/g, " ")}
           </span>
@@ -298,7 +303,7 @@ function ScanRow({
         <td className="px-4 py-3">
           <ScoreBadge score={scan.compliance_score} />
         </td>
-        <td className="px-4 py-3">
+        <td className="hidden md:table-cell px-4 py-3">
           {scan.flag_count > 0 ? (
             <span className="inline-flex items-center gap-1 text-red-400">
               <AlertTriangle className="h-3 w-3" />

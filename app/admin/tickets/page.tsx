@@ -253,10 +253,10 @@ export default function AdminTicketsPage() {
           <thead>
             <tr className="border-b border-white/10 text-left">
               <th className="px-4 py-3 text-xs font-medium text-white/40 w-8" />
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 ID
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 User
               </th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">
@@ -265,13 +265,13 @@ export default function AdminTicketsPage() {
               <th className="px-4 py-3 text-xs font-medium text-white/40">
                 Status
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Priority
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Created
               </th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">
                 Updated
               </th>
             </tr>
@@ -382,23 +382,26 @@ function TicketRow({
             <ChevronDown className="h-4 w-4 text-white/40" />
           )}
         </td>
-        <td className="px-4 py-3 font-mono text-xs text-white/50">
+        <td className="hidden lg:table-cell px-4 py-3 font-mono text-xs text-white/50">
           {ticket.id.slice(0, 8)}
         </td>
-        <td className="px-4 py-3 text-white/80">{ticket.user_email}</td>
+        <td className="hidden md:table-cell px-4 py-3 text-white/80">{ticket.user_email}</td>
         <td className="px-4 py-3 max-w-[240px] truncate text-white/70">
           {ticket.subject}
+          {/* On mobile, surface the user email under the subject since
+              that column is hidden. */}
+          <div className="md:hidden mt-0.5 text-[11px] text-white/55 truncate">{ticket.user_email}</div>
         </td>
         <td className="px-4 py-3">
           <TicketStatusBadge status={ticket.status} />
         </td>
-        <td className="px-4 py-3">
+        <td className="hidden md:table-cell px-4 py-3">
           <PriorityBadge priority={ticket.priority} />
         </td>
-        <td className="px-4 py-3 text-white/40 text-xs">
+        <td className="hidden lg:table-cell px-4 py-3 text-white/40 text-xs">
           {formatDate(ticket.created_at)}
         </td>
-        <td className="px-4 py-3 text-white/40 text-xs">
+        <td className="hidden lg:table-cell px-4 py-3 text-white/40 text-xs">
           {formatDate(ticket.updated_at)}
         </td>
       </tr>

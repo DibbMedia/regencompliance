@@ -91,7 +91,7 @@ export default function AdminsPage() {
       </form>
       {err && <p className="text-sm text-red-400">{err}</p>}
 
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
+      <div className="hidden md:block rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 text-left">
@@ -148,6 +148,51 @@ export default function AdminsPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile card stack */}
+      <div className="md:hidden space-y-2">
+        {isLoading ? (
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/40">
+            <Loader2 className="h-5 w-5 mx-auto animate-spin" />
+          </div>
+        ) : (data?.admins ?? []).length === 0 ? (
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] py-8 px-6 text-center text-white/55">
+            <ShieldPlus className="h-6 w-6 mx-auto mb-2 text-white/30" />
+            No admins. Add the first one above.
+          </div>
+        ) : (
+          (data?.admins ?? []).map((a) => (
+            <div key={a.id} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-semibold text-white break-all flex-1">{a.email}</p>
+                <button
+                  onClick={() => remove(a.id, a.email)}
+                  aria-label={`Remove ${a.email}`}
+                  className="shrink-0 inline-flex items-center gap-1 rounded-md border border-red-500/30 bg-red-500/10 px-2.5 py-1.5 text-xs text-red-400 hover:bg-red-500/20"
+                >
+                  <Trash2 className="h-3 w-3" />
+                  Remove
+                </button>
+              </div>
+              <div className="mt-3 flex items-center gap-2 text-xs text-white/55">
+                <span className="font-bold uppercase tracking-wider">Role</span>
+                <select
+                  value={a.role}
+                  onChange={(e) => changeRole(a.id, e.target.value as "developer" | "support")}
+                  className="ml-auto rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 text-xs text-white"
+                >
+                  <option value="support" className="bg-[#0a0a0a]">support</option>
+                  <option value="developer" className="bg-[#0a0a0a]">developer</option>
+                </select>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-white/55">
+                <span>Added by: <span className="text-white/70">{a.added_by ?? "-"}</span></span>
+                <span>Added: <span className="text-white/70">{new Date(a.added_at).toLocaleDateString()}</span></span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )

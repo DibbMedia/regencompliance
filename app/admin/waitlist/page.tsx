@@ -167,8 +167,8 @@ export default function AdminWaitlistPage() {
         </Button>
       </form>
 
-      {/* Table */}
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
+      {/* Desktop / tablet table */}
+      <div className="hidden md:block rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 text-left">
@@ -235,6 +235,64 @@ export default function AdminWaitlistPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile card stack */}
+      <div className="md:hidden space-y-2">
+        {isLoading ? (
+          [...Array(3)].map((_, i) => (
+            <div key={i} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="h-4 w-3/5 animate-pulse rounded bg-white/[0.05]" />
+              <div className="mt-2 h-3 w-2/3 animate-pulse rounded bg-white/[0.05]" />
+            </div>
+          ))
+        ) : entries.length === 0 ? (
+          <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] py-12 px-6 text-center text-white/70">
+            <Mail className="h-8 w-8 mx-auto mb-2 text-white/35" />
+            No waitlist signups yet.
+          </div>
+        ) : (
+          entries.map((entry) => (
+            <div
+              key={entry.id}
+              className="rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:bg-white/[0.05] transition-colors"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-white truncate">{entry.name}</p>
+                  <a
+                    href={`mailto:${entry.email}`}
+                    className="text-xs text-white/70 hover:text-[#55E039] transition-colors break-all"
+                  >
+                    {entry.email}
+                  </a>
+                </div>
+                <button
+                  onClick={() => handleDelete(entry.id, entry.email)}
+                  disabled={deleting === entry.id}
+                  aria-label={`Remove ${entry.email}`}
+                  className="shrink-0 text-white/55 hover:text-red-400 transition-colors disabled:opacity-30 rounded p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60"
+                >
+                  {deleting === entry.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              <dl className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+                <div>
+                  <dt className="font-bold uppercase tracking-wider text-white/55">Source</dt>
+                  <dd className="text-white/70 mt-0.5">{entry.source || "-"}</dd>
+                </div>
+                <div>
+                  <dt className="font-bold uppercase tracking-wider text-white/55">Joined</dt>
+                  <dd className="text-white/70 mt-0.5">{formatDate(entry.created_at)}</dd>
+                </div>
+              </dl>
+            </div>
+          ))
+        )}
       </div>
 
       {/* Pagination */}

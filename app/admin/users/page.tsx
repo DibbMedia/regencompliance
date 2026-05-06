@@ -176,11 +176,11 @@ export default function AdminUsersPage() {
             <tr className="border-b border-white/10 text-left">
               <th className="px-4 py-3 text-xs font-medium text-white/40 w-8" />
               <th className="px-4 py-3 text-xs font-medium text-white/40">Email</th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">Clinic</th>
+              <th className="hidden md:table-cell px-4 py-3 text-xs font-medium text-white/40">Clinic</th>
               <th className="px-4 py-3 text-xs font-medium text-white/40">Status</th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">Scans</th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">Last Active</th>
-              <th className="px-4 py-3 text-xs font-medium text-white/40">Signed Up</th>
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">Scans</th>
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">Last Active</th>
+              <th className="hidden lg:table-cell px-4 py-3 text-xs font-medium text-white/40">Signed Up</th>
               <th className="px-4 py-3 text-xs font-medium text-white/40 text-right">View As</th>
             </tr>
           </thead>
@@ -302,19 +302,26 @@ function UserRow({
         <td className="px-4 py-3 cursor-pointer" onClick={onToggle}>
           {isExpanded ? <ChevronUp className="h-4 w-4 text-white/40" /> : <ChevronDown className="h-4 w-4 text-white/40" />}
         </td>
-        <td className="px-4 py-3 text-white/80 cursor-pointer" onClick={onToggle}>{user.email}</td>
-        <td className="px-4 py-3 text-white/50 cursor-pointer" onClick={onToggle}>{user.clinic_name || "-"}</td>
+        <td className="px-4 py-3 text-white/80 cursor-pointer" onClick={onToggle}>
+          {user.email}
+          {/* Mobile-only sub-line shows clinic name + age inline since
+              those columns are hidden at this size. */}
+          <div className="md:hidden mt-0.5 text-[11px] text-white/55">
+            {user.clinic_name || "-"} - {new Date(user.created_at).toLocaleDateString()}
+          </div>
+        </td>
+        <td className="hidden md:table-cell px-4 py-3 text-white/50 cursor-pointer" onClick={onToggle}>{user.clinic_name || "-"}</td>
         <td className="px-4 py-3 cursor-pointer" onClick={onToggle}><StatusBadge status={user.subscription_status} /></td>
-        <td className="px-4 py-3 cursor-pointer" onClick={onToggle}>
+        <td className="hidden lg:table-cell px-4 py-3 cursor-pointer" onClick={onToggle}>
           <span className="inline-flex items-center gap-1">
             <ScanSearch className="h-3 w-3 text-white/30" />
             <span className="text-white/70">{user.scan_count}</span>
           </span>
         </td>
-        <td className="px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
+        <td className="hidden lg:table-cell px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
           {user.last_scan_at ? formatRelative(user.last_scan_at) : "-"}
         </td>
-        <td className="px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
+        <td className="hidden lg:table-cell px-4 py-3 text-white/40 text-xs cursor-pointer" onClick={onToggle}>
           {new Date(user.created_at).toLocaleDateString()}
         </td>
         <td className="px-4 py-3 text-right whitespace-nowrap">
