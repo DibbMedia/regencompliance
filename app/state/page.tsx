@@ -140,8 +140,8 @@ export default function StateIndexPage() {
             <p className="text-base text-white/75 leading-relaxed mb-4">
               We start with the highest-enforcement states - California, Texas, Florida,
               New York - plus the next tier of heavily-regulated states. Additional states
-              are added as our rule set's state-specific content expands. If your state
-              isn't listed yet, federal rules still apply, and the most common
+              are added as our rule set&apos;s state-specific content expands. If your state
+              isn&apos;t listed yet, federal rules still apply, and the most common
               state-level patterns (medical board advertising rules, state AG consumer
               protection, telehealth licensure) track similar structures across most
               states.

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { verifyAdmin, verifyDeveloperAdmin } from "@/lib/admin"
+import { verifyDeveloperAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 

@@ -186,7 +186,7 @@ export default function SpecialtiesIndexPage() {
                 </h2>
               </div>
               <p className="text-base sm:text-[17px] text-white/80 leading-relaxed mb-4">
-                Most compliance tools model 'healthcare' as a single category. That
+                Most compliance tools model &apos;healthcare&apos; as a single category. That
                 approximation misses the specialty-specific enforcement that drives real
                 warning letters. A med spa marketing Botox faces completely different
                 rules than a regen clinic marketing PRP, which faces completely different
@@ -236,10 +236,10 @@ export default function SpecialtiesIndexPage() {
       <section className="relative py-14">
         <div className="relative mx-auto max-w-2xl px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Don't see your specialty?
+            Don&apos;t see your specialty?
           </h2>
           <p className="mt-4 text-base text-white/70 max-w-md mx-auto leading-relaxed">
-            The rule set expands regularly. If your specialty isn't listed, the core
+            The rule set expands regularly. If your specialty isn&apos;t listed, the core
             rules still apply - and new specialty pages go live as the rule set grows.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3 sm:gap-4">

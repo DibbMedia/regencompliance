@@ -3,7 +3,6 @@ export const maxDuration = 60
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { anthropic } from "@/lib/anthropic"
-import { createServiceClient } from "@/lib/supabase/server"
 import { trackApiUsage } from "@/lib/api-costs"
 import { captureError } from "@/lib/error-tracking"
 import { checkRateLimit } from "@/lib/rate-limit"

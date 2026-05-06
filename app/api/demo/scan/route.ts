@@ -4,7 +4,6 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { createHmac, timingSafeEqual } from "node:crypto"
 import { anthropic } from "@/lib/anthropic"
-import { createServiceClient } from "@/lib/supabase/server"
 import { scanSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { trackApiUsage } from "@/lib/api-costs"
@@ -137,7 +136,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
-    const { text, content_type } = parsed.data
+    const { text } = parsed.data
 
     const phi = detectPhi(text)
     if (phi.detected) {

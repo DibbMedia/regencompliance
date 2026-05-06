@@ -125,7 +125,7 @@ export default function Body() {
         reason="Single-cycle pricing without disclosing typical total-treatment context creates expectations gap. The compliant version preserves the entry-point pricing while setting realistic expectations."
       />
 
-      <H3>Clear what's-included disclosure</H3>
+      <H3>Clear what&apos;s-included disclosure</H3>
       <BeforeAfter
         bad="Full Brazilian butt lift package $4,999"
         good="Brazilian butt lift package $4,999 includes surgeon fee, anesthesia, and facility fee for [specific procedure scope]. Additional costs may apply for [list typical add-ons]. Detailed pricing is discussed at consultation."

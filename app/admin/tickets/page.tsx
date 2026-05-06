@@ -310,7 +310,6 @@ export default function AdminTicketsPage() {
                   onPriorityChange={(newPriority) =>
                     updateTicket(ticket.id, { priority: newPriority })
                   }
-                  queryKey={`/api/admin/tickets?${params}`}
                 />
               ))
             )}
@@ -360,14 +359,12 @@ function TicketRow({
   onToggle,
   onStatusChange,
   onPriorityChange,
-  queryKey,
 }: {
   ticket: Ticket
   isExpanded: boolean
   onToggle: () => void
   onStatusChange: (status: string) => void
   onPriorityChange: (priority: string) => void
-  queryKey: string
 }) {
   return (
     <>
@@ -412,7 +409,6 @@ function TicketRow({
               ticket={ticket}
               onStatusChange={onStatusChange}
               onPriorityChange={onPriorityChange}
-              queryKey={queryKey}
             />
           </td>
         </tr>
@@ -427,12 +423,10 @@ function TicketDetailPanel({
   ticket,
   onStatusChange,
   onPriorityChange,
-  queryKey,
 }: {
   ticket: Ticket
   onStatusChange: (status: string) => void
   onPriorityChange: (priority: string) => void
-  queryKey: string
 }) {
   const {
     data,

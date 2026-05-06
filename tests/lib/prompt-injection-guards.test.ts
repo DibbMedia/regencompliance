@@ -11,16 +11,27 @@ import { join } from "path"
 // These tests statically assert the guard string is still present in
 // every scan / crawl / monitor handler. A refactor that drops or
 // paraphrases the guard fails CI.
+//
+// Routes split into two groups:
+//   - INLINE: build the system prompt directly in the route file.
+//   - DELEGATED: call into a shared helper that owns the prompt.
+// For delegated routes we verify they (a) import the helper and (b)
+// the helper itself contains the guards.
 
-const ROUTES = [
+const INLINE_ROUTES = [
   "app/api/scan/route.ts",
   "app/api/scan-url/route.ts",
   "app/api/scan-file/route.ts",
   "app/api/demo/scan/route.ts",
+]
+
+const DELEGATED_ROUTES = [
   "app/api/sites/[id]/scan/route.ts",
   "app/api/sites/[id]/crawl/route.ts",
   "app/api/cron/site-monitor/route.ts",
 ]
+
+const SCAN_HELPER = "lib/scan/run-site-crawl.ts"
 
 const GUARD_PHRASES = [
   // The preamble tells Claude to ignore in-content instructions.
@@ -29,8 +40,8 @@ const GUARD_PHRASES = [
   /Return ONLY valid JSON|Return ONLY a JSON/i,
 ]
 
-describe("prompt-injection guards — every scan path", () => {
-  for (const route of ROUTES) {
+describe("prompt-injection guards — inline scan paths", () => {
+  for (const route of INLINE_ROUTES) {
     describe(route, () => {
       const content = readFileSync(join(process.cwd(), route), "utf8")
 
@@ -43,6 +54,32 @@ describe("prompt-injection guards — every scan path", () => {
       it("declares Claude's role explicitly (compliance expert)", () => {
         expect(content).toMatch(/regulatory compliance expert|healthcare marketing compliance/i)
       })
+    })
+  }
+})
+
+describe("prompt-injection guards — shared scan helper", () => {
+  const helperContent = readFileSync(join(process.cwd(), SCAN_HELPER), "utf8")
+
+  for (const guard of GUARD_PHRASES) {
+    it(`${SCAN_HELPER} contains guard phrase matching ${guard.source}`, () => {
+      expect(helperContent).toMatch(guard)
+    })
+  }
+
+  it(`${SCAN_HELPER} declares Claude's role explicitly`, () => {
+    expect(helperContent).toMatch(/regulatory compliance expert|healthcare marketing compliance/i)
+  })
+})
+
+describe("prompt-injection guards — delegated routes import the helper", () => {
+  for (const route of DELEGATED_ROUTES) {
+    it(`${route} imports scanSitePages from ${SCAN_HELPER}`, () => {
+      const content = readFileSync(join(process.cwd(), route), "utf8")
+      // If the import goes away, the route is no longer covered by the
+      // helper-level guard test - fail loudly so the regression surfaces.
+      expect(content).toMatch(/from\s+["']@\/lib\/scan\/run-site-crawl["']/)
+      expect(content).toMatch(/scanSitePages/)
     })
   }
 })

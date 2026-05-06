@@ -234,7 +234,7 @@ export default function Body() {
 
       <H2 id="faqs">Frequently asked questions</H2>
 
-      <H3>Can I market telehealth services to patients in states where I'm not licensed?</H3>
+      <H3>Can I market telehealth services to patients in states where I&apos;m not licensed?</H3>
       <P>
         Generally no. State AGs have pursued practices that
         marketed to state residents without appropriate licensure.

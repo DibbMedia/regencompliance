@@ -62,7 +62,7 @@ export async function GET(
     const pagesWithScans = (pages || []).filter((p: { last_scan_id: string | null }) => p.last_scan_id)
     const scanIds = pagesWithScans.map((p: { last_scan_id: string }) => p.last_scan_id)
 
-    let scanFlagsMap: Record<string, { flags: unknown[] }> = {}
+    const scanFlagsMap: Record<string, { flags: unknown[] }> = {}
     if (scanIds.length > 0) {
       // Fetch scans in batches of 50 to avoid query limits
       const batchSize = 50

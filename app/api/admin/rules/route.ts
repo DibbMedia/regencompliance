@@ -76,8 +76,8 @@ export async function POST(request: Request) {
     const { serviceClient } = auth
 
     const body = await request.json()
-    let { banned_phrase, compliant_alternative, risk_level, category } = body
-    const { enforcement_action_id } = body
+    let { banned_phrase, compliant_alternative, category } = body
+    const { risk_level, enforcement_action_id } = body
 
     if (!banned_phrase || !compliant_alternative) {
       return NextResponse.json(

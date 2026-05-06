@@ -10,7 +10,6 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url)
     const { page, limit } = parsePagination(searchParams)
-    const search = searchParams.get("search") || ""
     const contentType = searchParams.get("content_type") || ""
 
     let query = serviceClient

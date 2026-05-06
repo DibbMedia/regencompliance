@@ -1,13 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
 // ─── Supabase mock — stubs the service client calls made inside the cron ──
+// The purge-cancelled route chains .eq().not().lt().limit() to filter
+// profiles with cancelled_at set + past the 30-day cutoff. Mock mirrors
+// the real builder shape so the chain doesn't TypeError mid-query.
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
     from: () => ({
       select: () => ({
         eq: () => ({
-          lt: () => ({
-            limit: async () => ({ data: [], error: null }),
+          not: () => ({
+            lt: () => ({
+              limit: async () => ({ data: [], error: null }),
+            }),
           }),
         }),
       }),
