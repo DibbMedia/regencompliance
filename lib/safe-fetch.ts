@@ -39,15 +39,24 @@ export async function pinnedFetch(
     throw new Error("pinnedFetch: resolved IP is not a valid v4/v6 address")
   }
 
+  // undici's LookupFunction type expects callback(err, addresses) where
+  // `addresses` is `string | LookupAddress[]`. The `as never` cast keeps
+  // the implementation simple while still matching the runtime contract -
+  // dns.lookup accepts the (err, address, family) form when options.all
+  // is false (the default).
   const dispatcher = new Agent({
     connect: {
-      lookup: (
+      lookup: ((
         _hostname: string,
         _options: unknown,
-        callback: (err: NodeJS.ErrnoException | null, address?: string, family?: number) => void
+        callback: (
+          err: NodeJS.ErrnoException | null,
+          address: string,
+          family: number,
+        ) => void,
       ) => {
         callback(null, ip, family === 6 ? 6 : 4)
-      },
+      }) as never,
     },
     keepAliveTimeout: 1,
     keepAliveMaxTimeout: 1,

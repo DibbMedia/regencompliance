@@ -74,13 +74,15 @@ export async function POST(
 
     const rules = await getActiveComplianceRules(supabase)
 
+    // Coerce DB nulls to RuleForPrompt's non-nullable shape. variants and
+    // applies_to default to '{}' in schema but tsc treats text[] as nullable.
     const rulesForPrompt: RuleForPrompt[] = rules.map((r) => ({
       id: r.id,
       phrase: r.banned_phrase,
-      variants: r.banned_phrase_variants,
-      alt: r.compliant_alternative,
+      variants: r.banned_phrase_variants ?? [],
+      alt: r.compliant_alternative ?? "",
       risk: r.risk_level,
-      cat: r.category,
+      cat: r.category ?? "general",
     }))
 
     const result = await scanSitePages(supabase, {
