@@ -96,6 +96,9 @@ export default function SecurityActivityPage() {
       toast.warning("Multiple failed sign-in attempts in the last 24h", {
         description: "If you didn't try to sign in, change your password and sign out other devices.",
       })
+      // One-shot warning toast - the warned guard above prevents
+      // re-fire, so this is safe despite the rule's caution.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setWarned(true)
     }
   }, [events, isLoading, warned])

@@ -8,6 +8,10 @@ export function NavigationProgress() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    // The whole point of this component is to flash a progress bar on
+    // navigation - that requires setState immediately when pathname
+    // changes. The 500ms timer below clears the cascade naturally.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     const timer = setTimeout(() => setLoading(false), 500)
     return () => clearTimeout(timer)

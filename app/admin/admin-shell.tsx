@@ -95,6 +95,10 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
 
   const [waitlistLastSeen, setWaitlistLastSeen] = useState<string | null>(null)
   useEffect(() => {
+    // Mount-only: hydrate from localStorage. The cascade into the SWR key
+    // below is the correct SSR pattern (null on server -> stamp on
+    // client), so the set-state-in-effect rule is over-broad here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setWaitlistLastSeen(
       window.localStorage.getItem(WAITLIST_LAST_SEEN_KEY) ||
         new Date(0).toISOString()
@@ -121,6 +125,10 @@ export function AdminShell({ children, role }: { children: React.ReactNode; role
     if (pathname?.startsWith("/admin/waitlist")) {
       const now = new Date().toISOString()
       window.localStorage.setItem(WAITLIST_LAST_SEEN_KEY, now)
+      // The downstream cascade (waitlistLastSeen -> statsKey -> SWR
+      // re-fetch) is intentional: visiting /admin/waitlist marks unread
+      // entries seen and refreshes the badge count.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setWaitlistLastSeen(now)
       mutateStats()
     }

@@ -20,7 +20,9 @@ export function CookieConsent() {
       return
     }
 
-    // No consent recorded - show banner
+    // No consent recorded - show banner. One-shot mount-time setState
+    // is required for SSR (localStorage isn't available on the server).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisible(true)
   }, [])
 

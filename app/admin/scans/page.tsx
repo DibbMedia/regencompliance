@@ -59,6 +59,10 @@ export default function AdminScansPage() {
   }, [page, searchQuery, contentType])
 
   useEffect(() => {
+    // Fetch result populates table state (rules/totalPages/total). The
+    // cascade is the intent: dep change -> refetch -> render. Migrate
+    // to SWR later for clearer dependency tracking.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchScans()
   }, [fetchScans])
 

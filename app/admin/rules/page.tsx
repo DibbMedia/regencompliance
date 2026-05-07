@@ -79,6 +79,11 @@ export default function AdminRulesPage() {
   }, [page, search, categoryFilter])
 
   useEffect(() => {
+    // fetchRules sets multiple states (rules, totalPages, total,
+    // categories) on resolve. The cascade is intentional - a fetch IS
+    // expected to update derived UI state. Refactoring to SWR is the
+    // right long-term fix; for now, document the deliberate setState.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRules()
   }, [fetchRules])
 

@@ -10,7 +10,10 @@ const WARNING_BEFORE_MS = 5 * 60 * 1000 // Show warning 5 min before timeout
 export function SessionTimeout() {
   const router = useRouter()
   const [showWarning, setShowWarning] = useState(false)
-  const lastActivity = useRef(Date.now())
+  // Date.now() is impure; calling it as a useRef initializer trips
+  // React 19's "no impure functions during render" rule. Init to 0
+  // and stamp inside the effect on mount instead.
+  const lastActivity = useRef(0)
   const warningTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const logoutTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const resetTimersRef = useRef<(() => void) | null>(null)
