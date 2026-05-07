@@ -187,6 +187,18 @@ export async function proxy(request: NextRequest) {
     return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
   }
 
+  // Non-canonical host safety net (Vercel preview deploys, localhost, the
+  // old production domain still attached during cutover overlap, vercel.app
+  // URLs): the marketing-host short-circuit above only fires on the new
+  // canonical apex. On any other host, fall back to a path-based public
+  // check - if the path isn't an app path and isn't /api/, treat it as
+  // public marketing and skip the auth check so /apply, /free-audit,
+  // /about, /security, /blog/*, /verify/*, etc. work without redirecting
+  // anonymous visitors to /login.
+  if (!isCanonicalHost && !pathname.startsWith("/api/") && !isAppPath(pathname)) {
+    return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
+  }
+
   // Origin enforcement runs on every mutating /api/ request except the
   // routes called by external origins (Stripe webhook, Vercel cron) or by
   // browser internals (CSP violation reports don't always include Origin).

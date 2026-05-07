@@ -20,11 +20,11 @@
  * should import MARKETING_URL or APP_URL explicitly based on the link target.
  */
 export const MARKETING_URL = (
-  process.env.NEXT_PUBLIC_MARKETING_URL ?? "https://regencompliance.ai"
+  process.env.NEXT_PUBLIC_MARKETING_URL?.trim() ?? "https://regencompliance.ai"
 ).replace(/\/+$/, "")
 
 export const APP_URL = (
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://app.regencompliance.ai"
+  process.env.NEXT_PUBLIC_APP_URL?.trim() ?? "https://app.regencompliance.ai"
 ).replace(/\/+$/, "")
 
 /** @deprecated Prefer MARKETING_URL for marketing canonicals or APP_URL for app-side links. */

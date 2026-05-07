@@ -8,7 +8,11 @@ function allowedOrigins(): string[] {
   // submission that originated from the marketing apex (e.g. the public
   // /api/waitlist, /api/free-audit, /api/beta-apply endpoints).
   for (const envVar of ["NEXT_PUBLIC_APP_URL", "NEXT_PUBLIC_MARKETING_URL"]) {
-    const value = process.env[envVar]
+    // Vercel sometimes serves env vars with trailing whitespace. Without the
+    // trim, `new URL("https://regencompliance.ai ")` throws and the origin
+    // silently drops from the allowlist - every same-origin form POST then
+    // 403s. Verified incident class on this codebase 2026-04-22 (Stripe key).
+    const value = process.env[envVar]?.trim()
     if (value) {
       try {
         out.push(new URL(value).origin)
