@@ -108,6 +108,58 @@ export const meta: SpecialtyMeta = {
       risk: "MEDIUM",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "Boosts your immune system",
+      rule: "FTC substantiation under Section 5 (15 USC 45)",
+      body: "'Immune-boosting' is the FTC's most-cited IV claim pattern. The substantiation bar is competent and reliable scientific evidence specific to the formulation and patient population - which IV therapy clinics essentially never have on file. RegenCompliance flags every immune-boost variant and rewrites to 'supports your body's normal immune function.'",
+    },
+    {
+      phrase: "Cures hangovers",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "Hangovers are technically a recognized condition; 'cure' on any condition is the FDA disease-claim trigger. Hangover IV marketing has produced direct FTC enforcement. We rewrite to 'may help support rehydration and recovery after dehydration.'",
+    },
+    {
+      phrase: "Reverses aging with NAD+",
+      rule: "FTC NAD+ enforcement priority (current)",
+      body: "NAD+ marketing with anti-aging reversal claims is the single most-active FTC IV-category enforcement target in 2026. We flag every NAD+ + reversal/longevity/anti-aging combination and rewrite to 'supports cellular metabolism - research on NAD+ biology continues.'",
+    },
+    {
+      phrase: "FDA-approved IV therapy",
+      rule: "FDA off-label promotion (21 CFR 202.1) + drug labeling",
+      body: "Most IV formulations marketed by wellness clinics are compounded preparations or off-label use - not FDA-approved for the marketed indications. Generic 'FDA-approved' across all IVs is direct misbranding. We rewrite to 'administered by licensed medical professionals using [specific products].'",
+    },
+    {
+      phrase: "Detox your body",
+      rule: "FTC substantiation - detox mechanism claims",
+      body: "Detox claims are an FTC-targeted category. The mechanism is rarely substantiable and the underlying physiology contradicts most marketed 'detox' descriptions. We rewrite to 'supports hydration and nutrient replenishment.'",
+    },
+    {
+      phrase: "Pharmaceutical-grade",
+      rule: "FDA labeling and substantiation - pharmaceutical equivalency",
+      body: "'Pharmaceutical-grade' implies FDA approval or pharmaceutical-equivalency without substantiation. The phrase has no standardized regulatory definition for IV formulations. We rewrite to 'prepared by a licensed compounding pharmacy meeting [specific standards].'",
+    },
+    {
+      phrase: "Cures chronic fatigue",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "Chronic fatigue is a recognized medical diagnosis. 'Cure' on the diagnosis crosses the disease-claim threshold. We rewrite to 'may help support energy and wellness as part of a broader medical approach to chronic fatigue.'",
+    },
+    {
+      phrase: "10 years younger",
+      rule: "FTC substantiation - quantified age-reversal",
+      body: "Quantified age-reversal claims have zero clinical substantiation that meets the FTC bar for any IV formulation. There is no compliant reframing - we recommend complete removal of the quantified claim.",
+    },
+    {
+      phrase: "Weight loss IV",
+      rule: "FDA off-label drug-marketing (21 CFR 202.1)",
+      body: "Marketing IV formulations as weight-loss treatments crosses into off-label drug marketing for compounded preparations. State medical boards have additionally cited this pattern. We rewrite to 'metabolism-support formulations as part of a broader weight-management program under medical guidance.'",
+    },
+    {
+      phrase: "Celebrity favorite",
+      rule: "FTC Endorsement Guides (16 CFR 255)",
+      body: "Implied celebrity endorsement without documented material connection and required disclosures is a direct FTC violation. We flag implied-endorsement language and recommend either removal or proper paid-endorser disclosure.",
+    },
+  ],
   commonCatches: [
     {
       title: "Menu-page benefit columns with disease/condition claims",

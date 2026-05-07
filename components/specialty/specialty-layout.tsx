@@ -58,6 +58,7 @@ export function SpecialtyLayout({
   relatedPosts?: RelatedBlogPost[]
 }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openMistake, setOpenMistake] = useState<number | null>(null)
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
@@ -151,18 +152,23 @@ export function SpecialtyLayout({
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            {meta.enforcementExamples.map((ex) => (
-              <div
-                key={ex.title}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:bg-white/[0.06] transition-all"
-              >
-                <div className="flex items-start gap-3 mb-3">
-                  <XCircle className="h-5 w-5 text-red-400 shrink-0 mt-1" aria-hidden />
-                  <h3 className="text-lg font-bold text-white leading-snug">{ex.title}</h3>
+            {meta.enforcementExamples.map((ex, i, arr) => {
+              const isOrphan = arr.length % 2 === 1 && i === arr.length - 1
+              return (
+                <div
+                  key={ex.title}
+                  className={`rounded-2xl border border-white/10 bg-white/[0.06] p-6 hover:bg-white/[0.10] transition-all ${
+                    isOrphan ? "sm:col-span-2 sm:max-w-xl sm:mx-auto sm:w-full" : ""
+                  }`}
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <XCircle className="h-5 w-5 text-red-400 shrink-0 mt-1" aria-hidden />
+                    <h3 className="text-lg font-bold text-white leading-snug">{ex.title}</h3>
+                  </div>
+                  <p className="text-sm text-white/70 leading-relaxed pl-8">{ex.body}</p>
                 </div>
-                <p className="text-sm text-white/70 leading-relaxed pl-8">{ex.body}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -187,7 +193,7 @@ export function SpecialtyLayout({
             {meta.bannedPhrases.map((bp) => (
               <div
                 key={bp.phrase}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden"
+                className="rounded-2xl border border-white/10 bg-white/[0.06] overflow-hidden"
               >
                 <div className="p-5 sm:p-6">
                   <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
@@ -220,6 +226,78 @@ export function SpecialtyLayout({
         </div>
       </section>
 
+      {/* ============ COMMON MISTAKES ("You've probably said this") ============ */}
+      <section className="relative py-16">
+        <div className="relative mx-auto max-w-4xl px-6">
+          <div className="text-center mb-12">
+            <p className="text-xs font-bold text-amber-400 uppercase tracking-[0.2em] mb-3">
+              You&rsquo;ve probably said this
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Stop. Here&rsquo;s the compliant way.
+            </h2>
+            <p className="mt-4 text-base text-white/70 max-w-2xl mx-auto">
+              These are phrases {meta.specialty.toLowerCase()} have actually said (or
+              considered saying). Each one triggers a specific FDA, FTC, or state board
+              rule. Tap to see the rule and the rewrite.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {meta.commonMistakes.map((m, i) => (
+              <div key={m.phrase}>
+                <button
+                  id={`mistake-btn-${i}`}
+                  onClick={() => setOpenMistake(openMistake === i ? null : i)}
+                  aria-expanded={openMistake === i}
+                  aria-controls={`mistake-panel-${i}`}
+                  className={`w-full text-left rounded-2xl border px-6 py-5 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-amber-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${
+                    openMistake === i
+                      ? "border-amber-400/40 bg-amber-500/[0.10]"
+                      : "border-white/10 bg-white/[0.06] hover:bg-white/[0.10]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <AlertTriangle className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" aria-hidden />
+                      <span className="text-[15px] sm:text-base font-bold text-white leading-snug">
+                        &ldquo;{m.phrase}&rdquo;
+                      </span>
+                    </div>
+                    <ChevronDown
+                      className={`h-4 w-4 text-white/50 shrink-0 transition-transform duration-300 ${
+                        openMistake === i ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                </button>
+                {openMistake === i && (
+                  <div
+                    id={`mistake-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`mistake-btn-${i}`}
+                    className="rounded-b-2xl border border-t-0 border-amber-400/30 bg-amber-500/[0.04] px-6 pt-5 pb-6 -mt-1"
+                  >
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-amber-300 mb-2">
+                      The rule it triggers
+                    </p>
+                    <p className="text-sm sm:text-[15px] text-white/85 leading-relaxed mb-4">
+                      {m.rule}
+                    </p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#55E039] mb-2">
+                      What RegenCompliance does
+                    </p>
+                    <p className="text-sm sm:text-[15px] text-white/75 leading-relaxed">
+                      {m.body}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ============ COMMON CATCHES ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-5xl px-6">
@@ -232,19 +310,24 @@ export function SpecialtyLayout({
             </h2>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            {meta.commonCatches.map((c) => (
-              <div
-                key={c.title}
-                className="rounded-2xl border border-[#55E039]/20 bg-[#55E039]/[0.04] p-6 hover:bg-[#55E039]/[0.08] transition-all"
-              >
-                <div className="flex items-start gap-3 mb-3">
-                  <ShieldCheck className="h-5 w-5 text-[#55E039] shrink-0 mt-1" aria-hidden />
-                  <h3 className="text-lg font-bold text-white leading-snug">{c.title}</h3>
+          <div className="grid gap-5 sm:grid-cols-2 place-items-stretch">
+            {meta.commonCatches.map((c, i, arr) => {
+              const isOrphan = arr.length % 2 === 1 && i === arr.length - 1
+              return (
+                <div
+                  key={c.title}
+                  className={`rounded-2xl border border-[#55E039]/20 bg-[#55E039]/[0.04] p-6 hover:bg-[#55E039]/[0.08] transition-all ${
+                    isOrphan ? "sm:col-span-2 sm:max-w-xl sm:mx-auto sm:w-full" : ""
+                  }`}
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <ShieldCheck className="h-5 w-5 text-[#55E039] shrink-0 mt-1" aria-hidden />
+                    <h3 className="text-lg font-bold text-white leading-snug">{c.title}</h3>
+                  </div>
+                  <p className="text-sm text-white/75 leading-relaxed pl-8">{c.body}</p>
                 </div>
-                <p className="text-sm text-white/75 leading-relaxed pl-8">{c.body}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -261,7 +344,7 @@ export function SpecialtyLayout({
             </h2>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.06] overflow-hidden">
             <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
               <div className="p-6 sm:p-7 bg-red-500/[0.03]">
                 <div className="flex items-center gap-2 mb-3">
@@ -330,15 +413,20 @@ export function SpecialtyLayout({
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            {meta.whoThisIsFor.map((who) => (
-              <div
-                key={who}
-                className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4"
-              >
-                <Building2 className="h-4 w-4 text-[#55E039]/70 shrink-0 mt-1" aria-hidden />
-                <span className="text-sm text-white/80 leading-relaxed">{who}</span>
-              </div>
-            ))}
+            {meta.whoThisIsFor.map((who, i, arr) => {
+              const isOrphan = arr.length % 2 === 1 && i === arr.length - 1
+              return (
+                <div
+                  key={who}
+                  className={`flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.06] p-4 ${
+                    isOrphan ? "sm:col-span-2 sm:max-w-md sm:mx-auto sm:w-full" : ""
+                  }`}
+                >
+                  <Building2 className="h-4 w-4 text-[#55E039]/70 shrink-0 mt-1" aria-hidden />
+                  <span className="text-sm text-white/80 leading-relaxed">{who}</span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -346,7 +434,7 @@ export function SpecialtyLayout({
       {/* ============ COMPARE vs ALTERNATIVES ============ */}
       <section className="relative py-14">
         <div className="relative mx-auto max-w-4xl px-6">
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.06] p-8 sm:p-10">
             <div className="text-center mb-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039] mb-3">
                 Evaluating alternatives?
@@ -356,16 +444,16 @@ export function SpecialtyLayout({
               </h2>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Link href="/vs/chatgpt" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <Link href="/vs/chatgpt" className="group rounded-xl border border-white/10 bg-white/[0.06] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all">
                 <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs ChatGPT</span>
               </Link>
-              <Link href="/vs/jasper" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <Link href="/vs/jasper" className="group rounded-xl border border-white/10 bg-white/[0.06] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all">
                 <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Jasper</span>
               </Link>
-              <Link href="/vs/healthcare-attorney" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <Link href="/vs/healthcare-attorney" className="group rounded-xl border border-white/10 bg-white/[0.06] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all">
                 <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Healthcare Attorney</span>
               </Link>
-              <Link href="/vs/manual-audit" className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all">
+              <Link href="/vs/manual-audit" className="group rounded-xl border border-white/10 bg-white/[0.06] p-4 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all">
                 <span className="text-sm font-semibold text-white group-hover:text-[#55E039] transition-colors">vs Manual Agency Audit</span>
               </Link>
             </div>
@@ -393,7 +481,7 @@ export function SpecialtyLayout({
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/tools/scanner"
-              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+              className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all"
             >
               <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
                 Compliance Scanner
@@ -409,7 +497,7 @@ export function SpecialtyLayout({
             </Link>
             <Link
               href="/tools/ai-rewriter"
-              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+              className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all"
             >
               <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
                 AI Compliant Rewriter
@@ -425,7 +513,7 @@ export function SpecialtyLayout({
             </Link>
             <Link
               href="/tools/audit-trail"
-              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+              className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 hover:border-[#55E039]/25 hover:bg-white/[0.10] transition-all"
             >
               <h3 className="text-base font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
                 Audit Trail + PDF Export
@@ -454,34 +542,44 @@ export function SpecialtyLayout({
 
       {/* ============ FAQ ============ */}
       <section className="relative py-16">
-        <div className="relative mx-auto max-w-2xl px-6">
+        <div
+          className={`relative mx-auto px-6 ${
+            meta.faqs.length >= 5 ? "max-w-5xl" : "max-w-2xl"
+          }`}
+        >
           <div className="text-center mb-12">
             <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
               FAQ
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Specialty-specific questions
+              {meta.specialty}-specific questions
             </h2>
           </div>
 
-          <div className="space-y-3">
+          <div
+            className={
+              meta.faqs.length >= 5
+                ? "grid gap-3 lg:grid-cols-2 lg:gap-x-5"
+                : "space-y-3"
+            }
+          >
             {meta.faqs.map((faq, i) => (
-              <div key={i}>
+              <div key={i} className={meta.faqs.length >= 5 ? "h-fit" : ""}>
                 <button
                   id={`sfaq-btn-${i}`}
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
                   aria-controls={`sfaq-panel-${i}`}
-                  className={`w-full text-left rounded-2xl bg-white/[0.03] border px-6 py-5 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#55E039]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${
+                  className={`w-full text-left rounded-2xl bg-white/[0.06] border px-6 py-5 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#55E039]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] ${
                     openFaq === i
-                      ? "border-[#55E039]/25 bg-white/[0.06]"
-                      : "border-white/10 hover:bg-white/[0.06]"
+                      ? "border-[#55E039]/25 bg-white/[0.10]"
+                      : "border-white/10 hover:bg-white/[0.10]"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-[15px] font-semibold text-white">{faq.q}</span>
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="text-[15px] font-semibold text-white leading-snug">{faq.q}</span>
                     <ChevronDown
-                      className={`h-4 w-4 text-white/50 shrink-0 transition-transform duration-300 ${
+                      className={`h-4 w-4 text-white/50 shrink-0 mt-1 transition-transform duration-300 ${
                         openFaq === i ? "rotate-180" : ""
                       }`}
                     />
@@ -494,7 +592,7 @@ export function SpecialtyLayout({
                     aria-labelledby={`sfaq-btn-${i}`}
                     className="px-6 pb-5"
                   >
-                    <p className="mt-4 text-sm sm:text-[15px] text-white/70 leading-relaxed">
+                    <p className="mt-4 text-sm sm:text-[15px] text-white/75 leading-relaxed">
                       {faq.a}
                     </p>
                   </div>
@@ -547,47 +645,43 @@ export function SpecialtyLayout({
         </div>
       </section>
 
-      {/* ============ RELATED SPECIALTIES ============ */}
+      {/* ============ RELATED SPECIALTIES (compact cross-link) ============ */}
       {related.length > 0 && (
-        <section className="relative py-12">
-          <div className="relative mx-auto max-w-5xl px-6">
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]">
-                Other specialties
-              </p>
-              <Link
-                href="/for"
-                className="text-xs font-semibold text-white/70 hover:text-white transition-colors flex items-center gap-1"
-              >
-                See all
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((r) => (
-                <Link
-                  key={r.slug}
-                  href={`/for/${r.slug}`}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <Users className="h-4 w-4 text-[#55E039]/80" aria-hidden />
-                    <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#55E039]/80">
-                      For
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-white leading-snug group-hover:text-[#55E039] transition-colors">
-                    {r.specialty}
-                  </h3>
-                  <p className="mt-3 text-sm text-white/60 leading-relaxed line-clamp-3">
-                    {r.heroTagline}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-[#55E039]">
-                    Learn more
-                    <ArrowRight className="h-3 w-3" />
+        <section className="relative py-10">
+          <div className="relative mx-auto max-w-3xl px-6">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-7 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Users className="h-4 w-4 text-[#55E039]/80" aria-hidden />
+                <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#55E039]/80">
+                  Different practice?
+                </span>
+              </div>
+              <p className="text-sm sm:text-[15px] text-white/75 leading-relaxed">
+                See compliance built for{" "}
+                {related.map((r, i) => (
+                  <span key={r.slug}>
+                    <Link
+                      href={`/for/${r.slug}`}
+                      className="font-semibold text-[#55E039] hover:text-[#6FF055] underline-offset-4 hover:underline transition-colors"
+                    >
+                      {r.specialty.toLowerCase()}
+                    </Link>
+                    {i < related.length - 2
+                      ? ", "
+                      : i === related.length - 2
+                      ? ", or "
+                      : ""}
                   </span>
+                ))}
+                .{" "}
+                <Link
+                  href="/for"
+                  className="text-white/60 hover:text-white transition-colors inline-flex items-center gap-1"
+                >
+                  See all specialties
+                  <ArrowRight className="h-3 w-3" />
                 </Link>
-              ))}
+              </p>
             </div>
           </div>
         </section>

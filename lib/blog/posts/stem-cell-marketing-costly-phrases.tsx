@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
     "Stem cell and regenerative medicine marketing draws more FDA and FTC enforcement than any other healthcare specialty. Five specific phrases account for the majority of that exposure. Here's the list, the regulatory theory, and the compliant rewrite for each.",
   excerpt:
     "Stem cell marketing is the single highest-risk surface in healthcare advertising. Five phrases recur in almost every multi-million-dollar settlement against a regen-med clinic. This post walks through each one, the regulatory mechanism, and a compliant rewrite that still sells.",
-  date: "2026-04-21",
+  date: "2026-04-20",
   readingMinutes: 9,
   keywords: [
     "stem cell marketing compliance",

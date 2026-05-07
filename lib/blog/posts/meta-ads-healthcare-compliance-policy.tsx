@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Meta (Facebook and Instagram) adds platform-specific healthcare advertising rules on top of FDA and FTC requirements. Here's what Meta's actual policy says, how it's enforced, and what it means for aesthetic, weight-loss, regen, and other healthcare practice advertisers.",
   excerpt:
     "Your Meta ads must meet FDA rules, FTC rules, AND Meta's own healthcare advertising policy - three layers, not one. Here's the full playbook for what Meta actually enforces, how to avoid account-level issues, and how to structure ads that run reliably.",
-  date: "2026-04-22",
+  date: "2026-03-18",
   readingMinutes: 10,
   keywords: [
     "Meta healthcare advertising policy",

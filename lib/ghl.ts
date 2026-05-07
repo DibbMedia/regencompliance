@@ -74,6 +74,7 @@
  *   beta_apply             -> regen-beta-applicant, regen-lifecycle:beta-applied
  *   waitlist               -> regen-waitlist, regen-lifecycle:waitlist
  *   free_audit             -> regen-free-audit, regen-lifecycle:audit-completed
+ *   contact_form           -> regen-contact-form, regen-lifecycle:contact
  *   subscription_active    -> regen-subscriber, regen-lifecycle:subscribed,
  *                             regen-tier:beta | regen-tier:standard
  *   subscription_cancelled -> regen-cancelled, regen-lifecycle:cancelled
@@ -87,6 +88,7 @@ export type GhlEvent =
   | "beta_apply"
   | "waitlist"
   | "free_audit"
+  | "contact_form"
   | "subscription_active"
   | "subscription_cancelled"
   | "payment_failed"
@@ -114,6 +116,7 @@ const EVENT_TAGS: Record<GhlEvent, string[]> = {
   beta_apply: ["regen-beta-applicant", "regen-lifecycle:beta-applied"],
   waitlist: ["regen-waitlist", "regen-lifecycle:waitlist"],
   free_audit: ["regen-free-audit", "regen-lifecycle:audit-completed"],
+  contact_form: ["regen-contact-form", "regen-lifecycle:contact"],
   subscription_active: ["regen-subscriber", "regen-lifecycle:subscribed"],
   subscription_cancelled: ["regen-cancelled", "regen-lifecycle:cancelled"],
   payment_failed: ["regen-payment-failed"],

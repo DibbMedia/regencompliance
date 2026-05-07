@@ -1,5 +1,7 @@
 import type { CompetitorMeta } from "./types"
 import { meta as chatgpt } from "./data/chatgpt"
+import { meta as claude } from "./data/claude"
+import { meta as perplexity } from "./data/perplexity"
 import { meta as jasper } from "./data/jasper"
 import { meta as grammarly } from "./data/grammarly"
 import { meta as copyAi } from "./data/copy-ai"
@@ -8,6 +10,8 @@ import { meta as manualAudit } from "./data/manual-audit"
 
 export const COMPETITORS: CompetitorMeta[] = [
   chatgpt,
+  claude,
+  perplexity,
   jasper,
   grammarly,
   copyAi,

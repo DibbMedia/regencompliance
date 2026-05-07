@@ -28,12 +28,12 @@ const COMMITMENTS = [
   {
     icon: Lock,
     title: "Your content is not used for AI training",
-    body: "Anthropic's Claude API runs with the no-training setting enabled on every request. Your content is analyzed for the scan, results are returned, and nothing feeds any model's training. This applies to Anthropic's models and every third-party model we might use in the future.",
+    body: "Our AI providers operate under contractual no-training terms for all customer content. Your content is analyzed for the scan, results are returned, and nothing feeds any model's training set. The same contractual posture applies to any future AI provider we add.",
   },
   {
     icon: Database,
     title: "Encryption at rest and in transit",
-    body: "Data encrypted at rest (Supabase managed Postgres with encryption enabled) and in transit (TLS 1.3 for all HTTPS traffic). Supabase also provides row-level security (RLS) for tenant isolation at the database layer.",
+    body: "All data is encrypted at rest and in transit using current industry-standard encryption protocols. Tenant data is isolated through enforced access controls so customer data is never co-mingled.",
   },
   {
     icon: Key,
@@ -48,7 +48,7 @@ const COMMITMENTS = [
   {
     icon: Server,
     title: "Infrastructure on enterprise-grade providers",
-    body: "Hosted on Vercel (frontend + API) and Supabase (database + auth). Both providers operate SOC 2 Type II compliant infrastructure. Payment processing via Stripe (PCI DSS Level 1). AI via Anthropic (enterprise AI provider with documented security practices).",
+    body: "Our infrastructure is built on SOC 2 Type II audited cloud providers with PCI DSS Level 1 payment processing. Every subprocessor we rely on operates an independently audited security program.",
   },
 ]
 
@@ -59,19 +59,19 @@ const POLICIES = [
   },
   {
     title: "AI processing",
-    body: "Scans run through Anthropic's Claude API with no-training enabled. The scan content passes through Anthropic's infrastructure for processing, returns to us, and we deliver the results to you. Anthropic retains content only for their standard operational logging (which doesn't feed training); we store results in your audit trail.",
+    body: "Scans run through enterprise AI providers under contractual no-training terms. Scan content is processed to produce a result, the result is returned to us, and we store it in your audit trail. AI providers retain content only for their own standard operational logging, which is contractually walled off from any training pipeline.",
   },
   {
     title: "Authentication",
-    body: "Account access via Supabase auth - email + password with bcrypt hashing, plus OAuth support where enabled. Password reset requires email verification. Sessions use secure HTTP-only cookies with appropriate expiration.",
+    body: "Account access uses email + password with industry-standard salted hashing, plus OAuth where enabled. Password resets require email verification. Sessions use secure cookies with appropriate expiration and rotation.",
   },
   {
     title: "Access controls",
-    body: "Your account data is accessible only to authenticated users with valid session tokens for accounts they belong to. Row-level security at the database enforces this - even a bug in application code cannot return data from one account to another.",
+    body: "Your account data is accessible only to authenticated users with valid sessions for accounts they belong to. Tenant isolation is enforced below the application layer so an application bug alone cannot return data from one account to another.",
   },
   {
     title: "Payment processing",
-    body: "Payments processed by Stripe (PCI DSS Level 1). We never see, store, or process raw card data. Our Stripe integration uses restricted API keys with minimum necessary permissions - Checkout, Customers, Subscriptions, Prices, Products, Billing Portal only.",
+    body: "Payments are processed on PCI DSS Level 1 platforms. We never see, store, or process raw card data. Our payment integration uses restricted, minimum-privilege API credentials scoped to the operations required for billing and subscription management only.",
   },
   {
     title: "Incident response",
@@ -79,11 +79,11 @@ const POLICIES = [
   },
   {
     title: "Data retention and deletion",
-    body: "Data retained during active subscription. After cancellation, scan history remains accessible for 30 days (you can export all records as PDF or CSV). After 30 days, data is permanently deleted. Account deletion on request available at any time.",
+    body: "Data is retained during your active subscription. After cancellation, scan history remains accessible for 30 days (you can export all records as PDF or CSV). After 30 days, data is permanently deleted. On-demand account deletion is available at any time.",
   },
   {
     title: "Third-party subprocessors",
-    body: "Vercel (hosting), Supabase (database/auth), Anthropic (AI), Stripe (payments), Sentry (error monitoring). Each has their own SOC 2 or equivalent attestation. No other subprocessors handle customer content.",
+    body: "We use a small set of subprocessors covering hosting, database and authentication, AI processing, payment processing, and error monitoring. Each subprocessor maintains a SOC 2 Type II or equivalent attestation. A current subprocessor list is available to customers on request.",
   },
 ]
 
@@ -94,7 +94,7 @@ const FAQS = [
   },
   {
     q: "Do you have SOC 2?",
-    a: "We're pre-audit. Our infrastructure (Vercel, Supabase, Stripe) operates on SOC 2 Type II compliant foundations. Our own SOC 2 audit is on the roadmap. In the meantime, we document our specific security practices publicly and make our subprocessor list available.",
+    a: "We're pre-audit. Our underlying infrastructure runs on SOC 2 Type II audited cloud providers and PCI DSS Level 1 payment processing. Our own SOC 2 audit is on the roadmap. In the meantime, we document our security practices publicly and make our subprocessor list available on request.",
   },
   {
     q: "What happens to my content if I cancel?",
@@ -106,7 +106,7 @@ const FAQS = [
   },
   {
     q: "What AI provider do you use and can I opt out?",
-    a: "Anthropic's Claude. Currently we run everything through Anthropic. If you have specific requirements around AI provider choice (e.g., you're required to use a specific provider for your own regulatory reasons), contact us - we can discuss. AI provider diversity is on our roadmap.",
+    a: "Scans currently run through a single enterprise AI provider operating under contractual no-training terms. If you have specific requirements around AI provider choice (e.g., you're required to use a particular provider for your own regulatory reasons), contact us - we can discuss. AI provider diversity is on our roadmap.",
   },
   {
     q: "Are my scans used to improve your models or rule set?",
@@ -118,11 +118,11 @@ const FAQS = [
   },
   {
     q: "How do you handle security research and vulnerability reports?",
-    a: "Good-faith security research is welcome. Report vulnerabilities to security@regencompliance.ai. We acknowledge within 24 hours and aim to remediate critical issues within 72 hours and other issues within 30 days. We don't currently have a formal bug bounty program but recognize researchers publicly with permission.",
+    a: "Good-faith security research is welcome. Report vulnerabilities through our contact form. We acknowledge within 24 hours and aim to remediate critical issues within 72 hours and other issues within 30 days. We don't currently have a formal bug bounty program but recognize researchers publicly with permission.",
   },
   {
     q: "Can I get a custom security questionnaire answered?",
-    a: "Yes. Enterprise customers with specific security questionnaire requirements can request detailed responses. Contact support@regencompliance.ai with your questionnaire; typical turnaround is 5-10 business days.",
+    a: "Yes. Enterprise customers with specific security questionnaire requirements can request detailed responses through our contact form; typical turnaround is 5-10 business days.",
   },
 ]
 
@@ -178,7 +178,7 @@ export default function SecurityClient() {
               The six commitments
             </p>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              What we guarantee, in plain English
+              What we commit to, in plain English
             </h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
@@ -232,14 +232,14 @@ export default function SecurityClient() {
         </div>
       </section>
 
-      {/* ============ INFRASTRUCTURE ============ */}
+      {/* ============ SECURITY POSTURE ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-4xl px-6">
           <div className="rounded-3xl border border-[#55E039]/25 bg-[#55E039]/[0.04] p-8 sm:p-10">
             <div className="flex items-center gap-3 mb-6">
               <Building2 className="h-6 w-6 text-[#55E039]" aria-hidden />
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Infrastructure stack
+                Our security posture
               </h2>
             </div>
             <ul className="space-y-4">
@@ -249,9 +249,9 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Vercel</span> - frontend
-                  and API hosting. SOC 2 Type II compliant. Edge network with
-                  DDoS protection.
+                  <span className="font-bold text-white">256-bit encryption at rest, encrypted in transit.</span>{" "}
+                  All customer data is encrypted using current industry-standard
+                  protocols.
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -260,10 +260,9 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Supabase</span> -
-                  managed PostgreSQL database, authentication, and file storage.
-                  SOC 2 Type II compliant. Row-level security enforced at the
-                  database layer.
+                  <span className="font-bold text-white">SOC 2 Type II audited cloud infrastructure.</span>{" "}
+                  Hosting, database, authentication, and storage all run on
+                  independently audited platforms.
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -272,10 +271,8 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Anthropic Claude</span>{" "}
-                  - AI processing. No-training setting enabled on every API
-                  request. Enterprise AI provider with documented security
-                  practices.
+                  <span className="font-bold text-white">Restricted-key payment processing on PCI DSS Level 1 platforms.</span>{" "}
+                  Card data is never seen, stored, or processed by us.
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -284,9 +281,9 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Stripe</span> - payment
-                  processing. PCI DSS Level 1. Restricted API keys with minimum
-                  necessary permissions.
+                  <span className="font-bold text-white">Continuous monitoring with PII scrubbing.</span>{" "}
+                  Application telemetry is sanitized of personally identifiable
+                  information before it leaves the request lifecycle.
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -295,9 +292,9 @@ export default function SecurityClient() {
                   aria-hidden
                 />
                 <span className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <span className="font-bold text-white">Sentry</span> - error
-                  monitoring. Scrubbed of PII before ingestion. SOC 2 Type II
-                  compliant.
+                  <span className="font-bold text-white">Documented incident response and breach notification.</span>{" "}
+                  We commit to investigating and notifying affected customers
+                  within 72 hours of a confirmed incident.
                 </span>
               </li>
             </ul>
@@ -359,16 +356,17 @@ export default function SecurityClient() {
           </h2>
           <p className="mt-5 text-base text-white/70 max-w-md mx-auto leading-relaxed">
             Enterprise security questionnaires welcome. Vulnerability reports
-            welcome. Reach out at security@regencompliance.ai.
+            welcome. Reach out through our contact form and we&apos;ll route
+            your message to the right team.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap justify-center gap-3">
-            <a
-              href="mailto:security@regencompliance.ai"
+            <Link
+              href="/contact"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all"
             >
-              Contact Security
+              Contact Us
               <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
             <Link
               href="/privacy"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#55E039]/25 bg-[#55E039]/[0.04] px-8 text-[15px] font-semibold text-[#55E039] hover:bg-[#55E039]/[0.08] transition-all"

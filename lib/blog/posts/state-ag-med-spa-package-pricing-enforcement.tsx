@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "State AGs have pursued med spas and aesthetic practices over package pricing marketing that misrepresents total treatment costs. Here's the specific pattern and how to structure package marketing compliantly.",
   excerpt:
     "Package pricing that doesn't reflect actual total cost has become a growing state AG focus. Here's the specific enforcement pattern and what med spa practices need to fix.",
-  date: "2026-04-22",
+  date: "2025-11-03",
   readingMinutes: 7,
   keywords: [
     "med spa package pricing enforcement",

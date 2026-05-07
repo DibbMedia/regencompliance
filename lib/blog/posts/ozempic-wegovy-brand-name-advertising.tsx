@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "Marketing Ozempic, Wegovy, Mounjaro, or Zepbound by brand name triggers FDA prescription drug advertising rules - plus specific compounded-equivalency risks unique to the weight loss space. Here's how to stay compliant while still marketing effectively.",
   excerpt:
     "'Get Ozempic for weight loss' is one of the most common weight-loss clinic ads in 2026. It is also one of the clearest FDA prescription-drug advertising violations. Here's the full compliance framework for GLP-1 brand marketing.",
-  date: "2026-04-22",
+  date: "2026-03-25",
   readingMinutes: 11,
   keywords: [
     "Ozempic advertising compliance",

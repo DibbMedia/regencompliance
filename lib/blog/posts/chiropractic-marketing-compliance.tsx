@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Chiropractic marketing has its own compliance pattern - state chiropractic boards with varying rules, FTC scrutiny of specific-condition claims, and common FDA-adjacent issues with device and supplement marketing.",
   excerpt:
     "Chiropractic practices face a specific compliance pattern different from general medical marketing. Here's what state chiropractic boards and the FTC are targeting - and what to fix.",
-  date: "2026-04-22",
+  date: "2026-01-21",
   readingMinutes: 9,
   keywords: [
     "chiropractic marketing compliance",

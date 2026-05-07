@@ -332,36 +332,22 @@ export default function PricingPage() {
               <p className="text-6xl font-extrabold tracking-tight text-white">$297</p>
               <span className="text-lg font-normal text-white/40">/mo</span>
             </div>
-            <p className="text-sm text-[#55E039]/80 font-semibold mb-2">Locked-In Rate - Never increases</p>
-            {!IS_LAUNCHED && (
-              <span className="inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1 mb-8">
-                Invite-only - Join the waitlist
-              </span>
-            )}
+            <p className="text-sm text-[#55E039]/80 font-semibold mb-8">Locked-In Rate - Never increases</p>
             {IS_LAUNCHED ? (
-              <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] py-3 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6 mt-6 disabled:opacity-70">
+              <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] py-3 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6 disabled:opacity-70">
                 Subscribe Now
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <>
-                <Link href="/apply" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-3">
-                  Apply for Founder Beta
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <p className="text-center text-[11px] text-white/50 mb-6">
-                  Or{" "}
-                  <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-                    join the waitlist
-                  </Link>{" "}
-                  for general access.
-                </p>
-              </>
+              <Link href="/apply" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
+                Apply for Founder Beta
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             )}
-            <p className="text-center text-xs text-white/40 mb-8">
+            <p className="text-center text-xs text-white/55 mb-8">
               {IS_LAUNCHED
                 ? "Cancel anytime. Founding rate locked at $297/mo for life."
-                : "Founder beta = 25 seats. Active participation required to keep $297/mo for life."}
+                : "Founder beta = 25 seats. Active participation keeps $297/mo locked for life."}
             </p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white mb-4">Everything included, forever:</p>
@@ -400,10 +386,14 @@ export default function PricingPage() {
               <span className="text-xl font-normal text-white/50">/mo</span>
             </div>
             <p className="text-sm text-white/60 mb-8">Available after beta period ends.</p>
-            <div className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.02] text-[15px] font-bold text-white/55 cursor-not-allowed select-none mb-6">
-              Coming Soon
-            </div>
-            <p className="text-center text-xs text-white/55 mb-8">Lock in $297/mo now - save $200/mo when standard launches.</p>
+            <Link
+              href="/waitlist"
+              className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.05] text-[15px] font-bold text-white hover:bg-white/[0.08] hover:border-white/25 transition-all mb-6"
+            >
+              Join the Waitlist
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <p className="text-center text-xs text-white/55 mb-8">First in line when standard pricing opens.</p>
             <div className="pt-6 border-t border-white/[0.06]">
               <p className="text-sm font-extrabold text-white/70 mb-4">Everything included:</p>
               <ul className="space-y-3">

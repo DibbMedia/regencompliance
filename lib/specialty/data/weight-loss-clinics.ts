@@ -104,6 +104,58 @@ export const meta: SpecialtyMeta = {
       risk: "HIGH",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "Same as Ozempic",
+      rule: "FDA brand-equivalence (21 USC 352, 503A)",
+      body: "Compounded semaglutide is a legally distinct product from FDA-approved Ozempic. Calling them 'the same' is the FDA's number one current GLP-1 enforcement pattern - multiple letters in 2025 cited this exact phrasing. RegenCompliance flags every equivalence variant ('identical to,' 'same active ingredient as,' 'the generic Ozempic') and rewrites to a distinct-product framing.",
+    },
+    {
+      phrase: "Guaranteed 20 pounds in 30 days",
+      rule: "FTC weight-loss-specific guidance (FTC Operation Failed Resolution)",
+      body: "Quantified weight-loss guarantees with specific timeframes are the FTC's most-cited pattern in this category - precedent goes back to Jenny Craig and POM Wonderful. We flag any quantified-pound + timeframe combination and rewrite to range-based typical-experience language.",
+    },
+    {
+      phrase: "FDA-approved for weight loss",
+      rule: "FDA off-label promotion (21 CFR 202.1)",
+      body: "Whether a specific medication is FDA-approved for weight loss depends on the specific brand and indication - Wegovy yes, Ozempic no, even though both are semaglutide. Generic 'FDA-approved for weight loss' across all GLP-1s misrepresents off-label prescribing. RegenCompliance differentiates by brand and rewrites to indication-specific language.",
+    },
+    {
+      phrase: "No diet, no exercise required",
+      rule: "FDA labeled-indication conflict (21 USC 352)",
+      body: "Every GLP-1 weight-loss labeling specifies use 'in conjunction with diet and exercise.' Marketing that contradicts the labeled use case is misbranding. We rewrite to 'medically supervised weight loss that works alongside your lifestyle' with the labeling-aligned framing.",
+    },
+    {
+      phrase: "Cheaper than the brand-name version",
+      rule: "FDA brand-equivalence pricing claim (21 USC 352)",
+      body: "Comparative pricing language presupposes the products are equivalent - which they legally are not. The price comparison itself is what carries the equivalence claim. We flag pricing-vs-brand language and rewrite to compounded-product cost framing.",
+    },
+    {
+      phrase: "Get your script today",
+      rule: "State medical board telehealth standards (varies by state)",
+      body: "Speed-over-evaluation language is what state medical boards have specifically cited in telehealth weight-loss enforcement. 'Same-day script,' 'approved in 24 hours,' 'skip the doctor visit' are all flagged. We rewrite to 'schedule a medical evaluation today' framing that preserves the conversion message.",
+    },
+    {
+      phrase: "Cures type 2 diabetes",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "Type 2 diabetes is a managed condition, not a curable one - and 'cure' on the labeled indication crosses into a clear misbranding pattern. We rewrite to 'supports blood sugar management' framing.",
+    },
+    {
+      phrase: "Reverses obesity",
+      rule: "FDA disease-reversal claim (21 USC 321(g))",
+      body: "'Reverses' on a chronic medical condition like obesity is a disease-state efficacy claim that triggers full drug-advertising rules. We flag the reversal pattern across obesity, diabetes, and metabolic syndrome and rewrite to clinically-meaningful-loss framing.",
+    },
+    {
+      phrase: "Celebrity-approved",
+      rule: "FTC Endorsement Guides (16 CFR 255)",
+      body: "Implied endorsements without documented material connection and required disclosures are direct FTC violations. The 'celebrity favorite' framing, even when no celebrity is actually paid, has been cited as deceptive. We flag implied-endorsement patterns and recommend either removal or proper disclosure.",
+    },
+    {
+      phrase: "No side effects",
+      rule: "FDA prescribing-information conflict (21 USC 352)",
+      body: "GLP-1 prescribing information lists nausea, vomiting, and other documented adverse events. Marketing as side-effect-free directly contradicts the labeling. We rewrite to 'most patients tolerate the medication well; common side effects reviewed at consultation.'",
+    },
+  ],
   commonCatches: [
     {
       title: "Homepage headlines framing weight loss as a guaranteed outcome",

@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Telehealth practices face state-by-state licensure rules, specific prescribing restrictions, controlled-substance considerations, and cross-border marketing compliance. Here's the framework for telehealth marketing.",
   excerpt:
     "Telehealth is one of the fastest-growing healthcare categories and one of the most regulatorily complex for marketing. Here's the full overview of the rules that apply across the category.",
-  date: "2026-04-22",
+  date: "2025-12-19",
   readingMinutes: 8,
   keywords: [
     "telehealth marketing compliance",

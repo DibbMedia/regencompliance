@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "Deep-dive analysis of the FTC's Wellbeing Corporation settlement - how a single Instagram post led to a $5.15M penalty, a 20-year compliance monitoring order, and permanent bars on stem cell claims. Plus what every healthcare practice should learn from it.",
   excerpt:
     "One Instagram post. Five claims about stem cells. $5.15M paid and a 20-year compliance leash. The case that sets the current FTC enforcement bar for every healthcare practice - and the specific mistakes you can avoid by reading it carefully.",
-  date: "2026-04-22",
+  date: "2026-04-06",
   readingMinutes: 12,
   keywords: [
     "Wellbeing Corporation FTC settlement",

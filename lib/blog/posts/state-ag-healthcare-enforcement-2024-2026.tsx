@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "State attorneys general have become increasingly active on healthcare marketing enforcement - particularly in the compounded medication, weight loss, and aesthetic practice categories. Here's the landscape.",
   excerpt:
     "Federal FDA and FTC enforcement gets the most attention, but state AG actions have been driving significant healthcare marketing enforcement in 2024-2026. Here's what's actually happening across state lines.",
-  date: "2026-04-22",
+  date: "2026-01-30",
   readingMinutes: 9,
   keywords: [
     "state AG healthcare enforcement",

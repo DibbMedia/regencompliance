@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
     "Seven words in healthcare marketing copy generate a disproportionate share of FDA warning letters and FTC enforcement actions. Here is the list, what each one does, and the compliant alternative for every specialty.",
   excerpt:
     "Seven specific words generate a disproportionate share of FDA warning letters and FTC actions in healthcare marketing. Here is the 2026 list - with the compliant alternative for every word and five adjacent phrases that drag you into the same violation.",
-  date: "2026-04-21",
+  date: "2026-04-27",
   readingMinutes: 10,
   keywords: [
     "banned words FDA healthcare marketing",

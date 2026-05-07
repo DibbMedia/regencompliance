@@ -32,9 +32,6 @@ export function MarketingHeader() {
           </nav>
           <div className="hidden lg:flex items-center gap-3">
             <Link href={appUrl("/login")} className="text-sm text-white/75 hover:text-white transition-colors px-4 py-2">Log In</Link>
-            {!IS_LAUNCHED && (
-              <Link href="/waitlist" className="text-sm text-white/75 hover:text-white transition-colors px-2 py-2">Waitlist</Link>
-            )}
             {IS_LAUNCHED ? (
               <CheckoutButton className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-[13px] font-bold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer disabled:opacity-70">
                 Get Started
@@ -69,9 +66,6 @@ export function MarketingHeader() {
             <Link href="/free-audit" className="block text-sm text-[#55E039] font-semibold py-2.5">Free Audit</Link>
             <Link href="/demo" className="block text-sm text-white/75 hover:text-white py-2.5">Try Demo</Link>
             <Link href={appUrl("/login")} className="block text-sm text-white/75 py-2.5">Log In</Link>
-            {!IS_LAUNCHED && (
-              <Link href="/waitlist" className="block text-sm text-white/75 py-2.5">Join Waitlist</Link>
-            )}
             {IS_LAUNCHED ? (
               <Link href="/pricing" className="block text-sm text-[#55E039] font-bold py-2.5">Get Started →</Link>
             ) : (

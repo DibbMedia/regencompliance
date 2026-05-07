@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Healthcare practices face unique constraints when responding to negative reviews - HIPAA limits disclosing PHI, FTC limits suppressing honest reviews, and state medical boards add a professional-conduct layer. Here's how to respond compliantly.",
   excerpt:
     "Every healthcare practice wants to respond to negative reviews. HIPAA, the FTC Consumer Review Fairness Act, and state medical board rules all restrict how. Here's the framework for responding legally without making the situation worse.",
-  date: "2026-04-22",
+  date: "2026-02-13",
   readingMinutes: 8,
   keywords: [
     "respond to negative patient reviews",

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "The SmileDirectClub enforcement saga produced lessons for the broader clear aligner and teeth-straightening industry. Here's what happened, what it established, and what current practices should learn from it.",
   excerpt:
     "SmileDirectClub's collapse followed sustained state dental board and FTC attention. The patterns cited apply to the broader DTC aligner category and traditional orthodontic marketing.",
-  date: "2026-04-22",
+  date: "2025-11-07",
   readingMinutes: 8,
   keywords: [
     "SmileDirectClub enforcement",

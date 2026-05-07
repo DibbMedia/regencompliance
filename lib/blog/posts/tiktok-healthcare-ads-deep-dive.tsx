@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "TikTok is the fastest-growing paid healthcare advertising channel and the FTC's specifically-named social media enforcement priority. Here's the full playbook for healthcare practices running TikTok advertising.",
   excerpt:
     "TikTok is where healthcare practice growth is happening - and where the FTC has explicitly said enforcement is focused. Here's how to run TikTok ads compliantly without drawing account action or agency attention.",
-  date: "2026-04-22",
+  date: "2026-01-05",
   readingMinutes: 9,
   keywords: [
     "TikTok healthcare ads compliance",

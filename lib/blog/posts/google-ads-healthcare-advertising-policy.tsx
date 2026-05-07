@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Google Ads has one of the strictest healthcare advertising policies of any major platform - including required certifications, restricted treatment categories, and specific claim prohibitions. Here's the full playbook for getting healthcare practice ads to run consistently.",
   excerpt:
     "Google Ads requires certifications for some healthcare categories, outright prohibits others, and enforces specific claim restrictions across all of them. Here's what the policy actually says and how to structure Google Ads campaigns that clear review and convert reliably.",
-  date: "2026-04-22",
+  date: "2026-03-16",
   readingMinutes: 10,
   keywords: [
     "Google Ads healthcare policy",

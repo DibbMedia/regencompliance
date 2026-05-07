@@ -33,10 +33,10 @@ export function MarketingFooter() {
             <div className="space-y-2.5">
               <Link href="/compare" className="block text-sm text-white/70 hover:text-white transition-colors">All comparisons</Link>
               <Link href="/vs/chatgpt" className="block text-sm text-white/70 hover:text-white transition-colors">vs ChatGPT</Link>
-              <Link href="/vs/jasper" className="block text-sm text-white/70 hover:text-white transition-colors">vs Jasper</Link>
+              <Link href="/vs/claude" className="block text-sm text-white/70 hover:text-white transition-colors">vs Claude</Link>
+              <Link href="/vs/perplexity" className="block text-sm text-white/70 hover:text-white transition-colors">vs Perplexity</Link>
               <Link href="/vs/grammarly" className="block text-sm text-white/70 hover:text-white transition-colors">vs Grammarly</Link>
               <Link href="/vs/healthcare-attorney" className="block text-sm text-white/70 hover:text-white transition-colors">vs Attorney</Link>
-              <Link href="/vs/manual-audit" className="block text-sm text-white/70 hover:text-white transition-colors">vs Manual Audit</Link>
             </div>
           </div>
           <div>
@@ -68,7 +68,9 @@ export function MarketingFooter() {
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               <Link href="/privacy" className="text-sm text-white/70 hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="text-sm text-white/70 hover:text-white transition-colors">Terms</Link>
-              <a href="mailto:support@regencompliance.ai" className="text-sm text-white/70 hover:text-white transition-colors">Contact</a>
+              <Link href="/cookies" className="text-sm text-white/70 hover:text-white transition-colors">Cookies</Link>
+              <Link href="/accessibility" className="text-sm text-white/70 hover:text-white transition-colors">Accessibility</Link>
+              <Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors">Contact</Link>
             </div>
           </div>
           <div>
@@ -80,7 +82,7 @@ export function MarketingFooter() {
         </div>
         <div className="mt-12 pt-8 border-t border-white/[0.06]">
           <p className="text-[11px] text-white/50 leading-relaxed text-center">
-            RegenCompliance is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. &copy; 2026 RegenCompliance. All rights reserved.
+            RegenCompliance is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. &copy; 2026 Regen Portal LLC. All rights reserved.
           </p>
         </div>
       </div>

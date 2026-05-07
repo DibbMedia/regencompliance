@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Plastic surgery marketing is a mature, high-enforcement category. Board-certified rules, before/after imagery standards, medical tourism, and package pricing all draw specific compliance attention.",
   excerpt:
     "Plastic surgery marketing has some of the most developed enforcement case law in healthcare. Here's the specific compliance framework - board certification rules, before/after standards, and medical tourism considerations.",
-  date: "2026-04-22",
+  date: "2026-01-14",
   readingMinutes: 9,
   keywords: [
     "plastic surgery marketing compliance",

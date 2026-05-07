@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "A full breakdown of the FDA prescription-drug advertising rules that apply when med spas market Botox, Dysport, Xeomin, Jeuveau, and Daxxify by brand name - with compliant rewrites of the specific patterns that trigger enforcement.",
   excerpt:
     "Every med spa ad saying 'Botox by Nurse Smith' or 'Juvederm specials this month' is operating under rules most clinics don't know exist. Here's the full playbook for brand-name neurotoxin and filler advertising compliance.",
-  date: "2026-04-22",
+  date: "2026-03-27",
   readingMinutes: 11,
   keywords: [
     "Botox advertising compliance",

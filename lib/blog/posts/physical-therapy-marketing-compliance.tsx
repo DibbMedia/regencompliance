@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Physical therapy marketing operates under state PT licensing board rules, FTC substantiation for outcome claims, and specific direct-access and referral-based marketing considerations. Here's the full compliance framework.",
   excerpt:
     "PT practices face a specific compliance pattern around direct access marketing, outcome claims, and supervision language for PTAs. Here's what state PT boards and the FTC focus on.",
-  date: "2026-04-22",
+  date: "2025-12-15",
   readingMinutes: 7,
   keywords: [
     "physical therapy marketing compliance",

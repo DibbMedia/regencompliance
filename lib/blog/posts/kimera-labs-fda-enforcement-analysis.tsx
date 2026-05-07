@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "The FDA's sustained attention on exosome laboratories has produced warning letters and enforcement actions including the Kimera Labs matter. Here's what the pattern tells clinics sourcing exosome products.",
   excerpt:
     "Clinics sourcing exosome products can inherit FDA exposure from their supplier's marketing and regulatory posture. Here's what the laboratory-level enforcement pattern means for clinic-level compliance.",
-  date: "2026-04-22",
+  date: "2026-01-26",
   readingMinutes: 9,
   keywords: [
     "Kimera Labs FDA",

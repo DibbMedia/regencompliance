@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "HIPAA's marketing rule restricts how patient information (PHI) can be used in marketing. Here's what counts as marketing under HIPAA, when patient authorization is required, and what the exceptions actually cover.",
   excerpt:
     "Most healthcare practices conflate HIPAA compliance with FTC compliance - they're different regulatory regimes with different rules. Here's the HIPAA-specific framework for marketing that uses any patient information.",
-  date: "2026-04-22",
+  date: "2026-02-06",
   readingMinutes: 9,
   keywords: [
     "HIPAA marketing rule",

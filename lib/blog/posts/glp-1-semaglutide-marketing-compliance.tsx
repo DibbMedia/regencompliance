@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
     "GLP-1 and semaglutide marketing is the fastest-growing FDA enforcement category in healthcare. Here's the stack of rules weight loss clinics face: drug identity, compounding rules, off-label indication, outcome claims, and before/after photo compliance.",
   excerpt:
     "GLP-1 and semaglutide marketing sits on top of the most regulated substance category in healthcare advertising. Weight loss clinics face a 5-layer compliance stack: drug identity, compounding, off-label use, outcome claims, and before/after photos. This post walks through each.",
-  date: "2026-04-21",
+  date: "2026-04-17",
   readingMinutes: 11,
   keywords: [
     "GLP-1 marketing compliance",

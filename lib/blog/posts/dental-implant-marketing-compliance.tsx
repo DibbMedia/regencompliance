@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Dental implant marketing has its own compliance pattern - state dental board rules on specialty claims, All-on-4 brand advertising considerations, lifetime guarantee exposure, and specific failure-rate disclosure issues.",
   excerpt:
     "Dental implant marketing is one of the highest-volume dental advertising categories. Here's what state dental boards, the FTC, and manufacturer-level enforcement focus on.",
-  date: "2026-04-22",
+  date: "2026-01-12",
   readingMinutes: 8,
   keywords: [
     "dental implant marketing compliance",

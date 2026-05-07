@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
     "The FTC's updated Endorsement Guides changed what healthcare practices can publish as patient testimonials. Here's the current rulebook: typical experience disclosure, material connection, employee endorsements, influencer partnerships, and what to do with reposted content.",
   excerpt:
     "The FTC's Endorsement Guides govern every patient testimonial a healthcare practice publishes - and they were meaningfully updated in 2023. This post covers the current rulebook on typical-experience disclosure, paid endorsements, employee testimonials, influencer partnerships, and reposted content.",
-  date: "2026-04-21",
+  date: "2026-04-13",
   readingMinutes: 10,
   keywords: [
     "healthcare testimonial FTC",

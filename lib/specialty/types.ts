@@ -20,6 +20,12 @@ export interface SpecialtyCatch {
   body: string
 }
 
+export interface SpecialtyCommonMistake {
+  phrase: string
+  rule: string
+  body: string
+}
+
 export interface SpecialtyCaseStudy {
   title: string
   before: string
@@ -38,6 +44,7 @@ export interface SpecialtyMeta {
   riskSummary: string
   enforcementExamples: SpecialtyEnforcementExample[]
   bannedPhrases: SpecialtyBannedPhrase[]
+  commonMistakes: SpecialtyCommonMistake[]
   commonCatches: SpecialtyCatch[]
   caseStudy: SpecialtyCaseStudy
   uniqueValue: string

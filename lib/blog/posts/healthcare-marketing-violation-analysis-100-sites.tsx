@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "Original research: scanning 100 healthcare practice websites across med spa, regen, weight loss, dental, and aesthetic specialties reveals specific patterns of FDA/FTC compliance issues.",
   excerpt:
     "We ran 100 healthcare practice websites through systematic compliance review. The findings - patterns, prevalence, and specialty variation - reveal where enforcement risk is actually concentrated.",
-  date: "2026-04-22",
+  date: "2025-11-10",
   readingMinutes: 9,
   keywords: [
     "healthcare marketing compliance research",

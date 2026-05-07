@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "YouTube healthcare advertising spans pre-roll ads, in-stream video, and channel content. Each has specific Google Ads policy and YouTube community guideline considerations on top of FDA/FTC rules.",
   excerpt:
     "YouTube is where healthcare practices build long-term trust and authority. Here's the compliance framework for pre-roll ads, channel content, and the specific patterns YouTube enforces.",
-  date: "2026-04-22",
+  date: "2026-01-02",
   readingMinutes: 8,
   keywords: [
     "YouTube healthcare advertising",

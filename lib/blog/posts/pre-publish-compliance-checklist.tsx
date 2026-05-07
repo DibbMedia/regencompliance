@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "A practical 15-item checklist for reviewing any piece of healthcare marketing content before it goes live. Covers the FDA, FTC, HIPAA, and platform-policy categories in 90 seconds per item.",
   excerpt:
     "Most compliance failures would be caught by a 90-second review. Here's the exact checklist - 15 items across FDA, FTC, HIPAA, and platform policy - that every piece of content should pass before publishing.",
-  date: "2026-04-22",
+  date: "2026-02-16",
   readingMinutes: 7,
   keywords: [
     "pre-publish compliance checklist",

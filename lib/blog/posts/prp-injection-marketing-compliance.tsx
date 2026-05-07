@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Platelet-rich plasma (PRP) marketing has its own compliance pattern - different from stem cell marketing, with specific off-label issues, FDA-cleared device vs biological-product distinctions, and indication-specific enforcement considerations.",
   excerpt:
     "PRP marketing looks simpler than stem cell marketing but carries a distinct compliance pattern. Here's what orthopedic, sports medicine, hair restoration, and aesthetic practices need to know about marketing PRP compliantly.",
-  date: "2026-04-22",
+  date: "2026-03-06",
   readingMinutes: 9,
   keywords: [
     "PRP marketing compliance",

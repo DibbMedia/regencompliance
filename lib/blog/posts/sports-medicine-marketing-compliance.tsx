@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Sports medicine practices combine orthopedic care, regen medicine (PRP, stem cells), performance optimization, and often concierge or pro-athlete service lines. Each adds compliance considerations.",
   excerpt:
     "Sports medicine practices face a unique compliance mix - orthopedic marketing, regen medicine rules, performance claims, and athlete endorsement complications. Here's the framework.",
-  date: "2026-04-22",
+  date: "2025-12-26",
   readingMinutes: 8,
   keywords: [
     "sports medicine marketing compliance",

@@ -108,6 +108,68 @@ export const meta: SpecialtyMeta = {
       risk: "MEDIUM",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "Board-certified plastic surgeon",
+      rule: "State medical board physician-advertising rules (varies by state)",
+      body: "'Board-certified' carries specific meaning under state medical board rules - typically requires ABMS-member-board certification. Non-ABMS-board-certified physicians using the phrase is a top state medical board enforcement pattern. RegenCompliance flags 'board-certified' without specific board name and rewrites to 'Certified by [specific board name] - which is [ABMS-member board / other certification].'",
+    },
+    {
+      phrase: "Scarless breast augmentation",
+      rule: "FTC Section 5 (15 USC 45) - absolute claims",
+      body: "All surgical procedures produce scars. 'Scarless' is an unsubstantiable absolute claim that has generated FTC consent decrees in plastic surgery. We rewrite to 'surgical approach designed to minimize visible scarring.'",
+    },
+    {
+      phrase: "Permanent facelift",
+      rule: "FTC substantiation - durability claims",
+      body: "Aging continues after surgery. 'Permanent' overstates the durability of any facelift result and contradicts the surgical literature. We rewrite to 'long-lasting facial rejuvenation - aging continues naturally over time.'",
+    },
+    {
+      phrase: "No downtime surgery",
+      rule: "FTC absolute-claim substantiation",
+      body: "All surgery has recovery. 'No downtime' is an absolute claim that fails substantiation against the surgical literature. We rewrite to 'reduced downtime compared to traditional approaches - specific recovery discussed at consultation.'",
+    },
+    {
+      phrase: "Reverses 20 years of aging",
+      rule: "FTC quantified-outcome substantiation",
+      body: "Quantified age-reversal in surgical aesthetic marketing has no clinical substantiation that meets the FTC bar. We flag every quantified age-reversal pattern and rewrite to descriptive appearance language.",
+    },
+    {
+      phrase: "Painless rhinoplasty",
+      rule: "FTC absolute-claim substantiation + surgical reality",
+      body: "Surgical procedures involve sedation and post-operative discomfort - 'painless' contradicts both. We rewrite to 'our sedation and technique options help most patients experience minimal discomfort.'",
+    },
+    {
+      phrase: "Guaranteed satisfaction",
+      rule: "FTC substantiation - guarantee claims",
+      body: "Surgical satisfaction guarantees are essentially never substantiable - aesthetic outcomes are subjective and patient-specific. We rewrite to 'most of our patients report high satisfaction with their results - our consultation process aims to set realistic expectations.'",
+    },
+    {
+      phrase: "Best plastic surgeon in [city]",
+      rule: "FTC superlative substantiation + state medical board rules",
+      body: "Superlatives without substantiation fail FTC standards and several state medical boards specifically prohibit superlative comparison language in physician advertising. We rewrite to 'a leading aesthetic practice in [city]' framing.",
+    },
+    {
+      phrase: "Celebrity facelift",
+      rule: "FTC Endorsement Guides (16 CFR 255)",
+      body: "Implied celebrity endorsement without documented material connection is a direct FTC violation. The 'celebrity favorite' framing has been cited as deceptive even when no celebrity is actually paid. We flag and recommend either removal or proper disclosure.",
+    },
+    {
+      phrase: "Actual patient - no retouching",
+      rule: "FTC Endorsement Guides - typical-experience framing",
+      body: "Defensive overclaims about photo authenticity are not what the FTC requires. The rule is typical-experience framing, not authenticity certification. 'Actual patient - no retouching' is also often technically untrue (lighting, positioning, cropping all alter perception). We rewrite to 'Actual patient, [N] weeks post-procedure. Individual results vary - typical outcomes depend on candidacy and aftercare.'",
+    },
+    {
+      phrase: "Dr. [Name] is the expert in [procedure]",
+      rule: "FTC superlative substantiation",
+      body: "'Expert' as a superlative implies a credential that often does not formally exist and fails substantiation. We rewrite to 'Dr. [Name] has performed [N] [procedures] and has focused training in [area].'",
+    },
+    {
+      phrase: "Revolutionary new technique",
+      rule: "FTC superlative substantiation",
+      body: "'Revolutionary' is an unsubstantiated superiority claim - common FTC target in aesthetic marketing. We flag the superlative pattern and rewrite to 'a technique our practice uses for [specific indication] based on [specific training or development].'",
+    },
+  ],
   commonCatches: [
     {
       title: "Before/after image captions without typical-experience disclosure",

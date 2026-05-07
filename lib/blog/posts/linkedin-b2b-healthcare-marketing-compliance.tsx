@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "LinkedIn healthcare marketing differs from consumer social platforms - B2B positioning, provider recruiting, and professional content have different compliance considerations.",
   excerpt:
     "LinkedIn is the underused healthcare platform - but it has its own rules. Here's the compliance framework for practice positioning, provider recruiting, and B2B healthcare content.",
-  date: "2026-04-22",
+  date: "2025-11-17",
   readingMinutes: 6,
   keywords: [
     "LinkedIn healthcare marketing",

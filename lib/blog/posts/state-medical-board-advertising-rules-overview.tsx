@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "State medical boards layer specific physician advertising rules on top of federal FDA and FTC rules. Here's an overview of the patterns across states - supervision language, specialty claims, credentials, and the variations that matter.",
   excerpt:
     "Your FDA- and FTC-compliant ad can still violate state medical board rules. Here's the overview of state-level physician advertising regulations every multi-state or telehealth practice needs to understand.",
-  date: "2026-04-22",
+  date: "2026-02-04",
   readingMinutes: 10,
   keywords: [
     "state medical board advertising rules",

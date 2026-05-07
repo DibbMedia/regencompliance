@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Optometry practices face specific marketing rules around contact lens sales (FTC Contact Lens Rule), dry eye treatment claims, myopia management marketing, and retail optical versus clinical framing.",
   excerpt:
     "Optometry marketing combines retail optical rules, FDA device considerations, FTC contact lens rules, and specific claim categories like dry eye treatment and myopia management. Here's the framework.",
-  date: "2026-04-22",
+  date: "2025-12-10",
   readingMinutes: 7,
   keywords: [
     "optometry marketing compliance",

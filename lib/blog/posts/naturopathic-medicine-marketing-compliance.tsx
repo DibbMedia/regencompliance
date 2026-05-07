@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Naturopathic practice marketing operates under dramatically varying state licensing rules, FTC substantiation for alternative-treatment claims, and specific considerations around practice scope and terminology.",
   excerpt:
     "Naturopathic medicine marketing varies dramatically by state - from full licensure to no recognition - and faces specific FTC scrutiny on alternative-treatment claims. Here's the framework.",
-  date: "2026-04-22",
+  date: "2025-12-01",
   readingMinutes: 7,
   keywords: [
     "naturopathic medicine marketing",

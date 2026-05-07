@@ -56,6 +56,24 @@ export const freeAuditSchema = z.object({
   email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
   name: z.string().trim().max(100).optional().or(z.literal('')),
   clinic_name: z.string().trim().max(200).optional().or(z.literal('')),
+  accept_terms: z.literal(true, { error: 'Please agree to the terms before continuing' }),
+})
+
+export const CONTACT_SUBJECT_OPTIONS = [
+  'general',
+  'sales',
+  'support',
+  'beta',
+  'press',
+] as const
+
+export const contactFormSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be under 100 characters'),
+  email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+  company: z.string().trim().max(200, 'Must be under 200 characters').optional().or(z.literal('')),
+  subject: z.enum(CONTACT_SUBJECT_OPTIONS),
+  message: z.string().trim().min(1, 'Message is required').max(2000, 'Message must be under 2,000 characters'),
+  accept_terms: z.literal(true, { message: 'Please confirm you understand how we use your submission' }),
 })
 
 export const betaApplicationSchema = z.object({
@@ -203,6 +221,7 @@ export type InviteInput = z.infer<typeof inviteSchema>
 export type WaitlistInput = z.infer<typeof waitlistSchema>
 export type NewsletterInput = z.infer<typeof newsletterSchema>
 export type BetaApplicationInput = z.infer<typeof betaApplicationSchema>
+export type ContactFormInput = z.infer<typeof contactFormSchema>
 export type FreeAuditInput = z.infer<typeof freeAuditSchema>
 export type ProfileInput = z.infer<typeof profileSchema>
 export type TicketCreateInput = z.infer<typeof ticketCreateSchema>

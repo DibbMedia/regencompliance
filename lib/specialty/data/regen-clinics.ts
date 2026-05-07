@@ -109,6 +109,58 @@ export const meta: SpecialtyMeta = {
       risk: "MEDIUM",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "FDA-approved stem cells",
+      rule: "FDA HCT/P pathway (21 CFR 1271)",
+      body: "Almost no stem cell product on the consumer market is FDA-approved. Most operate under the 361 pathway, which does not require pre-market approval. Calling them 'approved' is the single most-cited regen enforcement pattern. RegenCompliance rewrites to 'performed in an FDA-registered facility using HCT/P materials under the 361 pathway.'",
+    },
+    {
+      phrase: "Cures arthritis",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "'Cure' on a recognized disease state like arthritis pushes your HCT/P offering out of the 361 pathway and into the 351 (drug/biologic) pathway, which requires full FDA approval you do not have. We catch every disease-cure variant and rewrite to 'may support joint comfort and function.'",
+    },
+    {
+      phrase: "Heals damaged tissue",
+      rule: "FDA HCT/P 361 vs 351 pathway distinction (21 CFR 1271.10)",
+      body: "Therapeutic 'heal,' 'repair,' and 'regenerate' claims signal you are operating outside 361's homologous-use requirement. The FDA reads this language as evidence the product should be regulated as a drug. We flag therapeutic claim patterns and rewrite to functional improvement framing.",
+    },
+    {
+      phrase: "Reverses aging",
+      rule: "FTC Section 5 (Wellbeing $5.15M settlement precedent)",
+      body: "The FTC Wellbeing Corporation case made 'reverses aging' on stem cell services a per-se enforcement target. We flag every age-reversal variant and rewrite to 'may support aspects of skin and tissue health' framing.",
+    },
+    {
+      phrase: "Exosomes repair damaged cells",
+      rule: "FTC substantiation under Section 5 (current enforcement priority)",
+      body: "Exosome 'repair' marketing is a current FTC focus. Claims that exosomes repair, regenerate, or heal lack the competent-and-reliable scientific evidence the FTC requires. We rewrite to 'research into exosome biology continues; our protocols use [product] for [appropriate indication].'",
+    },
+    {
+      phrase: "Treats spinal cord injury",
+      rule: "FDA disease-treatment claim (21 USC 321(g)), CBER scrutiny",
+      body: "Spinal cord injury treatment claims on HCT/P products were specifically cited in the Wellbeing case and continue to draw FDA CBER attention. There is no compliant reframing - we flag the phrase pattern and recommend complete removal.",
+    },
+    {
+      phrase: "Proven to regrow cartilage",
+      rule: "FTC substantiation (15 USC 45) + FDA tissue-regeneration claim",
+      body: "Tissue regeneration claims need study-level evidence the FTC reads as competent. They also push HCT/P products toward the drug pathway. We rewrite to study-citation language: 'clinical studies on [protocol] have shown [endpoint].'",
+    },
+    {
+      phrase: "100% safe, no side effects",
+      rule: "FTC absolute-claim substantiation, FDA misbranding",
+      body: "Absolute safety claims are unsubstantiable on any medical procedure. We rewrite to 'adverse events are rare but possible; candidacy and risks are discussed at consultation.'",
+    },
+    {
+      phrase: "Alternative to surgery",
+      rule: "FTC comparative-claim substantiation",
+      body: "Comparative claims to surgical outcomes need head-to-head clinical evidence that essentially never exists for regen vs surgery. We rewrite to 'a non-surgical option some patients choose to explore before considering surgery.'",
+    },
+    {
+      phrase: "Breakthrough therapy",
+      rule: "FDA Breakthrough Therapy designation (FDASIA Section 902)",
+      body: "'Breakthrough Therapy' is a specific FDA program designation almost no regen clinic actually has. Using it as marketing copy is direct misbranding. We flag the designation language and rewrite to 'an emerging area of regenerative treatment we are offering based on current evidence.'",
+    },
+  ],
   commonCatches: [
     {
       title: "Stem cell service page claims beyond the 361 pathway",

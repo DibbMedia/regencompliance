@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Mental health practices face specific compliance considerations - HIPAA is stricter, FTC substantiation applies to treatment outcome claims, and platform policies for mental health advertising are particularly tight.",
   excerpt:
     "Therapy practices, psychiatry clinics, and online mental health platforms operate under specific marketing rules. Here's the complete framework for responsible and compliant mental health marketing.",
-  date: "2026-04-22",
+  date: "2026-01-09",
   readingMinutes: 9,
   keywords: [
     "mental health practice marketing",

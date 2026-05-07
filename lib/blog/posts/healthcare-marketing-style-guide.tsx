@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Most compliance drift happens because rules exist only in the compliance officer's head. A written marketing style guide turns scattered judgments into an enforceable standard. Here's how to build one.",
   excerpt:
     "Your compliance officer can't be in every marketing meeting. A written style guide makes compliance principles operable at scale - here's the template and how to keep it alive.",
-  date: "2026-04-22",
+  date: "2026-02-18",
   readingMinutes: 8,
   keywords: [
     "healthcare marketing style guide",

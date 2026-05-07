@@ -104,6 +104,58 @@ export const meta: SpecialtyMeta = {
       risk: "LOW",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "FDA-approved laser",
+      rule: "FDA cleared vs approved (21 CFR 807, 21 CFR 814)",
+      body: "Almost every aesthetic laser on the market is FDA-cleared (510(k)) - a legally distinct status from FDA-approved (PMA). Calling a cleared device 'approved' is one of the top three patterns the FDA cites in aesthetic warning letters. RegenCompliance flags 'FDA-approved' on any device language and rewrites it to the correct cleared status with the labeled indication.",
+    },
+    {
+      phrase: "Cures acne scarring",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "'Cure' on a recognized condition like acne scarring drops your service into the drug-claim pathway, regardless of whether you ever say the word drug. We catch every reversal/cure/heal phrasing on dermatologic indications and rewrite them to a substantiable improvement-of-appearance framing.",
+    },
+    {
+      phrase: "Reverses aging 10 years",
+      rule: "FTC substantiation under Section 5 (15 USC 45)",
+      body: "Quantified time-reversal claims need head-to-head clinical evidence the FTC reads as 'competent and reliable' - which essentially never exists for aesthetic services. RegenCompliance flags any quantified age-reversal language and rewrites it to descriptive appearance language that still sells.",
+    },
+    {
+      phrase: "Book directly with our nurse injector",
+      rule: "State medical board supervision rules (varies by state)",
+      body: "Phrasing that implies a non-physician operates independently is a top trigger for state medical boards in California, Texas, Florida, and New York. We catch the supervision-implication patterns ('book with your nurse,' 'our independent injectors') and rewrite to compliant supervised-care language.",
+    },
+    {
+      phrase: "Non-surgical rhinoplasty",
+      rule: "FDA off-label promotion (21 CFR 202.1)",
+      body: "Most fillers are not FDA-cleared for nasal use. Marketing them for nose reshaping promotes them off-label, which is the most-cited FDA filler enforcement pattern. We flag the phrase pattern and rewrite to candidacy-and-consultation framing.",
+    },
+    {
+      phrase: "No side effects",
+      rule: "FDA prescribing information conflict (21 USC 352)",
+      body: "Every injectable carries documented potential adverse events in its prescribing information. Saying there are none directly contradicts the labeling, which is a misbranding pattern. RegenCompliance rewrites to 'most patients tolerate treatment well' framing with consultation reference.",
+    },
+    {
+      phrase: "Guaranteed results",
+      rule: "FTC false-advertising substantiation under Section 5",
+      body: "Guarantees in aesthetic medicine almost never meet the FTC substantiation bar because outcomes vary by patient. We flag every guarantee variant ('promised,' 'guaranteed,' 'will deliver') and rewrite to satisfaction-based language with consultation expectation-setting.",
+    },
+    {
+      phrase: "Medical-grade results at home",
+      rule: "FTC substantiation - equivalence claims",
+      body: "Equivalence-to-medical-treatment claims need clinical evidence comparing your service to the at-home alternative. That evidence essentially never exists, so the claim fails substantiation. We rewrite to professional-strength formulation language.",
+    },
+    {
+      phrase: "Safer than surgery",
+      rule: "FTC comparative-claim substantiation",
+      body: "Comparative safety claims need head-to-head clinical evidence - which rarely exists for non-surgical vs surgical aesthetic comparisons. We catch all comparative safety patterns and rewrite to 'a non-surgical option for patients seeking [outcome]' framing.",
+    },
+    {
+      phrase: "Revolutionary technology",
+      rule: "FTC superlative substantiation",
+      body: "'Revolutionary,' 'breakthrough,' 'first-of-its-kind' are unsubstantiated superiority claims absent specific clinical or technical proof. RegenCompliance flags the superlative pattern and rewrites to specific descriptive language tied to the labeled indication.",
+    },
+  ],
   commonCatches: [
     {
       title: "Instagram captions with 'before treatment / after treatment'",

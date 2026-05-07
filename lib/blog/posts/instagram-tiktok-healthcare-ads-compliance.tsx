@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "Instagram and TikTok have overlapping healthcare ad policies that interact with FDA and FTC rules in ways most clinic marketers never account for. Here's the stack of rules and a 15-minute pre-launch checklist.",
   excerpt:
     "Instagram and TikTok overlay platform policies on top of FDA and FTC rules, and both platforms have tightened healthcare advertising substantially in 2024&ndash;2025. This post covers the interaction, the highest-risk patterns, and a 15-minute pre-launch checklist every ad should pass.",
-  date: "2026-04-21",
+  date: "2026-04-10",
   readingMinutes: 10,
   keywords: [
     "healthcare Instagram ads compliance",

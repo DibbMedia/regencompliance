@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "Practice About pages and provider bios are rarely reviewed for compliance - but they frequently contain specialty misrepresentations, credential overstatement, and outcome claims that draw enforcement. Here's what to audit.",
   excerpt:
     "Your About page hasn't been audited in years. It probably has specialty misrepresentations, credentialing issues, and outcome claims nobody noticed. Here's the specific audit framework.",
-  date: "2026-04-22",
+  date: "2026-02-11",
   readingMinutes: 7,
   keywords: [
     "healthcare about page compliance",

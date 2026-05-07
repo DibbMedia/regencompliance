@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "Peptide therapy marketing - BPC-157, Ipamorelin, TB-500, and adjacent compounds - faces a specifically shifting regulatory landscape. Here's what the FDA schedule changes mean for clinic marketing and how to stay compliant.",
   excerpt:
     "The FDA scheduled several commonly-marketed peptides as prohibited for compounding in recent years. Peptide clinic marketing that hasn't updated is operating in a different regulatory world than it started in. Here's the current framework.",
-  date: "2026-04-22",
+  date: "2026-02-25",
   readingMinutes: 10,
   keywords: [
     "peptide therapy marketing compliance",

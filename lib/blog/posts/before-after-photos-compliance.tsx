@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
     "Before-and-after photos are the most regulated visual in healthcare marketing. Four overlapping regimes govern them: FTC Endorsement Guides, FDA, HIPAA consent, and platform ad policies. Here's the complete protocol.",
   excerpt:
     "Before-and-after photos are the most regulated visual in healthcare marketing - four overlapping regimes govern them simultaneously (FTC Endorsement Guides, FDA intent-of-use, HIPAA consent, platform ad policies). This is the complete compliant-photo protocol.",
-  date: "2026-04-21",
+  date: "2026-04-15",
   readingMinutes: 10,
   keywords: [
     "before after photos compliance",

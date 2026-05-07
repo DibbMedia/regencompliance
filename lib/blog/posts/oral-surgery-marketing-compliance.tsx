@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Oral surgery practices span wisdom tooth extraction, dental implants, corrective jaw surgery, and facial trauma. Each has specific marketing compliance considerations around sedation, outcome claims, and specialty credentialing.",
   excerpt:
     "OMS marketing combines dental specialty board rules with surgical marketing framework plus specific considerations around sedation, implant outcomes, and jaw surgery claims.",
-  date: "2026-04-22",
+  date: "2025-12-03",
   readingMinutes: 7,
   keywords: [
     "oral surgery marketing compliance",

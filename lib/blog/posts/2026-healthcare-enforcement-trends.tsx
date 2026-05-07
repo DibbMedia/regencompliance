@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "A forward-looking analysis of where FDA, FTC, state AG, and platform-policy enforcement is heading in 2026 - and what healthcare practices should adjust to stay ahead of the trajectory.",
   excerpt:
     "Healthcare marketing enforcement is evolving fast. Here's where the trajectory points for 2026 across compounded medications, aesthetic practices, longevity marketing, AI-generated content, and platform policy.",
-  date: "2026-04-22",
+  date: "2026-01-28",
   readingMinutes: 9,
   keywords: [
     "2026 healthcare enforcement trends",

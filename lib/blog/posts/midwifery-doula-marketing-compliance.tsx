@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Midwifery and doula services operate under dramatically varying state licensing rules plus specific FTC considerations around birth outcome claims and scope-of-practice representation.",
   excerpt:
     "Midwifery licensing varies enormously by state. Doulas aren't licensed but still face FTC rules on claims. Here's the compliance framework for pregnancy-adjacent services.",
-  date: "2026-04-22",
+  date: "2025-10-31",
   readingMinutes: 7,
   keywords: [
     "midwifery marketing compliance",

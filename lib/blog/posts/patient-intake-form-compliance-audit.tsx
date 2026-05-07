@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Patient intake forms often haven't been updated in years. A compliance audit catches missing authorizations, improper marketing consent, outdated HIPAA language, and state-specific requirements.",
   excerpt:
     "Most practices' intake forms were written years ago and haven't been audited since. Here's the specific audit framework covering HIPAA, marketing authorization, CAN-SPAM, TCPA, and state requirements.",
-  date: "2026-04-22",
+  date: "2025-11-21",
   readingMinutes: 7,
   keywords: [
     "patient intake form compliance",

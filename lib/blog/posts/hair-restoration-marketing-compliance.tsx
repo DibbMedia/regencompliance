@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Hair restoration marketing - surgical FUE/FUT transplants, PRP therapy, exosome treatments, and drug combinations - faces FTC substantiation, FDA device rules, and active class-action exposure around guarantee language.",
   excerpt:
     "Hair restoration is one of the most litigated healthcare marketing categories - FTC actions, state AG consumer protection cases, and private class actions. Here's the full compliance playbook for surgical and non-surgical offerings.",
-  date: "2026-04-22",
+  date: "2026-02-23",
   readingMinutes: 10,
   keywords: [
     "hair restoration marketing compliance",

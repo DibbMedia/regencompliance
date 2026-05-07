@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
     "FDA warning letters to healthcare practices hit a 25-year high in 2024. Here is what is actually being flagged, which specialties are most exposed, and how to audit your marketing before a letter arrives.",
   excerpt:
     "More than 200 FDA warning letters hit healthcare practices in 2024 - the highest volume in a quarter century. Here is what is being flagged, why regenerative medicine and med spas are on the front line, and what a defensible marketing program looks like now.",
-  date: "2026-04-21",
+  date: "2026-05-04",
   readingMinutes: 9,
   keywords: [
     "FDA warning letters 2024",

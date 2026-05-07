@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Acupuncture marketing combines state licensing board rules, FTC substantiation for specific condition claims, and specific considerations around traditional Chinese medicine framing. Here's the compliance framework.",
   excerpt:
     "Acupuncture practice marketing faces specific FTC scrutiny on condition-treatment claims, plus state-by-state licensing board rules that vary significantly. Here's how to market acupuncture services compliantly.",
-  date: "2026-04-22",
+  date: "2025-12-17",
   readingMinutes: 7,
   keywords: [
     "acupuncture marketing compliance",

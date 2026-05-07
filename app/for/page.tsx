@@ -6,35 +6,9 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { SPECIALTIES } from "@/lib/specialty/registry"
 import { SITE_URL } from "@/lib/site-url"
+import { ForHubFaq, SPECIALTY_HUB_FAQS } from "./for-hub-faq"
 
 const canonical = `${SITE_URL}/for`
-
-const SPECIALTY_HUB_FAQS = [
-  {
-    q: "Why does specialty-specific compliance matter?",
-    a: "Because enforcement is specialty-specific. The FDA's med spa warning letters focus on different claim patterns than its regen medicine letters. FTC weight-loss enforcement has different typical-experience rules (from Jenny Craig precedent) than general aesthetic enforcement. State medical boards apply different specialty-claim rules to dental, plastic surgery, and general medicine. A single-rule-set tool that averages across all healthcare misses the specific patterns your specialty actually faces.",
-  },
-  {
-    q: "What if my specialty isn't listed?",
-    a: "The core FDA and FTC rules apply to every healthcare specialty - so the scanner still catches disease claims, testimonial-disclosure issues, and guarantee language regardless of specialty. Specialty-specific pages cover the claim categories unique to each area. Additional specialties are added as the rule set grows - functional medicine, hormone therapy, chiropractic, dermatology, and hair restoration are on the expansion list.",
-  },
-  {
-    q: "Can one practice use multiple specialty rule sets?",
-    a: "Yes. Practices that span specialties (e.g., a med spa that also offers weight loss programs) automatically get both rule sets applied. The scanner doesn't force you to pick one specialty - it applies every relevant rule based on content.",
-  },
-  {
-    q: "Do DSOs and multi-location groups use these pages?",
-    a: "Yes. Corporate compliance teams at DSOs, med spa franchises, and multi-location groups use specialty pages to calibrate their internal review processes, train new marketing staff, and audit per-location marketing for specialty-specific patterns.",
-  },
-  {
-    q: "How often are specialty rules updated?",
-    a: "The underlying rule set updates daily as new FDA warning letters and FTC enforcement actions are published. Specialty-specific pages are reviewed quarterly for major updates when enforcement patterns shift (e.g., the 2024-2026 GLP-1 enforcement wave materially changed weight-loss clinic rules).",
-  },
-  {
-    q: "Does this replace my marketing agency or in-house team?",
-    a: "No. We handle the compliance gate between their output and your publishing. If your agency writes, runs ads, or handles content strategy, they continue doing that work. Several healthcare-specialty marketing agencies actually use RegenCompliance internally to check their own deliverables before sending to clinic clients.",
-  },
-]
 
 export const metadata: Metadata = {
   title: "Compliance Software by Specialty - Med Spa, Regen, Weight Loss, Dental & More",
@@ -124,13 +98,13 @@ export default function SpecialtiesIndexPage() {
             <Sparkles className="h-3 w-3" />
             Built for your specialty
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.08]">
-            Specialty-specific compliance -{" "}
-            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">
-              not generic healthcare rules
+          <h1 className="font-extrabold tracking-tight leading-[1.05]">
+            <span className="block text-2xl sm:text-3xl lg:text-4xl text-white">Specialty-Specific Compliance.</span>
+            <span className="mt-2 block text-4xl sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">
+              Not Generic Healthcare Rules.
             </span>
           </h1>
-          <p className="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-6 text-lg text-white/80 leading-relaxed max-w-2xl mx-auto">
             Every healthcare specialty has its own enforcement surface. Med spas, weight
             loss clinics, and regen practices face different FDA patterns, different FTC
             rules, and different state medical board scrutiny. One rule set for all of
@@ -147,7 +121,7 @@ export default function SpecialtiesIndexPage() {
               <Link
                 key={s.slug}
                 href={`/for/${s.slug}`}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-7 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
+                className="group rounded-2xl border border-white/15 bg-white/[0.06] p-7 hover:border-[#55E039]/30 hover:bg-white/[0.10] transition-all"
               >
                 <div className="flex items-center gap-2 mb-4">
                   <div className="h-8 w-8 rounded-lg bg-[#55E039]/10 border border-[#55E039]/15 flex items-center justify-center">
@@ -176,8 +150,8 @@ export default function SpecialtiesIndexPage() {
       {/* ============ WHY SPECIALTY MATTERS ============ */}
       <section className="relative py-16">
         <div className="relative mx-auto max-w-4xl px-6">
-          <div className="rounded-3xl border border-[#55E039]/25 bg-gradient-to-br from-[#55E039]/[0.06] via-[#0a0a0a] to-[#0a0a0a] p-8 sm:p-10 overflow-hidden relative">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-40 bg-[#55E039]/[0.08] blur-[80px] rounded-full pointer-events-none" />
+          <div className="rounded-3xl border border-[#55E039]/30 bg-gradient-to-br from-[#55E039]/[0.10] via-[#0a0a0a] to-[#0a0a0a] p-8 sm:p-10 overflow-hidden relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-40 bg-[#55E039]/[0.10] blur-[80px] rounded-full pointer-events-none" />
             <div className="relative">
               <div className="flex items-center gap-3 mb-4">
                 <Users className="h-6 w-6 text-[#55E039]" aria-hidden />
@@ -214,21 +188,7 @@ export default function SpecialtiesIndexPage() {
               Specialty questions
             </h2>
           </div>
-          <div className="space-y-3">
-            {SPECIALTY_HUB_FAQS.map((faq, i) => (
-              <div
-                key={i}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
-              >
-                <h3 className="text-[15px] sm:text-base font-semibold text-white mb-3">
-                  {faq.q}
-                </h3>
-                <p className="text-sm sm:text-[15px] text-white/70 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
+          <ForHubFaq />
         </div>
       </section>
 

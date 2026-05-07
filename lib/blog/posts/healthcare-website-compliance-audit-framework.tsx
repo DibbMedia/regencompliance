@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
     "A tactical 5-step framework for auditing a healthcare practice website for FDA/FTC compliance violations. Covers inventory, triage, claim-category scan, source rewrites, and archive retirement.",
   excerpt:
     "A tactical framework any clinic can run in two weeks: inventory, pageview-weighted triage, claim-category scan, rewrite-at-source style guide updates, and archive retirement. With the exact sequencing and who does what.",
-  date: "2026-04-21",
+  date: "2026-04-24",
   readingMinutes: 11,
   keywords: [
     "healthcare website compliance audit",

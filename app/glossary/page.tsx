@@ -1,6 +1,15 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, BookOpen, ChevronRight } from "lucide-react"
+import {
+  ArrowRight,
+  BookOpen,
+  ChevronRight,
+  FlaskConical,
+  Megaphone,
+  Cpu,
+  MapPin,
+  Lightbulb,
+} from "lucide-react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
@@ -10,6 +19,7 @@ import {
   type GlossaryTerm,
 } from "@/lib/glossary/terms"
 import { SITE_URL } from "@/lib/site-url"
+import { TermCard } from "./term-card"
 
 const canonical = `${SITE_URL}/glossary`
 
@@ -50,6 +60,92 @@ const CATEGORY_LABELS: Record<GlossaryTerm["category"], string> = {
   Device: "FDA device terms",
   State: "State regulatory terms",
   General: "General regulatory terms",
+}
+
+const CATEGORY_ICONS: Record<
+  GlossaryTerm["category"],
+  typeof FlaskConical
+> = {
+  FDA: FlaskConical,
+  FTC: Megaphone,
+  Device: Cpu,
+  State: MapPin,
+  General: BookOpen,
+}
+
+const CATEGORY_INTROS: Record<GlossaryTerm["category"], string> = {
+  FDA: "The FDA regulates what you can claim a treatment does. Wrong claim category = warning letter.",
+  FTC: "The FTC governs how you advertise - testimonials, endorsements, and disclosures must hold up under deception review.",
+  Device:
+    "Cleared and approved are not the same thing. Mixing the two on a device page is the fastest aesthetic-industry warning letter.",
+  State:
+    "State medical boards can suspend a license faster than the FDA can finish a warning letter. Their advertising rules are often stricter than federal.",
+  General:
+    "Cross-cutting rules - HIPAA marketing, cease-and-desist letters, and the legal mechanics that touch every other category.",
+}
+
+interface TakeawayBreak {
+  afterIndex: number
+  text: string
+}
+
+const CATEGORY_TAKEAWAYS: Record<GlossaryTerm["category"], TakeawayBreak[]> = {
+  FDA: [
+    {
+      afterIndex: 3,
+      text: "If you claim a product treats, cures, or prevents a condition, you are making a disease claim - which legally turns the product into a drug requiring FDA approval before you can market it.",
+    },
+    {
+      afterIndex: 9,
+      text: "Warning letters, untitled letters, and Form 483s all start the same way: a regulator notices marketing language that misbrands or adulterates a product. The fastest fix is fixing the words on the page.",
+    },
+    {
+      afterIndex: 14,
+      text: "For HCT/P-based regen practices, the 361 pathway depends on minimal manipulation and homologous use. Marketing that describes advanced processing or non-native uses can quietly push the product into the 351 (drug) pathway.",
+    },
+  ],
+  FTC: [
+    {
+      afterIndex: 3,
+      text: "Any compensated, gifted, or even loaned-product relationship between you and an endorser must be disclosed clearly and conspicuously - and any testimonial that does not reflect typical results needs a typical-experience disclosure.",
+    },
+  ],
+  Device: [],
+  State: [],
+  General: [],
+}
+
+function CategoryDivider({
+  category,
+}: {
+  category: GlossaryTerm["category"]
+}) {
+  return (
+    <div className="relative mx-auto max-w-4xl px-6 py-12">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#55E039]/25 to-transparent" />
+      <p className="mt-7 text-center text-sm sm:text-base text-white/65 italic max-w-2xl mx-auto leading-relaxed">
+        {CATEGORY_INTROS[category]}
+      </p>
+    </div>
+  )
+}
+
+function KeyTakeaway({ text }: { text: string }) {
+  return (
+    <div className="rounded-2xl border border-[#55E039]/20 bg-[#55E039]/[0.04] p-5 sm:p-6 flex gap-4 items-start">
+      <div className="shrink-0 mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#55E039]/15 text-[#55E039]">
+        <Lightbulb className="h-5 w-5" />
+      </div>
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#55E039] mb-1.5">
+          Key takeaway
+        </p>
+        <p className="text-sm sm:text-[15px] text-white/85 leading-relaxed">
+          {text}
+        </p>
+      </div>
+    </div>
+  )
 }
 
 export default function GlossaryPage() {
@@ -117,9 +213,8 @@ export default function GlossaryPage() {
             glossary
           </h1>
           <p className="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
-            Plain-English definitions of the terms that actually show up in FDA warning
-            letters, FTC enforcement actions, and state medical board discipline. {GLOSSARY.length}+
-            terms every healthcare marketing team should know.
+            The {GLOSSARY.length}+ terms that show up in FDA warning letters, FTC actions,
+            and state board discipline - in plain English.
           </p>
         </div>
       </section>
@@ -127,122 +222,88 @@ export default function GlossaryPage() {
       {/* ============ CATEGORY NAV ============ */}
       <section className="relative py-6">
         <div className="relative mx-auto max-w-4xl px-6">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-5">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039] mb-4">
               Jump to category
             </p>
             <div className="flex flex-wrap gap-2">
-              {CATEGORY_ORDER.map((cat) => (
-                <a
-                  key={cat}
-                  href={`#cat-${cat.toLowerCase()}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-semibold text-white/80 hover:text-white hover:border-[#55E039]/30 hover:bg-[#55E039]/[0.06] transition-all"
-                >
-                  {CATEGORY_LABELS[cat]}
-                  <span className="text-[10px] text-white/50">
-                    {TERMS_BY_CATEGORY[cat].length}
-                  </span>
-                </a>
-              ))}
+              {CATEGORY_ORDER.map((cat) => {
+                const Icon = CATEGORY_ICONS[cat]
+                return (
+                  <a
+                    key={cat}
+                    href={`#cat-${cat.toLowerCase()}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold text-white/80 hover:text-white hover:border-[#55E039]/30 hover:bg-[#55E039]/[0.06] transition-all"
+                  >
+                    <Icon className="h-3.5 w-3.5 text-[#55E039]/80" />
+                    {CATEGORY_LABELS[cat]}
+                    <span className="text-[10px] text-white/50">
+                      {TERMS_BY_CATEGORY[cat].length}
+                    </span>
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>
       </section>
 
       {/* ============ TERMS BY CATEGORY ============ */}
-      {CATEGORY_ORDER.map((cat) => {
+      {CATEGORY_ORDER.map((cat, catIndex) => {
         const terms = TERMS_BY_CATEGORY[cat]
         if (terms.length === 0) return null
+        const Icon = CATEGORY_ICONS[cat]
+        const takeaways = CATEGORY_TAKEAWAYS[cat]
         return (
-          <section
-            key={cat}
-            id={`cat-${cat.toLowerCase()}`}
-            className="relative py-12 scroll-mt-24"
-          >
-            <div className="relative mx-auto max-w-4xl px-6">
-              <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                  {CATEGORY_LABELS[cat]}
-                </h2>
-                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80">
-                  {terms.length} terms
-                </span>
+          <div key={cat}>
+            {catIndex > 0 && <CategoryDivider category={cat} />}
+            {catIndex === 0 && (
+              <div className="relative mx-auto max-w-4xl px-6 pt-6 pb-2">
+                <p className="text-center text-sm sm:text-base text-white/65 italic max-w-2xl mx-auto leading-relaxed">
+                  {CATEGORY_INTROS[cat]}
+                </p>
               </div>
-              <div className="space-y-4">
-                {terms.map((t) => (
-                  <article
-                    key={t.slug}
-                    id={t.slug}
-                    className="scroll-mt-24 rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7 hover:bg-white/[0.04] transition-all"
-                  >
-                    <header className="flex items-baseline justify-between gap-4 flex-wrap mb-3">
-                      <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                        {t.term}
-                      </h3>
-                      <a
-                        href={`#${t.slug}`}
-                        className="text-[11px] font-semibold text-[#55E039]/70 hover:text-[#55E039] transition-colors"
-                        aria-label={`Permalink to ${t.term}`}
-                      >
-                        #
-                      </a>
-                    </header>
-                    <p className="text-base text-white/85 leading-relaxed font-medium">
-                      {t.shortDefinition}
-                    </p>
-                    <div className="mt-5 pt-5 border-t border-white/[0.06]">
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80 mb-2">
-                        In depth
-                      </p>
-                      <p className="text-sm text-white/75 leading-relaxed">
-                        {t.fullDefinition}
-                      </p>
-                    </div>
-                    <div className="mt-5 pt-5 border-t border-white/[0.06]">
-                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80 mb-2">
-                        Why this matters for marketing
-                      </p>
-                      <p className="text-sm text-white/75 leading-relaxed">
-                        {t.whyItMatters}
-                      </p>
-                    </div>
-                    {t.example && (
-                      <div className="mt-5 pt-5 border-t border-white/[0.06]">
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80 mb-2">
-                          Example
-                        </p>
-                        <p className="text-sm text-white/70 leading-relaxed italic">
-                          {t.example}
-                        </p>
+            )}
+            <section
+              id={`cat-${cat.toLowerCase()}`}
+              className="relative py-12 scroll-mt-24"
+            >
+              <div className="relative mx-auto max-w-4xl px-6">
+                <div className="flex items-baseline justify-between mb-8 pb-4 border-b border-white/10">
+                  <h2 className="flex items-center gap-3 text-2xl sm:text-3xl font-extrabold tracking-tight">
+                    <Icon className="h-7 w-7 text-[#55E039]/80 shrink-0" />
+                    {CATEGORY_LABELS[cat]}
+                  </h2>
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80">
+                    {terms.length} terms
+                  </span>
+                </div>
+                <div className="space-y-4">
+                  {terms.map((t, termIndex) => {
+                    const relatedTermNames = (t.relatedTerms ?? [])
+                      .map((rtSlug) => {
+                        const entry = GLOSSARY.find((g) => g.slug === rtSlug)
+                        return entry
+                          ? { slug: entry.slug, term: entry.term }
+                          : null
+                      })
+                      .filter(
+                        (x): x is { slug: string; term: string } => x !== null,
+                      )
+                    const breakAfter = takeaways.find(
+                      (b) => b.afterIndex === termIndex,
+                    )
+                    return (
+                      <div key={t.slug} className="space-y-4">
+                        <TermCard term={t} relatedTermNames={relatedTermNames} />
+                        {breakAfter && <KeyTakeaway text={breakAfter.text} />}
                       </div>
-                    )}
-                    {t.relatedTerms && t.relatedTerms.length > 0 && (
-                      <div className="mt-5 pt-5 border-t border-white/[0.06]">
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55E039]/80 mb-3">
-                          Related
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {t.relatedTerms.map((rt) => {
-                            const relatedEntry = GLOSSARY.find((g) => g.slug === rt)
-                            if (!relatedEntry) return null
-                            return (
-                              <a
-                                key={rt}
-                                href={`#${rt}`}
-                                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-semibold text-white/75 hover:text-white hover:border-[#55E039]/30 transition-all"
-                              >
-                                {relatedEntry.term}
-                              </a>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </article>
-                ))}
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         )
       })}
 

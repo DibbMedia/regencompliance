@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "NAD+ marketing is one of the current FTC enforcement priorities in 2026. Here's what the rules require for anti-aging, cognitive-enhancement, and longevity claims - and why most IV therapy and wellness clinic NAD+ marketing would not survive a regulatory review.",
   excerpt:
     "'Reverses aging,' 'extends lifespan,' 'restores cellular function' - the claims driving NAD+ marketing are the exact claims the FTC is currently pursuing. Here's the full compliance playbook for NAD+ IV, NAD+ injection, and NAD+ protocol marketing.",
-  date: "2026-04-22",
+  date: "2026-03-20",
   readingMinutes: 10,
   keywords: [
     "NAD+ marketing compliance",

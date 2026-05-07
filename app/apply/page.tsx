@@ -125,7 +125,7 @@ export default function BetaApplyPage() {
           <p className="mt-4 text-base sm:text-lg text-white/60 max-w-xl mx-auto">
             Founder beta is capped at 25 clinics. $297/mo locked in for life. Tell us a bit about your practice and we&apos;ll reach out within 48 hours.
           </p>
-          <p className="mt-3 text-xs text-white/40">
+          <p className="mt-3 text-sm text-white/65">
             Not ready to commit?{" "}
             <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
               Join the waitlist
@@ -135,7 +135,7 @@ export default function BetaApplyPage() {
         </div>
 
         {/* What you commit to */}
-        <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+        <div className="mt-10 rounded-2xl border border-white/15 bg-white/[0.06] p-6 sm:p-8">
           <div className="flex items-center justify-between gap-4 flex-wrap mb-5">
             <h2 className="text-lg sm:text-xl font-bold text-white">What you commit to as a founder</h2>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#55E039]/20 bg-[#55E039]/[0.06] px-3 py-1 text-[11px] font-bold text-[#55E039]">
@@ -143,40 +143,40 @@ export default function BetaApplyPage() {
               $297/mo for life
             </span>
           </div>
-          <p className="text-sm text-white/60 mb-6 max-w-2xl leading-relaxed">
+          <p className="text-sm text-white/80 mb-6 max-w-2xl leading-relaxed">
             Founder pricing is a partnership, not a discount. We need clinics who will genuinely use the tool and help shape it. In exchange, you get founder pricing locked in for life.
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="rounded-xl border border-white/15 bg-white/[0.05] p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Activity className="h-4 w-4 text-[#55E039]" />
                 <p className="text-sm font-bold text-white">Actively use it</p>
               </div>
-              <p className="text-xs text-white/55 leading-relaxed">
+              <p className="text-xs text-white/75 leading-relaxed">
                 Run real scans on real marketing every week. We&apos;ll see usage and reach out if it stalls.
               </p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="rounded-xl border border-white/15 bg-white/[0.05] p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Video className="h-4 w-4 text-[#55E039]" />
                 <p className="text-sm font-bold text-white">Monthly Zoom check-in</p>
               </div>
-              <p className="text-xs text-white/55 leading-relaxed">
+              <p className="text-xs text-white/75 leading-relaxed">
                 Roughly 30 minutes once a month. Walk us through what&apos;s working and what isn&apos;t.
               </p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="rounded-xl border border-white/15 bg-white/[0.05] p-4">
               <div className="flex items-center gap-2 mb-2">
                 <MessageSquareText className="h-4 w-4 text-[#55E039]" />
                 <p className="text-sm font-bold text-white">File feedback</p>
               </div>
-              <p className="text-xs text-white/55 leading-relaxed">
+              <p className="text-xs text-white/75 leading-relaxed">
                 Bugs, missing rules, ideas - drop them in support tickets so we can act on them.
               </p>
             </div>
           </div>
-          <p className="mt-5 text-xs text-white/45 leading-relaxed">
-            <span className="font-bold text-white/65">In exchange:</span> $297/mo locked for the lifetime of your subscription, founder badge in-app, direct line to the team. <span className="font-bold text-white/65">If you go inactive</span> (no scans for 60+ days, missed check-ins) we&apos;ll reach out, and if there&apos;s no response we move you to standard pricing ($497/mo) so the seat opens up for someone who wants it.
+          <p className="mt-5 text-xs text-white/70 leading-relaxed">
+            <span className="font-bold text-white">In exchange:</span> $297/mo locked for the lifetime of your subscription, founder badge in-app, direct line to the team. <span className="font-bold text-white">If you go inactive</span> (no scans for 60+ days, missed check-ins) we&apos;ll reach out, and if there&apos;s no response we move you to standard pricing ($497/mo) so the seat opens up for someone who wants it.
           </p>
         </div>
 

@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Fertility and IVF clinic marketing operates under SART success rate reporting rules, specific FTC outcome-claim scrutiny, and considerations around LGBTQ+ family building and donor/surrogacy services.",
   excerpt:
     "Fertility clinic marketing faces some of the most specific success-rate reporting rules in healthcare. Here's the full framework for IVF, egg freezing, donor services, and emerging fertility-tech marketing.",
-  date: "2026-04-22",
+  date: "2026-01-07",
   readingMinutes: 9,
   keywords: [
     "fertility clinic marketing compliance",

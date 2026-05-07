@@ -108,6 +108,58 @@ export const meta: SpecialtyMeta = {
       risk: "HIGH",
     },
   ],
+  commonMistakes: [
+    {
+      phrase: "Best cosmetic dentist in [city]",
+      rule: "ADA-recognized specialties + state dental board specialty rules",
+      body: "Cosmetic dentistry is not an ADA-recognized specialty. Multiple state dental boards (California, Texas, Florida, New York) restrict who can use 'cosmetic dentist' as a self-description. RegenCompliance flags the specialty-language pattern and rewrites to 'general dentistry with a focus on aesthetic treatment' framing.",
+    },
+    {
+      phrase: "Permanent whitening",
+      rule: "FTC substantiation under Section 5 (15 USC 45)",
+      body: "Whitening effects are not permanent under any clinical protocol - claiming permanence directly conflicts with the literature. We flag every permanence claim and rewrite to 'long-lasting whitening results - maintenance protocols discussed at consultation.'",
+    },
+    {
+      phrase: "Cures gum disease",
+      rule: "FDA disease-claim rule (21 USC 321(g))",
+      body: "Periodontitis and gingivitis are medical diagnoses. 'Cure' on these conditions crosses the same disease-claim threshold as any other medical specialty. We rewrite to 'our protocols can significantly improve gum health for many patients' framing.",
+    },
+    {
+      phrase: "Prevents heart disease",
+      rule: "FDA disease-prevention claim (21 USC 321(g))",
+      body: "Linking dental treatment to heart disease prevention is the highest-risk pattern in the growing oral-systemic marketing category. The underlying science is real, but the causal prevention claim crosses into FDA disease-claim territory. We flag and rewrite to 'supports overall oral health, which is one component of overall wellness.'",
+    },
+    {
+      phrase: "Adds 10 years to your life",
+      rule: "FDA disease/longevity claim (21 USC 321(g))",
+      body: "Quantified longevity claims based on dental intervention have no clinical substantiation that meets the FTC bar. We flag every longevity-quantification pattern and rewrite to 'good oral health is one component of overall wellness.'",
+    },
+    {
+      phrase: "Pain-free dentistry",
+      rule: "FTC absolute-claim substantiation",
+      body: "Absolute no-pain claims fail substantiation - some patients always experience some discomfort with some procedures. State dental boards have cited this exact phrasing. We rewrite to 'our sedation and technique options help most patients experience minimal discomfort.'",
+    },
+    {
+      phrase: "Implant dentist",
+      rule: "State dental board specialty-claim rules",
+      body: "General dentists describing themselves as 'implant dentists' use specialty-implying language without an ADA-recognized specialty. State dental boards have disciplined practices on this exact pattern. We rewrite to 'general dentist with advanced training in dental implant placement.'",
+    },
+    {
+      phrase: "Guaranteed lifetime implants",
+      rule: "FTC substantiation + dental literature on implant survival",
+      body: "Dental implant literature documents specific survival rates with documented failure modes. 'Lifetime guarantee' contradicts the literature and fails substantiation. We rewrite to 'implants have high long-term success rates in clinical literature; we offer [specific warranty terms].'",
+    },
+    {
+      phrase: "Shades whiter in one visit",
+      rule: "FTC substantiation - quantified outcome claims",
+      body: "Specific shade-improvement promises require clinical substantiation most practices do not have on file. State AGs have pursued whitening practices specifically on this pattern. We rewrite to 'noticeable whitening in a single visit for most patients - individual results vary.'",
+    },
+    {
+      phrase: "ADA-approved",
+      rule: "American Dental Association Seal of Acceptance program rules",
+      body: "The ADA Seal of Acceptance applies to specific products, not practices or services. Practices claiming general 'ADA-approved' status misrepresent the program. We rewrite to 'we use products and materials that hold the ADA Seal of Acceptance where applicable.'",
+    },
+  ],
   commonCatches: [
     {
       title: "'Cosmetic dentist' bio pages",

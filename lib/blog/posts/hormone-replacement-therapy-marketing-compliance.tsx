@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Hormone replacement therapy marketing - HRT, TRT, bioidentical, pellet therapy - combines prescription drug advertising rules, compounded-drug issues, and anti-aging FTC enforcement. Here's the full compliance playbook.",
   excerpt:
     "HRT, TRT, and bioidentical hormone marketing sits in an unusually complex regulatory position - prescription drugs plus compounded drugs plus anti-aging claim rules. Here's how to market these services compliantly.",
-  date: "2026-04-22",
+  date: "2026-03-02",
   readingMinutes: 10,
   keywords: [
     "HRT marketing compliance",

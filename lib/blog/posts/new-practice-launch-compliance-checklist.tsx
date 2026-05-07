@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Launching a new healthcare practice means setting up compliance infrastructure from scratch. Here's the comprehensive checklist covering FDA/FTC marketing compliance, HIPAA, state requirements, and platform setup.",
   excerpt:
     "Launching a new practice? Here's the complete compliance infrastructure checklist to build before opening day - marketing, HIPAA, state requirements, platform accounts, and ongoing process.",
-  date: "2026-04-22",
+  date: "2025-11-19",
   readingMinutes: 8,
   keywords: [
     "new practice launch compliance",

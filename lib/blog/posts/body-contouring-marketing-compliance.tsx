@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Non-surgical body contouring marketing - CoolSculpting, EmSculpt, SculpSure, Morpheus8 - carries device-specific FDA compliance rules plus FTC substantiation plus platform ad policy layers. Here's the full playbook.",
   excerpt:
     "Body contouring devices have specific FDA-cleared indications. Marketing them for unapproved body areas, with guaranteed results, or with transformation-style before/afters triggers multiple enforcement patterns. Here's how to market compliantly.",
-  date: "2026-04-22",
+  date: "2026-03-04",
   readingMinutes: 10,
   keywords: [
     "body contouring marketing compliance",

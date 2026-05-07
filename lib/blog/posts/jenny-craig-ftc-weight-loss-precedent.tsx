@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "A complete breakdown of the Jenny Craig FTC consent order - and why that 1997 precedent still defines the typical-experience disclosure rules that determine whether your weight loss clinic's testimonials comply with FTC law in 2026.",
   excerpt:
     "A 1997 FTC consent order set the template for how weight-loss testimonials must be disclosed. It is still the standard in 2026 - and most GLP-1 clinics, med spas, and telehealth weight-loss practices are marketing in direct violation of it without realizing it.",
-  date: "2026-04-22",
+  date: "2026-04-01",
   readingMinutes: 10,
   keywords: [
     "Jenny Craig FTC settlement",

@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "A concrete curriculum for training healthcare marketing staff, agency partners, and social media coordinators on FDA/FTC compliance - what to cover, how long it should take, and how to keep it current.",
   excerpt:
     "Most healthcare marketing compliance failures are individual-staff decisions that reflect a training gap, not a malicious intent. Here's the actual curriculum that turns a marketing team into a compliance-literate operation.",
-  date: "2026-04-22",
+  date: "2026-02-20",
   readingMinutes: 9,
   keywords: [
     "healthcare marketing compliance training",

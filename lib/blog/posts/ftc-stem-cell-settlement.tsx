@@ -25,7 +25,7 @@ export const meta: BlogPostMeta = {
     "One Instagram caption, one Facebook testimonial, one TikTok claim. Multi-million-dollar FTC stem cell settlements now routinely trace back to a single social post. Here is how that chain actually works and how to break it.",
   excerpt:
     "Multi-million-dollar FTC settlements against stem cell and regenerative medicine clinics now routinely start with a single Instagram caption or Facebook testimonial. Here is how that chain actually works - and the four places clinics lose control of it.",
-  date: "2026-04-21",
+  date: "2026-05-01",
   readingMinutes: 8,
   keywords: [
     "FTC stem cell settlement",

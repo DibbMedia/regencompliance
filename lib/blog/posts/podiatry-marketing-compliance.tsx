@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Podiatry practices span surgical foot-and-ankle care, custom orthotics, laser toenail fungus treatment, and diabetic foot care. Each has specific compliance considerations.",
   excerpt:
     "Podiatry marketing faces specific compliance patterns around laser toenail treatment, orthotic claims, and diabetic foot care marketing. Here's the framework.",
-  date: "2026-04-22",
+  date: "2025-12-12",
   readingMinutes: 7,
   keywords: [
     "podiatry marketing compliance",

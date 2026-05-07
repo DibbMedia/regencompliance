@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "A detailed analysis of the FDA's years-long warning letter campaign against HCT/P clinics marketing unapproved stem cell therapies - the specific claim patterns the FDA is citing, how the 361 vs 351 pathway distinction drives enforcement, and what to change in your marketing to stay off the list.",
   excerpt:
     "The FDA has issued hundreds of warning letters to stem cell, exosome, and PRP clinics since 2017. Here's a full breakdown of what the campaign covers, the exact claim categories CBER cites, and the compliance playbook that keeps practices out of the enforcement pipeline.",
-  date: "2026-04-22",
+  date: "2026-04-03",
   readingMinutes: 11,
   keywords: [
     "FDA HCT/P warning letters",

@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "Dermatology practices combine medical dermatology, cosmetic dermatology, and increasingly med-spa-adjacent services. Each creates its own compliance considerations. Here's the full framework.",
   excerpt:
     "Dermatology marketing spans medical dermatology, cosmetic procedures, skin cancer screening, and retail skincare - each with its own compliance rules. Here's the full playbook.",
-  date: "2026-04-22",
+  date: "2026-01-19",
   readingMinutes: 9,
   keywords: [
     "dermatology marketing compliance",

@@ -1,22 +1,56 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { ArrowRight, Scale, TrendingUp, ShieldCheck, Zap } from "lucide-react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { COMPETITORS } from "@/lib/compare/registry"
 import { SITE_URL } from "@/lib/site-url"
+import { CompareHubClient, type HubFaq } from "@/components/compare/compare-hub-client"
 
 const canonical = `${SITE_URL}/compare`
 
-const HUB_FAQS = [
+const HUB_MISCONCEPTIONS: HubFaq[] = [
+  {
+    q: "Won't Claude or ChatGPT just learn to do this?",
+    a: "Maybe generic guardrails. Not a healthcare-specific rule set sourced from FDA warning letters, daily-updated from live enforcement, with per-specialty and per-state layering, and a per-scan audit trail you can show a regulator. General-purpose AI is built to be okay at everything; compliance scanning has to be exactly right at one thing. The two categories will not collapse into each other any more than 'spreadsheet' and 'tax software' collapse into each other.",
+  },
+  {
+    q: "Can Perplexity flag FDA warning letters in my copy?",
+    a: "Perplexity searches the web for warning letters when you ask. It does not pre-index every enforcement action against an analyzed pattern library and apply that library automatically to your homepage. Research tools answer 'what does the rule say?' Compliance tools answer 'which sentences in my copy break the rule?' Both are useful; they are not the same job.",
+  },
+  {
+    q: "Why pay $297/mo when ChatGPT Plus is $20?",
+    a: "Because they answer different questions. ChatGPT Plus drafts copy. RegenCompliance checks copy against current FDA/FTC enforcement. Most healthcare practices that get this right pay for both - around $320/mo combined - because each tool owns one step of the workflow. One FDA warning letter response costs $50,000 to $150,000 in legal fees. The math on running both is not close.",
+  },
+  {
+    q: "Isn't an AI assistant good enough if I'm careful with my prompts?",
+    a: "Careful prompts produce careful copy. Careful copy is not the same thing as compliant copy. The reason general LLMs cannot do this job well is that they were trained on the open web - which is full of healthcare marketing copy that has been the subject of FDA enforcement. Telling them to be careful does not change which patterns they learned from. A purpose-built scanner is trained on the enforcement, not on the copy that drew the enforcement.",
+  },
+  {
+    q: "If I have a healthcare marketing attorney, do I still need a compliance scanner?",
+    a: "Yes - because attorneys do not bill at a rate that lets you run every Instagram caption past them. Attorneys handle judgment calls, novel-treatment questions, and warning-letter responses. Scanners handle the high-volume pattern-matching work that an attorney cannot economically do per-item. Most clinics that get this right pair both: scanner for daily content, attorney for strategic and incident work.",
+  },
+  {
+    q: "Can I just run a one-time audit and call it done?",
+    a: "No. The FDA issues warning letters weekly. The FTC publishes settlements continuously. Phrases that were enforcement-safe last quarter become enforcement-risky this quarter. A one-time audit is a snapshot; ongoing scanning is a process. You audit your books once a year and review your bookkeeping monthly - compliance works the same way.",
+  },
+]
+
+const HUB_FAQS: HubFaq[] = [
   {
     q: "Which tool should I choose first?",
-    a: "Depends on what's missing today. If you already have a marketing writer or agency producing copy, RegenCompliance is the gap - the compliance check between their output and publishing. If you're a solo-owner clinic writing everything yourself, pair a drafting tool (ChatGPT or Jasper) with RegenCompliance. The most common end state is two tools: one that generates copy fast, one that checks it against FDA/FTC rules before it goes live.",
+    a: "Depends on what is missing today. If you already have a marketing writer or agency producing copy, RegenCompliance is the gap - the compliance check between their output and publishing. If you are a solo-owner clinic writing everything yourself, pair a drafting tool (ChatGPT, Claude, or Jasper) with RegenCompliance. The most common end state is two tools: one that drafts copy fast, one that checks it against FDA/FTC rules before it goes live.",
   },
   {
     q: "Do I need multiple tools or can one do everything?",
-    a: "No single tool does drafting, compliance, grammar, and legal judgment at a best-in-class level. The practices that get this right typically run three to four tools in sequence - a drafting tool, a grammar tool, a compliance scanner, and a healthcare marketing attorney for edge cases. The combined monthly cost is still a small fraction of what one FDA warning letter response costs.",
+    a: "No single tool does drafting, research, compliance, grammar, and legal judgment at a best-in-class level. The practices that get this right typically run three or four tools in sequence - a drafting tool, a research tool for ad-hoc regulatory questions, a compliance scanner, and a healthcare marketing attorney for edge cases. The combined monthly cost is still a small fraction of what one FDA warning letter response costs.",
+  },
+  {
+    q: "Won't Claude or ChatGPT eventually replace RegenCompliance?",
+    a: "They will keep getting better at drafting. They will not build a healthcare-specific rule set sourced from active FDA warning letters, daily-updated from live enforcement, with per-specialty and state-board layering, and a per-scan audit trail. That is not what general-purpose AI assistants do. The category boundary between general AI and purpose-built compliance is the same boundary as between general AI and EHRs, accounting tools, or security scanners - depth wins on regulated workflows.",
+  },
+  {
+    q: "Can Perplexity replace a compliance scanner?",
+    a: "No. Perplexity is excellent at telling you what the FDA rule says, with linked sources. It cannot scan your homepage and return a per-sentence compliance score with rule citations and rewrites. Research tools and compliance tools answer different questions. Most clinics use both - Perplexity for ad-hoc regulatory research, RegenCompliance for the operational scan on every published piece.",
   },
   {
     q: "Is RegenCompliance trying to replace my healthcare marketing attorney?",
@@ -28,29 +62,39 @@ const HUB_FAQS = [
   },
   {
     q: "What makes these comparisons 'honest' vs. sales pitches?",
-    a: "Every comparison page leads with where the competitor wins. ChatGPT really is better for drafting from scratch. Grammarly really is better for grammar. A healthcare attorney really is irreplaceable for warning-letter response. If we pretended otherwise, we'd lose credibility on the part we actually do better - the day-to-day FDA/FTC compliance check.",
+    a: "Every comparison page leads with where the competitor wins. ChatGPT and Claude really are better for drafting from scratch. Perplexity really is better for regulatory research. Grammarly really is better for grammar. A healthcare attorney really is irreplaceable for warning-letter response. If we pretended otherwise, we would lose credibility on the part we actually do better - the day-to-day FDA/FTC compliance check on every piece of copy you publish.",
+  },
+  {
+    q: "Why pay $297/mo when ChatGPT or Claude Pro is $20?",
+    a: "Because they answer different questions. The $20 tools draft. The $297 tool checks against current enforcement. Practices that try to substitute drafting tools for compliance tools end up with confidently wrong copy - the writing reads professionally and contains violations the model could not flag because it was never trained on the enforcement library. The realistic combined cost is around $320/mo. One FDA warning letter response is $50,000 to $150,000 in legal fees.",
+  },
+  {
+    q: "What if my marketing agency already audits for compliance?",
+    a: "Most marketing agencies do an annual or quarterly audit. That is a snapshot. RegenCompliance is the day-to-day check on every new page, blog post, ad, and social caption between audits - the gap where most warning-letter triggers live. The two are complementary: the agency provides strategic and human judgment; we provide continuous automated scanning at the volume agencies cannot economically match.",
   },
   {
     q: "Can I try the tool before committing?",
-    a: "Yes. The /demo scanner is free and requires no card - paste any marketing content and see a compliance report in 30 seconds. Founding-member signup still has 30-day money-back guarantee on top of that.",
+    a: "Yes. The free audit at /free-audit takes a URL and returns a teaser report with violation count, severity breakdown, and the first two violations expanded - no card required. Founding-member signup adds a 30-day money-back guarantee on top of that.",
   },
 ]
 
 export const metadata: Metadata = {
   title: "Healthcare Marketing Compliance Tools Compared - RegenCompliance vs Alternatives",
   description:
-    "Honest head-to-head comparisons of RegenCompliance vs ChatGPT, Jasper, Grammarly, Copy.ai, healthcare marketing attorneys, and manual agency audits. When to use which, and why.",
+    "Honest head-to-head comparisons of RegenCompliance vs ChatGPT, Claude, Perplexity, Jasper, Grammarly, Copy.ai, healthcare marketing attorneys, and manual agency audits. When to use which, and why.",
   keywords: [
     "healthcare compliance tool comparison",
     "RegenCompliance alternatives",
     "FDA compliance software comparison",
     "healthcare marketing AI comparison",
+    "ChatGPT vs Claude healthcare",
+    "Perplexity healthcare compliance",
   ],
   alternates: { canonical },
   openGraph: {
     title: "Healthcare Marketing Compliance Tools Compared - RegenCompliance vs Alternatives",
     description:
-      "Honest head-to-head comparisons of RegenCompliance vs every alternative - AI writers, grammar tools, attorneys, and manual audits. When to use which.",
+      "Honest head-to-head comparisons of RegenCompliance vs every alternative - AI assistants, research tools, grammar checkers, attorneys, and manual audits. When to use which.",
     url: canonical,
     type: "website",
   },
@@ -90,7 +134,7 @@ export default function ComparePage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: HUB_FAQS.map((f) => ({
+    mainEntity: [...HUB_MISCONCEPTIONS, ...HUB_FAQS].map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -114,153 +158,16 @@ export default function ComparePage() {
       <MarketingBg />
       <MarketingHeader />
 
-      {/* ============ HERO ============ */}
-      <section className="relative pt-32 pb-14 sm:pt-36">
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#55E039]/25 bg-[#55E039]/[0.06] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#55E039] mb-6">
-            <Scale className="h-3 w-3" />
-            Head-to-head comparisons
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.08]">
-            How RegenCompliance compares to{" "}
-            <span className="bg-gradient-to-r from-[#55E039] to-[#89E3E4] bg-clip-text text-transparent">
-              every alternative
-            </span>
-          </h1>
-          <p className="mt-6 text-lg text-white/75 leading-relaxed max-w-2xl mx-auto">
-            AI writing assistants, grammar tools, healthcare marketing attorneys, and manual
-            agency audits. Honest breakdowns - where each one wins, where RegenCompliance
-            wins, and when you actually need both.
-          </p>
-        </div>
-      </section>
-
-      {/* ============ CATEGORIES ============ */}
-      <section className="relative pb-8">
-        <div className="relative mx-auto max-w-4xl px-6">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 mb-3">
-                <Zap className="h-5 w-5 text-[#55E039]" aria-hidden />
-              </div>
-              <p className="text-sm font-bold text-white mb-2">AI writing tools</p>
-              <p className="text-xs text-white/60 leading-relaxed">
-                ChatGPT, Jasper, Copy.ai - great for drafting, not a compliance check.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 mb-3">
-                <ShieldCheck className="h-5 w-5 text-[#55E039]" aria-hidden />
-              </div>
-              <p className="text-sm font-bold text-white mb-2">Grammar & style tools</p>
-              <p className="text-xs text-white/60 leading-relaxed">
-                Grammarly catches grammar. It does not catch FDA/FTC violations.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#55E039]/10 border border-[#55E039]/15 mb-3">
-                <Scale className="h-5 w-5 text-[#55E039]" aria-hidden />
-              </div>
-              <p className="text-sm font-bold text-white mb-2">Legal & consulting</p>
-              <p className="text-xs text-white/60 leading-relaxed">
-                Attorneys and agency auditors handle judgment calls. Software handles scale.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ COMPARISON CARDS ============ */}
-      <section className="relative py-14">
-        <div className="relative mx-auto max-w-5xl px-6">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
-              Pick a comparison
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Every alternative, compared honestly
-            </h2>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            {COMPETITORS.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/vs/${c.slug}`}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-7 hover:border-[#55E039]/25 hover:bg-white/[0.06] transition-all"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#55E039]/80">
-                    {c.categoryLabel}
-                  </p>
-                  <TrendingUp className="h-4 w-4 text-[#55E039]/60 group-hover:text-[#55E039] transition-colors" aria-hidden />
-                </div>
-                <h3 className="text-2xl font-extrabold tracking-tight text-white leading-tight group-hover:text-[#55E039] transition-colors">
-                  vs {c.competitor}
-                </h3>
-                <p className="mt-3 text-sm text-white/70 leading-relaxed">
-                  {c.shortVerdict}
-                </p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-[#55E039]">
-                  Read comparison
-                  <ArrowRight className="h-3 w-3" />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ FAQ ============ */}
-      <section className="relative py-16">
-        <div className="relative mx-auto max-w-3xl px-6">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold text-[#55E039] uppercase tracking-[0.2em] mb-3">
-              Common questions
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Before you pick a tool
-            </h2>
-          </div>
-          <div className="space-y-3">
-            {HUB_FAQS.map((faq, i) => (
-              <div
-                key={i}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
-              >
-                <h3 className="text-[15px] sm:text-base font-semibold text-white mb-3">
-                  {faq.q}
-                </h3>
-                <p className="text-sm sm:text-[15px] text-white/70 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ CTA ============ */}
-      <section className="relative py-14">
-        <div className="relative mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Want to skip the comparisons?
-          </h2>
-          <p className="mt-4 text-base text-white/70 max-w-md mx-auto leading-relaxed">
-            Try the free demo scanner. Paste any marketing copy, see the compliance report
-            in 30 seconds. No card required.
-          </p>
-          <div className="mt-8">
-            <Link
-              href="/demo"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all"
-            >
-              Try the Free Demo
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CompareHubClient
+        competitors={COMPETITORS.map((c) => ({
+          slug: c.slug,
+          competitor: c.competitor,
+          categoryLabel: c.categoryLabel,
+          shortVerdict: c.shortVerdict,
+        }))}
+        misconceptions={HUB_MISCONCEPTIONS}
+        faqs={HUB_FAQS}
+      />
 
       <MarketingFooter />
     </div>

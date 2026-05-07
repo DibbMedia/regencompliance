@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "Med spa enforcement by the FTC has accelerated in 2024-2026. Here's what the agency is specifically pursuing - testimonial rules, before/after framing, supervision language, and aggressive package marketing.",
   excerpt:
     "Med spas are among the highest-volume recipients of FTC enforcement in healthcare marketing. Here's what the agency is specifically pursuing in 2024-2026 and what practices should adjust.",
-  date: "2026-04-22",
+  date: "2026-01-23",
   readingMinutes: 8,
   keywords: [
     "FTC med spa enforcement",

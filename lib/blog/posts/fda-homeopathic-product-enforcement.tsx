@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "The FDA has significantly tightened its approach to homeopathic products in recent years - from the 1988 Compliance Policy Guide to withdrawal of that policy and increased enforcement. Here's what practices marketing homeopathic products should understand.",
   excerpt:
     "FDA homeopathic enforcement has shifted substantially. Here's the current framework for naturopathic, integrative, and wellness practices that market or dispense homeopathic products.",
-  date: "2026-04-22",
+  date: "2025-11-05",
   readingMinutes: 7,
   keywords: [
     "FDA homeopathic enforcement",

@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Ophthalmology marketing combines surgical refractive services, cataract with premium lens options, medical ophthalmology, and emerging oculoplastic services. Each with specific compliance rules.",
   excerpt:
     "Ophthalmology practices face specific compliance considerations around LASIK outcome claims, premium IOL marketing, and medical-versus-cosmetic service distinction. Here's the full framework.",
-  date: "2026-04-22",
+  date: "2025-12-05",
   readingMinutes: 7,
   keywords: [
     "ophthalmology marketing compliance",

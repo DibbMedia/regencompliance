@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Pediatric practice marketing is advertising to parents about services for their children. FTC rules on marketing affecting children, COPPA considerations for online content, and specific vaccination-related claim rules all apply.",
   excerpt:
     "Pediatric marketing combines advertising-to-parents considerations with specific rules around children-focused content and COPPA. Here's the framework for pediatric practices, dental, orthodontic, and subspecialty pediatric services.",
-  date: "2026-04-22",
+  date: "2025-12-22",
   readingMinutes: 7,
   keywords: [
     "pediatric practice marketing compliance",

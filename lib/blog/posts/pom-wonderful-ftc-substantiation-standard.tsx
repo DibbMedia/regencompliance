@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "The POM Wonderful case established the substantiation standard that governs every health claim in healthcare marketing. Here's what 'competent and reliable scientific evidence' actually requires - and why most 'clinically proven' claims in healthcare marketing would not hold up to it.",
   excerpt:
     "Every time you say 'clinically proven,' 'scientifically backed,' or 'evidence-based,' the FTC expects you to have something specific on file. Here's what the POM Wonderful precedent actually requires - and why most practices don't meet the bar.",
-  date: "2026-04-22",
+  date: "2026-03-30",
   readingMinutes: 10,
   keywords: [
     "POM Wonderful FTC case",

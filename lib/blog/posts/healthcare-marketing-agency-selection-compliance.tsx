@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Most healthcare marketing agencies are not trained on FDA/FTC compliance. Here's the vetting framework for selecting an agency partner that won't produce marketing that gets your practice a warning letter.",
   excerpt:
     "Agency selection is one of the highest-leverage compliance decisions your practice makes. Here's what to actually ask, what to verify, and what to watch out for when choosing a healthcare marketing agency.",
-  date: "2026-04-22",
+  date: "2025-11-26",
   readingMinutes: 7,
   keywords: [
     "healthcare marketing agency selection",

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Functional medicine marketing operates in a complex regulatory position - root-cause and integrative framing often crosses into disease-claim territory, while specialized lab testing and supplement sales add more compliance layers.",
   excerpt:
     "Functional medicine marketing combines integrative framing, lab testing, supplement sales, and often hormone or peptide services. Each creates compliance considerations. Here's the full framework.",
-  date: "2026-04-22",
+  date: "2026-01-16",
   readingMinutes: 9,
   keywords: [
     "functional medicine marketing compliance",

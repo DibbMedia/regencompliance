@@ -17,6 +17,7 @@ import {
 import { toast } from "sonner"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
 import { MarketingBg } from "@/components/marketing-bg"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
@@ -77,7 +78,7 @@ export default function FreeAuditPage() {
 
   const form = useForm<FreeAuditInput>({
     resolver: zodResolver(freeAuditSchema),
-    defaultValues: { website_url: "", email: "", name: "", clinic_name: "" },
+    defaultValues: { website_url: "", email: "", name: "", clinic_name: "", accept_terms: false as unknown as true },
   })
 
   async function onSubmit(values: FreeAuditInput) {
@@ -185,6 +186,36 @@ export default function FreeAuditPage() {
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="accept_terms"
+                      render={({ field }) => (
+                        <FormItem className="rounded-xl border border-white/15 bg-white/[0.04] p-4">
+                          <div className="flex items-start gap-3">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value === true}
+                                onCheckedChange={(v: boolean | "indeterminate") => field.onChange(v === true)}
+                                disabled={loading}
+                                className="mt-0.5 border-white/30 data-[state=checked]:bg-[#55E039] data-[state=checked]:border-[#55E039] data-[state=checked]:text-[#0a0a0a]"
+                              />
+                            </FormControl>
+                            <div className="flex-1">
+                              <FormLabel className="text-sm font-semibold text-white leading-relaxed cursor-pointer">
+                                I agree to the{" "}
+                                <Link href="/terms" className="text-[#55E039] hover:text-[#6FF055] underline">terms</Link>
+                                {" "}and{" "}
+                                <Link href="/privacy" className="text-[#55E039] hover:text-[#6FF055] underline">privacy policy</Link>
+                              </FormLabel>
+                              <p className="mt-1 text-xs text-white/55 leading-relaxed">
+                                We&apos;ll scan your URL once and email you the report. Unsubscribe anytime.
+                              </p>
+                              <FormMessage className="mt-2" />
+                            </div>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
                     <button
                       type="submit"
                       disabled={loading}
@@ -202,9 +233,6 @@ export default function FreeAuditPage() {
                         </>
                       )}
                     </button>
-                    <p className="text-center text-[11px] text-white/50 leading-relaxed">
-                      We scan your page right now and email you the report. We&apos;ll keep you posted as we add new FDA/FTC enforcement actions to the rule set. Unsubscribe anytime.
-                    </p>
                   </form>
                 </Form>
               </div>

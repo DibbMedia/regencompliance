@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Healthcare email marketing combines HIPAA rules on patient communication, CAN-SPAM rules on commercial email, FTC rules on claims, and state-specific email marketing rules. Here's the framework.",
   excerpt:
     "Every healthcare patient email involves multiple compliance layers that general CAN-SPAM advice doesn't cover. Here's what practices need to know about HIPAA-compliant, FTC-compliant email marketing.",
-  date: "2026-04-22",
+  date: "2025-11-28",
   readingMinutes: 8,
   keywords: [
     "healthcare email marketing compliance",

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "Addiction treatment marketing operates under some of the strictest healthcare advertising rules - LegitScript certification, federal and state patient brokering laws, Google Ads restrictions, and TCPA considerations.",
   excerpt:
     "If you market addiction treatment, recovery, or sober living services, you're in one of the most heavily regulated healthcare marketing categories. Here's the complete framework.",
-  date: "2026-04-22",
+  date: "2025-12-31",
   readingMinutes: 9,
   keywords: [
     "addiction treatment marketing compliance",

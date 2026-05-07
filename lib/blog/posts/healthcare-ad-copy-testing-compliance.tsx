@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "A/B testing ad copy is essential to paid-media optimization. Testing variants that make different claims creates specific compliance considerations - because a live variant is live marketing subject to all compliance rules.",
   excerpt:
     "Every ad variant in an A/B test is live marketing subject to FDA/FTC compliance. Here's how to run meaningful tests without publishing variants that shouldn't have been written.",
-  date: "2026-04-22",
+  date: "2025-11-24",
   readingMinutes: 6,
   keywords: [
     "healthcare ad copy testing",

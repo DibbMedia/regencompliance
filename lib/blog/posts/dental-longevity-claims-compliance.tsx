@@ -23,7 +23,7 @@ export const meta: BlogPostMeta = {
     "Dental practices sit in a slightly different regulatory pocket than regenerative medicine or med spas, but longevity claims, outcome guarantees, and pain-free-procedure language still trigger FTC enforcement. Here's the dental-specific rulebook.",
   excerpt:
     "Dental marketing looks safer than regenerative medicine at first glance, but longevity guarantees, cosmetic-outcome promises, and pain-free-procedure language make dental practices a repeat target for FTC and state dental board enforcement. This post is the dental-specific rulebook.",
-  date: "2026-04-21",
+  date: "2026-04-08",
   readingMinutes: 9,
   keywords: [
     "dental implant lifetime guarantee FTC",

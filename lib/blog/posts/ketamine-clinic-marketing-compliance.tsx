@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "Ketamine infusion marketing combines off-label promotion, psychiatric disease-claim rules, controlled-substance considerations, and specific FDA guidance warning against unapproved ketamine therapy marketing. Here's the full compliance framework.",
   excerpt:
     "The FDA has specifically warned against ketamine therapy marketing patterns. Here's what's actually being enforced, which claims produce action, and how ketamine clinics can market compliantly in 2026.",
-  date: "2026-04-22",
+  date: "2026-02-27",
   readingMinutes: 10,
   keywords: [
     "ketamine clinic marketing compliance",

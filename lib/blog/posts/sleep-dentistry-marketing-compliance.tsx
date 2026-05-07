@@ -17,7 +17,7 @@ export const meta: BlogPostMeta = {
     "Sleep dentistry marketing operates at the boundary of dental and medical practice. Claims about sleep apnea treatment, oral appliance efficacy, and scope-of-practice representation all draw specific attention.",
   excerpt:
     "Sleep dentistry is a growing service line that crosses the dental-medical boundary in ways regulators watch carefully. Here's the compliance framework for oral appliance therapy, OSA marketing, and sleep-related services.",
-  date: "2026-04-22",
+  date: "2025-12-24",
   readingMinutes: 8,
   keywords: [
     "sleep dentistry marketing compliance",

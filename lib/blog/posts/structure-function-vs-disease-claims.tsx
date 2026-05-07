@@ -24,7 +24,7 @@ export const meta: BlogPostMeta = {
     "The difference between a legal structure/function claim and an illegal disease claim is the single most important line in healthcare marketing. Here is how the FDA actually draws it, with plain-English examples for every specialty.",
   excerpt:
     "One line separates legal marketing from a warning letter: the difference between a structure/function claim and a disease claim. Most practice owners think they know where the line is. They are usually wrong by one or two key phrases.",
-  date: "2026-04-21",
+  date: "2026-04-29",
   readingMinutes: 11,
   keywords: [
     "structure function claims FDA",

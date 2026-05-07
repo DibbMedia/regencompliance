@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "Exosome therapy marketing is a specific current FTC enforcement focus. Here's what's actually being targeted, which claim patterns produce action, and how to market exosome services compliantly without losing marketing effectiveness.",
   excerpt:
     "Exosome marketing sits at the top of the FTC's 2024-2026 healthcare enforcement priority list. The claim patterns they target are consistent - and fixable. Here's the full playbook.",
-  date: "2026-04-22",
+  date: "2026-03-09",
   readingMinutes: 9,
   keywords: [
     "exosome marketing compliance",

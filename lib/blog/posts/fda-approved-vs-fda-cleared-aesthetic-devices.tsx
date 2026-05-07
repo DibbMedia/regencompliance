@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "Three different FDA statuses, one frequently conflated by aesthetic practices. Here's what FDA-approved, FDA-cleared, and FDA-registered actually mean for lasers, RF devices, injectables, and what to say in marketing for each.",
   excerpt:
     "Most aesthetic practices use 'FDA-approved' to describe devices that are technically FDA-cleared. The distinction matters - FDA warning letters regularly cite it. Here's the complete breakdown of the three statuses and which one applies to your equipment.",
-  date: "2026-04-22",
+  date: "2026-03-23",
   readingMinutes: 9,
   keywords: [
     "FDA approved vs FDA cleared",

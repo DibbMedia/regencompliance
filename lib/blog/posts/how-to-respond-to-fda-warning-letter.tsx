@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "A tactical playbook for the first 15 business days after receiving an FDA warning letter - who to call, what to document, how to structure the response, and what the FDA actually expects in the written reply.",
   excerpt:
     "The first 15 business days after a warning letter determine how enforcement proceeds. Here's the exact sequence of actions - from calling an attorney in the first hour to submitting the formal response - that protects your practice and maximizes the chance of favorable resolution.",
-  date: "2026-04-22",
+  date: "2026-03-13",
   readingMinutes: 12,
   keywords: [
     "FDA warning letter response",

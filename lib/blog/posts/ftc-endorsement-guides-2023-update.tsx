@@ -16,7 +16,7 @@ export const meta: BlogPostMeta = {
     "The FTC updated its Endorsement Guides in 2023, tightening several areas that matter to healthcare practices - social media disclosure standards, incentivized review rules, and liability for endorser statements.",
   excerpt:
     "The 2023 FTC Endorsement Guides update isn't just a refresh - it materially changes what healthcare practices can do with testimonials, influencer partnerships, and review solicitation. Here's the plain-English breakdown.",
-  date: "2026-04-22",
+  date: "2026-02-09",
   readingMinutes: 9,
   keywords: [
     "FTC Endorsement Guides 2023",

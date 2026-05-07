@@ -18,7 +18,7 @@ export const meta: BlogPostMeta = {
     "Clear aligner marketing - SmileDirectClub-style direct-to-consumer and practice-based Invisalign and competitor marketing - faces specific compliance concerns around supervision, outcome timelines, and guarantee language.",
   excerpt:
     "Clear aligner marketing has been a state dental board and FTC focus for years. Here's the compliance framework for practices offering Invisalign, ClearCorrect, SureSmile, and other aligner services.",
-  date: "2026-04-22",
+  date: "2025-12-29",
   readingMinutes: 8,
   keywords: [
     "orthodontic marketing compliance",

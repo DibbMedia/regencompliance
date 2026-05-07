@@ -24,7 +24,7 @@ function layout(content: string): string {
         <!-- Footer -->
         <tr><td style="padding:32px 0 0 0;text-align:center;">
           <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;">
-            RegenCompliance by Dibb Enterprises LLC<br />
+            RegenCompliance by Regen Portal LLC<br />
             <a href="${MARKETING_URL}" style="color:rgba(255,255,255,0.35);text-decoration:underline;">${MARKETING_HOST}</a>
           </p>
         </td></tr>

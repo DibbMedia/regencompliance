@@ -19,7 +19,7 @@ export const meta: BlogPostMeta = {
     "The Regenerative Sciences litigation established the FDA's current authority over stem cell and HCT/P products. Here's what the case decided and why it still shapes regen marketing enforcement a decade later.",
   excerpt:
     "If you want to understand why the FDA treats stem cell clinics the way it does, the Regenerative Sciences case is the foundation. Here's the complete breakdown of the litigation and its ongoing effect on regen marketing.",
-  date: "2026-04-22",
+  date: "2026-02-02",
   readingMinutes: 10,
   keywords: [
     "US v Regenerative Sciences",

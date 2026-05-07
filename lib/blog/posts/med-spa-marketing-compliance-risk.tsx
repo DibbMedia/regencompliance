@@ -22,7 +22,7 @@ export const meta: BlogPostMeta = {
     "Med spa marketing sits at the intersection of three regulators: FDA, FTC, and state medical boards. Here are 12 phrases that routinely trigger enforcement, plus the compliant alternatives every aesthetic clinic should adopt.",
   excerpt:
     "Med spas face a compliance environment most aesthetic marketers don't fully understand - three regulators overlap, cosmetic conditions blur into medical ones, and platform ad policies add a fourth layer. Here are 12 phrases to remove from your copy this week, with BeforeAfter rewrites.",
-  date: "2026-04-21",
+  date: "2026-04-22",
   readingMinutes: 10,
   keywords: [
     "med spa marketing compliance",

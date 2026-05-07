@@ -21,7 +21,7 @@ export const meta: BlogPostMeta = {
     "A tactical audit framework for healthcare practice social media - Instagram, TikTok, Facebook, YouTube, LinkedIn, and staff personal accounts. Covers what to scan for, how to prioritize, and how to fix patterns at the source.",
   excerpt:
     "Your social media is the highest-velocity compliance surface in your practice - and the one that typically has the least review before publish. Here's the audit framework to catch compliance issues before a regulator does.",
-  date: "2026-04-22",
+  date: "2026-03-11",
   readingMinutes: 11,
   keywords: [
     "healthcare social media compliance audit",

@@ -20,7 +20,7 @@ export const meta: BlogPostMeta = {
     "A 6-year analysis of FDA warning letters to healthcare practices reveals the most commonly cited phrases across specialties. Here's the specific language to avoid and the compliant alternatives that work.",
   excerpt:
     "Across 6 years of FDA warning letters to healthcare practices, 25 specific phrases appear again and again. Here's the list - with compliant alternatives that preserve the marketing message.",
-  date: "2026-04-22",
+  date: "2025-11-12",
   readingMinutes: 10,
   keywords: [
     "FDA warning letter phrases",
