@@ -5,10 +5,13 @@ import { SPECIALTIES } from "@/lib/specialty/registry"
 import { STATES } from "@/lib/state/data"
 import { TOOLS } from "@/lib/tools/registry"
 import { POSTS_PER_PAGE } from "@/components/blog/blog-index"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE_URL
+  // Sitemap only lists marketing surfaces. The app subdomain serves an empty
+  // sitemap from middleware (proxy.ts) so crawlers never see authenticated
+  // routes.
+  const baseUrl = MARKETING_URL
   const now = new Date()
 
   // Blog pagination (page 1 lives at /blog, pages 2..N at /blog/page/[n])
@@ -102,12 +105,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.5,
     },
     {
       url: `${baseUrl}/privacy`,

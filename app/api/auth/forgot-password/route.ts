@@ -18,7 +18,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 import { z } from "zod"
-import { SITE_URL } from "@/lib/site-url"
+import { appUrl } from "@/lib/site-url"
 
 const schema = z.object({
   email: z.string().trim().toLowerCase().email().max(200),
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 
   const supabase = await createClient()
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${SITE_URL}/auth/reset-password`,
+    redirectTo: appUrl("/auth/reset-password"),
   })
 
   if (error) {

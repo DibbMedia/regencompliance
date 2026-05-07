@@ -4,24 +4,15 @@ import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
+import { appUrl, marketingUrl } from "@/lib/site-url"
 
 const BETA_SEAT_LIMIT = 25
 
 export async function POST(request: Request) {
   try {
-    const origin = request.headers.get("origin") || ""
-    const referer = request.headers.get("referer") || ""
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || ""
-
-    if (appUrl) {
-      const allowedOrigin = new URL(appUrl).origin
-      const requestOrigin = origin || (referer ? new URL(referer).origin : "")
-
-      if (!requestOrigin || requestOrigin !== allowedOrigin) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 })
-      }
-    }
-
+    // Origin enforcement is handled centrally by proxy.ts middleware via
+    // lib/security/origin.ts, which allows both the marketing apex (where
+    // the public /apply page POSTs from) and the app subdomain.
     const ip = getClientIp(request)
     const { allowed } = await checkRateLimit(`checkout-beta:${ip}`, 10, 60 * 60 * 1000)
     if (!allowed) {
@@ -66,8 +57,8 @@ export async function POST(request: Request) {
       session = await stripe.checkout.sessions.create({
         mode: "subscription",
         line_items: [{ price: process.env.STRIPE_BETA_PRICE_ID!, quantity: 1 }],
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/login?beta=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+        success_url: appUrl("/login?beta=true"),
+        cancel_url: marketingUrl("/pricing"),
         metadata: { plan_type: "beta_subscription", reservation_token: reservationToken },
         subscription_data: {
           metadata: { plan_type: "beta_subscription", reservation_token: reservationToken },

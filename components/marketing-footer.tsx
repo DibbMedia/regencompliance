@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { BrandIcon } from "@/components/brand-icon"
+import { appUrl } from "@/lib/site-url"
 
 export function MarketingFooter() {
   return (
@@ -24,7 +25,7 @@ export function MarketingFooter() {
               <Link href="/pricing" className="block text-sm text-white/70 hover:text-white transition-colors">Pricing</Link>
               <Link href="/demo" className="block text-sm text-white/70 hover:text-white transition-colors">Demo</Link>
               <Link href="/faq" className="block text-sm text-white/70 hover:text-white transition-colors">FAQ</Link>
-              <Link href="/login" className="block text-sm text-white/70 hover:text-white transition-colors">Log In</Link>
+              <Link href={appUrl("/login")} className="block text-sm text-white/70 hover:text-white transition-colors">Log In</Link>
             </div>
           </div>
           <div>

@@ -14,6 +14,7 @@ import { loginSchema, signupSchema, type LoginInput, type SignupInput } from "@/
 import { createClient } from "@/lib/supabase/client"
 import { MarketingBg } from "@/components/marketing-bg"
 import { IS_LAUNCHED } from "@/lib/env"
+import { marketingUrl } from "@/lib/site-url"
 import Link from "next/link"
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -387,12 +388,12 @@ function LoginContent() {
             {!IS_LAUNCHED && (
               <p className="text-xs text-white/50">
                 Don&apos;t have access yet?{" "}
-                <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+                <Link href={marketingUrl("/waitlist")} className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
                   Join the waitlist →
                 </Link>
               </p>
             )}
-            <Link href="/" className="block text-xs text-white/40 hover:text-white/60 transition-colors">
+            <Link href={marketingUrl("/")} className="block text-xs text-white/40 hover:text-white/60 transition-colors">
               Back to home
             </Link>
           </div>

@@ -1,6 +1,9 @@
-import { SITE_URL } from "@/lib/site-url"
+import { APP_URL, MARKETING_URL } from "@/lib/site-url"
 
-const SITE_HOST = SITE_URL.replace(/^https?:\/\//, "")
+// Legacy templates retained for the launch-broadcast Resend path. Dashboard
+// CTAs target the app subdomain; the footer "go to homepage" link targets
+// the marketing apex.
+const MARKETING_HOST = MARKETING_URL.replace(/^https?:\/\//, "")
 
 function layout(content: string): string {
   return `<!DOCTYPE html>
@@ -22,7 +25,7 @@ function layout(content: string): string {
         <tr><td style="padding:32px 0 0 0;text-align:center;">
           <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;">
             RegenCompliance by Dibb Enterprises LLC<br />
-            <a href="${SITE_URL}" style="color:rgba(255,255,255,0.35);text-decoration:underline;">${SITE_HOST}</a>
+            <a href="${MARKETING_URL}" style="color:rgba(255,255,255,0.35);text-decoration:underline;">${MARKETING_HOST}</a>
           </p>
         </td></tr>
       </table>
@@ -47,7 +50,7 @@ export function welcomeEmail(clinicName: string): { subject: string; html: strin
       <p style="margin:0 0 24px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
         Start by scanning your clinic&rsquo;s marketing content to identify compliance risks before regulators do.
       </p>
-      ${ctaButton("Go to Scanner", `${SITE_URL}/dashboard/scanner`)}
+      ${ctaButton("Go to Scanner", `${APP_URL}/dashboard/scanner`)}
     `),
   }
 }
@@ -66,7 +69,7 @@ export function betaWelcomeEmail(clinicName: string): { subject: string; html: s
       <p style="margin:0 0 24px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
         Jump in and scan your first piece of marketing content now.
       </p>
-      ${ctaButton("Start Scanning", `${SITE_URL}/dashboard/scanner`)}
+      ${ctaButton("Start Scanning", `${APP_URL}/dashboard/scanner`)}
     `),
   }
 }
@@ -82,7 +85,7 @@ export function paymentFailedEmail(clinicName: string): { subject: string; html:
       <p style="margin:0 0 24px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
         If your payment method is not updated, your access may be interrupted.
       </p>
-      ${ctaButton("Update Payment Method", `${SITE_URL}/dashboard/account`)}
+      ${ctaButton("Update Payment Method", `${APP_URL}/dashboard/account`)}
     `),
   }
 }
@@ -98,7 +101,7 @@ export function subscriptionCancelledEmail(clinicName: string): { subject: strin
       <p style="margin:0 0 24px 0;font-size:15px;color:rgba(255,255,255,0.7);line-height:1.6;">
         If you&rsquo;d like to resubscribe at any time, you can do so from your account page.
       </p>
-      ${ctaButton("Resubscribe", `${SITE_URL}/dashboard/account`)}
+      ${ctaButton("Resubscribe", `${APP_URL}/dashboard/account`)}
     `),
   }
 }

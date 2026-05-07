@@ -37,6 +37,10 @@ vi.mock("@/lib/audit-log", () => ({
 
 vi.mock("@/lib/site-url", () => ({
   SITE_URL: "https://example.com",
+  MARKETING_URL: "https://example.com",
+  APP_URL: "https://example.com",
+  marketingUrl: (p: string) => `https://example.com${p}`,
+  appUrl: (p: string) => `https://example.com${p}`,
 }))
 
 function req(body: unknown): Request {

@@ -6,6 +6,7 @@ import { useState } from "react"
 import { IS_LAUNCHED } from "@/lib/env"
 import { BrandIcon } from "@/components/brand-icon"
 import { CheckoutButton } from "@/components/checkout-button"
+import { appUrl } from "@/lib/site-url"
 
 export function MarketingHeader() {
   const [mobileMenu, setMobileMenu] = useState(false)
@@ -30,7 +31,7 @@ export function MarketingHeader() {
             <Link href="/free-audit" className="text-sm text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">Free Audit</Link>
           </nav>
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="text-sm text-white/75 hover:text-white transition-colors px-4 py-2">Log In</Link>
+            <Link href={appUrl("/login")} className="text-sm text-white/75 hover:text-white transition-colors px-4 py-2">Log In</Link>
             {!IS_LAUNCHED && (
               <Link href="/waitlist" className="text-sm text-white/75 hover:text-white transition-colors px-2 py-2">Waitlist</Link>
             )}
@@ -67,7 +68,7 @@ export function MarketingHeader() {
             <Link href="/faq" className="block text-sm text-white/75 hover:text-white py-2.5">FAQ</Link>
             <Link href="/free-audit" className="block text-sm text-[#55E039] font-semibold py-2.5">Free Audit</Link>
             <Link href="/demo" className="block text-sm text-white/75 hover:text-white py-2.5">Try Demo</Link>
-            <Link href="/login" className="block text-sm text-white/75 py-2.5">Log In</Link>
+            <Link href={appUrl("/login")} className="block text-sm text-white/75 py-2.5">Log In</Link>
             {!IS_LAUNCHED && (
               <Link href="/waitlist" className="block text-sm text-white/75 py-2.5">Join Waitlist</Link>
             )}

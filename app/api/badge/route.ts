@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
 import { randomBytes } from "node:crypto"
 
 function generateBadgeId(): string {
@@ -92,7 +92,10 @@ export async function GET() {
       .select("id", { count: "exact", head: true })
       .eq("profile_id", profileId)
 
-    const baseUrl = SITE_URL
+    // Badge embeds run on third-party sites; visitors clicking the badge
+    // hit /verify/{id} which is a public marketing surface, so route both
+    // the link and the image to the apex.
+    const baseUrl = MARKETING_URL
     const badgeUrl = `${baseUrl}/verify/${badgeId}`
     const imageUrl = `${baseUrl}/api/badge/image?id=${badgeId}`
 

@@ -4,7 +4,30 @@ import { enforceOrigin } from "@/lib/security/origin"
 
 const IMPERSONATE_COOKIE = "regen_impersonate"
 
-const publicPaths = ["/", "/login", "/auth/callback", "/demo", "/features", "/pricing", "/faq", "/waitlist", "/privacy", "/terms", "/forgot-password", "/auth/reset-password"]
+// Canonical production hosts. Localhost / preview deploys / vercel.app hosts
+// fall through and serve everything from one host (single-domain dev mode).
+const APP_HOST = "app.regencompliance.ai"
+const MARKETING_HOST = "regencompliance.ai"
+
+// publicPaths bypass the auth check below. These are mostly relevant on the
+// app host (the marketing-host short-circuit further down already exempts
+// every non-API page). The marketing entries here only fire on single-host
+// preview/dev environments.
+const publicPaths = [
+  "/",
+  "/login",
+  "/signup",
+  "/auth/callback",
+  "/demo",
+  "/features",
+  "/pricing",
+  "/faq",
+  "/waitlist",
+  "/privacy",
+  "/terms",
+  "/forgot-password",
+  "/auth/reset-password",
+]
 
 function buildCsp(nonce: string): string {
   return [
@@ -35,8 +58,94 @@ function generateNonce(): string {
   return btoa(bin)
 }
 
+function isAppPath(pathname: string): boolean {
+  if (
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/forgot-password"
+  ) {
+    return true
+  }
+  if (pathname.startsWith("/auth/")) return true
+  if (pathname === "/onboarding" || pathname.startsWith("/onboarding/")) return true
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) return true
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return true
+  return false
+}
+
+// Paths served identically on either host (no cross-domain redirect): API
+// routes, sitemap, robots, llms.txt. Static files are excluded by the matcher
+// below before middleware even runs.
+function isSharedPath(pathname: string): boolean {
+  if (pathname.startsWith("/api/")) return true
+  if (
+    pathname === "/sitemap.xml" ||
+    pathname === "/robots.txt" ||
+    pathname === "/llms.txt"
+  ) {
+    return true
+  }
+  return false
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const host = (request.headers.get("host") ?? "").toLowerCase().split(":")[0]
+  const isAppHost = host === APP_HOST
+  const isMarketingHost = host === MARKETING_HOST
+  const isCanonicalHost = isAppHost || isMarketingHost
+
+  // www -> apex normalization. www.regencompliance.ai/anything -> regencompliance.ai/anything,
+  // then middleware re-runs and routes the path to the correct host.
+  if (host === `www.${MARKETING_HOST}`) {
+    const url = new URL(request.url)
+    url.host = MARKETING_HOST
+    return NextResponse.redirect(url, 308)
+  }
+
+  // Cross-domain routing on canonical hosts. App paths hit on the apex 308 to
+  // the app subdomain; marketing paths hit on the app subdomain 308 to the apex.
+  // Shared paths (api, sitemap, robots, llms.txt) are served on whichever host
+  // received the request.
+  if (isCanonicalHost && !isSharedPath(pathname)) {
+    const pathIsApp = isAppPath(pathname)
+    if (isMarketingHost && pathIsApp) {
+      const url = new URL(request.url)
+      url.host = APP_HOST
+      return NextResponse.redirect(url, 308)
+    }
+    if (isAppHost && !pathIsApp) {
+      const url = new URL(request.url)
+      url.host = MARKETING_HOST
+      return NextResponse.redirect(url, 308)
+    }
+  }
+
+  // App subdomain SEO hardening. Even though X-Robots-Tag below tells crawlers
+  // not to index, serve a Disallow-all robots.txt and an empty sitemap so
+  // crawlers that ignore X-Robots-Tag (yandex etc.) also don't index.
+  if (isAppHost && pathname === "/robots.txt") {
+    return new NextResponse("User-agent: *\nDisallow: /\n", {
+      status: 200,
+      headers: {
+        "content-type": "text/plain",
+        "x-robots-tag": "noindex, nofollow",
+      },
+    })
+  }
+  if (isAppHost && pathname === "/sitemap.xml") {
+    return new NextResponse(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>`,
+      {
+        status: 200,
+        headers: {
+          "content-type": "application/xml",
+          "x-robots-tag": "noindex, nofollow",
+        },
+      },
+    )
+  }
+
   const nonce = generateNonce()
   const csp = buildCsp(nonce)
 
@@ -47,17 +156,10 @@ export async function proxy(request: NextRequest) {
   const applyCsp = (response: NextResponse): NextResponse => {
     response.headers.set("Content-Security-Policy", csp)
     response.headers.set("x-nonce", nonce)
-    // Reporting-Endpoints names the endpoint referenced by `report-to` in CSP.
-    // Must be a same-origin absolute or a relative URL on HTTPS.
     response.headers.set(
       "Reporting-Endpoints",
       'csp-endpoint="/api/csp-report"',
     )
-    // Trusted Types in Report-Only mode: violations surface to
-    // /api/csp-report without blocking page render. Once the reports
-    // confirm no first-party or third-party code (Stripe.js, Vercel
-    // Analytics) is writing unsafe HTML, move these directives into
-    // the enforcing CSP above.
     response.headers.set(
       "Content-Security-Policy-Report-Only",
       [
@@ -67,7 +169,18 @@ export async function proxy(request: NextRequest) {
         "report-to csp-endpoint",
       ].join("; "),
     )
+    if (isAppHost) {
+      response.headers.set("X-Robots-Tag", "noindex, nofollow")
+    }
     return response
+  }
+
+  // Marketing host short-circuit: every non-API path on the apex is public,
+  // so skip the Supabase auth check entirely. APIs still flow through origin
+  // enforcement + the skip list below so /api/waitlist, /api/free-audit etc.
+  // continue to work for anonymous visitors.
+  if (isMarketingHost && !pathname.startsWith("/api/")) {
+    return applyCsp(NextResponse.next({ request: { headers: requestHeaders } }))
   }
 
   if (publicPaths.some((p) => pathname === p)) {
@@ -141,6 +254,12 @@ export async function proxy(request: NextRequest) {
   if (!user) {
     const url = request.nextUrl.clone()
     url.pathname = "/login"
+    // Login lives on the app subdomain. If we somehow ended up here on the
+    // marketing host (e.g. an authenticated API call without a session),
+    // redirect cross-domain so the user lands on the correct login page.
+    if (isMarketingHost) {
+      url.host = APP_HOST
+    }
     return applyCsp(NextResponse.redirect(url))
   }
 

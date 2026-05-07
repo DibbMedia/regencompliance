@@ -7,6 +7,7 @@ Build these workflows in the GHL workspace to turn the 10 firing events into cus
 - "Allow Re-Entry": ON for billing/lifecycle workflows that fire repeatedly (invoice_paid, subscription_active beta+standard); OFF for one-shot lifecycle (welcome, account_deleted) so customers don't get duplicate welcomes.
 - "Stop on response": OFF unless noted.
 - Sender: From `RegenCompliance <support@regencompliance.ai>` (set Reply-To = same).
+- Domain split: marketing surfaces (`/apply`, `/free-audit`, `/waitlist`, `/pricing`, `/`) live on apex `regencompliance.ai`. Authenticated app surfaces (`/dashboard/**`, `/admin/**`, `/onboarding/**`, `/login`) live on subdomain `app.regencompliance.ai`. The URLs in this doc already reflect that split.
 - Brand color (buttons/links in email body): `#55E039`.
 
 Custom-field merge tokens in email bodies use the GHL pattern `{{contact.<slug>}}`. Tag-membership branching uses workflow `If/Else` -> `Contact has tag`.
@@ -31,13 +32,13 @@ Welcome aboard. Your RegenCompliance account is live and ready to scan.
 Three things to do in the next 5 minutes:
 
   1. Run your first scan: paste any clinic page or marketing copy at
-     https://regencompliance.ai/dashboard/scanner
+     https://app.regencompliance.ai/dashboard/scanner
 
   2. Add your monitored sites so the cron picks up future violations:
-     https://regencompliance.ai/dashboard/sites
+     https://app.regencompliance.ai/dashboard/sites
 
   3. Invite your team (up to 3 seats):
-     https://regencompliance.ai/dashboard/account
+     https://app.regencompliance.ai/dashboard/account
 
 Reply to this email if anything's unclear. We read every message.
 
@@ -189,7 +190,7 @@ What you get:
   - 3 seats for your team
   - Direct line to engineering on the monthly call
 
-Get started: https://regencompliance.ai/dashboard
+Get started: https://app.regencompliance.ai/dashboard
 
 If your seat isn't used for 90 days you'll roll to standard pricing.
 We'll warn you well before that ever happens.
@@ -210,11 +211,11 @@ ${{contact.regen_monthly_price_cents | divided_by: 100}}/month.
 
 Three things in your first 5 minutes:
 
-  1. Run your first scan: https://regencompliance.ai/dashboard/scanner
-  2. Add your monitored sites: https://regencompliance.ai/dashboard/sites
-  3. Invite your team (up to 3 seats): https://regencompliance.ai/dashboard/account
+  1. Run your first scan: https://app.regencompliance.ai/dashboard/scanner
+  2. Add your monitored sites: https://app.regencompliance.ai/dashboard/sites
+  3. Invite your team (up to 3 seats): https://app.regencompliance.ai/dashboard/account
 
-Manage billing anytime: https://regencompliance.ai/dashboard/account
+Manage billing anytime: https://app.regencompliance.ai/dashboard/account
 
 - The RegenCompliance team
 ```
@@ -270,7 +271,7 @@ Hi {{contact.first_name | default: "there"}},
 Your payment of ${{contact.regen_amount_due_cents | divided_by: 100}} failed.
 
 Update your payment method here:
-https://regencompliance.ai/dashboard/account
+https://app.regencompliance.ai/dashboard/account
 
 Stripe will retry automatically over the next 7 days. If all retries fail,
 your subscription will be cancelled and access suspended. Updating your
@@ -333,7 +334,7 @@ Hi {{contact.first_name | default: "there"}},
 Your data export was generated on {{contact.regen_event_at}}.
 
 Download from your dashboard:
-https://regencompliance.ai/dashboard/account
+https://app.regencompliance.ai/dashboard/account
 
 The download link expires in 7 days. After that, request a fresh export
 from the same page - we don't store the generated archive long-term for

@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = SITE_URL
+  // Apex marketing robots. The app subdomain serves a Disallow-all robots
+  // from middleware (proxy.ts), so this file only ever runs on the apex.
+  const baseUrl = MARKETING_URL
 
   return {
     rules: [

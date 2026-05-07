@@ -4,12 +4,17 @@ const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"])
 
 function allowedOrigins(): string[] {
   const out: string[] = []
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL
-  if (appUrl) {
-    try {
-      out.push(new URL(appUrl).origin)
-    } catch {
-      /* ignore malformed env */
+  // Both canonical hosts are valid origins for cross-tab posts and any form
+  // submission that originated from the marketing apex (e.g. the public
+  // /api/waitlist, /api/free-audit, /api/beta-apply endpoints).
+  for (const envVar of ["NEXT_PUBLIC_APP_URL", "NEXT_PUBLIC_MARKETING_URL"]) {
+    const value = process.env[envVar]
+    if (value) {
+      try {
+        out.push(new URL(value).origin)
+      } catch {
+        /* ignore malformed env */
+      }
     }
   }
   if (process.env.NODE_ENV !== "production") {

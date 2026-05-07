@@ -24,9 +24,12 @@ const envSchema = z
     // Anthropic
     ANTHROPIC_API_KEY: z.string().trim().min(1),
 
-    // Cron / app
+    // Cron / app. NEXT_PUBLIC_APP_URL is the app subdomain (app.regencompliance.ai
+    // post-cutover). NEXT_PUBLIC_MARKETING_URL is the marketing apex; optional
+    // because lib/site-url.ts falls back to the production apex constant.
     CRON_SECRET: z.string().trim().min(1),
     NEXT_PUBLIC_APP_URL: z.string().trim().url(),
+    NEXT_PUBLIC_MARKETING_URL: z.string().trim().url().optional(),
     NEXT_PUBLIC_APP_NAME: z.string().trim().min(1),
     NEXT_PUBLIC_LAUNCHED: z.enum(['true', 'false']).default('false'),
     // Server-only promo code for launch-announcement emails. Accepts both
