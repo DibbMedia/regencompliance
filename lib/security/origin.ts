@@ -15,7 +15,18 @@ function allowedOrigins(): string[] {
     const value = process.env[envVar]?.trim()
     if (value) {
       try {
-        out.push(new URL(value).origin)
+        const parsed = new URL(value)
+        out.push(parsed.origin)
+        // Also accept the www-prefixed variant of any apex marketing host.
+        // Vercel's domain config decides whether apex or www is canonical;
+        // either way, both can show up as the request origin and need to
+        // pass CSRF enforcement.
+        if (
+          envVar === "NEXT_PUBLIC_MARKETING_URL" &&
+          !parsed.hostname.startsWith("www.")
+        ) {
+          out.push(`${parsed.protocol}//www.${parsed.hostname}`)
+        }
       } catch {
         /* ignore malformed env */
       }

@@ -6,8 +6,17 @@ const IMPERSONATE_COOKIE = "regen_impersonate"
 
 // Canonical production hosts. Localhost / preview deploys / vercel.app hosts
 // fall through and serve everything from one host (single-domain dev mode).
+//
+// MARKETING_HOSTS includes both apex and www so the middleware doesn't fight
+// whichever variant Vercel resolves as primary. We do NOT redirect between
+// them - Vercel's domain config decides canonical. (An earlier www -> apex
+// redirect here caused a loop with Vercel's apex -> www redirect when www
+// was set primary.)
 const APP_HOST = "app.regencompliance.ai"
-const MARKETING_HOST = "regencompliance.ai"
+const MARKETING_HOSTS = ["regencompliance.ai", "www.regencompliance.ai"]
+// Used for cross-domain redirect targets (app subdomain -> marketing). We
+// pick the bare apex; Vercel will further redirect to www if that's primary.
+const MARKETING_REDIRECT_HOST = "regencompliance.ai"
 
 // publicPaths bypass the auth check below. These are mostly relevant on the
 // app host (the marketing-host short-circuit further down already exempts
@@ -92,20 +101,13 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = (request.headers.get("host") ?? "").toLowerCase().split(":")[0]
   const isAppHost = host === APP_HOST
-  const isMarketingHost = host === MARKETING_HOST
+  const isMarketingHost = MARKETING_HOSTS.includes(host)
   const isCanonicalHost = isAppHost || isMarketingHost
 
-  // www -> apex normalization. www.regencompliance.ai/anything -> regencompliance.ai/anything,
-  // then middleware re-runs and routes the path to the correct host.
-  if (host === `www.${MARKETING_HOST}`) {
-    const url = new URL(request.url)
-    url.host = MARKETING_HOST
-    return NextResponse.redirect(url, 308)
-  }
-
   // Cross-domain routing on canonical hosts. App paths hit on the apex 308 to
-  // the app subdomain; marketing paths hit on the app subdomain 308 to the apex.
-  // Shared paths (api, sitemap, robots, llms.txt) are served on whichever host
+  // the app subdomain; marketing paths hit on the app subdomain 308 to the
+  // bare apex (Vercel handles further apex<->www canonicalization). Shared
+  // paths (api, sitemap, robots, llms.txt) are served on whichever host
   // received the request.
   if (isCanonicalHost && !isSharedPath(pathname)) {
     const pathIsApp = isAppPath(pathname)
@@ -116,7 +118,7 @@ export async function proxy(request: NextRequest) {
     }
     if (isAppHost && !pathIsApp) {
       const url = new URL(request.url)
-      url.host = MARKETING_HOST
+      url.host = MARKETING_REDIRECT_HOST
       return NextResponse.redirect(url, 308)
     }
   }
@@ -271,6 +273,9 @@ export async function proxy(request: NextRequest) {
     // redirect cross-domain so the user lands on the correct login page.
     if (isMarketingHost) {
       url.host = APP_HOST
+      // Drop any port carried over from the original request URL when
+      // redirecting cross-host (Vercel never serves on a port).
+      url.port = ""
     }
     return applyCsp(NextResponse.redirect(url))
   }
