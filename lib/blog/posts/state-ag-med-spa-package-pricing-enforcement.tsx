@@ -7,9 +7,6 @@ import {
   UL,
   LI,
   Strong,
-  Em,
-  BQ,
-  Callout,
   KeyTakeaways,
   BeforeAfter,
 } from "@/components/blog/prose"

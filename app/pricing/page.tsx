@@ -14,7 +14,6 @@ import {
   Users,
   Lock,
   AlertTriangle,
-  DollarSign,
   ChevronDown,
   Scale,
   TrendingDown,

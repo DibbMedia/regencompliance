@@ -18,8 +18,6 @@ import { useState } from "react"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
-import { CheckoutButton } from "@/components/checkout-button"
-import { IS_LAUNCHED } from "@/lib/env"
 
 const COMMITMENTS = [
   {

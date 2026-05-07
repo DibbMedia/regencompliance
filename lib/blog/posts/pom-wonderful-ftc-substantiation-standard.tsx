@@ -7,8 +7,6 @@ import {
   UL,
   OL,
   LI,
-  Strong,
-  Em,
   BQ,
   Callout,
   KeyTakeaways,

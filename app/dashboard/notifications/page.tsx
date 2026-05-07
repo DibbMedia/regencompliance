@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import useSWR, { mutate } from "swr"
 import { toast } from "sonner"
 import { Bell, CheckCheck, AlertTriangle, CreditCard, Scale, Info } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Notification } from "@/lib/types"
 
@@ -61,7 +60,12 @@ export default function NotificationsPage() {
   else if (filter !== "all") params.set("type", filter)
 
   const { data, isLoading } = useSWR(`/api/notifications?${params}`, fetcher)
-  const notifications: Notification[] = data?.notifications || []
+  // Stable identity across renders that don't actually change the array,
+  // so the grouped useMemo below isn't invalidated on every parent render.
+  const notifications: Notification[] = useMemo(
+    () => data?.notifications || [],
+    [data?.notifications],
+  )
   const totalPages = data?.totalPages || 1
 
   // Group notifications by date

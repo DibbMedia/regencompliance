@@ -1,4 +1,3 @@
-import * as cheerio from "cheerio"
 import { fetchPage } from "@/lib/compliance-scraper"
 
 // ---------------------------------------------------------------------------

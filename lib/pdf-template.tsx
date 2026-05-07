@@ -49,12 +49,6 @@ function riskColor(level: string): string {
   return COLORS.blue
 }
 
-function riskBg(level: string): string {
-  if (level === "high") return COLORS.redBg
-  if (level === "medium") return COLORS.yellowBg
-  return COLORS.blueBg
-}
-
 function contentTypeLabel(type: string): string {
   const map: Record<string, string> = {
     website_copy: "Website Copy",

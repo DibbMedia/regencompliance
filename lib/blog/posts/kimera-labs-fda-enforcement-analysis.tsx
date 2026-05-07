@@ -5,11 +5,7 @@ import {
   P,
   Lead,
   UL,
-  OL,
   LI,
-  Strong,
-  Em,
-  BQ,
   Callout,
   KeyTakeaways,
 } from "@/components/blog/prose"

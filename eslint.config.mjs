@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import unusedImports from "eslint-plugin-unused-imports";
 
 const SERVER_ONLY_PATTERNS = [
   {
@@ -37,6 +38,27 @@ const SERVER_ONLY_PATTERNS = [
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+    rules: {
+      // Disable the base no-unused-vars in favor of the unused-imports
+      // plugin's pair: one for imports (auto-fixable), one for vars
+      // (still warning-only, ignores _-prefixed names).
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
   {
     files: ["components/**/*.{ts,tsx}", "hooks/**/*.{ts,tsx}"],
     rules: {

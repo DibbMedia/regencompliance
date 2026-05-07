@@ -4,7 +4,6 @@ import { useState } from "react"
 import useSWR, { mutate } from "swr"
 import { UserPlus, Trash2, Copy, Check, Loader2, Users, AlertTriangle, Mail } from "lucide-react"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {

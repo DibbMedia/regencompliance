@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 
 const MAX_DEMO_SCANS = 3
-const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days in seconds
 
 interface DemoCookie {
   scans_used: number

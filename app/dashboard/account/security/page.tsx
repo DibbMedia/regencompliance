@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import useSWR from "swr"
 import {
   Shield,
@@ -79,7 +79,10 @@ export default function SecurityActivityPage() {
     { refreshInterval: 60000 },
   )
   const [revoking, setRevoking] = useState(false)
-  const events = data?.events ?? []
+  // useMemo so the events identity is stable across renders that don't
+  // change `data` - keeps the recent-fails effect from re-running and
+  // calms react-hooks/exhaustive-deps.
+  const events = useMemo(() => data?.events ?? [], [data?.events])
 
   // Surface a one-time toast if the most recent failed-login is unfamiliar.
   // Pre-2026-05-05 there was no in-app surface for this; users had no way

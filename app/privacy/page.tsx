@@ -1,7 +1,6 @@
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
-import Link from "next/link"
 import { SITE_URL } from "@/lib/site-url"
 
 export const metadata = {

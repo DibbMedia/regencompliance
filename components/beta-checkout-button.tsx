@@ -12,7 +12,6 @@ interface BetaCheckoutButtonProps {
 export function BetaCheckoutButton({ children, className }: BetaCheckoutButtonProps) {
   const [loading, setLoading] = useState(false)
   const [loadingText, setLoadingText] = useState("Redirecting...")
-  const [spotsRemaining, setSpotsRemaining] = useState<number | null>(null)
   const [soldOut, setSoldOut] = useState(false)
   const slowTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -20,9 +19,8 @@ export function BetaCheckoutButton({ children, className }: BetaCheckoutButtonPr
     fetch("/api/beta/spots")
       .then((res) => res.json())
       .then((data) => {
-        if (data.remaining !== undefined) {
-          setSpotsRemaining(data.remaining)
-          if (data.remaining <= 0) setSoldOut(true)
+        if (data.remaining !== undefined && data.remaining <= 0) {
+          setSoldOut(true)
         }
       })
       .catch(() => {})
@@ -50,7 +48,6 @@ export function BetaCheckoutButton({ children, className }: BetaCheckoutButtonPr
 
       if (res.status === 409) {
         setSoldOut(true)
-        setSpotsRemaining(0)
         setLoading(false)
         toast.error("Beta spots are sold out.")
         return

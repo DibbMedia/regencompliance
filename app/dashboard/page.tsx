@@ -418,7 +418,7 @@ export default function DashboardPage() {
       }
     }
     load()
-  }, [])
+  }, [supabase])
 
   if (loading) {
     return (

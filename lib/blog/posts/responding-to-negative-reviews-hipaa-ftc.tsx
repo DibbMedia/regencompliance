@@ -4,13 +4,9 @@ import {
   H3,
   P,
   Lead,
-  UL,
   OL,
   LI,
   Strong,
-  Em,
-  BQ,
-  Callout,
   KeyTakeaways,
   BeforeAfter,
 } from "@/components/blog/prose"

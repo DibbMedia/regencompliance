@@ -3,9 +3,7 @@
 import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Bell, LogOut, Settings } from "lucide-react"
-import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -1,16 +1,11 @@
 import type { BlogPostMeta } from "@/lib/blog/types"
 import {
   H2,
-  H3,
   P,
   Lead,
-  UL,
   OL,
   LI,
   Strong,
-  Em,
-  BQ,
-  Callout,
   KeyTakeaways,
 } from "@/components/blog/prose"
 

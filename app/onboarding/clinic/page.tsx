@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Loader2, Upload, ImageIcon, ArrowRight } from "lucide-react"
+import { Loader2, Upload, ArrowRight } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
 
@@ -183,6 +183,11 @@ export default function OnboardingClinicPage() {
               </div>
             ) : (
               <div className="flex items-center gap-4 rounded-xl bg-white/[0.03] border border-white/10 p-4">
+                {/* User-supplied logo preview (createObjectURL or signed
+                    storage URL). next/image needs known dimensions or
+                    unoptimized=true; for a 56x56 thumbnail of an
+                    arbitrary upload the optimizer adds no value. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={logoPreview} alt="Logo preview" className="h-14 w-14 rounded-lg object-cover border border-white/10" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white font-medium truncate">{logoFile?.name || "Saved logo"}</p>

@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio"
 import { anthropic } from "@/lib/anthropic"
-import { createServiceClient } from "@/lib/supabase/server"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { assertSafeUrl } from "@/lib/ssrf"
 import { pinnedFetch } from "@/lib/safe-fetch"

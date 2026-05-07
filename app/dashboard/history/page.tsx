@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import useSWR from "swr"
-import { Clock, Search, RefreshCw, Eye, ChevronLeft, ChevronRight, Shield } from "lucide-react"
+import { Clock, Search, Eye, ChevronLeft, ChevronRight, Shield } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -37,7 +37,6 @@ function ScoreIndicator({ score }: { score: number | null }) {
   if (score === null) return <span className="text-white/30 text-sm">N/A</span>
   const color = score >= 80 ? "#55E039" : score >= 50 ? "#eab308" : "#ef4444"
   const textColor = score >= 80 ? "text-[#55E039]" : score >= 50 ? "text-yellow-500" : "text-red-500"
-  const bgColor = score >= 80 ? "bg-[#55E039]/10" : score >= 50 ? "bg-yellow-500/10" : "bg-red-500/10"
   const circumference = 2 * Math.PI * 12
   const offset = circumference - (score / 100) * circumference
 
