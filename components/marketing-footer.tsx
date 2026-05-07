@@ -67,7 +67,7 @@ export function MarketingFooter() {
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               <Link href="/privacy" className="text-sm text-white/70 hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="text-sm text-white/70 hover:text-white transition-colors">Terms</Link>
-              <a href="mailto:support@regencompliance.com" className="text-sm text-white/70 hover:text-white transition-colors">Contact</a>
+              <a href="mailto:support@regencompliance.ai" className="text-sm text-white/70 hover:text-white transition-colors">Contact</a>
             </div>
           </div>
           <div>

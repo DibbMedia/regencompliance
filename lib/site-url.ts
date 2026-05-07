@@ -8,7 +8,7 @@
  * Trailing slashes are stripped so `${SITE_URL}/path` always produces a clean URL.
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://compliance.regenportal.com"
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://regencompliance.ai"
 ).replace(/\/+$/, "")
 
 /** Absolute URL for a path like `/blog/foo` -> `https://regencompliance.ai/blog/foo` */

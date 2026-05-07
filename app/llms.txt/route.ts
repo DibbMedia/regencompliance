@@ -98,7 +98,7 @@ function buildLlmsTxt(): string {
 
   lines.push("## About the company")
   lines.push(
-    "RegenCompliance is operated by Dibb Media. Contact: support@regencompliance.com. The product is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. Customers are advised to retain qualified healthcare marketing counsel for specific legal questions."
+    "RegenCompliance is operated by Dibb Media. Contact: support@regencompliance.ai. The product is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. Customers are advised to retain qualified healthcare marketing counsel for specific legal questions."
   )
   lines.push("")
 

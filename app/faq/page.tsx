@@ -286,7 +286,7 @@ export default function FaqPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="mailto:support@regencompliance.com"
+                href="mailto:support@regencompliance.ai"
                 className="inline-flex h-12 items-center rounded-xl border border-[#55E039]/30 px-8 text-[15px] font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
               >
                 Email Support

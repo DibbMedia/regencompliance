@@ -69,7 +69,7 @@ describe("POST /api/csp-report", () => {
     const res = await POST(
       legacyReport({
         "csp-report": {
-          "document-uri": "https://compliance.regenportal.com/login",
+          "document-uri": "https://regencompliance.ai/login",
           "violated-directive": "script-src-elem",
           "effective-directive": "script-src-elem",
           "blocked-uri": "https://evil.example.com/xss.js",

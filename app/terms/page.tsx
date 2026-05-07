@@ -251,7 +251,7 @@ export default function TermsPage() {
                 <p className="text-sm text-white/60 mt-1">Operating as RegenCompliance</p>
                 <p className="text-sm text-white/60 mt-1">
                   Email:{" "}
-                  <a href="mailto:support@regencompliance.com" className="text-[#55E039] hover:underline">support@regencompliance.com</a>
+                  <a href="mailto:support@regencompliance.ai" className="text-[#55E039] hover:underline">support@regencompliance.ai</a>
                 </p>
                 <p className="text-sm text-white/60 mt-1">
                   Website:{" "}

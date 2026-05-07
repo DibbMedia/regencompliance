@@ -43,7 +43,7 @@ const ORGANIZATION_JSON = JSON.stringify({
     "FDA/FTC compliance scanning software purpose-built for healthcare practices - regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
   contactPoint: {
     "@type": "ContactPoint",
-    email: "support@regencompliance.com",
+    email: "support@regencompliance.ai",
     contactType: "customer support",
     availableLanguage: ["English"],
   },
