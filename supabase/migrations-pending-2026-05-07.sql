@@ -57,7 +57,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS uniq_free_audit_email_url_day
   ON free_audit_leads (
     lower(email),
     lower(website_url),
-    (date_trunc('day', created_at))
+    ((created_at AT TIME ZONE 'UTC')::date)
   );
 
 -- Backfill any older rows so the new index doesn't false-fire on
