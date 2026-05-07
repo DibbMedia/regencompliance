@@ -472,7 +472,7 @@ export function ScanPdfDocument({ scan, clinicName }: { scan: Scan; clinicName: 
         <Text style={s.sectionTitle}>Executive Summary</Text>
         <Text style={s.sectionSubtitle}>
           This compliance scan analyzed the submitted {contentTypeLabel(scan.content_type).toLowerCase()} content
-          and assigned a score of {score}/100, indicating a "{scoreLabel(score)}" compliance posture.
+          and assigned a score of {score}/100, indicating a {`"${scoreLabel(score)}"`} compliance posture.
           {flags.length > 0
             ? ` A total of ${flags.length} potential compliance issue${flags.length !== 1 ? "s were" : " was"} identified.`
             : " No compliance issues were identified in the scanned content."}
@@ -644,7 +644,7 @@ function FlagDetail({ flag, index, total }: { flag: ScanFlag; index: number; tot
       <View style={s.flagBody}>
         <View style={s.flagRow}>
           <Text style={s.flagLabel}>Flagged Text:</Text>
-          <Text style={[s.flagValue, { fontStyle: "italic" }]}>"{flag.matched_text}"</Text>
+          <Text style={[s.flagValue, { fontStyle: "italic" }]}>{`"${flag.matched_text}"`}</Text>
         </View>
         <View style={s.flagRow}>
           <Text style={s.flagLabel}>Violation:</Text>
@@ -840,7 +840,7 @@ export function SitePdfDocument({
                               {flag.risk_level.toUpperCase()}
                             </Text>
                           </View>
-                          <Text style={s.sitePageFlagText}>"{flag.matched_text}"</Text>
+                          <Text style={s.sitePageFlagText}>{`"${flag.matched_text}"`}</Text>
                         </View>
                       ))}
                       {pg.flags.length > 3 && (

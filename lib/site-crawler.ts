@@ -151,7 +151,7 @@ function normalizeUrl(url: string): string {
     u.searchParams.delete("utm_term")
     u.searchParams.delete("fbclid")
     u.searchParams.delete("gclid")
-    let path = u.pathname.replace(/\/+$/, "") || "/"
+    const path = u.pathname.replace(/\/+$/, "") || "/"
     return `${u.origin}${path}${u.search}`
   } catch {
     return url

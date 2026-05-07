@@ -51,7 +51,7 @@ export default function Body() {
         playbook.
       </Lead>
 
-      <H2 id="ftc-tiktok">The FTC's TikTok focus</H2>
+      <H2 id="ftc-tiktok">The FTC&apos;s TikTok focus</H2>
       <P>
         The FTC has specifically identified TikTok health content as
         a 2024-2026 enforcement priority. Several reasons:

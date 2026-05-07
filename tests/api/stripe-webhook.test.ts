@@ -130,12 +130,14 @@ describe("POST /api/stripe/webhook - security contract", () => {
     expect(json.error).toMatch(/invalid signature/i)
   })
 
-  it("rejects events older than 60 minutes (replay window)", async () => {
-    const oneHourPlusOneMinAgo = Math.floor(Date.now() / 1000) - 61 * 60
+  it("rejects events older than 24 hours (replay window)", async () => {
+    // Window widened from 60min -> 24h on 2026-05-06 so a Stripe delivery
+    // backlog doesn't drop legitimate subscription events.
+    const dayPlusOneMinAgo = Math.floor(Date.now() / 1000) - (24 * 60 + 1) * 60
     stripeCtx.constructResult = {
       id: "evt_old",
       type: "customer.subscription.updated",
-      created: oneHourPlusOneMinAgo,
+      created: dayPlusOneMinAgo,
       data: { object: { customer: null } },
     }
     const { POST } = await loadRoute()
@@ -146,7 +148,8 @@ describe("POST /api/stripe/webhook - security contract", () => {
   })
 
   it("accepts events right at the replay window edge", async () => {
-    const justInsideWindow = Math.floor(Date.now() / 1000) - 59 * 60
+    // Just inside the 24h cap.
+    const justInsideWindow = Math.floor(Date.now() / 1000) - (24 * 60 - 1) * 60
     stripeCtx.constructResult = {
       id: "evt_fresh",
       type: "customer.subscription.updated",
