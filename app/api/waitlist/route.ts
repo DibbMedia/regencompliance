@@ -4,6 +4,7 @@ import { waitlistSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { sendToGhl } from "@/lib/ghl"
+import { deriveSource } from "@/lib/source-tracking"
 
 export const maxDuration = 10
 
@@ -54,7 +55,7 @@ export async function POST(request: Request) {
       email,
       ip_address: ip,
       user_agent: userAgent,
-      source: "website",
+      source: deriveSource(request),
     })
 
     if (error) {

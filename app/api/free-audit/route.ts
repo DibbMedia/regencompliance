@@ -18,6 +18,7 @@ import { freeAuditSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { anthropic } from "@/lib/anthropic"
+import { deriveSource } from "@/lib/source-tracking"
 import { extractPageContent } from "@/lib/site-crawler"
 import { assertSafeUrl } from "@/lib/ssrf"
 import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
@@ -272,7 +273,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       flags: allFlags,
       ip_address: ip,
       user_agent: userAgent,
-      source: "website",
+      source: deriveSource(request),
     })
     if (insertErr && insertErr.code !== "23505") {
       console.error("[free-audit] lead insert error:", insertErr)

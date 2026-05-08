@@ -4,6 +4,7 @@ import { betaApplicationSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { sendToGhl } from "@/lib/ghl"
+import { deriveSource } from "@/lib/source-tracking"
 
 export const maxDuration = 10
 
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
       why_apply,
       ip_address: ip,
       user_agent: userAgent,
-      source: "website",
+      source: deriveSource(request),
       // accepted_terms_at defaults to now() in the migration; recording the
       // server-time of acceptance is intentional (we don't trust client clocks).
     })
