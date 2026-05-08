@@ -1,16 +1,14 @@
 // Lightweight UTM/source attribution for public lead-capture routes.
 // Parses utm_source / utm_campaign / utm_medium from the Referer header's
 // query string and returns a single short string suitable for a `source`
-// column. Falls back to "website" when no UTM is present and to "direct"
-// when there's no Referer at all (reflects organic, bookmark, or direct
-// traffic versus a referral from our own marketing).
+// column. Falls back to "website" when no UTM is present or no Referer is
+// available (organic, bookmark, paste, or test environment).
 
-const FALLBACK_REFERRED = "website"
-const FALLBACK_DIRECT = "direct"
+const FALLBACK = "website"
 
 export function deriveSource(request: Request): string {
   const referer = request.headers.get("referer")
-  if (!referer) return FALLBACK_DIRECT
+  if (!referer) return FALLBACK
 
   try {
     const url = new URL(referer)
@@ -23,8 +21,8 @@ export function deriveSource(request: Request): string {
     const pick = (utmCampaign || utmSource || utmMedium || "").slice(0, 64)
     if (pick) return pick
 
-    return FALLBACK_REFERRED
+    return FALLBACK
   } catch {
-    return FALLBACK_REFERRED
+    return FALLBACK
   }
 }

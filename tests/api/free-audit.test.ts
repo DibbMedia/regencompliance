@@ -110,6 +110,7 @@ async function loadRoute() {
 const validBody = {
   website_url: "https://target.example/",
   email: "lead@clinic.com",
+  accept_terms: true,
 }
 
 describe("POST /api/free-audit", () => {

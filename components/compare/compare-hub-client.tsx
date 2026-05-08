@@ -6,7 +6,6 @@ import {
   ArrowRight,
   Scale,
   TrendingUp,
-  ShieldCheck,
   Zap,
   Brain,
   Search,
