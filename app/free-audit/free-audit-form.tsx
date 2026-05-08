@@ -182,6 +182,7 @@ export function FreeAuditForm() {
                               {...field}
                             />
                           </FormControl>
+                          <p className="text-[11px] text-white/65 mt-1">No newsletter, no sales calls. We just send your audit.</p>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -390,7 +391,7 @@ function FlagCard({ flag, index }: { flag: PublicFlag; index: number }) {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <Lock className="h-4 w-4 text-white/55 shrink-0" />
+              <Lock className="h-4 w-4 text-white/70 shrink-0" />
               <p className="text-sm text-white/70 italic">
                 Violation #{index + 1} - sign up to reveal the matched phrase, why it&apos;s flagged, and a compliant rewrite.
               </p>

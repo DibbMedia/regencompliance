@@ -32,7 +32,8 @@ export async function PATCH(
     .eq("id", id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/enforcement-actions PATCH] database error:", error)
+    return NextResponse.json({ error: "Failed to update enforcement action" }, { status: 500 })
   }
 
   const { ip, userAgent } = getRequestMeta(request)

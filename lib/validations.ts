@@ -71,7 +71,7 @@ export const contactFormSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be under 100 characters'),
   email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
   company: z.string().trim().max(200, 'Must be under 200 characters').optional().or(z.literal('')),
-  subject: z.enum(CONTACT_SUBJECT_OPTIONS),
+  subject: z.enum(CONTACT_SUBJECT_OPTIONS).optional(),
   message: z.string().trim().min(1, 'Message is required').max(2000, 'Message must be under 2,000 characters'),
   accept_terms: z.literal(true, { message: 'Please confirm you understand how we use your submission' }),
 })

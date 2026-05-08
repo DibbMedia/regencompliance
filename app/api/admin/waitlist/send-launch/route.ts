@@ -15,11 +15,8 @@ export async function POST() {
 
   const { serviceClient } = auth
 
-  // Prefer server-only EARLY_ACCESS_CODE; tolerate the legacy NEXT_PUBLIC_
-  // variant until the Vercel env rename lands.
-  const promoCode =
-    process.env.EARLY_ACCESS_CODE?.trim() ||
-    process.env.NEXT_PUBLIC_EARLY_ACCESS_CODE?.trim()
+  // Server-only EARLY_ACCESS_CODE.
+  const promoCode = process.env.EARLY_ACCESS_CODE?.trim()
   const appUrl = process.env.NEXT_PUBLIC_APP_URL
   if (!promoCode || !appUrl) {
     return NextResponse.json(

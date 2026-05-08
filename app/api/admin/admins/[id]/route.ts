@@ -29,7 +29,8 @@ export async function PATCH(
     .single()
 
   if (error || !data) {
-    return NextResponse.json({ error: error?.message ?? "Not found" }, { status: 404 })
+    if (error) console.error("[admin/admins PATCH] database error:", error)
+    return NextResponse.json({ error: "Admin not found or update failed" }, { status: 404 })
   }
 
   const { ip, userAgent } = getRequestMeta(request)
@@ -76,7 +77,8 @@ export async function DELETE(
 
   const { error } = await serviceClient.from("platform_admins").delete().eq("id", id)
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/admins DELETE] database error:", error)
+    return NextResponse.json({ error: "Failed to remove admin" }, { status: 500 })
   }
 
   await serviceClient

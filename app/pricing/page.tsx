@@ -334,12 +334,12 @@ export default function PricingPage() {
             </div>
             <p className="text-sm text-[#55E039]/80 font-semibold mb-8">Locked-In Rate - Never increases</p>
             {IS_LAUNCHED ? (
-              <CheckoutButton className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] py-3 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6 disabled:opacity-70">
+              <CheckoutButton className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] py-3 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6 disabled:opacity-70">
                 Subscribe Now
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/apply" className="flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
+              <Link href="/apply" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer mb-6">
                 Apply for Founder Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -388,7 +388,7 @@ export default function PricingPage() {
             <p className="text-sm text-white/60 mb-8">Available after beta period ends.</p>
             <Link
               href="/waitlist"
-              className="flex h-13 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.05] text-[15px] font-bold text-white hover:bg-white/[0.08] hover:border-white/25 transition-all mb-6"
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.05] text-[15px] font-bold text-white hover:bg-white/[0.08] hover:border-white/25 transition-all mb-6"
             >
               Join the Waitlist
               <ArrowRight className="h-4 w-4" />
@@ -521,12 +521,12 @@ export default function PricingPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="text-left text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">Feature</th>
+                    <th className="text-left text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/85">Feature</th>
                     <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4">
                       <span className="text-[#55E039]">RegenCompliance</span>
                     </th>
-                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">Healthcare Attorney</th>
-                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/70">DIY / Google</th>
+                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/85">Healthcare Attorney</th>
+                    <th className="text-center text-xs sm:text-sm font-extrabold p-2 sm:p-4 text-white/85">DIY / Google</th>
                   </tr>
                 </thead>
                 <tbody>

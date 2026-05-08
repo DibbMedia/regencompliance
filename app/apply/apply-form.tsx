@@ -193,12 +193,21 @@ export function BetaApplyForm() {
                       ? "Looks like you've already applied with this email. We're still reviewing - we'll reach out within 48 hours if you're a fit for one of the 25 founder seats. If anything's changed about your application, email support@regencompliance.ai and we'll update it manually."
                       : "Thanks - we'll review your application and reach out within 48 hours. If you're a fit for one of the 25 founder seats, we'll send a personal invite link."}
                   </p>
-                  <Link
-                    href="/"
-                    className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] transition-all"
-                  >
-                    Back to home
-                  </Link>
+                  <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                    <Link
+                      href="/demo"
+                      className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-5 text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] hover:brightness-110 transition-all"
+                    >
+                      Try the demo
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href="/"
+                      className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-5 text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.08] transition-all"
+                    >
+                      Back to home
+                    </Link>
+                  </div>
                 </div>
               ) : (
                 <Form {...form}>
@@ -424,7 +433,7 @@ export function BetaApplyForm() {
                         </>
                       ) : (
                         <>
-                          Apply for one of 25 founder seats
+                          Apply for a founder seat
                           <ArrowRight className="h-4 w-4" />
                         </>
                       )}

@@ -14,7 +14,7 @@ export async function GET() {
       .eq("is_beta_subscriber", true)
 
     if (confirmedError) {
-      console.error("Beta spots count error:", confirmedError)
+      console.error("Beta spots count error:", confirmedError.message)
       return NextResponse.json({ error: "Failed to fetch beta spots" }, { status: 500 })
     }
 
@@ -25,7 +25,7 @@ export async function GET() {
       .eq("claimed", false)
 
     if (pendingError) {
-      console.error("Beta pending count error:", pendingError)
+      console.error("Beta pending count error:", pendingError.message)
       return NextResponse.json({ error: "Failed to fetch beta spots" }, { status: 500 })
     }
 
@@ -37,7 +37,7 @@ export async function GET() {
       remaining: Math.max(0, BETA_SEAT_LIMIT - taken),
     })
   } catch (error) {
-    console.error("Beta spots error:", error)
+    console.error("Beta spots error:", error instanceof Error ? error.message : String(error))
     return NextResponse.json({ error: "Failed to fetch beta spots" }, { status: 500 })
   }
 }

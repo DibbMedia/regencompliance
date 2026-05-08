@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { timingSafeEqual } from "node:crypto"
 import { createServiceClient } from "@/lib/supabase/server"
 
 export async function GET(request: Request) {
@@ -14,9 +15,16 @@ export async function GET(request: Request) {
   }
 
   if (deep) {
-    // Deep probe requires cron secret to prevent info disclosure
+    // Deep probe requires cron secret to prevent info disclosure.
+    // Constant-time compare so a side-channel can't reveal CRON_SECRET byte-by-byte.
     const authHeader = request.headers.get("authorization")
-    if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    const expected = process.env.CRON_SECRET ? `Bearer ${process.env.CRON_SECRET}` : null
+    if (
+      !expected ||
+      !authHeader ||
+      Buffer.byteLength(authHeader) !== Buffer.byteLength(expected) ||
+      !timingSafeEqual(Buffer.from(authHeader), Buffer.from(expected))
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 

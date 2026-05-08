@@ -190,15 +190,6 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4 opacity-60" />
               </Link>
             </div>
-            {!IS_LAUNCHED && (
-              <p className="mt-4 text-sm text-white/50">
-                Not ready to commit?{" "}
-                <Link href="/apply" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-                  Apply for beta
-                </Link>{" "}
-                instead.
-              </p>
-            )}
             <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/60">
               <span className="flex items-center gap-2"><Lock className="h-4 w-4 text-[#55E039]/70" /> Zero patient data</span>
               <span className="flex items-center gap-2"><Activity className="h-4 w-4 text-[#55E039]/70" /> Updated daily</span>
@@ -258,7 +249,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <Link href="/demo" className="h-11 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] flex items-center justify-center text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.4)] hover:brightness-110 transition-all">
+                <Link href="/demo" className="h-12 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] flex items-center justify-center text-sm font-bold text-[#0a0a0a] shadow-[0_4px_15px_rgba(85,224,57,0.25)] hover:shadow-[0_4px_25px_rgba(85,224,57,0.4)] hover:brightness-110 transition-all">
                   <Scan className="h-4 w-4 mr-2" />
                   Scan for Compliance Issues
                 </Link>

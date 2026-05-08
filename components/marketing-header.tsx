@@ -77,7 +77,7 @@ export function MarketingHeader() {
     </header>
     {/* Skip-link target. Sits between the fixed header and the page
         content so the "Skip to content" jump lands past the nav. */}
-    <span id="main-content" tabIndex={-1} className="sr-only" aria-hidden="true">Main content</span>
+    <main id="main-content" tabIndex={-1} className="sr-only" aria-hidden="true">Main content</main>
     </>
   )
 }

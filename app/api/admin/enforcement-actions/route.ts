@@ -22,7 +22,8 @@ export async function GET(request: Request) {
   const { data, error } = await q
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/enforcement-actions GET] database error:", error)
+    return NextResponse.json({ error: "Failed to fetch enforcement actions" }, { status: 500 })
   }
 
   return NextResponse.json({ actions: data ?? [] })

@@ -32,12 +32,8 @@ const envSchema = z
     NEXT_PUBLIC_MARKETING_URL: z.string().trim().url().optional(),
     NEXT_PUBLIC_APP_NAME: z.string().trim().min(1),
     NEXT_PUBLIC_LAUNCHED: z.enum(['true', 'false']).default('false'),
-    // Server-only promo code for launch-announcement emails. Accepts both
-    // EARLY_ACCESS_CODE (preferred, server-only) and the legacy
-    // NEXT_PUBLIC_EARLY_ACCESS_CODE (shipped to every browser bundle — remove
-    // after migrating Vercel env).
+    // Server-only promo code for launch-announcement emails.
     EARLY_ACCESS_CODE: z.string().trim().optional(),
-    NEXT_PUBLIC_EARLY_ACCESS_CODE: z.string().trim().optional(),
 
     // Email (Resend) — optional; sendEmail() no-ops when unset
     RESEND_API_KEY: z.string().trim().min(1).optional(),
@@ -90,13 +86,8 @@ const envSchema = z
   })
 
 export const IS_LAUNCHED = process.env.NEXT_PUBLIC_LAUNCHED?.trim() === 'true'
-// Prefer server-only EARLY_ACCESS_CODE; fall back to the legacy NEXT_PUBLIC_
-// variant so the rename in Vercel isn't blocking. Remove the fallback once
-// NEXT_PUBLIC_EARLY_ACCESS_CODE is deleted from every environment.
-export const EARLY_ACCESS_CODE =
-  process.env.EARLY_ACCESS_CODE?.trim() ||
-  process.env.NEXT_PUBLIC_EARLY_ACCESS_CODE?.trim() ||
-  ''
+// Server-only EARLY_ACCESS_CODE.
+export const EARLY_ACCESS_CODE = process.env.EARLY_ACCESS_CODE?.trim() || ''
 
 export type Env = z.infer<typeof envSchema>
 

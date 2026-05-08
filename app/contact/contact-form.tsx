@@ -138,8 +138,8 @@ export function ContactForm() {
                     </div>
                   </div>
                   <h2 className="mt-5 text-xl font-bold text-white">Message received</h2>
-                  <p className="mt-2 text-sm text-white/60 max-w-sm">
-                    Thanks - we&apos;ve got your note and will reply during the next business day. If your question is urgent, mention that in a follow-up.
+                  <p className="mt-2 text-sm text-white/65 max-w-sm">
+                    Thanks - we&apos;ve got your note. We typically reply within one business day (8am-5pm ET, Mon-Fri). If your question is urgent, mention that in a follow-up.
                   </p>
                 </div>
               ) : (
@@ -219,10 +219,10 @@ export function ContactForm() {
                           <FormLabel className="text-white/70 text-xs font-semibold uppercase tracking-wider">
                             Subject
                           </FormLabel>
-                          <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                          <Select disabled={loading} onValueChange={field.onChange} value={field.value || ""}>
                             <FormControl>
                               <SelectTrigger className="h-11 bg-white/[0.03] border-white/10 text-white">
-                                <SelectValue placeholder="Pick one" />
+                                <SelectValue placeholder="Pick one (optional)" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>

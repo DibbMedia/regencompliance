@@ -313,12 +313,15 @@ export default function DemoPage() {
                 )}
               </button>
               {!text && (
-                <button
-                  onClick={loadSample}
-                  className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start rounded-xl border border-[#55E039]/30 px-6 text-sm font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
-                >
-                  Load Sample
-                </button>
+                <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+                  <button
+                    onClick={loadSample}
+                    className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start rounded-xl border border-[#55E039]/30 px-6 text-sm font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all shadow-[0_0_20px_rgba(85,224,57,0.08)]"
+                  >
+                    Load Sample
+                  </button>
+                  <p className="text-[11px] text-white/55 text-center sm:text-left">Pre-filled example text - click to see how the scanner works.</p>
+                </div>
               )}
             </div>
 

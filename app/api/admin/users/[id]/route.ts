@@ -37,7 +37,8 @@ export async function PATCH(
 
   const { error } = await serviceClient.from("profiles").update(updates).eq("id", id)
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/users PATCH] database error:", error)
+    return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
   }
 
   const { ip, userAgent } = getRequestMeta(request)
@@ -70,7 +71,8 @@ export async function DELETE(
 
   const { error } = await serviceClient.auth.admin.deleteUser(id)
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/users DELETE] auth error:", error)
+    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
   }
 
   const { ip, userAgent } = getRequestMeta(request)

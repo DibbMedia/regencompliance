@@ -13,7 +13,8 @@ export async function GET() {
     .order("added_at", { ascending: false })
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/admins GET] database error:", error)
+    return NextResponse.json({ error: "Failed to fetch admins" }, { status: 500 })
   }
 
   return NextResponse.json({ admins: data ?? [] })
@@ -44,7 +45,8 @@ export async function POST(request: Request) {
     if (error.code === "23505") {
       return NextResponse.json({ error: "Email already an admin" }, { status: 409 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error("[admin/admins POST] database error:", error)
+    return NextResponse.json({ error: "Failed to add admin" }, { status: 500 })
   }
 
   const { ip, userAgent } = getRequestMeta(request)
