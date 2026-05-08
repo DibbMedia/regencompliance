@@ -297,8 +297,8 @@ export default function FaqPage() {
                   <ArrowRight className="h-4 w-4" />
                 </CheckoutButton>
               ) : (
-                <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-                  Join the Waitlist
+                <Link href="/apply" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                  Apply for Beta
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               )}

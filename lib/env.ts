@@ -64,6 +64,19 @@ const envSchema = z
       .trim()
       .regex(/^[0-9a-f]{64}$/i, 'ENCRYPTION_KEY_V1 must be 64 lowercase hex chars')
       .optional(),
+
+    // GHL Private Integration (lib/ghl.ts). Both required for any GHL event
+    // to fire. When unset, sendToGhl() no-ops with a logged warning.
+    GHL_API_TOKEN: z.string().trim().min(1).optional(),
+    GHL_LOCATION_ID: z.string().trim().min(1).optional(),
+
+    // NextAuth-compatible secret. Used as fallback HMAC key for the demo
+    // cookie when DEMO_COOKIE_SECRET is unset.
+    NEXTAUTH_SECRET: z.string().trim().min(1).optional(),
+
+    // Server-only HMAC key for the demo-mode anonymous cookie. Falls back to
+    // NEXTAUTH_SECRET, then SUPABASE_SERVICE_ROLE_KEY (last resort).
+    DEMO_COOKIE_SECRET: z.string().trim().min(1).optional(),
   })
   .superRefine((env, ctx) => {
     if (!env.STRIPE_SECRET_KEY && !env.STRIPE_RESTRICTED_KEY) {

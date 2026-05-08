@@ -585,8 +585,8 @@ export default function FeaturesPage() {
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
-                Join the Waitlist
+              <Link href="/apply" className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:brightness-110 transition-all cursor-pointer">
+                Apply for Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}

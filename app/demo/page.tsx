@@ -242,8 +242,8 @@ export default function DemoPage() {
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-                Join the Waitlist
+              <Link href="/apply" className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-8 text-base font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                Apply for Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}
@@ -335,8 +335,8 @@ export default function DemoPage() {
                   <ArrowRight className="h-3 w-3" />
                 </CheckoutButton>
               ) : (
-                <Link href="/waitlist" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[#55E039]/20 px-4 text-xs font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all cursor-pointer">
-                  Join the waitlist
+                <Link href="/apply" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/[0.04] border border-[#55E039]/20 px-4 text-xs font-medium text-[#55E039] hover:bg-[#55E039]/5 transition-all cursor-pointer">
+                  Apply for beta
                   <ArrowRight className="h-3 w-3" />
                 </Link>
               )}
@@ -505,8 +505,8 @@ export default function DemoPage() {
                       <ArrowRight className="h-3.5 w-3.5" />
                     </CheckoutButton>
                   ) : (
-                    <Link href="/waitlist" className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
-                      Join the Waitlist
+                    <Link href="/apply" className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 text-sm font-semibold text-[#0a0a0a] shadow-lg shadow-[#55E039]/25 hover:shadow-xl hover:shadow-[#55E039]/40 hover:brightness-110 transition-all cursor-pointer">
+                      Apply for Beta
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   )}

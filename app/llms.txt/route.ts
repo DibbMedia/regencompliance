@@ -41,7 +41,7 @@ function buildLlmsTxt(): string {
   lines.push(`- [Pricing](${baseUrl}/pricing): Plans, ROI calculator, comparison vs alternatives`)
   lines.push(`- [Demo](${baseUrl}/demo): Free sample scan - paste content, see compliance report`)
   lines.push(`- [Security](${baseUrl}/security): Data handling, AI no-training, encryption, infrastructure`)
-  lines.push(`- [About](${baseUrl}/about): Company, principles, Dibb Media context`)
+  lines.push(`- [About](${baseUrl}/about): Company, principles, Regen Portal LLC context`)
   lines.push(`- [FAQ](${baseUrl}/faq): Product and pricing FAQs`)
   lines.push("")
 
@@ -98,7 +98,7 @@ function buildLlmsTxt(): string {
 
   lines.push("## About the company")
   lines.push(
-    "RegenCompliance is operated by Dibb Media. Contact: support@regencompliance.ai. The product is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. Customers are advised to retain qualified healthcare marketing counsel for specific legal questions."
+    "RegenCompliance is operated by Regen Portal LLC. Contact: support@regencompliance.ai. The product is an educational compliance tool and does not constitute legal or regulatory advice. Not affiliated with the FDA or FTC. Customers are advised to retain qualified healthcare marketing counsel for specific legal questions."
   )
   lines.push("")
 

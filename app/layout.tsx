@@ -36,7 +36,7 @@ const ORGANIZATION_JSON = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "RegenCompliance",
-  alternateName: "RegenCompliance by Dibb Media",
+  alternateName: "RegenCompliance by Regen Portal LLC",
   url: SITE_URL,
   logo: `${SITE_URL}/og-image.png`,
   description:

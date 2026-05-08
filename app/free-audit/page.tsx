@@ -337,7 +337,7 @@ export default function FreeAuditPage() {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
-                      href="/waitlist"
+                      href="/apply"
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 text-[15px] font-semibold text-white/80 hover:bg-white/[0.08] transition-all"
                     >
                       Join Waitlist

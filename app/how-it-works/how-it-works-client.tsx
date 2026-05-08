@@ -374,10 +374,10 @@ export default function HowItWorksClient() {
               </CheckoutButton>
             ) : (
               <Link
-                href="/waitlist"
+                href="/apply"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[#55E039]/25 bg-[#55E039]/[0.04] px-6 sm:px-8 text-[15px] font-semibold text-[#55E039] hover:bg-[#55E039]/[0.08] transition-all"
               >
-                Join the Waitlist
+                Apply for Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}

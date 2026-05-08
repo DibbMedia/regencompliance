@@ -109,10 +109,10 @@ export function BlogPostLayout({
                     </CheckoutButton>
                   ) : (
                     <Link
-                      href="/waitlist"
+                      href="/apply"
                       className="inline-flex h-12 items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer"
                     >
-                      Join the waitlist
+                      Apply for beta
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   )}

@@ -388,8 +388,8 @@ function LoginContent() {
             {!IS_LAUNCHED && (
               <p className="text-xs text-white/50">
                 Don&apos;t have access yet?{" "}
-                <Link href={marketingUrl("/waitlist")} className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-                  Join the waitlist →
+                <Link href={marketingUrl("/apply")} className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+                  Apply for beta →
                 </Link>
               </p>
             )}

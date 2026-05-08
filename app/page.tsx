@@ -193,8 +193,8 @@ export default function LandingPage() {
             {!IS_LAUNCHED && (
               <p className="mt-4 text-sm text-white/50">
                 Not ready to commit?{" "}
-                <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-                  Join the waitlist
+                <Link href="/apply" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+                  Apply for beta
                 </Link>{" "}
                 instead.
               </p>
@@ -572,7 +572,7 @@ export default function LandingPage() {
                 <p className="mt-2 text-sm text-[#55E039]/80 font-semibold">Locked-In Rate - Never increases</p>
                 {!IS_LAUNCHED && (
                   <span className="mt-3 inline-block text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1">
-                    Invite-only - Join the waitlist
+                    Invite-only - Apply for beta
                   </span>
                 )}
               </div>
@@ -598,8 +598,8 @@ export default function LandingPage() {
                   <ArrowRight className="h-4 w-4" />
                 </CheckoutButton>
               ) : (
-                <Link href="/waitlist" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                  Join the Waitlist
+                <Link href="/apply" className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                  Apply for Beta
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               )}
@@ -741,8 +741,8 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4" />
               </CheckoutButton>
             ) : (
-              <Link href="/waitlist" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
-                Join the Waitlist
+              <Link href="/apply" className="inline-flex h-12 w-full sm:w-auto items-center justify-center sm:justify-start gap-2.5 rounded-xl bg-gradient-to-r from-[#55E039] to-[#3BB82A] px-6 sm:px-8 text-[15px] font-bold text-[#0a0a0a] shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] hover:brightness-110 transition-all cursor-pointer">
+                Apply for Beta
                 <ArrowRight className="h-4 w-4" />
               </Link>
             )}

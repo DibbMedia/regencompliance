@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "About the RegenCompliance team, why we built purpose-built FDA/FTC compliance software for healthcare practices, and the principles that shape the product.",
   keywords: [
     "about RegenCompliance",
-    "Dibb Media RegenCompliance",
+    "Regen Portal LLC RegenCompliance",
     "healthcare compliance software company",
     "FDA compliance startup",
   ],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About RegenCompliance",
     description:
-      "Purpose-built FDA/FTC compliance software for healthcare practices. Built and operated by Dibb Media.",
+      "Purpose-built FDA/FTC compliance software for healthcare practices. Built and operated by Regen Portal LLC.",
     url: canonical,
     type: "website",
   },
@@ -70,7 +70,7 @@ export default function AboutPage() {
     mainEntity: {
       "@type": "Organization",
       name: "RegenCompliance",
-      parentOrganization: { "@type": "Organization", name: "Dibb Media" },
+      parentOrganization: { "@type": "Organization", name: "Regen Portal LLC" },
       url: `${SITE_URL}`,
     },
   }
@@ -215,10 +215,10 @@ export default function AboutPage() {
                 Company
               </p>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-5">
-                Operated by Dibb Media
+                Operated by Regen Portal LLC
               </h2>
               <p className="text-base sm:text-[17px] text-white/85 leading-relaxed mb-4">
-                RegenCompliance is built and operated by Dibb Media, an
+                RegenCompliance is built and operated by Regen Portal LLC, an
                 independent software company focused on vertical SaaS for
                 specific industries. We ship small focused products that
                 solve specific problems well, rather than horizontal

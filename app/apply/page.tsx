@@ -127,8 +127,8 @@ export default function BetaApplyPage() {
           </p>
           <p className="mt-3 text-sm text-white/65">
             Not ready to commit?{" "}
-            <Link href="/waitlist" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
-              Join the waitlist
+            <Link href="/apply" className="text-[#55E039] hover:text-[#6FF055] font-semibold transition-colors">
+              Apply for beta
             </Link>{" "}
             instead.
           </p>
