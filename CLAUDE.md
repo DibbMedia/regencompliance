@@ -28,15 +28,18 @@ Primary stack: TypeScript (main), Python (scraping/scripts), WordPress/PHP (plug
 
 ## Project Context: RegenCompliance
 
-**What this is:** SaaS that scans regenerative-medicine clinic copy (websites, ads, social posts, email) for FDA + FTC compliance violations. Live at `compliance.regenportal.com`. Currently in **pre-launch waitlist mode** — `/waitlist` is the primary CTA across marketing, paid signup is deferred until invite. Beta tier $297/mo, standard $497/mo.
+**What this is:** SaaS that scans regenerative-medicine clinic copy (websites, ads, social posts, email) for FDA + FTC compliance violations. Live at `compliance.regenportal.com` (cutover to `regencompliance.ai` queued). Currently in **founder-beta apply mode** - `/apply` is the primary CTA across marketing (Waitlist link dropped from nav 2026-05-07; standard tier shows "Coming Soon" + Join the Waitlist link only). Beta tier $297/mo capped at 25 founders, standard $497/mo.
 
 **Stack:** Next.js (App Router) + TypeScript + Supabase (Postgres + Auth + Storage) + Vercel + Tailwind v4 + shadcn/ui + Resend (env-gated, NOT active yet — see Email Policy). Stripe restricted-key on prod env.
 
-**Project state (as of 2026-04-28):**
+**Project state (as of 2026-05-08):**
 - Tier 1-5 hardening complete (env validation, RLS, CSP, server-side login proxy, MFA recovery codes, prompt-injection guards, etc.).
 - SOC 2 doc pack lives under `docs/security/` (OWASP matrix, threat model, risk register, BCDR, IR, access control, change mgmt, data classification, retention, rotation, vendor risk).
-- Migrations 001-024 live on prod. Migration 023 = newsletter subscribers, 024 = RLS completeness.
-- Stripe restricted key landed + 48h soak completed 2026-04-26.
+- Migrations 001-032 live on prod. 025=beta_applications, 026=security hardening, 027=free_audit_leads, 028=beta_seat_reservations, 029=profile_cancelled_at, 030=email_to_user_id_rpc, 031=logos bucket policy, 032=free-audit caps + dedup index.
+- Stripe restricted key live in Vercel Production; old `STRIPE_SECRET_KEY` revoked.
+- May 2026 7-agent pre-launch audit fully closed (44 audit items: 14 T1 + 16 T2 + 14 T3) plus CI cleanup. ESLint zero warnings, vitest 225/225, Vercel green.
+- Domain cutover prep landed: code split into apex (marketing) + app subdomain, env trim + path fallback, www<->apex redirect loop killed. Operator-side DNS/Vercel/Stripe/Supabase cutover still pending.
+- 2026-05-07 launch overhaul: dropped Waitlist from nav, founder/standard pricing cards parallelized, /apply/for/tools/compare/specialty pages reflowed, 6 specialty pages got commonMistakes data, /vs/claude + /vs/perplexity competitor pages, Privacy/Terms wiped to lawyer-pending placeholders, /cookies + /accessibility added, "Dibb Enterprises LLC" -> "Regen Portal LLC", security page vendor-disclosure scrubbed, /contact form + GHL plumbing.
 
 ### Email policy (load-bearing — read before proposing email anywhere)
 
@@ -77,9 +80,29 @@ Adding a new event type: extend `GhlEvent` in `lib/ghl.ts` + `EVENT_TAGS`, fire 
 
 `lib/ghl.ts` exposes `sendToGhl(event, contact)` — fire-and-forget, env-gated, 5s timeout. Each event maps to its own webhook env var so the operator can wire workflows piecemeal. Wired callsites: signup, beta-apply, waitlist, free-audit, stripe checkout-completed (standard tier), stripe subscription-deleted, stripe payment-failed, account-deleted. Beta-tier subscription activation goes through `claimBetaPurchase` in `app/auth/callback/route.ts` and does NOT currently fire a GHL event - add `GHL_WEBHOOK_BETA_ACTIVATED` there if needed. See `docs/operator-setup.md` for the full env var inventory.
 
-### Things that aren't done / known gaps
+### Things that aren't done / known gaps (refreshed 2026-05-08)
 
+**Operator-side, not code:**
+- GHL workflows still TODO on the operator's side (welcome, beta-welcome, receipt, payment-failed, cancellation, account-deleted). Triggered on `regen-*` tags. Custom fields + PIT + LOCATION_ID are wired in Vercel.
+- Domain cutover to `regencompliance.ai`: code is ready (apex/app split landed), DNS + Vercel Domains + Stripe webhook re-bind + Supabase Auth allowlist + Search Console Change of Address still pending.
+- Privacy + Terms pages are placeholders pending the user's attorney; lawyer-supplied copy still TBD.
+- Optional: set `DEMO_COOKIE_SECRET` in Vercel (currently falls back to `NEXTAUTH_SECRET` / `SUPABASE_SERVICE_ROLE_KEY`).
+- Decision outstanding: `support@regencompliance.com` vs `.ai` (11+ legal/marketing strings). `oscar@regenportal.com` in `platform_admins` (mig 019 seed) - migrate or remove?
+
+**Code backlog (none launch-blocking):**
 - Source/UTM tracking on waitlist + free-audit + beta-apply (currently hardcoded `"website"`).
-- Resend / GHL transactional email is still operator-action: `lib/email.ts` no-ops without `RESEND_API_KEY`. Beta launch can ship inert; activate when GHL workflows are configured.
-- Domain cutover to `regencompliance.ai` is queued. Load-bearing files (sitemap, robots, llms.txt, layout metadataBase, badge route, email templates, PDF templates, opengraph images) all read from `lib/site-url.ts` which reads `NEXT_PUBLIC_APP_URL`. Per-page canonical URLs in `app/(marketing)/**/page.tsx` are still literal `compliance.regenportal.com` strings - bulk-flip at cutover (the domain-migration agent's runbook covers it).
-- Several HIGH-priority code-quality items remain in backlog: N+1 in `/api/admin/users`, beta seat oversell race in `/api/stripe/checkout-beta`, onboarding writes bypassing `profileSchema`, onboarding-checklist accepts arbitrary fields, forgot-password lacks HIBP + per-IP rate-limit, triple-duplicated scan loop across `sites/[id]/scan` + `sites/[id]/crawl` + cron `site-monitor`. None are launch-blocking; tracked in the May 2026 audit synthesis.
+- Screenshot-based violation highlighting for URL scans - deferred post-beta. Current deep-link is text-fragment only.
+- `Scan` type in `lib/types.ts` doesn't declare `source_url` (DB has it; consumers cast inline).
+- Open dependabot PRs (#9 @types/node 20->24 green, #10 actions/checkout 4->6 needs rebase, #12 minor-and-patch group of 13 needs rebase).
+- 3 stale dependabot PRs need rebase or close.
+- `@sentry/nextjs` still generates a non-blocking "Module not found" warning - infra ready, package not installed.
+
+**Closed in May 2026 audit + sessions (do NOT re-list):**
+- Triple scan-loop dedup -> shared `lib/scan/run-site-crawl.ts` (3 callsites use `scanSitePages`).
+- N+1 in `/api/admin/users` -> batched 1 + 50-parallel.
+- N+1 in `/api/admin/scans` -> parallelized via `Promise.all` (commit `b99755b`, 2026-05-08).
+- Beta seat oversell race -> `reserve_beta_seat` RPC (mig 028).
+- Onboarding writes through validated `/api/profile`.
+- Onboarding-checklist `.strict()` whitelist.
+- Forgot-password HIBP + per-IP cap + per-email cap (mig 028 / 029 / 030).
+- Profile schema bypass closed.
