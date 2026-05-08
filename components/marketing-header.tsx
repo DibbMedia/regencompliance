@@ -75,9 +75,10 @@ export function MarketingHeader() {
         )}
       </div>
     </header>
-    {/* Skip-link target. Sits between the fixed header and the page
-        content so the "Skip to content" jump lands past the nav. */}
-    <main id="main-content" tabIndex={-1} className="sr-only" aria-hidden="true">Main content</main>
+    {/* Skip-link target. Just a focusable anchor - NOT a <main> element
+        because page content already has its own <main> and two-per-page
+        is invalid HTML (caused hydration/click issues 2026-05-08). */}
+    <div id="main-content" tabIndex={-1} className="sr-only" aria-hidden="true">Main content</div>
     </>
   )
 }
