@@ -28,7 +28,7 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { contactFormSchema, type ContactFormInput } from "@/lib/validations"
 
-const SUBJECT_LABELS: Record<ContactFormInput["subject"], string> = {
+const SUBJECT_LABELS: Record<NonNullable<ContactFormInput["subject"]>, string> = {
   general: "General question",
   sales: "Sales",
   support: "Support",
