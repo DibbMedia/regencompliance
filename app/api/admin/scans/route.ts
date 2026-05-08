@@ -35,21 +35,22 @@ export async function GET(request: Request) {
       )
     }
 
-    // Resolve emails for each scan's profile_id
-    const profileEmailCache: Record<string, string> = {}
-    const scansWithEmail = []
-    for (const scan of scans || []) {
-      if (!profileEmailCache[scan.profile_id]) {
+    const uniqueProfileIds = Array.from(
+      new Set((scans || []).map((s) => s.profile_id))
+    )
+    const emailEntries = await Promise.all(
+      uniqueProfileIds.map(async (id) => {
         const {
           data: { user },
-        } = await serviceClient.auth.admin.getUserById(scan.profile_id)
-        profileEmailCache[scan.profile_id] = user?.email || "unknown"
-      }
-      scansWithEmail.push({
-        ...scan,
-        user_email: profileEmailCache[scan.profile_id],
+        } = await serviceClient.auth.admin.getUserById(id)
+        return [id, user?.email || "unknown"] as const
       })
-    }
+    )
+    const emailById = new Map(emailEntries)
+    const scansWithEmail = (scans || []).map((scan) => ({
+      ...scan,
+      user_email: emailById.get(scan.profile_id) || "unknown",
+    }))
 
     return NextResponse.json({
       scans: scansWithEmail,
