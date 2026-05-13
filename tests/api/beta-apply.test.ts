@@ -1,7 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest"
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest"
+
+beforeAll(() => {
+  process.env.ENCRYPTION_KEY_V1 = "a".repeat(64)
+})
 
 const rateLimitState = { global: true, perIp: true }
-const dbState: { insertError: { code: string } | null } = { insertError: null }
+const dbState: { insertError: Error | null } = { insertError: null }
 const inserted: Array<Record<string, unknown>> = []
 const ghlCalls: Array<{ event: string; contact: Record<string, unknown> }> = []
 
@@ -19,11 +23,15 @@ vi.mock("@/lib/ip", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
     from: () => ({
-      insert: async (row: Record<string, unknown>) => {
-        if (dbState.insertError) return { error: dbState.insertError }
-        inserted.push(row)
-        return { error: null }
-      },
+      insert: (row: Record<string, unknown>) => ({
+        select: () => ({
+          single: async () => {
+            if (dbState.insertError) return { data: null, error: dbState.insertError }
+            inserted.push(row)
+            return { data: row, error: null }
+          },
+        }),
+      }),
     }),
   }),
 }))
@@ -103,40 +111,48 @@ describe("POST /api/beta-apply", () => {
     expect(res.status).toBe(400)
   })
 
-  it("returns alreadyApplied on duplicate (23505) without leaking existence", async () => {
-    dbState.insertError = { code: "23505" }
+  it("duplicate submissions write a second row (no unique constraint post-Phase-6)", async () => {
+    // Per plan §12.1: email unique constraint dropped. No more 23505
+    // idempotent-success path; dupes just write another row.
     const { POST } = await loadRoute()
-    const res = await POST(req(validBody))
-    expect(res.status).toBe(200)
-    const json = await res.json()
-    expect(json.alreadyApplied).toBe(true)
+    const res1 = await POST(req(validBody))
+    const res2 = await POST(req(validBody))
+    expect(res1.status).toBe(200)
+    expect(res2.status).toBe(200)
+    expect(inserted.length).toBe(2)
   })
 
-  it("inserts row + fires GHL beta_apply on success", async () => {
+  it("DB-level failure surfaces a 500 (no 23505 special-case anymore)", async () => {
+    dbState.insertError = new Error("db is down")
+    const { POST } = await loadRoute()
+    const res = await POST(req(validBody))
+    expect(res.status).toBe(500)
+  })
+
+  it("inserts encrypted row + fires GHL beta_apply on success", async () => {
     const { POST } = await loadRoute()
     const res = await POST(req(validBody))
     expect(res.status).toBe(200)
     expect(inserted.length).toBe(1)
-    expect(inserted[0].email).toBe("jane@clinic.com")
-    expect(inserted[0].clinic_name).toBe("Acme Regen Health")
-    expect(inserted[0].source).toBe("website")
-    expect(inserted[0].ip_address).toBe("1.2.3.4")
+    const row = inserted[0]
+    // All sensitive columns are *_enc (v1r. envelope), not plaintext.
+    expect((row.email_enc as string).startsWith("v1r.")).toBe(true)
+    expect((row.clinic_name_enc as string).startsWith("v1r.")).toBe(true)
+    expect(row.email).toBeUndefined()
+    expect(row.clinic_name).toBeUndefined()
+    expect(row.source).toBe("website")
     expect(ghlCalls.length).toBe(1)
     expect(ghlCalls[0].event).toBe("beta_apply")
+    // GHL gets plaintext (intentional - CRM of record per plan §6).
     expect(ghlCalls[0].contact.email).toBe("jane@clinic.com")
     expect(ghlCalls[0].contact.company).toBe("Acme Regen Health")
-  })
-
-  it("normalizes email to lowercase", async () => {
-    const { POST } = await loadRoute()
-    await POST(req({ ...validBody, email: "MIXED@Case.COM" }))
-    expect(inserted[0].email).toBe("mixed@case.com")
   })
 
   it("accepts empty website (optional)", async () => {
     const { POST } = await loadRoute()
     const res = await POST(req({ ...validBody, website: "" }))
     expect(res.status).toBe(200)
-    expect(inserted[0].website).toBeNull()
+    // Optional column: null in payload.
+    expect(inserted[0].website_enc).toBeNull()
   })
 })

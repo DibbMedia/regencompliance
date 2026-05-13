@@ -1,7 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from "vitest"
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest"
+
+beforeAll(() => {
+  // crypto module fails to derive a row DEK without this.
+  process.env.ENCRYPTION_KEY_V1 = "a".repeat(64)
+})
 
 const rateLimitState: { global: boolean; perIp: boolean } = { global: true, perIp: true }
-const dbState: { insertError: { code: string } | null } = { insertError: null }
+// Repo throws when this is set; mimics a DB failure since the 23505 idempotent
+// path is gone post-Phase-6 (plan §12.1 dropped unique constraints).
+const dbState: { insertError: Error | null } = { insertError: null }
 const inserted: Array<Record<string, unknown>> = []
 
 vi.mock("@/lib/rate-limit", () => ({
@@ -18,13 +25,21 @@ vi.mock("@/lib/ip", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
     from: () => ({
-      insert: async (row: Record<string, unknown>) => {
-        if (dbState.insertError) return { error: dbState.insertError }
-        inserted.push(row)
-        return { error: null }
-      },
+      insert: (row: Record<string, unknown>) => ({
+        select: () => ({
+          single: async () => {
+            if (dbState.insertError) return { data: null, error: dbState.insertError }
+            inserted.push(row)
+            return { data: row, error: null }
+          },
+        }),
+      }),
     }),
   }),
+}))
+
+vi.mock("@/lib/ghl", () => ({
+  sendToGhl: async () => {},
 }))
 
 function req(body: unknown): Request {
@@ -79,30 +94,37 @@ describe("POST /api/waitlist", () => {
     expect(res.status).toBe(400)
   })
 
-  it("returns uniform success on duplicate (23505) without leaking existence", async () => {
-    dbState.insertError = { code: "23505" }
+  it("duplicate submissions write a second row (no unique constraint post-Phase-6)", async () => {
+    // Per plan §12.1: email unique constraint was dropped because it cannot
+    // survive encryption. The 23505 idempotent-success path is gone; a
+    // duplicate submission just creates another row. The rate limits (5/IP
+    // /10min) are the only dup-spam defense now.
     const { POST } = await loadRoute()
-    const res = await POST(req({ name: "Test", email: "dup@example.com" }))
-    expect(res.status).toBe(200)
-    const json = await res.json()
-    expect(json.success).toBe(true)
-    // No alreadyOnList flag - same shape as a fresh insert so probes can't enumerate.
-    expect(json.alreadyOnList).toBeUndefined()
+    const res1 = await POST(req({ name: "Test", email: "dup@example.com" }))
+    const res2 = await POST(req({ name: "Test", email: "dup@example.com" }))
+    expect(res1.status).toBe(200)
+    expect(res2.status).toBe(200)
+    expect(inserted.length).toBe(2)
   })
 
-  it("inserts new entry with IP and user-agent captured", async () => {
+  it("DB-level failure surfaces a 500 (no 23505 special-case anymore)", async () => {
+    dbState.insertError = new Error("db is down")
+    const { POST } = await loadRoute()
+    const res = await POST(req({ name: "Test", email: "err@example.com" }))
+    expect(res.status).toBe(500)
+  })
+
+  it("inserts new entry; row carries encrypted email_enc, not plaintext", async () => {
     const { POST } = await loadRoute()
     const res = await POST(req({ name: "Jane", email: "jane@clinic.com" }))
     expect(res.status).toBe(200)
     expect(inserted.length).toBe(1)
-    expect(inserted[0].email).toBe("jane@clinic.com")
-    expect(inserted[0].ip_address).toBe("2.2.2.2")
-    expect(inserted[0].source).toBe("website")
-  })
-
-  it("normalizes email to lowercase via schema", async () => {
-    const { POST } = await loadRoute()
-    await POST(req({ name: "Test", email: "MIXED@Case.COM" }))
-    expect(inserted[0].email).toBe("mixed@case.com")
+    const row = inserted[0]
+    // Repo encrypts on write - the insert payload has email_enc (v1r. prefix),
+    // not the plaintext email column.
+    expect(typeof row.email_enc).toBe("string")
+    expect((row.email_enc as string).startsWith("v1r.")).toBe(true)
+    expect(row.email).toBeUndefined()
+    expect(row.source).toBe("website")
   })
 })

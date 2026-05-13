@@ -1,4 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest"
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest"
+
+beforeAll(() => {
+  process.env.ENCRYPTION_KEY_V1 = "a".repeat(64)
+})
 
 // Aggressive mock state for the lead-magnet route. Real network calls
 // (Anthropic, the prospect's site, GHL) all stubbed; the test exercises
@@ -80,10 +84,14 @@ vi.mock("@/lib/supabase/server", () => ({
           then: (cb: (v: { data: unknown[] }) => unknown) => cb({ data: [] }),
         }),
       }),
-      insert: async (row: Record<string, unknown>) => {
-        if (table === "free_audit_leads") inserted.push(row)
-        return { error: null }
-      },
+      insert: (row: Record<string, unknown>) => ({
+        select: () => ({
+          single: async () => {
+            if (table === "free_audit_leads") inserted.push(row)
+            return { data: row, error: null }
+          },
+        }),
+      }),
     }),
   }),
 }))
@@ -195,16 +203,33 @@ describe("POST /api/free-audit", () => {
     expect(json.flags[2].risk_level).toBe("low")
   })
 
-  it("persists lead row + fires GHL free_audit on success", async () => {
+  it("persists encrypted lead row + fires GHL free_audit on success", async () => {
     const { POST } = await loadRoute()
     await POST(req(validBody))
     expect(inserted.length).toBe(1)
-    expect(inserted[0].email).toBe("lead@clinic.com")
-    expect(inserted[0].website_url).toBe("https://target.example/")
-    expect(inserted[0].compliance_score).toBe(25)
-    expect(inserted[0].flag_count).toBe(3)
-    expect(inserted[0].high_risk_count).toBe(2)
+    const row = inserted[0]
+    // Encryption: email/website_url come through as *_enc envelopes;
+    // numeric counts stay plain.
+    expect((row.email_enc as string).startsWith("v1r.")).toBe(true)
+    expect((row.website_url_enc as string).startsWith("v1r.")).toBe(true)
+    expect(row.email).toBeUndefined()
+    expect(row.website_url).toBeUndefined()
+    expect(row.compliance_score).toBe(25)
+    expect(row.flag_count).toBe(3)
+    expect(row.high_risk_count).toBe(2)
     expect(ghlCalls.length).toBe(1)
     expect(ghlCalls[0].event).toBe("free_audit")
+  })
+
+  it("no longer enforces per-email rate limit (plan §12.1)", async () => {
+    // Pre-Phase-6 the route had a 5/email/day cap. That cap is gone
+    // because email equality on an encrypted column is impossible.
+    // Submitting twice with the same email should succeed twice.
+    const { POST } = await loadRoute()
+    const res1 = await POST(req(validBody))
+    const res2 = await POST(req(validBody))
+    expect(res1.status).toBe(200)
+    expect(res2.status).toBe(200)
+    expect(inserted.length).toBe(2)
   })
 })

@@ -1,7 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest"
+import { describe, it, expect, vi, beforeEach, beforeAll } from "vitest"
+
+beforeAll(() => {
+  process.env.ENCRYPTION_KEY_V1 = "a".repeat(64)
+})
 
 const rateLimitState: { global: boolean; perIp: boolean } = { global: true, perIp: true }
-const dbState: { insertError: { code: string } | null } = { insertError: null }
+const dbState: { insertError: Error | null } = { insertError: null }
 const inserted: Array<Record<string, unknown>> = []
 
 vi.mock("@/lib/rate-limit", () => ({
@@ -18,11 +22,15 @@ vi.mock("@/lib/ip", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => ({
     from: () => ({
-      insert: async (row: Record<string, unknown>) => {
-        if (dbState.insertError) return { error: dbState.insertError }
-        inserted.push(row)
-        return { error: null }
-      },
+      insert: (row: Record<string, unknown>) => ({
+        select: () => ({
+          single: async () => {
+            if (dbState.insertError) return { data: null, error: dbState.insertError }
+            inserted.push(row)
+            return { data: row, error: null }
+          },
+        }),
+      }),
     }),
   }),
 }))
@@ -68,23 +76,29 @@ describe("POST /api/newsletter", () => {
     expect(res.status).toBe(400)
   })
 
-  it("returns uniform success on duplicate email (23505)", async () => {
-    dbState.insertError = { code: "23505" }
+  it("duplicate submissions write a second row (no unique constraint post-Phase-6)", async () => {
+    // Per plan §12.1: email unique constraint dropped.
     const { POST } = await loadRoute()
-    const res = await POST(req({ email: "dup@example.com" }))
-    expect(res.status).toBe(200)
-    const json = await res.json()
-    expect(json.success).toBe(true)
-    // alreadySubscribed flag dropped - identical shape to fresh insert
-    // so a probe can't enumerate existing subscribers.
-    expect(json.alreadySubscribed).toBeUndefined()
+    const res1 = await POST(req({ email: "dup@example.com" }))
+    const res2 = await POST(req({ email: "dup@example.com" }))
+    expect(res1.status).toBe(200)
+    expect(res2.status).toBe(200)
+    expect(inserted.length).toBe(2)
+  })
+
+  it("DB-level failure surfaces a 500", async () => {
+    dbState.insertError = new Error("db is down")
+    const { POST } = await loadRoute()
+    const res = await POST(req({ email: "err@example.com" }))
+    expect(res.status).toBe(500)
   })
 
   it("accepts optional sourceSlug for blog-post attribution", async () => {
     const { POST } = await loadRoute()
     const res = await POST(req({ email: "reader@example.com", sourceSlug: "banned-words-2026" }))
     expect(res.status).toBe(200)
-    expect(inserted[0].email).toBe("reader@example.com")
+    expect((inserted[0].email_enc as string).startsWith("v1r.")).toBe(true)
+    expect(inserted[0].email).toBeUndefined()
     expect(inserted[0].source_slug).toBe("banned-words-2026")
   })
 

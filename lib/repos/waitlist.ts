@@ -37,13 +37,21 @@ export interface WaitlistWrite {
 
 export interface WaitlistEncryptedRow {
   id: string
-  email_enc: string
+  email_enc: string | null
   name_enc: string | null
   ip_address_enc: string | null
   user_agent_enc: string | null
   source: string | null
   created_at: string
   launch_email_sent_at: string | null
+  // Plaintext fallbacks (read-only): present on rows written before the
+  // Phase 6 cutover (mig 041 added *_enc; mig 042 drops these). Repo
+  // decrypt path prefers *_enc when set and falls back to plaintext
+  // when *_enc is NULL, so reads keep working across the transition.
+  email?: string | null
+  name?: string | null
+  ip_address?: string | null
+  user_agent?: string | null
 }
 
 export interface WaitlistInsertShape {
@@ -66,17 +74,25 @@ function decOpt(rowId: string, column: string, envelope: string | null | undefin
 }
 
 export function decryptWaitlistRow(row: WaitlistEncryptedRow): WaitlistEntry {
+  // Plaintext fallback during the mig 041 -> backfill -> mig 042 transition:
+  // if *_enc is NULL, the row was written before encryption rolled out.
+  // After mig 042 drops the plaintext columns, the fallback branch is dead
+  // but the conditional is cheap; keep it for any historical re-import.
+  const email = row.email_enc
+    ? decryptForRow({ rowId: row.id, envelope: row.email_enc, table: TABLE, column: "email" })
+    : row.email ?? ""
   return {
     id: row.id,
-    email: decryptForRow({
-      rowId: row.id,
-      envelope: row.email_enc,
-      table: TABLE,
-      column: "email",
-    }),
-    name: decOpt(row.id, "name", row.name_enc),
-    ip_address: decOpt(row.id, "ip_address", row.ip_address_enc),
-    user_agent: decOpt(row.id, "user_agent", row.user_agent_enc),
+    email,
+    name: row.name_enc
+      ? decOpt(row.id, "name", row.name_enc)
+      : row.name ?? null,
+    ip_address: row.ip_address_enc
+      ? decOpt(row.id, "ip_address", row.ip_address_enc)
+      : row.ip_address ?? null,
+    user_agent: row.user_agent_enc
+      ? decOpt(row.id, "user_agent", row.user_agent_enc)
+      : row.user_agent ?? null,
     source: row.source,
     created_at: row.created_at,
     launch_email_sent_at: row.launch_email_sent_at,
