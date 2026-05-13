@@ -39,6 +39,8 @@ export interface TicketMessageEncryptedRow {
   user_id: string | null
   is_admin: boolean
   message_enc: string | null
+  // Plaintext fallback for rows written before 037 backfill ran.
+  message?: string | null
   created_at: string
 }
 
@@ -64,7 +66,8 @@ export function decryptTicketMessageRow(
 ): TicketMessage {
   const message =
     row.message_enc === null || row.message_enc === undefined
-      ? ""
+      ? // Fall back to legacy plaintext column if it's still present (pre-038).
+        (row.message ?? "")
       : decryptForUser({
           userId: profileId,
           envelope: row.message_enc,
@@ -130,8 +133,11 @@ export function encryptTicketMessageUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
+// `message` is the legacy plaintext column read for backfill-fallback during
+// the 037 -> 038 transition. After migration 038 drops it, remove from this
+// list (Postgres errors if you select a dropped column).
 const SELECT_COLS =
-  "id, ticket_id, profile_id, user_id, is_admin, message_enc, created_at"
+  "id, ticket_id, profile_id, user_id, is_admin, message_enc, message, created_at"
 
 export async function getTicketMessage(
   supabase: SupabaseClient,
