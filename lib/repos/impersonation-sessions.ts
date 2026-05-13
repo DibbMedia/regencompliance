@@ -55,16 +55,22 @@ export interface ImpersonationSessionWrite {
   expires_at: string
 }
 
-/** On-disk shape after cutover migration (plaintext email columns dropped). */
+/** On-disk shape after cutover migration (plaintext email columns dropped).
+ *  During the 039->040 dual-write window the plaintext columns may still be
+ *  present; we keep them as optional fields so `decryptImpersonationRow` can
+ *  fall back to plaintext when `*_enc IS NULL`. */
 export interface ImpersonationEncryptedRow {
   id: string
   admin_user_id: string
-  admin_email_enc: string
+  admin_email_enc: string | null
   target_user_id: string
   target_email_enc: string | null
   mode: ImpersonationMode
   expires_at: string
   created_at: string
+  // Plaintext fallback fields - present during the 039->040 transition.
+  admin_email?: string | null
+  target_email?: string | null
 }
 
 /** Insert payload destined for Supabase. */
@@ -80,28 +86,32 @@ export interface ImpersonationEncryptedInsert {
 /** Decrypt a stored row into the plaintext shape. `admin_email_enc` is keyed
  *  off `admin_user_id`; `target_email_enc` is keyed off `target_user_id`. The
  *  AAD ties each ciphertext to its column and the row id — moving ciphertext
- *  between rows or between columns will fail to decrypt. */
+ *  between rows or between columns will fail to decrypt. During the 039->040
+ *  transition unbackfilled rows fall back to the plaintext columns. */
 export function decryptImpersonationRow(
   row: ImpersonationEncryptedRow,
 ): ImpersonationSession {
-  const admin_email = decryptForUser({
-    userId: row.admin_user_id,
-    envelope: row.admin_email_enc,
-    table: TABLE,
-    column: "admin_email",
-    rowId: row.id,
-  })
+  const admin_email =
+    row.admin_email_enc !== null && row.admin_email_enc !== undefined
+      ? decryptForUser({
+          userId: row.admin_user_id,
+          envelope: row.admin_email_enc,
+          table: TABLE,
+          column: "admin_email",
+          rowId: row.id,
+        })
+      : row.admin_email ?? ""
 
   const target_email =
-    row.target_email_enc === null
-      ? null
-      : decryptForUser({
+    row.target_email_enc !== null && row.target_email_enc !== undefined
+      ? decryptForUser({
           userId: row.target_user_id,
           envelope: row.target_email_enc,
           table: TABLE,
           column: "target_email",
           rowId: row.id,
         })
+      : row.target_email ?? null
 
   return {
     id: row.id,
@@ -153,9 +163,10 @@ export function encryptImpersonationWrite(
 
 // --- CRUD -------------------------------------------------------------------
 
-const SELECT_COLUMNS =
-  "id, admin_user_id, admin_email_enc, target_user_id, target_email_enc, " +
-  "mode, expires_at, created_at"
+// `*` so the repo works both pre-040 (plaintext columns still present, used
+// as fallback for unbackfilled rows) and post-040 (encrypted only).
+// impersonation_sessions is service-role-only by RLS (mig 019).
+const SELECT_COLUMNS = "*"
 
 export async function getImpersonationSession(
   supabase: SupabaseClient,

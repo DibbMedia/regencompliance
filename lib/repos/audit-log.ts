@@ -69,7 +69,11 @@ export interface AuditLogWrite {
   status?: string
 }
 
-/** On-disk shape after cutover migration (plaintext columns dropped). */
+/** On-disk shape after cutover migration (plaintext columns dropped). During
+ *  the dual-write window between migrations 039 (add *_enc) and 040 (drop
+ *  plaintext) the row may also carry plaintext columns - we keep those as
+ *  optional fields so `decryptAuditLogRow` can fall back to plaintext when
+ *  `*_enc IS NULL`. Post-040 the plaintext fields are always absent. */
 export interface AuditLogEncryptedRow {
   id: string
   user_id: string | null
@@ -82,6 +86,13 @@ export interface AuditLogEncryptedRow {
   user_agent_enc: string | null
   status: string
   created_at: string
+  // Plaintext fallback fields - present during the 039->040 transition,
+  // dropped from the table by 040. Marked optional so post-cutover code
+  // doesn't have to thread `undefined` through.
+  user_email?: string | null
+  details?: Record<string, unknown> | null
+  ip_address?: string | null
+  user_agent?: string | null
 }
 
 /** Insert payload destined for Supabase. `details_enc` is non-null on insert
@@ -182,30 +193,32 @@ function decJSON<T = Record<string, unknown>>(
 }
 
 /** Decrypt one stored row into the plaintext shape. Key mode is selected by
- *  `row.user_id`: present -> per-user DEK; NULL -> system master key. */
+ *  envelope version (see `decString` / `decJSON`). During the 039->040
+ *  transition rows may carry plaintext columns alongside null `*_enc` values;
+ *  in that case we surface the plaintext as-is (no encryption applied yet). */
 export function decryptAuditLogRow(row: AuditLogEncryptedRow): AuditLogEntry {
   const userId = row.user_id
   const id = row.id
 
   const user_email =
-    row.user_email_enc === null
-      ? null
-      : decString(userId, "user_email", id, row.user_email_enc)
+    row.user_email_enc !== null && row.user_email_enc !== undefined
+      ? decString(userId, "user_email", id, row.user_email_enc)
+      : row.user_email ?? null
 
   const details =
-    row.details_enc === null
-      ? {}
-      : decJSON<Record<string, unknown>>(userId, "details", id, row.details_enc)
+    row.details_enc !== null && row.details_enc !== undefined
+      ? decJSON<Record<string, unknown>>(userId, "details", id, row.details_enc)
+      : (row.details ?? {}) as Record<string, unknown>
 
   const ip_address =
-    row.ip_address_enc === null
-      ? null
-      : decString(userId, "ip_address", id, row.ip_address_enc)
+    row.ip_address_enc !== null && row.ip_address_enc !== undefined
+      ? decString(userId, "ip_address", id, row.ip_address_enc)
+      : row.ip_address ?? null
 
   const user_agent =
-    row.user_agent_enc === null
-      ? null
-      : decString(userId, "user_agent", id, row.user_agent_enc)
+    row.user_agent_enc !== null && row.user_agent_enc !== undefined
+      ? decString(userId, "user_agent", id, row.user_agent_enc)
+      : row.user_agent ?? null
 
   return {
     id,
@@ -258,9 +271,14 @@ export function encryptAuditLogWrite(
 
 // --- CRUD -------------------------------------------------------------------
 
-const SELECT_COLUMNS =
-  "id, user_id, user_email_enc, action, resource_type, resource_id, " +
-  "details_enc, ip_address_enc, user_agent_enc, status, created_at"
+// Use `*` so the same repo works both pre-cutover (when 040 has not yet
+// dropped plaintext columns and the repo needs the plaintext fallback for
+// unbackfilled rows) and post-cutover (plaintext columns gone). PostgREST
+// raises on a named-column select that references a dropped column, but `*`
+// just returns whichever columns currently exist. The audit_log table is
+// service-role-only by RLS (mig 009 + 024), and repo callers never echo
+// the raw row back to clients - they consume the `AuditLogEntry` shape.
+const SELECT_COLUMNS = "*"
 
 /** Insert an audit_log row. Two-phase to bind AAD to the server-assigned UUID:
  *  1. Insert a placeholder with the pass-through columns + a NULL `_enc`
