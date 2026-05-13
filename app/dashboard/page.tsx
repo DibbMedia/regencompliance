@@ -361,11 +361,16 @@ export default function DashboardPage() {
           .maybeSingle()
         const workspaceProfileId = teamRow?.profile_id ?? user.id
 
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("clinic_name, subscription_status, is_beta_subscriber")
-          .eq("id", workspaceProfileId)
-          .maybeSingle()
+        // Profile reads route through /api/profile because clinic_name +
+        // treatments are encrypted under the owner's per-user DEK and the
+        // browser-side supabase client can't decrypt them. The endpoint
+        // returns the caller's own profile; for team members viewing the
+        // owner's workspace we'd need /api/profile/[id] - that's deferred
+        // until the workspace-profile read pattern is shared (matches the
+        // dashboard layout fallback for clinic_name).
+        const profile = workspaceProfileId === user.id
+          ? await fetch("/api/profile").then((r) => (r.ok ? r.json() : null))
+          : null
 
         const { data: scans } = await supabase
           .from("scans")

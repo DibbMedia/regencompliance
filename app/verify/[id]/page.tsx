@@ -2,6 +2,7 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { Shield, CheckCircle2, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { getProfileByBadgeId } from "@/lib/repos/profiles"
 
 interface VerifyPageProps {
   params: Promise<{ id: string }>
@@ -12,11 +13,9 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
   const supabase = createServiceClient()
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id, clinic_name, created_at")
-    .eq("badge_id", badgeId)
-    .single()
+  // Wave 2A: clinic_name is encrypted under the profile owner's per-user DEK;
+  // the repo handles lookup-by-badge + decrypt in one call.
+  const profile = await getProfileByBadgeId(supabase, badgeId)
 
   if (!profile) {
     notFound()
