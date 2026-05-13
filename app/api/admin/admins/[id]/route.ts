@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { verifyDeveloperAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
+import { deleteAllSessionsForAdmin } from "@/lib/repos/impersonation-sessions"
 
 export async function PATCH(
   request: Request,
@@ -81,10 +82,22 @@ export async function DELETE(
     return NextResponse.json({ error: "Failed to remove admin" }, { status: 500 })
   }
 
-  await serviceClient
-    .from("impersonation_sessions")
-    .delete()
-    .eq("admin_email", row.email)
+  // impersonation_sessions.admin_email is dropped post migration 040; the
+  // repo deletes by `admin_user_id` instead. Resolve the admin's user_id
+  // via the indexed RPC (mig 030); platform_admins stores email, not
+  // user_id. Skip the delete cleanly if the admin had never logged in
+  // (no matching auth.users row).
+  try {
+    const { data: adminUserId } = await serviceClient.rpc(
+      "find_auth_user_id_by_email",
+      { p_email: row.email },
+    )
+    if (typeof adminUserId === "string" && adminUserId.length > 0) {
+      await deleteAllSessionsForAdmin(serviceClient, adminUserId)
+    }
+  } catch (sessErr) {
+    console.error("[admin/admins DELETE] session cleanup failed:", sessErr)
+  }
 
   const { ip, userAgent } = getRequestMeta(request)
   logAudit({
