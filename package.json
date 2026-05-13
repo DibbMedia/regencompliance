@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:plaintext-leaks": "tsx scripts/check-plaintext-leaks.ts",
+    "verify:no-plaintext": "tsx scripts/verify-no-plaintext.ts",
     "rotate-keys": "tsx scripts/key-rotation.ts"
   },
   "dependencies": {
