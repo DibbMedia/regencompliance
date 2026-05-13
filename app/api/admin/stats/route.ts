@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
 import { listProfilesForAdmin } from "@/lib/repos/profiles"
+import { listTicketsForAdmin } from "@/lib/repos/support-tickets"
+import { listWaitlistForAdmin } from "@/lib/repos/waitlist"
 import { decryptJSONForUser, withCryptoRequestScope } from "@/lib/crypto"
 import type { ScanFlag } from "@/lib/types"
 
@@ -137,7 +139,7 @@ export async function GET(request: Request) {
     // only happens for the "most common violation" aggregate.
     const { data: scoreData } = await serviceClient
       .from("scans")
-      .select("id, profile_id, compliance_score, flag_count, flags_enc, flags")
+      .select("id, profile_id, compliance_score, flag_count, flags_enc")
 
     let avgScore = 0
     let totalFlags = 0
@@ -276,13 +278,9 @@ export async function GET(request: Request) {
       created_at: string
     }> = []
     try {
-      const { data: recentTickets } = await serviceClient
-        .from("support_tickets")
-        .select("id, profile_id, user_id, subject, status, created_at")
-        .order("created_at", { ascending: false })
-        .limit(5)
+      const recentTickets = await listTicketsForAdmin(serviceClient, { limit: 5 })
 
-      ticketActivity = (recentTickets || []).map((ticket) => {
+      ticketActivity = recentTickets.map((ticket) => {
         const pid = ticket.user_id || ticket.profile_id
         return {
           id: `ticket-${ticket.id}`,
@@ -411,12 +409,14 @@ export async function GET(request: Request) {
         waitlistNew = newCount || 0
       }
 
-      const { data: wlRows } = await serviceClient
-        .from("waitlist")
-        .select("id, name, email, source, created_at")
-        .order("created_at", { ascending: false })
-        .limit(10)
-      recentWaitlist = wlRows || []
+      const wlRows = await listWaitlistForAdmin(serviceClient, { limit: 10 })
+      recentWaitlist = wlRows.map((r) => ({
+        id: r.id,
+        name: r.name ?? "",
+        email: r.email,
+        source: r.source,
+        created_at: r.created_at,
+      }))
     } catch {
       // waitlist table may not exist
     }

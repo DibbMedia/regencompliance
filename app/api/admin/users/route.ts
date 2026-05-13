@@ -186,7 +186,7 @@ export async function GET(request: Request) {
       let emailQuery = serviceClient
         .from("profiles")
         .select(
-          "id, clinic_name_enc, clinic_name, subscription_status, created_at",
+          "id, clinic_name_enc, subscription_status, created_at",
           { count: "exact" },
         )
         .in("id", matchingIds)
@@ -225,7 +225,7 @@ export async function GET(request: Request) {
       .select(
         // Select ciphertext + legacy plaintext fallback so the in-route
         // decrypt has both during the Wave 2A transition window.
-        "id, clinic_name_enc, clinic_name, subscription_status, created_at",
+        "id, clinic_name_enc, subscription_status, created_at",
         { count: "exact" },
       )
       .order("created_at", { ascending: false })
