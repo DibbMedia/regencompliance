@@ -14,6 +14,10 @@ import { captureError } from "@/lib/error-tracking"
 import { assertSafeUrl } from "@/lib/ssrf"
 import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
 import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
+import { createScan, decryptScanRow, type ScanEncryptedRow } from "@/lib/repos/scans"
+import { getProfile } from "@/lib/repos/profiles"
+import { withCryptoRequestScope } from "@/lib/crypto"
+import type { ScanFlag } from "@/lib/types"
 
 export async function POST(request: Request) {
   try {
@@ -39,12 +43,8 @@ export async function POST(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Check subscription
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_status, treatments")
-      .eq("id", profileId)
-      .single()
+    // Subscription + treatments via encrypted profile repo.
+    const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
@@ -78,15 +78,25 @@ export async function POST(request: Request) {
 
     // Check scan cache - skip Claude if identical content was scanned recently
     const contentHash = hashContent(pageContent.text)
-    const { data: cached } = await supabase
-      .from("scans")
-      .select("*")
-      .eq("profile_id", profileId)
-      .eq("content_hash", contentHash)
-      .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle()
+    const cached = await withCryptoRequestScope(async () => {
+      const { data } = await supabase
+        .from("scans")
+        .select(
+          "id, profile_id, user_id, content_type, " +
+            "original_text_enc, rewritten_text_enc, flags_enc, source_url_enc, " +
+            "original_text, rewritten_text, flags, source_url, " +
+            "compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, scan_duration_ms, created_at",
+        )
+        .eq("profile_id", profileId)
+        .eq("content_hash", contentHash)
+        .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (!data) return null
+      return decryptScanRow(profileId, data as unknown as ScanEncryptedRow)
+    })
 
     if (cached) {
       return NextResponse.json({
@@ -196,15 +206,15 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     const mediumCount = flags.filter((f: { risk_level: string }) => f.risk_level === "medium").length
     const lowCount = flags.filter((f: { risk_level: string }) => f.risk_level === "low").length
 
-    // Save scan with URL metadata and content hash for caching
-    const { data: scan, error } = await supabase
-      .from("scans")
-      .insert({
+    // Save scan via encrypted repo. content_hash stays plain (SHA-256, not content).
+    let scan
+    try {
+      scan = await createScan(supabase, {
         profile_id: profileId,
         user_id: user.id,
         content_type: content_type || "website_copy",
         original_text: pageContent.text,
-        flags,
+        flags: flags as ScanFlag[],
         compliance_score: scanResult.compliance_score,
         flag_count: flags.length,
         high_risk_count: highCount,
@@ -212,13 +222,13 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
         low_risk_count: lowCount,
         scan_duration_ms: scanDuration,
         source_url: url,
-        content_hash: contentHash,
       })
-      .select()
-      .single()
-
-    if (error) {
-      console.error("Failed to save scan:", error)
+      await supabase
+        .from("scans")
+        .update({ content_hash: contentHash })
+        .eq("id", scan.id)
+    } catch (saveErr) {
+      console.error("Failed to save scan:", saveErr)
       return NextResponse.json({ error: "Failed to save scan results" }, { status: 500 })
     }
 

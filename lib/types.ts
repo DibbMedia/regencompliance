@@ -96,6 +96,7 @@ export interface Scan {
   original_text: string
   flags: ScanFlag[]
   rewritten_text: string | null
+  source_url: string | null
   compliance_score: number | null
   flag_count: number
   high_risk_count: number
