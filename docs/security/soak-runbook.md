@@ -1,5 +1,7 @@
 # Encryption cutover - 48h production soak runbook
 
+> **NOTE (2026-05-13):** The 2026-05-13 cutover SKIPPED this soak; cutover migrations 034/036/038/040/042 were applied directly after backfill. That decision produced multiple post-cutover regressions (every dropped-column reference in repos/admin routes/UI/scan flow had to be hunted down and fixed in commits a86b1f5 → c4fd937). Retain this runbook as the canonical procedure for future key-rotation soaks. See lesson #2 in `docs/sessions/2026-05-13-encryption-rollout.md`.
+
 This document is the operator-facing procedure for rolling the user-level
 encryption work (see `docs/user-level-encryption-plan.md`) into production,
 soaking it in dual-state, then cutting over to encrypted-only.

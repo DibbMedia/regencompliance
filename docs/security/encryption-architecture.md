@@ -2,7 +2,7 @@
 
 **Last reviewed:** 2026-05-13.
 **Owner:** Dibb Media.
-**Status:** Live (migrations 033-042 applied; cutover via Phase 5/6).
+**Status:** Live (migrations 033-042 applied 2026-05-13; cutover applied directly after backfill, dual-state soak SKIPPED; post-cutover regressions caught + patched same day).
 
 This document is the audit-facing summary of how RegenCompliance encrypts sensitive user data at rest. It supersedes the relevant sections of `docs/user-level-encryption-plan.md` for SOC 2 evidence purposes; the plan remains in the repo as the project's historical record.
 

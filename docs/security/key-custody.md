@@ -24,7 +24,7 @@ The key MUST exist in at least two copies, on different media, in geographically
 2. **Sealed offline backup** - Write the key to an encrypted USB drive (VeraCrypt or BitLocker) OR a printed sheet stored in a locked location (home safe, safe-deposit box). Label with: env var name, generation date, instructions to refuse exposure to anyone who is not the named custodian.
 3. **Vercel env (operational copy)** - Already present as the deployment source of truth. Marked Sensitive. Vercel keeps cold-storage backups of env values per their own SOC 2 policy; we treat this as the operational copy, not as a recovery source.
 
-Verification cadence: confirm both backup copies match the live Vercel value at every rotation event and at every annual security review.
+Verification cadence: confirm both backup copies match the live Vercel value at every rotation event and at every annual security review. (Last rotation: 2026-05-13 - V1 generated locally + copied to Vercel Production.)
 
 ## 3. Rotation procedure
 

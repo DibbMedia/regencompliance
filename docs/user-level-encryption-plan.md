@@ -1,6 +1,6 @@
 # User-Level Encryption — Implementation Plan
 
-**Status:** Plan (awaiting sign-off) - 2026-05-13
+**Status:** Shipped 2026-05-13 (8 phases complete, all 5 cutover migrations applied to prod, dual-state soak SKIPPED — see lesson in docs/sessions/2026-05-13-encryption-rollout.md).
 **Owner:** Dibb Media
 **Scope:** Encrypt all sensitive user data at rest using per-user derived keys. Server retains ability to decrypt for app logic, scans, AI rewrites, and admin support. Admin search on encrypted columns is sacrificed in exchange for opacity.
 
