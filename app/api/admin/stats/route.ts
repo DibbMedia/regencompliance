@@ -176,11 +176,9 @@ export async function GET(request: Request) {
               )
               continue
             }
-          } else if (Array.isArray(scan.flags)) {
-            // Transitional fallback for un-backfilled rows (between 035 and
-            // the 036 cutover). Post-036 the plaintext column is gone.
-            flags = scan.flags as ScanFlag[]
           }
+          // Post-cutover (mig 036): plaintext `flags` column is gone; no
+          // fallback exists. Rows with NULL flags_enc just contribute zero.
 
           for (const flag of flags) {
             const phrase = flag.banned_phrase || flag.reason || "Unknown"

@@ -65,15 +65,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: PHI_ERROR_MESSAGE, phi_patterns: phi.patterns }, { status: 400 })
     }
 
-    // Check scan cache - skip Claude if identical content was scanned recently
+    // Check scan cache - skip Claude if identical content was scanned recently.
+    // Post-cutover (migration 036): plaintext original_text / rewritten_text /
+    // flags / source_url columns are GONE. Selecting them returns PGRST204 and
+    // blows up every authenticated scan request. List only the *_enc columns
+    // plus the plaintext pass-throughs that still exist.
     const contentHash = hashContent(text)
     const cached = await withCryptoRequestScope(async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("scans")
         .select(
           "id, profile_id, user_id, content_type, " +
             "original_text_enc, rewritten_text_enc, flags_enc, source_url_enc, " +
-            "original_text, rewritten_text, flags, source_url, " +
             "compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, scan_duration_ms, created_at",
         )
         .eq("profile_id", profileId)
@@ -83,6 +86,8 @@ export async function POST(request: Request) {
         .limit(1)
         .maybeSingle()
 
+      // Propagate the error so a stale column reference fails loud, not silent.
+      if (error) throw error
       if (!data) return null
       return decryptScanRow(profileId, data as unknown as ScanEncryptedRow)
     })
