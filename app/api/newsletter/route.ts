@@ -3,6 +3,7 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { newsletterSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
+import { createNewsletterSubscriber } from "@/lib/repos/newsletter-subscribers"
 
 export const maxDuration = 10
 
@@ -20,6 +21,8 @@ export async function POST(request: Request) {
       )
     }
 
+    // Per plan §12.1 the email unique constraint is gone. Rate limits are
+    // the only dup-spam defense now.
     const limit = await checkRateLimit(`newsletter:${ip}`, 5, 10 * 60 * 1000)
     if (!limit.allowed) {
       return NextResponse.json(
@@ -46,21 +49,18 @@ export async function POST(request: Request) {
     const userAgent = request.headers.get("user-agent")?.slice(0, 500) || null
 
     const supabase = createServiceClient()
-    const { error } = await supabase.from("newsletter_subscribers").insert({
-      email,
-      source: source || "blog",
-      source_slug: sourceSlug || null,
-      ip_address: ip,
-      user_agent: userAgent,
-    })
 
-    if (error) {
-      if (error.code === "23505") {
-        // Uniform success - alreadySubscribed:true on its own leaks
-        // existence to any caller checking response shape.
-        return NextResponse.json({ success: true })
-      }
-      console.error("Newsletter insert error:", error)
+    try {
+      await createNewsletterSubscriber(supabase, {
+        email,
+        source: source || "blog",
+        source_slug: sourceSlug || null,
+        ip_address: ip,
+        user_agent: userAgent,
+      })
+    } catch (err) {
+      // No 23505 idempotent path: unique-email constraint dropped per plan §12.1.
+      console.error("Newsletter insert error:", err)
       return NextResponse.json(
         { error: "Failed to subscribe. Please try again." },
         { status: 500 }

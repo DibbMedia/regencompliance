@@ -5,6 +5,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { sendToGhl } from "@/lib/ghl"
 import { deriveSource } from "@/lib/source-tracking"
+import { createBetaApplication } from "@/lib/repos/beta-applications"
 
 export const maxDuration = 10
 
@@ -20,6 +21,8 @@ export async function POST(request: Request) {
       )
     }
 
+    // Per plan §12.1 the email unique constraint is gone (encryption can't
+    // enforce it). Rate limits are the only dup-spam defense now.
     const limit = await checkRateLimit(`beta-apply:${ip}`, 3, 10 * 60 * 1000)
     if (!limit.allowed) {
       return NextResponse.json(
@@ -46,28 +49,26 @@ export async function POST(request: Request) {
     const userAgent = request.headers.get("user-agent")?.slice(0, 500) || null
 
     const supabase = createServiceClient()
-    const { error } = await supabase.from("beta_applications").insert({
-      name,
-      email,
-      clinic_name,
-      specialty,
-      role,
-      website: website || null,
-      monthly_volume,
-      why_apply,
-      ip_address: ip,
-      user_agent: userAgent,
-      source: deriveSource(request),
-      // accepted_terms_at defaults to now() in the migration; recording the
-      // server-time of acceptance is intentional (we don't trust client clocks).
-    })
 
-    if (error) {
-      // Idempotent on unique-violation: don't leak which emails have applied.
-      if (error.code === "23505") {
-        return NextResponse.json({ success: true, alreadyApplied: true })
-      }
-      console.error("Beta application insert error:", error)
+    try {
+      await createBetaApplication(supabase, {
+        name,
+        email,
+        clinic_name,
+        specialty,
+        role,
+        website: website || null,
+        monthly_volume,
+        why_apply,
+        ip_address: ip,
+        user_agent: userAgent,
+        source: deriveSource(request),
+      })
+    } catch (err) {
+      // No 23505 idempotent path: the unique-email constraint was dropped
+      // alongside Phase 6 encryption (plan §12.1). Duplicates just write a
+      // second row; admin dedupe is manual.
+      console.error("Beta application insert error:", err)
       return NextResponse.json(
         { error: "Failed to submit application. Please try again." },
         { status: 500 },

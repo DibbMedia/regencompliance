@@ -57,7 +57,12 @@ export async function POST(request: Request) {
       session = await stripe.checkout.sessions.create({
         mode: "subscription",
         line_items: [{ price: process.env.STRIPE_BETA_PRICE_ID!, quantity: 1 }],
-        success_url: appUrl("/login?beta=true"),
+        // success_url passes the reservation_token forward so the signup
+        // page can stash it in a short-lived cookie (rc_beta_claim) before
+        // the user lands on email verification. /auth/callback then reads
+        // the cookie to claim the beta_purchases row by token instead of by
+        // email (plan §12.2). Email-based claim is dead.
+        success_url: appUrl(`/login?beta=true&claim=${reservationToken}`),
         cancel_url: marketingUrl("/pricing"),
         metadata: { plan_type: "beta_subscription", reservation_token: reservationToken },
         subscription_data: {
