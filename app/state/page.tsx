@@ -5,9 +5,14 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { STATES } from "@/lib/state/data"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildItemListSchema,
+} from "@/lib/schema"
 
-const canonical = `${SITE_URL}/state`
+const canonical = `${MARKETING_URL}/state`
 
 export const metadata: Metadata = {
   title: "State-by-State Healthcare Marketing Compliance Rules - RegenCompliance",
@@ -30,46 +35,19 @@ export const metadata: Metadata = {
 }
 
 export default function StateIndexPage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "State rules",
-        item: canonical,
-      },
-    ],
-  }
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: STATES.map((s, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `${SITE_URL}/state/${s.slug}`,
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "State rules", url: canonical },
+  ])
+  const itemListSchema = buildItemListSchema(
+    STATES.map((s) => ({
       name: `${s.state} healthcare marketing rules`,
+      url: `${MARKETING_URL}/state/${s.slug}`,
     })),
-  }
+  )
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
+      <JsonLd schema={[breadcrumbSchema, itemListSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

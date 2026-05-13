@@ -28,7 +28,12 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildItemListSchema,
+} from "@/lib/schema"
 
 const scannerCapabilities = [
   "Website copy and landing pages",
@@ -66,50 +71,33 @@ const auditFeatures = [
   "Permanent cloud storage of all records",
 ]
 
-export default function FeaturesPage() {
-  const breadcrumbSchema = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Features",
-        item: `${SITE_URL}/features`,
-      },
-    ],
-  })
+// Feature list mirrors the headings actually rendered on the page so the
+// ItemList ground-truths to copy that's visible to users.
+const FEATURE_ITEMS = [
+  { name: "Compliance Scanner", url: `${MARKETING_URL}/tools/scanner` },
+  { name: "AI Compliant Rewriter", url: `${MARKETING_URL}/tools/ai-rewriter` },
+  { name: "Audit Trail + PDF Export", url: `${MARKETING_URL}/tools/audit-trail` },
+  { name: "300+ Rule Library", url: `${MARKETING_URL}/tools/compliance-library` },
+  { name: "Real-time Enforcement Alerts", url: `${MARKETING_URL}/tools/enforcement-alerts` },
+]
 
-  const webPageSchema = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
+export default function FeaturesPage() {
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Features", url: `${MARKETING_URL}/features` },
+  ])
+  const webPageSchema = {
+    "@context": "https://schema.org" as const,
+    "@type": "WebPage" as const,
     name: "RegenCompliance Features",
     description:
       "Full feature breakdown for RegenCompliance - compliance scanner, AI rewriter, audit trail, 300+ rule library, enforcement alerts, and team collaboration.",
-    url: `${SITE_URL}/features`,
-    about: {
-      "@type": "SoftwareApplication",
-      name: "RegenCompliance",
-      applicationCategory: "BusinessApplication",
-    },
-  })
+    url: `${MARKETING_URL}/features`,
+  }
+  const itemListSchema = buildItemListSchema(FEATURE_ITEMS)
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: breadcrumbSchema }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: webPageSchema }}
-      />
+      <JsonLd schema={[webPageSchema, breadcrumbSchema, itemListSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

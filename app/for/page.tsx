@@ -5,11 +5,17 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { SPECIALTIES } from "@/lib/specialty/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildItemListSchema,
+} from "@/lib/schema"
 import { ForHubFaq } from "./for-hub-faq"
 import { SPECIALTY_HUB_FAQS } from "./hub-faqs"
 
-const canonical = `${SITE_URL}/for`
+const canonical = `${MARKETING_URL}/for`
 
 export const metadata: Metadata = {
   title: "Compliance Software by Specialty - Med Spa, Regen, Weight Loss, Dental & More",
@@ -35,60 +41,22 @@ export const metadata: Metadata = {
 }
 
 export default function SpecialtiesIndexPage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "For specialties",
-        item: canonical,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "For specialties", url: canonical },
+  ])
 
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: SPECIALTIES.map((s, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `${SITE_URL}/for/${s.slug}`,
+  const itemListSchema = buildItemListSchema(
+    SPECIALTIES.map((s) => ({
       name: `Compliance software for ${s.specialty}`,
+      url: `${MARKETING_URL}/for/${s.slug}`,
     })),
-  }
+  )
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: SPECIALTY_HUB_FAQS.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
+  const faqSchema = buildFaqSchema(SPECIALTY_HUB_FAQS)
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd schema={[breadcrumbSchema, itemListSchema, faqSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

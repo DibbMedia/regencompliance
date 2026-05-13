@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { POSTS_SORTED } from "@/lib/blog/registry"
 import { BlogIndex, POSTS_PER_PAGE } from "@/components/blog/blog-index"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
 // On page 1 we also render a featured post, so page-1 content excludes the
 // first sorted post. Subsequent pages are straight 9-per-page slices of the
@@ -39,8 +40,7 @@ export async function generateMetadata({
     return { title: "Not found" }
   }
 
-  // SITE_URL flips with NEXT_PUBLIC_APP_URL at domain cutover.
-  const canonical = `${SITE_URL}/blog/page/${pageNum}`
+  const canonical = `${MARKETING_URL}/blog/page/${pageNum}`
   return {
     title: `Blog - Page ${pageNum}`,
     description:
@@ -77,11 +77,20 @@ export default async function BlogPaginatedPage({
   const startIndex = (pageNum - 1) * POSTS_PER_PAGE
   const pagePosts = rest.slice(startIndex, startIndex + POSTS_PER_PAGE)
 
+  const canonical = `${MARKETING_URL}/blog/page/${pageNum}`
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Blog", url: `${MARKETING_URL}/blog` },
+    { name: `Page ${pageNum}`, url: canonical },
+  ])
+
   return (
-    <BlogIndex
-      posts={pagePosts.map((p) => p.meta)}
-      currentPage={pageNum}
-      totalPages={total}
-    />
+    <>
+      <JsonLd schema={breadcrumbSchema} />
+      <BlogIndex
+        posts={pagePosts.map((p) => p.meta)}
+        currentPage={pageNum}
+        totalPages={total}
+      />
+    </>
   )
 }

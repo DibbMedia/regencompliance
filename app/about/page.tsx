@@ -12,9 +12,10 @@ import {
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
-const canonical = `${SITE_URL}/about`
+const canonical = `${MARKETING_URL}/about`
 
 export const metadata: Metadata = {
   title: "About RegenCompliance - Built for Real Healthcare Compliance Work",
@@ -60,6 +61,9 @@ const PRINCIPLES = [
 ]
 
 export default function AboutPage() {
+  // AboutPage references the canonical Organization (emitted from the root
+  // layout). We keep parentOrganization here because the legal name -> brand
+  // name relationship is published in this page's own copy.
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -70,40 +74,18 @@ export default function AboutPage() {
     mainEntity: {
       "@type": "Organization",
       name: "RegenCompliance",
-      parentOrganization: { "@type": "Organization", name: "Regen Portal LLC" },
-      url: `${SITE_URL}`,
+      legalName: "Regen Portal LLC",
+      url: MARKETING_URL,
     },
   }
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "About",
-        item: canonical,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "About", url: canonical },
+  ])
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd schema={[aboutSchema, breadcrumbSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

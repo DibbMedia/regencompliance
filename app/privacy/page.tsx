@@ -2,15 +2,32 @@ import Link from "next/link"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
+
+const canonical = `${MARKETING_URL}/privacy`
 
 export const metadata = {
   title: "Privacy Policy - RegenCompliance",
   description: "Privacy Policy for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
+  alternates: { canonical },
 }
+
+const SCHEMAS = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Privacy Policy - RegenCompliance",
+    description: "Privacy Policy for RegenCompliance, operated by Regen Portal LLC.",
+    url: canonical,
+  },
+  buildBreadcrumbSchema([{ name: "Privacy", url: canonical }]),
+]
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <JsonLd schema={SCHEMAS} />
       <MarketingBg />
       <MarketingHeader />
 

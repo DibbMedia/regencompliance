@@ -6,9 +6,14 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildFaqSchema,
+  buildSoftwareApplicationSchema,
+} from "@/lib/schema"
 
-const BROWSER_HOST = SITE_URL.replace(/^https?:\/\//, "")
+const BROWSER_HOST = MARKETING_URL.replace(/^https?:\/\//, "")
 import {
   Shield,
   ArrowRight,
@@ -133,25 +138,19 @@ const faqs = [
   { q: "What if I cancel?", a: "You keep full access through your billing period. No contracts, no fees, no penalties. Resubscribe anytime." },
 ]
 
-const HOMEPAGE_FAQ_JSONLD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-})
+// Organization + WebSite are emitted by the root layout. Home only needs
+// SoftwareApplication (because it's the product landing) and an FAQPage.
+const HOMEPAGE_SCHEMAS = [
+  buildSoftwareApplicationSchema(),
+  buildFaqSchema(faqs),
+]
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: HOMEPAGE_FAQ_JSONLD }}
-      />
+      <JsonLd schema={HOMEPAGE_SCHEMAS} />
 
       <MarketingBg />
 

@@ -3,6 +3,8 @@ import { Shield, CheckCircle2, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getProfileByBadgeId } from "@/lib/repos/profiles"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
 interface VerifyPageProps {
   params: Promise<{ id: string }>
@@ -69,8 +71,22 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
             ? "Fair (70-79)"
             : "Needs Improvement (<70)"
 
+  const canonical = `${MARKETING_URL}/verify/${badgeId}`
+  const webPageSchema = {
+    "@context": "https://schema.org" as const,
+    "@type": "WebPage" as const,
+    name: "Compliance Badge Verification",
+    description:
+      "Public verification page for a RegenCompliance compliance badge. Shows the clinic name, score range, and last verification date.",
+    url: canonical,
+  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Badge verification", url: canonical },
+  ])
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
+      <JsonLd schema={[webPageSchema, breadcrumbSchema]} />
       <div className="w-full max-w-lg">
         {/* Card */}
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm overflow-hidden">

@@ -2,7 +2,12 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { BlogPostLayout } from "@/components/blog/post-layout"
 import { POSTS, getPostBySlug, getRelated } from "@/lib/blog/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+} from "@/lib/schema"
 
 export async function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.meta.slug }))
@@ -17,7 +22,7 @@ export async function generateMetadata({
   const post = getPostBySlug(slug)
   if (!post) return { title: "Not found" }
 
-  const canonical = `${SITE_URL}/blog/${post.meta.slug}`
+  const canonical = `${MARKETING_URL}/blog/${post.meta.slug}`
   return {
     title: post.meta.title,
     description: post.meta.description,
@@ -53,65 +58,27 @@ export default async function BlogPostPage({
   const { Body, meta } = post
   const related = getRelated(slug)
 
-  const canonical = `${SITE_URL}/blog/${meta.slug}`
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: meta.title,
+  const canonical = `${MARKETING_URL}/blog/${meta.slug}`
+  const articleSchema = buildArticleSchema({
+    title: meta.title,
     description: meta.description,
+    slug: meta.slug,
     datePublished: meta.date,
-    dateModified: meta.updated ?? meta.date,
-    author: { "@type": "Organization", name: meta.author.name },
-    publisher: {
-      "@type": "Organization",
-      name: "RegenCompliance",
-      url: `${SITE_URL}`,
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
-    keywords: meta.keywords.join(", "),
-  }
+    dateModified: meta.updated,
+    authorName: meta.author.name,
+    keywords: meta.keywords,
+  })
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Blog",
-        item: `${SITE_URL}/blog`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: meta.title,
-        item: canonical,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Blog", url: `${MARKETING_URL}/blog` },
+    { name: meta.title, url: canonical },
+  ])
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd schema={[articleSchema, breadcrumbSchema]} />
       {meta.extraSchemas?.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
+        <JsonLd key={i} schema={schema} />
       ))}
       <BlogPostLayout meta={meta} related={related}>
         <Body />
