@@ -6,11 +6,18 @@
 // Admin actions and system events are not included - customers shouldn't
 // see them and the audit_log table is service-role only anyway.
 //
+// Post-Phase-5 (migration 040) the plaintext `user_email`, `details`,
+// `ip_address`, `user_agent` columns are gone. The read goes through the
+// repo's `listAuditLogForAdmin` (service-role context) scoped by user_id;
+// the legacy `or(user_email.eq.<email>)` fallback is dropped - user_id is
+// the canonical link and the email column no longer exists.
+//
 // Powers /dashboard/account/security.
 import { NextResponse } from "next/server"
 import { createClient, createServiceClient } from "@/lib/supabase/server"
+import { listAuditLogForAdmin } from "@/lib/repos/audit-log"
 
-const SECURITY_ACTIONS = [
+const SECURITY_ACTIONS = new Set([
   "auth.login.success",
   "auth.login.failed",
   "auth.login.locked",
@@ -21,7 +28,7 @@ const SECURITY_ACTIONS = [
   "account.delete.attempt",
   "account.deleted",
   "data.exported",
-]
+])
 
 export async function GET() {
   const supabase = await createClient()
@@ -32,20 +39,34 @@ export async function GET() {
   }
 
   // audit_log is service-role-only by RLS; customer reads go through this
-  // server route which scopes by the authenticated user's id + email.
+  // server route which scopes by the authenticated user's id.
   const service = createServiceClient()
-  const { data, error } = await service
-    .from("audit_log")
-    .select("id, action, status, ip_address, user_agent, details, created_at")
-    .or(`user_id.eq.${user.id}${user.email ? `,user_email.eq.${user.email.toLowerCase()}` : ""}`)
-    .in("action", SECURITY_ACTIONS)
-    .order("created_at", { ascending: false })
-    .limit(50)
+  try {
+    // Pull a wider window then filter to security actions in-memory. The
+    // repo's filter is exact-match on action; we need a multi-action OR so
+    // we fetch the last 200 rows for this user and slice down to 50.
+    const rows = await listAuditLogForAdmin(service, {
+      user_id: user.id,
+      limit: 200,
+      offset: 0,
+    })
 
-  if (error) {
+    const events = rows
+      .filter((r) => SECURITY_ACTIONS.has(r.action))
+      .slice(0, 50)
+      .map((r) => ({
+        id: r.id,
+        action: r.action,
+        status: r.status,
+        ip_address: r.ip_address,
+        user_agent: r.user_agent,
+        details: r.details,
+        created_at: r.created_at,
+      }))
+
+    return NextResponse.json({ events })
+  } catch (error) {
     console.error("[security-events] fetch error:", error)
     return NextResponse.json({ error: "Failed to load activity" }, { status: 500 })
   }
-
-  return NextResponse.json({ events: data ?? [] })
 }

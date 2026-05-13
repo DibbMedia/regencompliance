@@ -312,6 +312,10 @@ export async function createAuditLogEntry(
 
 export interface ListAuditLogOptions {
   action?: string
+  /** Case-insensitive substring match on `action`. Preferred over `action`
+   *  (exact match) for admin search UX where typing "auth.login" should
+   *  surface every login.success/failed/locked entry. */
+  action_substring?: string
   user_id?: string
   resource_type?: string
   status?: string
@@ -337,6 +341,10 @@ export async function listAuditLogForAdmin(
       .range(offset, offset + limit - 1)
 
     if (opts.action) query = query.eq("action", opts.action)
+    if (opts.action_substring) {
+      const escaped = opts.action_substring.replace(/%/g, "\\%").replace(/_/g, "\\_")
+      query = query.ilike("action", `%${escaped}%`)
+    }
     if (opts.user_id) query = query.eq("user_id", opts.user_id)
     if (opts.resource_type) query = query.eq("resource_type", opts.resource_type)
     if (opts.status) query = query.eq("status", opts.status)

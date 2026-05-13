@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { createServiceClient } from "@/lib/supabase/server"
-import { logAudit } from "@/lib/audit-log"
 import { sendToGhl } from "@/lib/ghl"
+import { getProfile } from "@/lib/repos/profiles"
+import { createNotification } from "@/lib/repos/notifications"
+import { createAuditLogEntry } from "@/lib/repos/audit-log"
+import {
+  createBetaPurchaseReservation,
+  finalizeBetaPurchaseByToken,
+} from "@/lib/repos/beta-purchases"
 import type Stripe from "stripe"
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { randomUUID } from "node:crypto"
 
 async function findAuthUserIdByEmail(
   supabase: SupabaseClient,
@@ -84,7 +91,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to record webhook event" }, { status: 500 })
   }
 
-  logAudit({ action: "stripe.webhook", resource_type: "stripe_event", resource_id: event.id, details: { event_type: event.type } })
+  // System-keyed audit row (user_id NULL pre-profile-resolution). Per plan
+  // §12.4 the encryption-aware repo dispatches to the v1s. system envelope
+  // when user_id is null. Fire-and-forget to preserve the prior contract.
+  void createAuditLogEntry(supabase, {
+    user_id: null,
+    action: "stripe.webhook",
+    resource_type: "webhook_event",
+    resource_id: event.id,
+    status: "success",
+    details: { event_type: event.type },
+  }).catch((err) => {
+    console.error("[Stripe Webhook] audit insert failed (non-blocking):", err)
+  })
 
   try {
     switch (event.type) {
@@ -120,7 +139,8 @@ export async function POST(request: Request) {
 
           // Reservation flow (post-2026-05-05): the checkout-beta route inserted
           // a placeholder beta_purchases row keyed by reservation_token. Find
-          // and finalize that row instead of inserting a duplicate.
+          // and finalize that row instead of inserting a duplicate. Email gets
+          // encrypted under the row's per-row DEK via the repo helper.
           const reservationToken =
             typeof session.metadata?.reservation_token === "string"
               ? session.metadata.reservation_token
@@ -128,25 +148,37 @@ export async function POST(request: Request) {
 
           let finalized = false
           if (reservationToken) {
-            const { error: updErr } = await supabase
-              .from("beta_purchases")
-              .update({
+            try {
+              await finalizeBetaPurchaseByToken(supabase, reservationToken, {
                 email: customerEmail,
                 stripe_customer_id: customerId,
-                stripe_subscription_id: subscriptionId,
               })
-              .eq("reservation_token", reservationToken)
-              .eq("claimed", false)
-            if (!updErr) finalized = true
+              finalized = true
+            } catch (finalizeErr) {
+              console.error(
+                "[Stripe Webhook] finalizeBetaPurchaseByToken failed:",
+                finalizeErr,
+              )
+            }
           }
 
-          // Legacy / no-token fallback: insert a fresh row.
+          // Legacy / no-token fallback: insert a fresh reservation row via
+          // the repo so email_enc is encrypted properly. No reserve_beta_seat
+          // path; we synthesize a token. stripe_subscription_id is NOT
+          // persisted here - the column lives on `profiles`.
           if (!finalized) {
-            await supabase.from("beta_purchases").insert({
-              email: customerEmail,
-              stripe_customer_id: customerId,
-              stripe_subscription_id: subscriptionId,
-            })
+            try {
+              await createBetaPurchaseReservation(supabase, {
+                email: customerEmail,
+                stripe_customer_id: customerId,
+                reservation_token: randomUUID(),
+              })
+            } catch (insertErr) {
+              console.error(
+                "[Stripe Webhook] Fallback beta_purchases insert failed:",
+                insertErr,
+              )
+            }
           }
 
           // Try to find existing profile by stripe_customer_id
@@ -190,9 +222,10 @@ export async function POST(request: Request) {
 
             // Mark beta_purchases record as claimed. Prefer the
             // reservation_token path (post-2026-05-05 atomic-reserve flow)
-            // when present so we touch exactly one row. Fall back to
-            // (email, stripe_customer_id) tuple to avoid the bug-#24 case
-            // where two rows can share an email after a refund + repurchase.
+            // when present. Legacy fallback now only keys off
+            // stripe_customer_id (UNIQUE since mig 009) - the `.eq("email")`
+            // filter is dead post-Phase-6 because the plaintext email
+            // column is gone after mig 042.
             if (reservationToken) {
               await supabase
                 .from("beta_purchases")
@@ -202,13 +235,11 @@ export async function POST(request: Request) {
               await supabase
                 .from("beta_purchases")
                 .update({ claimed: true, claimed_by: betaProfile.id })
-                .eq("email", customerEmail)
                 .eq("stripe_customer_id", customerId)
                 .eq("claimed", false)
             }
 
-            await supabase.from("notifications").insert({
-              profile_id: betaProfile.id,
+            await createNotification(supabase, betaProfile.id, {
               title: "Beta Access Activated",
               body: "Your beta subscription to RegenCompliance is now active at the locked-in rate of $297/mo. Welcome aboard!",
               type: "billing",
@@ -221,11 +252,7 @@ export async function POST(request: Request) {
             // fires this event when activation happens later (e.g.
             // customer paid before creating their account).
             if (customerEmail) {
-              const { data: betaFullProfile } = await supabase
-                .from("profiles")
-                .select("clinic_name")
-                .eq("id", betaProfile.id)
-                .maybeSingle()
+              const betaFullProfile = await getProfile(supabase, betaProfile.id)
 
               void sendToGhl("subscription_active", {
                 email: customerEmail,
@@ -315,8 +342,7 @@ export async function POST(request: Request) {
             })
             .eq("id", checkoutProfile.id)
 
-          await supabase.from("notifications").insert({
-            profile_id: checkoutProfile.id,
+          await createNotification(supabase, checkoutProfile.id, {
             title: "Subscription Active",
             body: "Your RegenCompliance subscription is now active. Start scanning your marketing content!",
             type: "billing",
@@ -328,11 +354,7 @@ export async function POST(request: Request) {
           try {
             const stripeCustomerObj = await stripe.customers.retrieve(customerId)
             if (!stripeCustomerObj.deleted && stripeCustomerObj.email) {
-              const { data: subProfile } = await supabase
-                .from("profiles")
-                .select("clinic_name")
-                .eq("id", checkoutProfile.id)
-                .maybeSingle()
+              const subProfile = await getProfile(supabase, checkoutProfile.id)
 
               void sendToGhl("subscription_active", {
                 email: stripeCustomerObj.email,
@@ -434,8 +456,7 @@ export async function POST(request: Request) {
           })
           .eq("stripe_customer_id", customerId)
 
-        await supabase.from("notifications").insert({
-          profile_id: deletedProfile.id,
+        await createNotification(supabase, deletedProfile.id, {
           title: "Subscription Cancelled",
           body: "Your subscription has been cancelled. You can resubscribe anytime from your account page.",
           type: "billing",
@@ -446,11 +467,7 @@ export async function POST(request: Request) {
         try {
           const cancelCustomerObj = await stripe.customers.retrieve(customerId)
           if (!cancelCustomerObj.deleted && cancelCustomerObj.email) {
-            const { data: cancelProfile } = await supabase
-              .from("profiles")
-              .select("clinic_name")
-              .eq("id", deletedProfile.id)
-              .maybeSingle()
+            const cancelProfile = await getProfile(supabase, deletedProfile.id)
 
             void sendToGhl("subscription_cancelled", {
               email: cancelCustomerObj.email,
@@ -493,8 +510,7 @@ export async function POST(request: Request) {
           .update({ subscription_status: "past_due" })
           .eq("stripe_customer_id", customerId)
 
-        await supabase.from("notifications").insert({
-          profile_id: failedProfile.id,
+        await createNotification(supabase, failedProfile.id, {
           title: "Payment Failed",
           body: "Your latest payment failed. Please update your payment method to keep your subscription active.",
           type: "billing",
@@ -506,11 +522,7 @@ export async function POST(request: Request) {
         try {
           const failedCustomerObj = await stripe.customers.retrieve(customerId)
           if (!failedCustomerObj.deleted && failedCustomerObj.email) {
-            const { data: failedFullProfile } = await supabase
-              .from("profiles")
-              .select("clinic_name")
-              .eq("id", failedProfile.id)
-              .maybeSingle()
+            const failedFullProfile = await getProfile(supabase, failedProfile.id)
 
             void sendToGhl("payment_failed", {
               email: failedCustomerObj.email,
@@ -540,9 +552,12 @@ export async function POST(request: Request) {
           `[Stripe Webhook] invoice.paid: customer=[redacted:${customerId.slice(-4)}] amount=${invoice.amount_paid}`,
         )
 
+        // clinic_name is encrypted post-migration 034 - go through the repo.
+        // The compound select on profiles drops clinic_name from the row
+        // shape; we still need it for GHL.
         const { data: paidProfile } = await supabase
           .from("profiles")
-          .select("id, clinic_name, subscription_status")
+          .select("id, subscription_status")
           .eq("stripe_customer_id", customerId)
           .maybeSingle()
 
@@ -566,9 +581,13 @@ export async function POST(request: Request) {
           const paidCustomerObj = await stripe.customers.retrieve(customerId)
           if (paidCustomerObj.deleted || !paidCustomerObj.email) break
 
+          const paidFullProfile = paidProfile
+            ? await getProfile(supabase, paidProfile.id)
+            : null
+
           void sendToGhl("invoice_paid", {
             email: paidCustomerObj.email,
-            company: paidProfile?.clinic_name ?? null,
+            company: paidFullProfile?.clinic_name ?? null,
             stripe_customer_id: customerId,
             subscription_status: "active",
             invoice_id: invoice.id,
