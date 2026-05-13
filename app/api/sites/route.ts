@@ -5,6 +5,12 @@ import { requireWriteMode } from "@/lib/impersonation"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { discoverPages } from "@/lib/site-crawler"
 import { assertSafeUrl } from "@/lib/ssrf"
+import {
+  createMonitoredSite,
+  listMonitoredSites,
+} from "@/lib/repos/monitored-sites"
+import { createSitePage } from "@/lib/repos/site-pages"
+import { getProfile } from "@/lib/repos/profiles"
 
 // GET - list user's monitored sites with page counts and avg scores
 export async function GET() {
@@ -18,18 +24,9 @@ export async function GET() {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const { data: sites, error } = await supabase
-      .from("monitored_sites")
-      .select("*")
-      .eq("profile_id", profileId)
-      .order("created_at", { ascending: false })
+    const { sites } = await listMonitoredSites(supabase, profileId, { limit: 100 })
 
-    if (error) {
-      console.error("Failed to fetch sites:", error)
-      return NextResponse.json({ error: "Failed to fetch sites" }, { status: 500 })
-    }
-
-    return NextResponse.json({ sites: sites || [] })
+    return NextResponse.json({ sites })
   } catch (error) {
     console.error("Sites GET error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
@@ -51,12 +48,8 @@ export async function POST(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Check subscription
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_status")
-      .eq("id", profileId)
-      .single()
+    // Check subscription via encrypted profile repo.
+    const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
@@ -110,31 +103,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Maximum of 5 monitored sites allowed" }, { status: 400 })
     }
 
-    // Check for duplicate domain
-    const { data: existing } = await supabase
-      .from("monitored_sites")
-      .select("id")
-      .eq("profile_id", profileId)
-      .eq("domain", normalizedDomain)
-      .maybeSingle()
-
-    if (existing) {
+    // Check for duplicate domain. Domain is now encrypted so equality
+    // lookups in SQL die — list this user's sites (max 5, capped above)
+    // and dedup client-side after decryption.
+    const { sites: existingSites } = await listMonitoredSites(supabase, profileId, { limit: 100 })
+    if (existingSites.some((s) => s.domain === normalizedDomain)) {
       return NextResponse.json({ error: "This domain is already being monitored" }, { status: 409 })
     }
 
-    // Insert the site with next_crawl_at = now to trigger immediate first crawl
-    const { data: site, error: insertError } = await supabase
-      .from("monitored_sites")
-      .insert({
+    // Insert the site via the encrypted repo with next_crawl_at = now to
+    // trigger immediate first crawl.
+    let site
+    try {
+      site = await createMonitoredSite(supabase, {
         profile_id: profileId,
         domain: normalizedDomain,
         name: name || normalizedDomain,
         next_crawl_at: new Date().toISOString(),
       })
-      .select()
-      .single()
-
-    if (insertError) {
+    } catch (insertError) {
       console.error("Failed to insert site:", insertError)
       return NextResponse.json({ error: "Failed to add site" }, { status: 500 })
     }
@@ -149,19 +136,17 @@ export async function POST(request: Request) {
         if (discovered.length === 0) return
 
         const serviceClient = createServiceClient()
-        const pageRows = discovered.map((p) => ({
-          site_id: site.id,
-          url: p.url,
-          title: p.title,
-          status: "pending",
-        }))
-
-        const { error: pagesError } = await serviceClient
-          .from("site_pages")
-          .insert(pageRows)
-        if (pagesError) {
-          console.error("Background page insert failed:", pagesError)
-          return
+        // Sequential createSitePage so each row is encrypted under the
+        // owner's per-user DEK. For the typical ~50 discovered pages this
+        // adds <50ms total.
+        for (const p of discovered) {
+          await createSitePage(serviceClient, {
+            site_id: site.id,
+            profile_id: profileId,
+            url: p.url,
+            title: p.title ?? null,
+            status: "pending",
+          })
         }
 
         await serviceClient

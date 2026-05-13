@@ -8,10 +8,22 @@
 // different parse-failure log namespaces) which is exactly the pattern
 // the audit warned about. This module owns the loop; callers handle their
 // own auth, rate limits, and end-of-site notification copy.
+//
+// Encryption (Wave 2B): scan content, site domain, site_pages.url/title
+// all move under per-user DEKs. Reads/writes for these tables go through
+// lib/repos/{scans,site-pages,monitored-sites}.ts. The site domain passed
+// in via `SiteRef` is already decrypted by the caller.
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { anthropic } from "@/lib/anthropic"
 import { extractPageContent } from "@/lib/site-crawler"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
+import { createScan } from "@/lib/repos/scans"
+import {
+  listPagesForSiteAsService,
+  updateSitePage,
+  type SitePage,
+} from "@/lib/repos/site-pages"
+import type { ScanFlag } from "@/lib/types"
 
 export interface RuleForPrompt {
   id: string
@@ -24,13 +36,9 @@ export interface RuleForPrompt {
 
 export interface SiteRef {
   id: string
+  /** Already decrypted by the caller. */
   domain: string
   profile_id: string
-}
-
-interface SitePageRow {
-  id: string
-  url: string
 }
 
 export interface ScanSitePagesResult {
@@ -52,7 +60,7 @@ interface ScanSitePagesOptions {
   maxPages: number
   /** Per-page hook fired when score < lowScoreThreshold. Cron uses this to
    *  emit per-page urgent alerts; user-triggered routes typically don't. */
-  onLowScore?: (page: SitePageRow, score: number) => Promise<void>
+  onLowScore?: (page: SitePage, score: number) => Promise<void>
   /** Default 50. */
   lowScoreThreshold?: number
   /** Log-namespace tag, e.g. "sites/scan", "sites/crawl", "cron/site-monitor". */
@@ -109,17 +117,19 @@ export async function scanSitePages(
   const { site, rulesForPrompt, treatments, profileId, maxPages, onLowScore, source } = options
   const lowScoreThreshold = options.lowScoreThreshold ?? 50
 
-  const { data: allPages } = await supabase
-    .from("site_pages")
-    .select("*")
-    .eq("site_id", site.id)
-    .order("last_scanned_at", { ascending: true, nullsFirst: true })
+  // listPagesForSiteAsService decrypts url/title per row using the
+  // denormalized profile_id (migration 035).
+  const pages = await listPagesForSiteAsService(supabase, site.id, {
+    orderBy: "last_scanned_at",
+    ascending: true,
+    nullsFirst: true,
+  })
 
-  const pages = (allPages ?? []) as SitePageRow[]
   const toProcess = pages.slice(0, maxPages)
   const overflow = pages.slice(maxPages)
 
   if (overflow.length > 0) {
+    // Status is plaintext; no encryption involved.
     await supabase
       .from("site_pages")
       .update({ status: "queued" })
@@ -159,7 +169,7 @@ export async function scanSitePages(
       const scanDuration = Date.now() - scanStart
       const responseText = response.content.find((b) => b.type === "text")?.text ?? ""
 
-      let scanResult: { compliance_score?: number; summary?: string; flags?: Array<{ risk_level?: string }> }
+      let scanResult: { compliance_score?: number; summary?: string; flags?: ScanFlag[] }
       try {
         let cleaned = responseText.trim()
         if (cleaned.startsWith("```")) {
@@ -195,40 +205,36 @@ export async function scanSitePages(
       const mediumCount = flags.filter((f) => f.risk_level === "medium").length
       const lowCount = flags.filter((f) => f.risk_level === "low").length
 
-      const { data: scan } = await supabase
-        .from("scans")
-        .insert({
-          profile_id: profileId,
-          user_id: profileId,
-          content_type: "website_copy",
-          original_text: content.text,
-          flags,
-          compliance_score: score,
-          flag_count: flags.length,
-          high_risk_count: highCount,
-          medium_risk_count: mediumCount,
-          low_risk_count: lowCount,
-          scan_duration_ms: scanDuration,
-          source_url: page.url,
-        })
-        .select("id")
-        .single()
+      // createScan encrypts original_text, flags, source_url under the
+      // profile DEK with AAD bound to the new scan's row id.
+      const scan = await createScan(supabase, {
+        profile_id: profileId,
+        user_id: profileId,
+        content_type: "website_copy",
+        original_text: content.text,
+        flags,
+        compliance_score: score,
+        flag_count: flags.length,
+        high_risk_count: highCount,
+        medium_risk_count: mediumCount,
+        low_risk_count: lowCount,
+        scan_duration_ms: scanDuration,
+        source_url: page.url,
+      })
 
-      await supabase
-        .from("site_pages")
-        .update({
-          compliance_score: score,
-          flag_count: flags.length,
-          high_risk_count: highCount,
-          medium_risk_count: mediumCount,
-          low_risk_count: lowCount,
-          last_scan_id: scan?.id ?? null,
-          last_scanned_at: new Date().toISOString(),
-          status: "scanned",
-          title: content.title,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", page.id)
+      // updateSitePage re-encrypts title under the same DEK + new AAD.
+      await updateSitePage(supabase, profileId, page.id, {
+        compliance_score: score,
+        flag_count: flags.length,
+        high_risk_count: highCount,
+        medium_risk_count: mediumCount,
+        low_risk_count: lowCount,
+        last_scan_id: scan.id,
+        last_scanned_at: new Date().toISOString(),
+        status: "scanned",
+        title: content.title,
+        updated_at: new Date().toISOString(),
+      })
 
       scannedCount++
       totalScore += score
@@ -258,6 +264,7 @@ export async function scanSitePages(
   const nextCrawl = new Date()
   nextCrawl.setDate(nextCrawl.getDate() + 7)
 
+  // Aggregate columns on monitored_sites are pass-through (plaintext).
   await supabase
     .from("monitored_sites")
     .update({

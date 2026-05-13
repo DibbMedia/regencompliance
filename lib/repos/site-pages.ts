@@ -57,6 +57,9 @@ export interface SitePageEncryptedRow {
   profile_id: string
   url_enc: string | null
   title_enc: string | null
+  // Legacy plaintext columns (dropped in migration 036). Dual-write transition.
+  url?: string | null
+  title?: string | null
   compliance_score: number | null
   flag_count: number
   high_risk_count: number
@@ -104,25 +107,27 @@ export interface SitePageUpdate {
 // --- Pure transforms -------------------------------------------------------
 
 export function decryptSitePageRow(profileId: string, row: SitePageEncryptedRow): SitePage {
-  const url = row.url_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.url_enc,
-        table: TABLE,
-        column: "url",
-        rowId: row.id,
-      })
-    : ""
+  const url =
+    row.url_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.url_enc,
+          table: TABLE,
+          column: "url",
+          rowId: row.id,
+        })
+      : row.url ?? ""
 
-  const title = row.title_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.title_enc,
-        table: TABLE,
-        column: "title",
-        rowId: row.id,
-      })
-    : null
+  const title =
+    row.title_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.title_enc,
+          table: TABLE,
+          column: "title",
+          rowId: row.id,
+        })
+      : row.title ?? null
 
   return {
     id: row.id,
@@ -233,8 +238,10 @@ export function encryptSitePageUpdate(
 
 // --- DB access -------------------------------------------------------------
 
+// Includes both `*_enc` columns and the legacy plaintext columns. Prune
+// once migration 036 drops the plaintext columns.
 const SELECT_COLUMNS =
-  "id, site_id, profile_id, url_enc, title_enc, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at"
+  "id, site_id, profile_id, url_enc, title_enc, url, title, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at"
 
 export async function getSitePage(
   supabase: SupabaseClient,
@@ -321,6 +328,34 @@ export async function updateSitePage(
 
     if (error) throw error
     return decryptSitePageRow(profileId, data as unknown as SitePageEncryptedRow)
+  })
+}
+
+/**
+ * Service-role variant: list every page for a site without an explicit
+ * profile_id filter (used by the shared crawler in lib/scan/run-site-crawl.ts
+ * which already verified site ownership upstream). Decryption uses each
+ * row's denormalized `profile_id`.
+ */
+export async function listPagesForSiteAsService(
+  supabase: SupabaseClient,
+  siteId: string,
+  opts: { orderBy?: "last_scanned_at" | "compliance_score"; ascending?: boolean; nullsFirst?: boolean } = {},
+): Promise<SitePage[]> {
+  return withCryptoRequestScope(async () => {
+    const orderBy = opts.orderBy ?? "last_scanned_at"
+    const ascending = opts.ascending ?? true
+    const nullsFirst = opts.nullsFirst ?? true
+
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select(SELECT_COLUMNS)
+      .eq("site_id", siteId)
+      .order(orderBy, { ascending, nullsFirst })
+
+    if (error) throw error
+    const rows = (data ?? []) as unknown as SitePageEncryptedRow[]
+    return rows.map((row) => decryptSitePageRow(row.profile_id, row))
   })
 }
 
