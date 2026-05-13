@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
 import { parsePagination } from "@/lib/validations"
+import { listTicketsForAdmin } from "@/lib/repos/support-tickets"
 
 export async function GET(request: Request) {
   try {
@@ -12,22 +13,16 @@ export async function GET(request: Request) {
     const status = searchParams.get("status") || ""
     const { page, limit } = parsePagination(searchParams)
 
-    let query = serviceClient
+    // Count comes from a head select against the table directly; the repo
+    // doesn't yet expose a count helper.
+    let countQuery = serviceClient
       .from("support_tickets")
-      .select("*", { count: "exact" })
-      .order("updated_at", { ascending: false })
-      .range((page - 1) * limit, page * limit - 1)
-
-    if (status) {
-      query = query.eq("status", status)
-    }
-
-    const { data: tickets, count, error } = await query
-
-    if (error) {
-      console.error("Admin tickets fetch error:", error)
-      // Table may not exist yet
-      if (error.code === "42P01" || error.message?.includes("does not exist")) {
+      .select("id", { count: "exact", head: true })
+    if (status) countQuery = countQuery.eq("status", status)
+    const { count, error: countError } = await countQuery
+    if (countError) {
+      console.error("Admin tickets count error:", countError)
+      if (countError.code === "42P01" || countError.message?.includes("does not exist")) {
         return NextResponse.json({
           tickets: [],
           total: 0,
@@ -42,10 +37,28 @@ export async function GET(request: Request) {
       )
     }
 
+    const offset = (page - 1) * limit
+    const opts: { status?: string; limit: number; offset: number } = {
+      limit,
+      offset,
+    }
+    if (status) opts.status = status
+
+    let tickets
+    try {
+      tickets = await listTicketsForAdmin(serviceClient, opts)
+    } catch (error) {
+      console.error("Admin tickets fetch error:", error)
+      return NextResponse.json(
+        { error: "Failed to fetch tickets" },
+        { status: 500 }
+      )
+    }
+
     // Resolve user emails
     const profileEmailCache: Record<string, string> = {}
     const ticketsWithEmail = []
-    for (const ticket of tickets || []) {
+    for (const ticket of tickets) {
       const pid = ticket.user_id || ticket.profile_id
       if (pid && !profileEmailCache[pid]) {
         const {

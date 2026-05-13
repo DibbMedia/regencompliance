@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
 import { ticketMessageSchema, isValidUUID } from "@/lib/validations"
+import { getTicket } from "@/lib/repos/support-tickets"
+import { createTicketMessage } from "@/lib/repos/ticket-messages"
 
 export async function POST(
   request: Request,
@@ -26,18 +28,16 @@ export async function POST(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const { data: ticket, error: ticketError } = await supabase
-      .from("support_tickets")
-      .select("id, profile_id, status")
-      .eq("id", id)
-      .single()
-
-    if (ticketError || !ticket) {
+    let ticket
+    try {
+      ticket = await getTicket(supabase, profileId, id)
+    } catch (ticketError) {
+      console.error("Ticket lookup error:", ticketError)
       return NextResponse.json({ error: "Ticket not found" }, { status: 404 })
     }
 
-    if (ticket.profile_id !== profileId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (!ticket) {
+      return NextResponse.json({ error: "Ticket not found" }, { status: 404 })
     }
 
     if (ticket.status === "closed") {
@@ -52,18 +52,16 @@ export async function POST(
 
     const { message } = parsed.data
 
-    const { data: newMessage, error: messageError } = await supabase
-      .from("ticket_messages")
-      .insert({
+    let newMessage
+    try {
+      newMessage = await createTicketMessage(supabase, {
         ticket_id: id,
+        profile_id: profileId,
         user_id: user.id,
         is_admin: false,
         message: message.trim(),
       })
-      .select()
-      .single()
-
-    if (messageError) {
+    } catch (messageError) {
       console.error("Message creation error:", messageError)
       return NextResponse.json({ error: "Failed to add message" }, { status: 500 })
     }
