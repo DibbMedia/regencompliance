@@ -4,6 +4,8 @@ import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { requireWriteMode } from "@/lib/impersonation"
 import { ticketCreateSchema, parsePagination } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { listTickets, createTicket } from "@/lib/repos/support-tickets"
+import { createTicketMessage } from "@/lib/repos/ticket-messages"
 
 export async function GET(request: Request) {
   try {
@@ -19,29 +21,40 @@ export async function GET(request: Request) {
     const { page, limit } = parsePagination(searchParams)
     const status = searchParams.get("status")
 
-    let query = supabase
-      .from("support_tickets")
-      .select("*", { count: "exact" })
-      .eq("profile_id", profileId)
-      .order("updated_at", { ascending: false })
-      .range((page - 1) * limit, page * limit - 1)
+    const offset = (page - 1) * limit
+    const opts: { status?: string; limit: number; offset: number } = {
+      limit,
+      offset,
+    }
+    if (status && status !== "all") opts.status = status
 
-    if (status && status !== "all") {
-      query = query.eq("status", status)
+    // Pull count separately - the repo doesn't expose a count helper yet, and
+    // exposing one here would mean a second round-trip for the totalPages math.
+    let countQuery = supabase
+      .from("support_tickets")
+      .select("id", { count: "exact", head: true })
+      .eq("profile_id", profileId)
+    if (status && status !== "all") countQuery = countQuery.eq("status", status)
+    const { count: rawCount, error: countError } = await countQuery
+    if (countError) {
+      console.error("Tickets count error:", countError)
+      return NextResponse.json({ error: "Failed to fetch tickets" }, { status: 500 })
     }
 
-    const { data: tickets, count, error } = await query
-
-    if (error) {
+    let tickets
+    try {
+      tickets = await listTickets(supabase, profileId, opts)
+    } catch (error) {
       console.error("Tickets fetch error:", error)
       return NextResponse.json({ error: "Failed to fetch tickets" }, { status: 500 })
     }
 
+    const count = rawCount ?? 0
     return NextResponse.json({
-      tickets: tickets || [],
-      total: count || 0,
+      tickets,
+      total: count,
       page,
-      totalPages: Math.ceil((count || 0) / limit),
+      totalPages: Math.ceil(count / limit),
     })
   } catch (error) {
     console.error("Tickets error:", error)
@@ -73,33 +86,29 @@ export async function POST(request: Request) {
 
     const { subject, priority: ticketPriority, message } = parsed.data
 
-    const { data: ticket, error: ticketError } = await supabase
-      .from("support_tickets")
-      .insert({
+    let ticket
+    try {
+      ticket = await createTicket(supabase, {
         profile_id: profileId,
         user_id: user.id,
         subject: subject.trim(),
         priority: ticketPriority || "normal",
         status: "open",
       })
-      .select()
-      .single()
-
-    if (ticketError || !ticket) {
+    } catch (ticketError) {
       console.error("Ticket creation error:", ticketError)
       return NextResponse.json({ error: "Failed to create ticket" }, { status: 500 })
     }
 
-    const { error: messageError } = await supabase
-      .from("ticket_messages")
-      .insert({
+    try {
+      await createTicketMessage(supabase, {
         ticket_id: ticket.id,
+        profile_id: profileId,
         user_id: user.id,
         is_admin: false,
         message: message.trim(),
       })
-
-    if (messageError) {
+    } catch (messageError) {
       // Compensating delete: orphaned tickets with no body confuse the
       // support UI and leave a permanent dead row. Use service client so
       // RLS doesn't block the cleanup if the user-bound client is in a

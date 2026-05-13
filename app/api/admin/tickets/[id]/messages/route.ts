@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
 import { isValidUUID, ticketMessageSchema } from "@/lib/validations"
+import {
+  listTicketMessagesForAdmin,
+  createTicketMessage,
+} from "@/lib/repos/ticket-messages"
+import { getTicketForAdmin } from "@/lib/repos/support-tickets"
 
 export async function GET(
   _request: Request,
@@ -17,16 +22,14 @@ export async function GET(
       return NextResponse.json({ error: "Invalid ticket ID format" }, { status: 400 })
     }
 
-    const { data: messages, error } = await serviceClient
-      .from("ticket_messages")
-      .select("*")
-      .eq("ticket_id", ticketId)
-      .order("created_at", { ascending: true })
-
-    if (error) {
+    let messages
+    try {
+      messages = await listTicketMessagesForAdmin(serviceClient, { ticket_id: ticketId })
+    } catch (error) {
+      const e = error as { code?: string; message?: string }
       console.error("Ticket messages fetch error:", error)
       // Table may not exist
-      if (error.code === "42P01" || error.message?.includes("does not exist")) {
+      if (e.code === "42P01" || e.message?.includes("does not exist")) {
         return NextResponse.json({ messages: [] })
       }
       return NextResponse.json(
@@ -35,7 +38,7 @@ export async function GET(
       )
     }
 
-    return NextResponse.json({ messages: messages || [] })
+    return NextResponse.json({ messages })
   } catch (error) {
     console.error("Ticket messages error:", error)
     return NextResponse.json(
@@ -76,19 +79,23 @@ export async function POST(
       )
     }
 
-    // Insert admin reply
-    const { data, error } = await serviceClient
-      .from("ticket_messages")
-      .insert({
-        ticket_id: ticketId,
-        user_id: user.id,
-        message: parsed.data.message.trim(),
-        is_admin: true,
-      })
-      .select()
-      .single()
+    // Need the ticket's profile_id to bind the encrypted message envelope to
+    // the customer's tenant key, not the admin's.
+    const ticket = await getTicketForAdmin(serviceClient, ticketId)
+    if (!ticket) {
+      return NextResponse.json({ error: "Ticket not found" }, { status: 404 })
+    }
 
-    if (error) {
+    let newMessage
+    try {
+      newMessage = await createTicketMessage(serviceClient, {
+        ticket_id: ticketId,
+        profile_id: ticket.profile_id,
+        user_id: user.id,
+        is_admin: true,
+        message: parsed.data.message.trim(),
+      })
+    } catch (error) {
       console.error("Ticket reply insert error:", error)
       return NextResponse.json(
         { error: "Failed to send reply" },
@@ -102,7 +109,7 @@ export async function POST(
       .update({ updated_at: new Date().toISOString() })
       .eq("id", ticketId)
 
-    return NextResponse.json(data)
+    return NextResponse.json(newMessage)
   } catch (error) {
     console.error("Ticket reply error:", error)
     return NextResponse.json(
