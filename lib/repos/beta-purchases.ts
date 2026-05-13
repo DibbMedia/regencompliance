@@ -46,6 +46,11 @@ export interface BetaPurchaseReservationWrite {
   email: string
   stripe_customer_id: string
   reservation_token: string
+  // NOTE: per migration 001 `stripe_subscription_id` lives on `profiles`,
+  // NOT `beta_purchases`. The Stripe webhook used to attempt writing it on
+  // this table (silently no-op pre-PostgREST-strict); the integration pass
+  // dropped that field. The subscription id lands on `profiles` via the
+  // checkout-completed branch.
 }
 
 export interface BetaPurchaseEncryptedRow {
@@ -151,6 +156,72 @@ export async function listBetaPurchasesForAdmin(
       .range(offset, offset + limit - 1)
     if (error) throw error
     return (data as BetaPurchaseEncryptedRow[]).map(decryptBetaPurchaseRow)
+  })
+}
+
+/**
+ * Stripe-webhook finalize path. Reservation rows are created up-front by
+ * `reserve_beta_seat` keyed by `reservation_token`; once checkout completes,
+ * the webhook stamps the row with the real customer email + Stripe IDs.
+ *
+ * Because `email_enc` AAD is bound to `row.id`, this helper:
+ *   1. SELECTs the row id by `reservation_token` (+ claimed=false guard).
+ *   2. Encrypts `email` under the row's per-row DEK if provided.
+ *   3. UPDATEs `email_enc`, `stripe_customer_id` (when provided).
+ *
+ * `stripe_subscription_id` is NOT written here — that column lives on
+ * `profiles`, not `beta_purchases` (see migration 001).
+ *
+ * Throws if no matching unclaimed row exists; callers that want a soft path
+ * should fall back to `createBetaPurchaseReservation`.
+ */
+export async function finalizeBetaPurchaseByToken(
+  supabase: SupabaseClient,
+  reservationToken: string,
+  patch: {
+    stripe_customer_id?: string
+    email?: string | null
+  },
+): Promise<BetaPurchase> {
+  return withCryptoRequestScope(async () => {
+    // Step 1: resolve the row id. Required for AAD binding on email_enc.
+    const { data: existing, error: selErr } = await supabase
+      .from(TABLE)
+      .select("id")
+      .eq("reservation_token", reservationToken)
+      .eq("claimed", false)
+      .maybeSingle()
+    if (selErr) throw selErr
+    if (!existing) {
+      throw new Error(
+        `finalizeBetaPurchaseByToken: no unclaimed row for reservation_token`,
+      )
+    }
+    const rowId = (existing as { id: string }).id
+
+    // Step 2: encrypt email under the row DEK if supplied.
+    const update: Record<string, unknown> = {}
+    if (patch.email !== undefined && patch.email !== null) {
+      update.email_enc = encryptForRow({
+        rowId,
+        plaintext: patch.email,
+        table: TABLE,
+        column: "email",
+      })
+    }
+    if (patch.stripe_customer_id !== undefined) {
+      update.stripe_customer_id = patch.stripe_customer_id
+    }
+
+    // Step 3: persist + return decrypted row.
+    const { data, error } = await supabase
+      .from(TABLE)
+      .update(update)
+      .eq("id", rowId)
+      .select("*")
+      .single()
+    if (error) throw error
+    return decryptBetaPurchaseRow(data as BetaPurchaseEncryptedRow)
   })
 }
 
