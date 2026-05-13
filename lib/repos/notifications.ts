@@ -40,6 +40,10 @@ export interface NotificationEncryptedRow {
   title_enc: string | null
   body_enc: string | null
   action_url_enc: string | null
+  // Plaintext fallback columns kept during the 037 -> 038 transition.
+  title?: string | null
+  body?: string | null
+  action_url?: string | null
   type: string
   read: boolean
   created_at: string
@@ -69,9 +73,11 @@ export function decryptNotificationRow(
   profileId: string,
   row: NotificationEncryptedRow,
 ): Notification {
+  // Plaintext-fallback during the 037 -> 038 transition. If *_enc is null we
+  // try the legacy plaintext column on the same row before defaulting.
   const title =
     row.title_enc === null || row.title_enc === undefined
-      ? ""
+      ? (row.title ?? "")
       : decryptForUser({
           userId: profileId,
           envelope: row.title_enc,
@@ -81,7 +87,7 @@ export function decryptNotificationRow(
         })
   const body =
     row.body_enc === null || row.body_enc === undefined
-      ? ""
+      ? (row.body ?? "")
       : decryptForUser({
           userId: profileId,
           envelope: row.body_enc,
@@ -91,7 +97,7 @@ export function decryptNotificationRow(
         })
   const action_url =
     row.action_url_enc === null || row.action_url_enc === undefined
-      ? null
+      ? (row.action_url ?? null)
       : decryptForUser({
           userId: profileId,
           envelope: row.action_url_enc,
@@ -194,8 +200,10 @@ export function encryptNotificationUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
+// Legacy plaintext columns (title, body, action_url) are kept in SELECT during
+// the 037 -> 038 transition. After 038 drops them, remove from this list.
 const SELECT_COLS =
-  "id, profile_id, title_enc, body_enc, action_url_enc, type, read, created_at"
+  "id, profile_id, title_enc, body_enc, action_url_enc, title, body, action_url, type, read, created_at"
 
 export async function getNotification(
   supabase: SupabaseClient,

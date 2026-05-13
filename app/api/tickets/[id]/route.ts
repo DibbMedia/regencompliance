@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { isValidUUID } from "@/lib/validations"
+import { getTicket } from "@/lib/repos/support-tickets"
+import { listTicketMessages } from "@/lib/repos/ticket-messages"
 
 export async function GET(
   request: Request,
@@ -22,34 +24,30 @@ export async function GET(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const { data: ticket, error: ticketError } = await supabase
-      .from("support_tickets")
-      .select("*")
-      .eq("id", id)
-      .single()
+    let ticket
+    try {
+      ticket = await getTicket(supabase, profileId, id)
+    } catch (error) {
+      console.error("Ticket fetch error:", error)
+      return NextResponse.json({ error: "Failed to fetch ticket" }, { status: 500 })
+    }
 
-    if (ticketError || !ticket) {
+    if (!ticket) {
+      // Repo already enforces profile_id match; return 404 either way.
       return NextResponse.json({ error: "Ticket not found" }, { status: 404 })
     }
 
-    if (ticket.profile_id !== profileId) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
-    }
-
-    const { data: messages, error: messagesError } = await supabase
-      .from("ticket_messages")
-      .select("*")
-      .eq("ticket_id", id)
-      .order("created_at", { ascending: true })
-
-    if (messagesError) {
+    let messages
+    try {
+      messages = await listTicketMessages(supabase, profileId, { ticket_id: id })
+    } catch (messagesError) {
       console.error("Messages fetch error:", messagesError)
       return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 })
     }
 
     return NextResponse.json({
       ticket,
-      messages: messages || [],
+      messages,
     })
   } catch (error) {
     console.error("Ticket fetch error:", error)

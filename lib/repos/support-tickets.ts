@@ -40,6 +40,9 @@ export interface TicketEncryptedRow {
   profile_id: string
   user_id: string | null
   subject_enc: string | null
+  // Plaintext fallback for rows written before 037 backfill ran. Goes away
+  // when migration 038 drops the column.
+  subject?: string | null
   status: string
   priority: string
   created_at: string
@@ -67,7 +70,8 @@ export interface TicketUpdateShape {
 export function decryptTicketRow(profileId: string, row: TicketEncryptedRow): Ticket {
   const subject =
     row.subject_enc === null || row.subject_enc === undefined
-      ? ""
+      ? // Fall back to legacy plaintext column if it's still present (pre-038).
+        (row.subject ?? "")
       : decryptForUser({
           userId: profileId,
           envelope: row.subject_enc,
@@ -136,8 +140,11 @@ export function encryptTicketUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
+// `subject` is the legacy plaintext column read for backfill-fallback during
+// the 037 -> 038 transition. After migration 038 drops it, remove `subject`
+// from this list (Postgres will error if you select a dropped column).
 const SELECT_COLS =
-  "id, profile_id, user_id, subject_enc, status, priority, created_at, updated_at"
+  "id, profile_id, user_id, subject_enc, subject, status, priority, created_at, updated_at"
 
 export async function getTicket(
   supabase: SupabaseClient,
