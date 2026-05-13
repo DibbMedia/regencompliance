@@ -27,6 +27,7 @@ import { trackApiUsage } from "@/lib/api-costs"
 import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 import { sendToGhl } from "@/lib/ghl"
 import { captureError } from "@/lib/error-tracking"
+import { createFreeAuditLead } from "@/lib/repos/free-audit-leads"
 
 const FREE_AUDIT_USER_ID = "00000000-0000-0000-0000-000000000001"
 const PUBLIC_FLAG_LIMIT = 2
@@ -98,17 +99,12 @@ export async function POST(request: Request) {
     const { website_url, email, name, clinic_name } = parsed.data
     const emailKey = email.toLowerCase().trim()
 
-    // Per-email daily cap. Without this, an attacker can stuff the lead
-    // pipeline with the same email across 1,200+ different URLs/day inside
-    // the per-IP and per-host caps. 5/day is generous for a real prospect
-    // re-running their audit across a few pages.
-    const perEmail = await checkRateLimit(`free-audit-email:${emailKey}`, 5, 24 * 60 * 60 * 1000)
-    if (!perEmail.allowed) {
-      return NextResponse.json(
-        { error: "You've used your free audits for today. Apply for the beta to scan unlimited pages." },
-        { status: 429 },
-      )
-    }
+    // Per-email daily cap REMOVED per plan §12.1: post-encryption the email
+    // column is opaque ciphertext, so equality-based per-email rate limiting
+    // is impossible to enforce reliably. The remaining defenses are:
+    //   - 3/IP/hr + 5/host/6hr + 50 global/hr + 500 global/day (above)
+    // Worst case an attacker rotates IPs and emails to amplify cost; the
+    // global hourly + daily caps still bound it.
 
     // SSRF guard: reject private IPs, localhost, link-local, etc.
     const safe = await assertSafeUrl(website_url)
@@ -256,26 +252,27 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       }
     })
 
-    // Persist the lead. The unique index on (lower(email), lower(website_url),
-    // date_trunc('day', created_at)) prevents same-day dupes - the insert
-    // fails with 23505 and we treat it as success since the rate limits have
-    // already let the request through.
+    // Persist the lead via the encrypted-write repo. The dedup index
+    // (uniq_free_audit_email_url_day from mig 032) was dropped in mig 041
+    // because it relied on plaintext email/url equality - duplicates now
+    // just create additional rows; admin dedupes manually if it happens.
     const userAgent = request.headers.get("user-agent")?.slice(0, 500) || null
-    const { error: insertErr } = await supabase.from("free_audit_leads").insert({
-      email: emailKey,
-      website_url,
-      page_title: pageContent.title || null,
-      compliance_score: score,
-      flag_count: allFlags.length,
-      high_risk_count: highCount,
-      medium_risk_count: mediumCount,
-      low_risk_count: lowCount,
-      flags: allFlags,
-      ip_address: ip,
-      user_agent: userAgent,
-      source: deriveSource(request),
-    })
-    if (insertErr && insertErr.code !== "23505") {
+    try {
+      await createFreeAuditLead(supabase, {
+        email: emailKey,
+        website_url,
+        page_title: pageContent.title || null,
+        compliance_score: score,
+        flag_count: allFlags.length,
+        high_risk_count: highCount,
+        medium_risk_count: mediumCount,
+        low_risk_count: lowCount,
+        flags: allFlags,
+        ip_address: ip,
+        user_agent: userAgent,
+        source: deriveSource(request),
+      })
+    } catch (insertErr) {
       console.error("[free-audit] lead insert error:", insertErr)
     }
 

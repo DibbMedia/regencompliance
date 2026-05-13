@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { listWaitlistForAdmin } from "@/lib/repos/waitlist"
 
 export const maxDuration = 60
 
@@ -30,18 +31,23 @@ export async function GET() {
 
   const { serviceClient } = auth
 
-  const { data, error } = await serviceClient
-    .from("waitlist")
-    .select("name, email, source, created_at")
-    .order("created_at", { ascending: false })
-
-  if (error) {
+  // Pull the full set through the repo so name/email get decrypted before
+  // hitting the CSV writer. Pagination at this admin scale is over-engineered;
+  // the founder beta caps at 25 active seats and the waitlist itself is small.
+  let entries
+  try {
+    entries = await listWaitlistForAdmin(serviceClient, {
+      limit: 10_000,
+      offset: 0,
+      order: "desc",
+    })
+  } catch (error) {
     console.error("Waitlist export error:", error)
     return NextResponse.json({ error: "Failed to export waitlist" }, { status: 500 })
   }
 
   const header = "name,email,source,created_at"
-  const rows = (data || []).map((r) =>
+  const rows = entries.map((r) =>
     [csvEscape(r.name), csvEscape(r.email), csvEscape(r.source), csvEscape(r.created_at)].join(",")
   )
   const csv = [header, ...rows].join("\n")

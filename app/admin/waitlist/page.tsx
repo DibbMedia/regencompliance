@@ -3,9 +3,8 @@
 import useSWR, { mutate } from "swr"
 import { useState } from "react"
 import { toast } from "sonner"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search, Download, Trash2, Mail, Loader2, ListChecks, Send } from "lucide-react"
+import { Download, Trash2, Mail, Loader2, ListChecks, Send } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -23,26 +22,20 @@ function formatDate(iso: string): string {
 }
 
 export default function AdminWaitlistPage() {
-  const [search, setSearch] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
+  // Email/name search dropped per plan §12.6: the columns are encrypted
+  // ciphertext post-Phase-6 and server-side ilike no longer matches.
+  // Admin browses by created_at order; lookup by row UUID if needed.
   const [page, setPage] = useState(1)
   const [deleting, setDeleting] = useState<string | null>(null)
   const [sendingLaunch, setSendingLaunch] = useState(false)
 
   const params = new URLSearchParams({ page: String(page), limit: "20" })
-  if (searchQuery) params.set("search", searchQuery)
   const key = `/api/admin/waitlist?${params}`
 
   const { data, isLoading } = useSWR(key, fetcher, { refreshInterval: 30000 })
   const entries: WaitlistEntry[] = data?.entries || []
   const total = data?.total || 0
   const totalPages = data?.totalPages || 1
-
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault()
-    setPage(1)
-    setSearchQuery(search.trim())
-  }
 
   async function handleDelete(id: string, email: string) {
     if (!confirm(`Remove ${email} from the waitlist?`)) return
@@ -146,26 +139,7 @@ export default function AdminWaitlistPage() {
         </div>
       </div>
 
-      {/* Search */}
-      <form onSubmit={handleSearch} className="flex gap-2 max-w-md">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
-          <Input
-            placeholder="Search by name or email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-white/[0.03] border-white/10 text-white placeholder:text-white/30 focus:border-[#55E039]/30"
-          />
-        </div>
-        <Button
-          type="submit"
-          variant="secondary"
-          size="sm"
-          className="bg-white/[0.05] border border-white/10 text-white/70 hover:bg-white/[0.08]"
-        >
-          Search
-        </Button>
-      </form>
+      {/* Search dropped per plan §12.6 - email/name are encrypted ciphertext */}
 
       {/* Desktop / tablet table */}
       <div className="hidden md:block rounded-xl border border-white/10 bg-white/[0.03] overflow-x-auto">

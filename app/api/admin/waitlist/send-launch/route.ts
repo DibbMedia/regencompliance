@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { verifyDeveloperAdmin } from "@/lib/admin"
 import { sendEmail } from "@/lib/email"
 import { renderLaunchEmail, LAUNCH_EMAIL_SUBJECT } from "@/lib/emails/launch-announcement"
+import { listUnsentWaitlist, markWaitlistLaunchSent } from "@/lib/repos/waitlist"
 
 export const maxDuration = 300
 
@@ -35,18 +36,17 @@ export async function POST() {
     )
   }
 
-  const { data: pending, error: fetchError } = await serviceClient
-    .from("waitlist")
-    .select("id, name, email")
-    .is("launch_email_sent_at", null)
-    .order("created_at", { ascending: true })
-
-  if (fetchError) {
-    console.error("[send-launch] fetch error:", fetchError)
+  // Per plan §6 "send-launch": email is decrypted server-side here. This is
+  // the documented plaintext-in-transit point - emails leave the database
+  // boundary at email-send time.
+  let entries
+  try {
+    entries = await listUnsentWaitlist(serviceClient)
+  } catch (err) {
+    console.error("[send-launch] fetch error:", err)
     return NextResponse.json({ error: "Failed to read waitlist" }, { status: 500 })
   }
 
-  const entries = pending || []
   let sent = 0
   const errors: { email: string; reason: string }[] = []
 
@@ -64,13 +64,11 @@ export async function POST() {
         continue
       }
 
-      const { error: updateError } = await serviceClient
-        .from("waitlist")
-        .update({ launch_email_sent_at: new Date().toISOString() })
-        .eq("id", entry.id)
-
-      if (updateError) {
-        errors.push({ email: entry.email, reason: `DB update failed: ${updateError.message}` })
+      try {
+        await markWaitlistLaunchSent(serviceClient, entry.id)
+      } catch (updateError) {
+        const msg = updateError instanceof Error ? updateError.message : "unknown error"
+        errors.push({ email: entry.email, reason: `DB update failed: ${msg}` })
         continue
       }
 

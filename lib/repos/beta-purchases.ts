@@ -29,7 +29,10 @@ const TABLE = "beta_purchases"
 export interface BetaPurchase {
   id: string
   email: string
-  stripe_customer_id: string
+  // Nullable because reservation placeholder rows (from reserve_beta_seat
+  // RPC) don't have a stripe_customer_id until the Stripe webhook attaches
+  // it after checkout.session.completed.
+  stripe_customer_id: string | null
   stripe_payment_intent_id: string | null
   claimed: boolean
   claimed_by: string | null
@@ -47,8 +50,8 @@ export interface BetaPurchaseReservationWrite {
 
 export interface BetaPurchaseEncryptedRow {
   id: string
-  email_enc: string
-  stripe_customer_id: string
+  email_enc: string | null
+  stripe_customer_id: string | null
   stripe_payment_intent_id: string | null
   claimed: boolean
   claimed_by: string | null
@@ -56,17 +59,23 @@ export interface BetaPurchaseEncryptedRow {
   reserved_at: string | null
   reservation_expires_at: string | null
   created_at: string
+  // Plaintext fallback (mig 041 -> backfill -> mig 042 transition).
+  // Pre-cutover reservation rows wrote `email = 'pending-<token>'` via the
+  // RPC; that's a sentinel, never a real address. After cutover only
+  // email_enc carries the real customer email (set by Stripe webhook).
+  email?: string | null
 }
 
 export function decryptBetaPurchaseRow(row: BetaPurchaseEncryptedRow): BetaPurchase {
+  // Dual-read: prefer email_enc, fall back to plaintext `email` during the
+  // mig 041 -> backfill -> mig 042 transition. Reservation rows from the
+  // RPC may have email_enc=NULL with a sentinel plaintext or NULL.
+  const email = row.email_enc
+    ? decryptForRow({ rowId: row.id, envelope: row.email_enc, table: TABLE, column: "email" })
+    : row.email ?? ""
   return {
     id: row.id,
-    email: decryptForRow({
-      rowId: row.id,
-      envelope: row.email_enc,
-      table: TABLE,
-      column: "email",
-    }),
+    email,
     stripe_customer_id: row.stripe_customer_id,
     stripe_payment_intent_id: row.stripe_payment_intent_id,
     claimed: row.claimed,

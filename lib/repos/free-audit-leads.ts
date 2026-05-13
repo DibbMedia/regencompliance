@@ -59,8 +59,8 @@ export interface FreeAuditLeadWrite {
 
 export interface FreeAuditLeadEncryptedRow {
   id: string
-  email_enc: string
-  website_url_enc: string
+  email_enc: string | null
+  website_url_enc: string | null
   page_title_enc: string | null
   compliance_score: number | null
   flag_count: number | null
@@ -72,6 +72,13 @@ export interface FreeAuditLeadEncryptedRow {
   user_agent_enc: string | null
   source: string | null
   created_at: string
+  // Plaintext fallbacks (mig 041 -> backfill -> mig 042 transition).
+  email?: string | null
+  website_url?: string | null
+  page_title?: string | null
+  flags?: FreeAuditFlags | null
+  ip_address?: string | null
+  user_agent?: string | null
 }
 
 export interface FreeAuditLeadInsertShape {
@@ -109,27 +116,38 @@ function decOpt(rowId: string, column: string, envelope: string | null | undefin
 }
 
 export function decryptFreeAuditLeadRow(row: FreeAuditLeadEncryptedRow): FreeAuditLead {
+  // Dual-read: prefer *_enc, fall back to plaintext column when *_enc is
+  // NULL. Live during the mig 041 -> backfill -> mig 042 transition.
   return {
     id: row.id,
-    email: dec(row.id, "email", row.email_enc),
-    website_url: dec(row.id, "website_url", row.website_url_enc),
-    page_title: decOpt(row.id, "page_title", row.page_title_enc),
+    email: row.email_enc
+      ? dec(row.id, "email", row.email_enc)
+      : row.email ?? "",
+    website_url: row.website_url_enc
+      ? dec(row.id, "website_url", row.website_url_enc)
+      : row.website_url ?? "",
+    page_title: row.page_title_enc
+      ? decOpt(row.id, "page_title", row.page_title_enc)
+      : row.page_title ?? null,
     compliance_score: row.compliance_score,
     flag_count: row.flag_count,
     high_risk_count: row.high_risk_count,
     medium_risk_count: row.medium_risk_count,
     low_risk_count: row.low_risk_count,
-    flags:
-      row.flags_enc === null || row.flags_enc === undefined
-        ? null
-        : decryptJSONForRow<FreeAuditFlags>({
-            rowId: row.id,
-            envelope: row.flags_enc,
-            table: TABLE,
-            column: "flags",
-          }),
-    ip_address: decOpt(row.id, "ip_address", row.ip_address_enc),
-    user_agent: decOpt(row.id, "user_agent", row.user_agent_enc),
+    flags: row.flags_enc
+      ? decryptJSONForRow<FreeAuditFlags>({
+          rowId: row.id,
+          envelope: row.flags_enc,
+          table: TABLE,
+          column: "flags",
+        })
+      : (row.flags ?? null),
+    ip_address: row.ip_address_enc
+      ? decOpt(row.id, "ip_address", row.ip_address_enc)
+      : row.ip_address ?? null,
+    user_agent: row.user_agent_enc
+      ? decOpt(row.id, "user_agent", row.user_agent_enc)
+      : row.user_agent ?? null,
     source: row.source,
     created_at: row.created_at,
   }
