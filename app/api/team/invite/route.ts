@@ -4,7 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server"
 import { requireWriteMode } from "@/lib/impersonation"
 import { inviteSchema } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
-import crypto from "crypto"
+import { inviteTeamMember, listTeamMembers } from "@/lib/repos/team-members"
 
 export async function POST(request: Request) {
   try {
@@ -29,47 +29,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
-    // Check seat count (max 3 including owner)
-    const { count } = await supabase
-      .from("team_members")
-      .select("*", { count: "exact", head: true })
-      .eq("profile_id", user.id)
-
-    if ((count || 0) >= 2) {
+    // List the owner's team_members through the repo so we get decrypted
+    // emails for both the seat-count gate and the existing-invite dedupe.
+    // Email-equality lookup via SQL is no longer possible (Wave 2A:
+    // team_members.email is encrypted), so we filter in JS. Per the repo's
+    // 3-seat cap below, the list is at most 2 rows.
+    const existingMembers = await listTeamMembers(supabase, user.id)
+    if (existingMembers.length >= 2) {
       return NextResponse.json({ error: "Maximum 3 seats (including owner). Remove a member first." }, { status: 400 })
     }
 
-    // Check for existing pending invite for the same email
-    const { data: existingInvite } = await supabase
-      .from("team_members")
-      .select("id, email, invite_token")
-      .eq("profile_id", user.id)
-      .eq("email", parsed.data.email)
-      .is("user_id", null)
-      .single()
-
-    if (existingInvite) {
+    const targetEmail = parsed.data.email.toLowerCase()
+    const existingInvite = existingMembers.find(
+      (m) => m.user_id === null && m.email.toLowerCase() === targetEmail,
+    )
+    if (existingInvite && existingInvite.invite_token) {
       const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?invite_token=${existingInvite.invite_token}`
       return NextResponse.json({ invite_url: inviteUrl, existing: true })
     }
 
-    // Generate token
-    const token = crypto.randomBytes(32).toString("hex")
-
-    // Insert team member
-    const { error: insertError } = await supabase
-      .from("team_members")
-      .insert({
-        profile_id: user.id,
-        email: parsed.data.email,
-        role: "member",
-        invite_token: token,
-      })
-
-    if (insertError) {
-      console.error("Invite insert error:", insertError)
+    // Repo handles UUID + token + AAD-bound email_enc encrypt + insert in
+    // one call. Use the user-bound client so RLS still applies.
+    let inserted
+    try {
+      inserted = await inviteTeamMember(supabase, user.id, parsed.data.email, "member")
+    } catch (err) {
+      console.error("Invite insert error:", err)
       return NextResponse.json({ error: "Failed to create invite" }, { status: 500 })
     }
+    const token = inserted.invite_token ?? ""
 
     // Generate magic link via admin
     const adminClient = createServiceClient()

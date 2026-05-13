@@ -5,6 +5,7 @@ import ReactPDF from "@react-pdf/renderer"
 import { SitePdfDocument } from "@/lib/pdf-template"
 import type { SitePageData } from "@/lib/pdf-template"
 import { isValidUUID } from "@/lib/validations"
+import { getProfile } from "@/lib/repos/profiles"
 
 export const maxDuration = 60
 
@@ -28,12 +29,9 @@ export async function GET(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Check subscription
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("clinic_name, subscription_status")
-      .eq("id", profileId)
-      .single()
+    // Check subscription. Profile read goes through the repo so clinic_name
+    // is decrypted under the workspace owner's per-user DEK.
+    const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })

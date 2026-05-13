@@ -17,9 +17,15 @@
 //   - Plaintext columns (`clinic_name`, `treatments`) stay on the row.
 //   - New ciphertext columns (`clinic_name_enc text`, `treatments_enc text`)
 //     hold the canonical encrypted copies.
-// This module operates on the encrypted columns only; callsite migration to
-// this module is the cutover step. After migration 034 drops plaintext
-// columns the on-disk shape matches `ProfileEncryptedRow` exactly.
+//
+// Wave 2A behavior:
+//   - WRITES go through the `_enc` columns ONLY. There is no dual-write; the
+//     operator runs `scripts/backfill-profiles.ts` once after deploy and
+//     applies migration 034 which drops the plaintext columns.
+//   - READS prefer `_enc` and fall back to the legacy plaintext column when
+//     `_enc IS NULL`. This is the transitional safety net for rows that
+//     existed before deploy and haven't been backfilled yet. After migration
+//     034 the plaintext columns are gone and the fallback becomes a no-op.
 
 import type { SupabaseClient } from "@supabase/supabase-js"
 import {
@@ -33,7 +39,7 @@ import {
 const TABLE = "profiles"
 
 /** Plaintext shape returned by repo reads. Matches `Profile` in lib/types.ts
- *  plus `cancelled_at` (migration 029). */
+ *  plus `cancelled_at` (migration 029) and `badge_id` (migration 008). */
 export interface Profile {
   id: string
   clinic_name: string | null
@@ -47,6 +53,7 @@ export interface Profile {
   cancelled_at: string | null
   onboarding_complete: boolean
   theme_preference: "light" | "dark" | "system"
+  badge_id: string | null
   created_at: string
   updated_at: string
 }
@@ -67,13 +74,18 @@ export interface ProfileWrite {
   theme_preference?: Profile["theme_preference"]
 }
 
-/** On-disk shape after migration 034 (plaintext columns dropped). The repo
- *  ALSO accepts this shape during dual-write because we read only the `_enc`
- *  variants. */
+/** On-disk shape during the Wave 2A dual-state window. Both ciphertext and
+ *  legacy plaintext columns are selectable; reads prefer ciphertext and fall
+ *  back to plaintext when `_enc IS NULL` (un-backfilled rows). After migration
+ *  034 the plaintext fields disappear and the fallback path is dead code. */
 export interface ProfileEncryptedRow {
   id: string
   clinic_name_enc: string | null
   treatments_enc: string | null
+  // Legacy plaintext fallbacks. Optional in TypeScript because migration 034
+  // drops these columns; the repo treats `undefined` and `null` identically.
+  clinic_name?: string | null
+  treatments?: string[] | null
   logo_url: string | null
   subscription_status: Profile["subscription_status"]
   stripe_customer_id: string | null
@@ -83,13 +95,15 @@ export interface ProfileEncryptedRow {
   cancelled_at: string | null
   onboarding_complete: boolean
   theme_preference: Profile["theme_preference"]
+  badge_id: string | null
   created_at: string
   updated_at: string
 }
 
 /** Insert/update payload destined for Supabase: encrypted columns + the
  *  unchanged pass-through columns. `id` is required so AAD binding can include
- *  the row's user_id. */
+ *  the row's user_id. Writes never touch the legacy plaintext columns - they
+ *  go to `_enc` only, per the no-dual-write decision in §12.8. */
 export interface ProfileEncryptedWrite {
   clinic_name_enc?: string | null
   treatments_enc?: string | null
@@ -105,9 +119,11 @@ export interface ProfileEncryptedWrite {
 }
 
 /** Decrypt a stored row into the plaintext shape. The tenant key is the
- *  row's `id` (= auth.uid). NULL ciphertext columns return NULL plaintext
- *  without a decrypt call. For `treatments_enc`, NULL decodes to `[]` so the
- *  plaintext contract (`treatments: string[]`) stays non-nullable. */
+ *  row's `id` (= auth.uid). NULL ciphertext columns first try the legacy
+ *  plaintext fallback (for un-backfilled rows in the Wave 2A transition
+ *  window); if that's also NULL/undefined, return the type's default
+ *  (NULL for clinic_name, [] for treatments). After migration 034 drops the
+ *  plaintext columns, the fallback paths become unreachable. */
 export function decryptProfileRow(userId: string, row: ProfileEncryptedRow): Profile {
   if (userId !== row.id) {
     // AAD would catch this, but failing fast surfaces the bug at the caller.
@@ -117,26 +133,26 @@ export function decryptProfileRow(userId: string, row: ProfileEncryptedRow): Pro
   }
 
   const clinic_name =
-    row.clinic_name_enc === null
-      ? null
-      : decryptForUser({
+    row.clinic_name_enc != null
+      ? decryptForUser({
           userId,
           envelope: row.clinic_name_enc,
           table: TABLE,
           column: "clinic_name",
           rowId: userId,
         })
+      : (row.clinic_name ?? null) // legacy plaintext fallback (transitional)
 
   const treatments =
-    row.treatments_enc === null
-      ? []
-      : decryptJSONForUser<string[]>({
+    row.treatments_enc != null
+      ? decryptJSONForUser<string[]>({
           userId,
           envelope: row.treatments_enc,
           table: TABLE,
           column: "treatments",
           rowId: userId,
         })
+      : (row.treatments ?? []) // legacy plaintext fallback (transitional)
 
   return {
     id: row.id,
@@ -151,6 +167,7 @@ export function decryptProfileRow(userId: string, row: ProfileEncryptedRow): Pro
     cancelled_at: row.cancelled_at,
     onboarding_complete: row.onboarding_complete,
     theme_preference: row.theme_preference,
+    badge_id: row.badge_id,
     created_at: row.created_at,
     updated_at: row.updated_at,
   }
@@ -216,11 +233,18 @@ export function encryptProfileWrite(
 
 // --- CRUD ------------------------------------------------------------------
 
+// SELECT_COLUMNS includes the legacy plaintext `clinic_name` / `treatments`
+// columns during the Wave 2A transition window so reads can fall back when
+// `_enc` is NULL. After migration 034 drops them they vanish from the row
+// without code changes (PostgREST silently ignores missing select columns
+// when the FK constraint is dropped, but the cleaner story is the followup
+// commit that removes them from this string).
 const SELECT_COLUMNS =
-  "id, clinic_name_enc, treatments_enc, logo_url, subscription_status, " +
+  "id, clinic_name_enc, treatments_enc, clinic_name, treatments, " +
+  "logo_url, subscription_status, " +
   "stripe_customer_id, stripe_subscription_id, is_beta_subscriber, " +
   "beta_enrolled_at, cancelled_at, onboarding_complete, theme_preference, " +
-  "created_at, updated_at"
+  "badge_id, created_at, updated_at"
 
 export async function getProfile(
   supabase: SupabaseClient,
@@ -286,5 +310,26 @@ export async function listProfilesForAdmin(
     if (error) throw error
     const rows = (data ?? []) as unknown as ProfileEncryptedRow[]
     return rows.map((row) => decryptProfileRow(row.id, row))
+  })
+}
+
+/** Public badge page (and the badge SVG endpoint) look up a profile by its
+ *  random `badge_id` token, not its `id`. The repo decrypts using the row's
+ *  own `id` as the tenant key once we have the row in hand. */
+export async function getProfileByBadgeId(
+  supabase: SupabaseClient,
+  badgeId: string,
+): Promise<Profile | null> {
+  return withCryptoRequestScope(async () => {
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select(SELECT_COLUMNS)
+      .eq("badge_id", badgeId)
+      .maybeSingle()
+
+    if (error) throw error
+    if (!data) return null
+    const row = data as unknown as ProfileEncryptedRow
+    return decryptProfileRow(row.id, row)
   })
 }

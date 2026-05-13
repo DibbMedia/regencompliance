@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
+import { getProfileByBadgeId } from "@/lib/repos/profiles"
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,12 +16,11 @@ export async function GET(request: NextRequest) {
 
     const supabase = createServiceClient()
 
-    // Look up profile by badge_id
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("id, clinic_name, created_at")
-      .eq("badge_id", badgeId)
-      .single()
+    // Look up profile by badge_id. Wave 2A: clinic_name is encrypted but
+    // the badge SVG only renders score + date, so we don't actually need to
+    // decrypt it; the repo helper handles that for us. Falling back to
+    // getProfileByBadgeId keeps the lookup path single-sourced.
+    const profile = await getProfileByBadgeId(supabase, badgeId)
 
     if (!profile) {
       return new NextResponse(renderErrorSvg("Invalid badge"), {

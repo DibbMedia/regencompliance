@@ -1,13 +1,66 @@
+// Admin users list.
+//
+// Wave 2A (encryption rollout, see docs/user-level-encryption-plan.md §12.6):
+// `profiles.clinic_name` is encrypted under the user's per-user DEK, so the
+// previous `.ilike("clinic_name", ...)` search has been REMOVED. Admin
+// search now pivots to `auth.users.email` (via the existing
+// find_auth_user_id_by_email RPC / listUsers fallback). This is the
+// documented UX shift in plan §12.6; clinic-name search will not return
+// after the cutover.
 import { NextResponse } from "next/server"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { verifyAdmin } from "@/lib/admin"
 import { adminSearchSchema } from "@/lib/validations"
+import { decryptProfileRow, type ProfileEncryptedRow } from "@/lib/repos/profiles"
+import { withCryptoRequestScope } from "@/lib/crypto"
 
 interface ProfileRow {
   id: string
   clinic_name: string | null
   subscription_status: string | null
   created_at: string
+}
+
+// Decrypt a slice of the encrypted-row shape (the columns we actually select
+// here). We do this inline rather than calling the full `decryptProfileRow`
+// because the admin list only needs `id, clinic_name, subscription_status,
+// created_at` - the repo full-row select would pull every column.
+function decryptListedProfile(row: {
+  id: string
+  clinic_name_enc: string | null
+  clinic_name: string | null
+  subscription_status: string | null
+  created_at: string
+}): ProfileRow {
+  // Reuse the repo's decrypt path via a synthesized minimal row. The repo's
+  // decrypt function pulls only the columns it needs (clinic_name_enc /
+  // legacy clinic_name) so the rest can be no-op defaults.
+  const synthesized: ProfileEncryptedRow = {
+    id: row.id,
+    clinic_name_enc: row.clinic_name_enc,
+    treatments_enc: null,
+    clinic_name: row.clinic_name,
+    treatments: null,
+    logo_url: null,
+    subscription_status: (row.subscription_status as ProfileEncryptedRow["subscription_status"]) ?? "inactive",
+    stripe_customer_id: null,
+    stripe_subscription_id: null,
+    is_beta_subscriber: false,
+    beta_enrolled_at: null,
+    cancelled_at: null,
+    onboarding_complete: false,
+    theme_preference: "system",
+    badge_id: null,
+    created_at: row.created_at,
+    updated_at: row.created_at,
+  }
+  const decrypted = decryptProfileRow(row.id, synthesized)
+  return {
+    id: row.id,
+    clinic_name: decrypted.clinic_name,
+    subscription_status: row.subscription_status,
+    created_at: row.created_at,
+  }
 }
 
 interface ScanInfo {
@@ -85,34 +138,11 @@ export async function GET(request: Request) {
     const { search, page, status } = paramsParsed.data
     const limit = Math.min(paramsParsed.data.limit || 20, 50)
 
-    let query = serviceClient
-      .from("profiles")
-      .select("id, clinic_name, subscription_status, created_at", {
-        count: "exact",
-      })
-      .order("created_at", { ascending: false })
-      .range((page - 1) * limit, page * limit - 1)
-
-    if (status) {
-      query = query.eq("subscription_status", status)
-    }
-
+    // Search path: clinic-name search is gone, so a non-empty `search` only
+    // matches against `auth.users.email`. We resolve emails to user_ids
+    // first, then load the matching profile rows. Empty `search` falls
+    // through to the normal paginated listing below.
     if (search) {
-      const escapedSearch = search.replace(/%/g, '\\%').replace(/_/g, '\\_')
-      query = query.ilike("clinic_name", `%${escapedSearch}%`)
-    }
-
-    const { data: profiles, count, error } = await query
-
-    if (error) {
-      console.error("Admin users fetch error:", error)
-      return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 })
-    }
-
-    const usersWithEmail = await attachUserMetadata(serviceClient, (profiles ?? []) as ProfileRow[])
-
-    // Email-search fallback when clinic_name search returned nothing.
-    if (search && usersWithEmail.length === 0) {
       const matchingIds: string[] = []
 
       // Exact-email lookup via the indexed RPC from migration 030. This is
@@ -143,35 +173,89 @@ export async function GET(request: Request) {
         }
       }
 
-      if (matchingIds.length > 0) {
-        let emailQuery = serviceClient
-          .from("profiles")
-          .select("id, clinic_name, subscription_status, created_at", {
-            count: "exact",
-          })
-          .in("id", matchingIds)
-          .order("created_at", { ascending: false })
-          .range((page - 1) * limit, page * limit - 1)
-
-        if (status) {
-          emailQuery = emailQuery.eq("subscription_status", status)
-        }
-
-        const { data: emailProfiles, count: emailCount } = await emailQuery
-        const results = await attachUserMetadata(
-          serviceClient,
-          (emailProfiles ?? []) as ProfileRow[],
-        )
-
+      if (matchingIds.length === 0) {
         return NextResponse.json({
-          users: results,
-          total: emailCount || 0,
+          users: [],
+          total: 0,
           page,
           limit,
-          totalPages: Math.ceil((emailCount || 0) / limit),
+          totalPages: 0,
         })
       }
+
+      let emailQuery = serviceClient
+        .from("profiles")
+        .select(
+          "id, clinic_name_enc, clinic_name, subscription_status, created_at",
+          { count: "exact" },
+        )
+        .in("id", matchingIds)
+        .order("created_at", { ascending: false })
+        .range((page - 1) * limit, page * limit - 1)
+
+      if (status) {
+        emailQuery = emailQuery.eq("subscription_status", status)
+      }
+
+      const { data: emailRawProfiles, count: emailCount } = await emailQuery
+      const emailProfiles = await withCryptoRequestScope(async () =>
+        (emailRawProfiles ?? []).map((r) =>
+          decryptListedProfile(r as {
+            id: string
+            clinic_name_enc: string | null
+            clinic_name: string | null
+            subscription_status: string | null
+            created_at: string
+          }),
+        ),
+      )
+      const results = await attachUserMetadata(serviceClient, emailProfiles)
+
+      return NextResponse.json({
+        users: results,
+        total: emailCount || 0,
+        page,
+        limit,
+        totalPages: Math.ceil((emailCount || 0) / limit),
+      })
     }
+
+    let query = serviceClient
+      .from("profiles")
+      .select(
+        // Select ciphertext + legacy plaintext fallback so the in-route
+        // decrypt has both during the Wave 2A transition window.
+        "id, clinic_name_enc, clinic_name, subscription_status, created_at",
+        { count: "exact" },
+      )
+      .order("created_at", { ascending: false })
+      .range((page - 1) * limit, page * limit - 1)
+
+    if (status) {
+      query = query.eq("subscription_status", status)
+    }
+
+    const { data: rawProfiles, count, error } = await query
+
+    if (error) {
+      console.error("Admin users fetch error:", error)
+      return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 })
+    }
+
+    // Decrypt clinic_name on every row using the request-scoped derive cache.
+    const profiles = await withCryptoRequestScope(async () =>
+      (rawProfiles ?? []).map((r) =>
+        decryptListedProfile(r as {
+          id: string
+          clinic_name_enc: string | null
+          clinic_name: string | null
+          subscription_status: string | null
+          created_at: string
+        }),
+      ),
+    )
+
+    const usersWithEmail = await attachUserMetadata(serviceClient, profiles)
 
     return NextResponse.json({
       users: usersWithEmail,
@@ -217,10 +301,11 @@ export async function POST(request: Request) {
   }
 
   if (clinicName) {
-    await serviceClient
-      .from("profiles")
-      .update({ clinic_name: clinicName })
-      .eq("id", created.user.id)
+    // Wave 2A: clinic_name is encrypted under the new user's per-user DEK.
+    // Route the write through the repo so the ciphertext column is the only
+    // thing that hits Supabase.
+    const { updateProfile } = await import("@/lib/repos/profiles")
+    await updateProfile(serviceClient, created.user.id, { clinic_name: clinicName })
   }
 
   let inviteUrl: string | null = null
