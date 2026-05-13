@@ -130,13 +130,23 @@ function requireEnv(name: string): string {
 }
 
 function isColumnMissingError(err: unknown): boolean {
-  const msg = (err as { message?: string; code?: string })?.message ?? ""
-  const code = (err as { message?: string; code?: string })?.code ?? ""
-  // PostgREST returns 42703 ("column does not exist") wrapped as PGRST error.
+  const e = err as { message?: string; code?: string; details?: string; hint?: string }
+  const msg = e?.message ?? ""
+  const code = e?.code ?? ""
+  const details = e?.details ?? ""
+  const hint = e?.hint ?? ""
+  const combined = `${msg} ${details} ${hint}`
+  // 42703 is the Postgres SQLSTATE for "column does not exist". PostgREST
+  // surfaces dropped columns via PGRST204 ("column not found in schema cache").
+  // PGRST200 / PGRST205 cover related "not found in cache" cases.
   return (
     code === "42703" ||
-    /column .* does not exist/i.test(msg) ||
-    /could not find the .* column/i.test(msg)
+    code === "PGRST204" ||
+    code === "PGRST200" ||
+    code === "PGRST205" ||
+    /column .* does not exist/i.test(combined) ||
+    /could not find the .* column/i.test(combined) ||
+    /column .* not found/i.test(combined)
   )
 }
 
@@ -159,6 +169,27 @@ async function checkPlaintextColumn(
 ): Promise<Result> {
   const label = `${ec.table}.${ec.plaintextCol}`
   try {
+    // Probe first: does the plaintext column still exist in PostgREST's
+    // schema cache? Cheaper than the count, and an unambiguous signal: if
+    // the column was dropped at cutover, this errors immediately. Probes
+    // also surface a clearer error code than the count path under supabase-js.
+    const probe = await client.from(ec.table).select(ec.plaintextCol).limit(0)
+    if (probe.error) {
+      if (isColumnMissingError(probe.error)) {
+        return {
+          status: "PASS",
+          label,
+          detail: "plaintext column dropped (cutover migration applied)",
+        }
+      }
+      if (isTableMissingError(probe.error)) {
+        return { status: "SKIP", label, detail: `table missing: ${probe.error.message}` }
+      }
+      // Unknown probe error - report verbatim so the operator can investigate.
+      const eAny = probe.error as { message?: string; code?: string; details?: string }
+      const detail = eAny.message || eAny.code || eAny.details || "(empty PostgREST error)"
+      return { status: "FAIL", label, detail: `probe error: ${detail}` }
+    }
     const { count, error } = await client
       .from(ec.table)
       .select(ec.plaintextCol, { count: "exact", head: true })
@@ -174,7 +205,9 @@ async function checkPlaintextColumn(
       if (isTableMissingError(error)) {
         return { status: "SKIP", label, detail: `table missing: ${error.message}` }
       }
-      return { status: "FAIL", label, detail: `query error: ${error.message}` }
+      const eAny = error as { message?: string; code?: string; details?: string }
+      const detail = eAny.message || eAny.code || eAny.details || "(empty PostgREST error)"
+      return { status: "FAIL", label, detail: `query error: ${detail}` }
     }
     const n = count ?? 0
     if (n === 0) {
