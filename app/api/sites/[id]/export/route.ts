@@ -70,16 +70,18 @@ export async function GET(
         const batchSize = 50
         for (let i = 0; i < scanIds.length; i += batchSize) {
           const batch = scanIds.slice(i, i + batchSize)
-          const { data: scans } = await supabase
+          // Post-cutover (mig 036): plaintext `flags` is gone; select only
+          // the encrypted envelope and surface any error instead of swallowing.
+          const { data: scans, error: scansErr } = await supabase
             .from("scans")
-            .select("id, flags_enc, flags")
+            .select("id, flags_enc")
             .in("id", batch)
 
+          if (scansErr) throw scansErr
           if (scans) {
             for (const scan of scans as Array<{
               id: string
               flags_enc: string | null
-              flags: ScanFlag[] | null
             }>) {
               const flags: ScanFlag[] =
                 scan.flags_enc != null
@@ -90,7 +92,7 @@ export async function GET(
                       column: "flags",
                       rowId: scan.id,
                     })
-                  : (scan.flags as ScanFlag[] | null) ?? []
+                  : []
               scanFlagsMap[scan.id] = { flags }
             }
           }
