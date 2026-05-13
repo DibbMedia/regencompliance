@@ -4,7 +4,8 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { TOOLS } from "@/lib/tools/registry"
 import { SITE_URL } from "@/lib/site-url"
-import { ToolsHubClient, HUB_FAQS } from "./tools-hub-client"
+import { ToolsHubClient } from "./tools-hub-client"
+import { HUB_FAQS } from "./hub-faqs"
 
 const canonical = `${SITE_URL}/tools`
 

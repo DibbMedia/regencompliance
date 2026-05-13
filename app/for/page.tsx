@@ -6,7 +6,8 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { SPECIALTIES } from "@/lib/specialty/registry"
 import { SITE_URL } from "@/lib/site-url"
-import { ForHubFaq, SPECIALTY_HUB_FAQS } from "./for-hub-faq"
+import { ForHubFaq } from "./for-hub-faq"
+import { SPECIALTY_HUB_FAQS } from "./hub-faqs"
 
 const canonical = `${SITE_URL}/for`
 
