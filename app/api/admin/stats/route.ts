@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
+import { listProfilesForAdmin } from "@/lib/repos/profiles"
+import { decryptJSONForUser, withCryptoRequestScope } from "@/lib/crypto"
+import type { ScanFlag } from "@/lib/types"
 
 const BETA_PRICE = 297
 const STANDARD_PRICE = 497
@@ -128,10 +131,13 @@ export async function GET(request: Request) {
       .gte("created_at", lastMonthStart.toISOString())
       .lte("created_at", lastMonthEnd.toISOString())
 
-    // Average compliance score & total flags
+    // Average compliance score & total flags. Post-migration 036, `flags`
+    // is encrypted per row under the row owner's DEK. Counts
+    // (compliance_score, flag_count) stay plaintext; the per-row decrypt
+    // only happens for the "most common violation" aggregate.
     const { data: scoreData } = await serviceClient
       .from("scans")
-      .select("compliance_score, flag_count, flags")
+      .select("id, profile_id, compliance_score, flag_count, flags_enc, flags")
 
     let avgScore = 0
     let totalFlags = 0
@@ -149,15 +155,37 @@ export async function GET(request: Request) {
       }
       totalFlags = scoreData.reduce((sum, s) => sum + (s.flag_count || 0), 0)
 
-      for (const scan of scoreData) {
-        const flags = scan.flags
-        if (Array.isArray(flags)) {
+      await withCryptoRequestScope(async () => {
+        for (const scan of scoreData) {
+          let flags: ScanFlag[] = []
+          if (scan.flags_enc != null) {
+            try {
+              flags = decryptJSONForUser<ScanFlag[]>({
+                userId: scan.profile_id,
+                envelope: scan.flags_enc,
+                table: "scans",
+                column: "flags",
+                rowId: scan.id,
+              })
+            } catch (err) {
+              console.error(
+                `[admin/stats] flags decrypt failed for scan ${scan.id}:`,
+                err,
+              )
+              continue
+            }
+          } else if (Array.isArray(scan.flags)) {
+            // Transitional fallback for un-backfilled rows (between 035 and
+            // the 036 cutover). Post-036 the plaintext column is gone.
+            flags = scan.flags as ScanFlag[]
+          }
+
           for (const flag of flags) {
             const phrase = flag.banned_phrase || flag.reason || "Unknown"
             violationCounts[phrase] = (violationCounts[phrase] || 0) + 1
           }
         }
-      }
+      })
     }
 
     let mostCommonViolation = "None"
@@ -188,15 +216,16 @@ export async function GET(request: Request) {
       authPage++
     }
 
-    // Recent signups (last 10)
-    const { data: recentSignups } = await serviceClient
-      .from("profiles")
-      .select("id, clinic_name, subscription_status, created_at")
-      .order("created_at", { ascending: false })
-      .limit(10)
+    // Recent signups (last 10). profiles.clinic_name is encrypted under each
+    // row's user DEK post-migration 034; the repo decrypts each row under
+    // its own key with the request-scoped derive cache.
+    const recentSignups = await listProfilesForAdmin(serviceClient, { limit: 10 })
 
-    const signupsWithEmail = (recentSignups || []).map((signup) => ({
-      ...signup,
+    const signupsWithEmail = recentSignups.map((signup) => ({
+      id: signup.id,
+      clinic_name: signup.clinic_name,
+      subscription_status: signup.subscription_status,
+      created_at: signup.created_at,
       email: emailMap[signup.id] || "unknown",
     }))
 
@@ -222,7 +251,7 @@ export async function GET(request: Request) {
     }))
 
     // Recent signups as activity events
-    const signupActivity = (recentSignups || []).slice(0, 5).map((signup) => ({
+    const signupActivity = recentSignups.slice(0, 5).map((signup) => ({
       id: `signup-${signup.id}`,
       type: "signup" as string,
       user_email: emailMap[signup.id] || "unknown",
