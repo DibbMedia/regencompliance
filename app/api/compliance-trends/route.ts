@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
+import { withCryptoRequestScope, decryptJSONForUser } from "@/lib/crypto"
+import type { ScanFlag } from "@/lib/types"
 
 interface Flag {
   banned_phrase?: string
@@ -25,10 +27,13 @@ export async function GET() {
     const ninetyDaysAgo = new Date()
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
 
-    const { data: scans, error } = await supabase
+    // Encrypted columns: flags_enc must be decrypted per-row under the
+    // profile DEK. Pull the legacy plaintext flags column too so rows that
+    // predate the backfill still aggregate correctly.
+    const { data: scansRaw, error } = await supabase
       .from("scans")
       .select(
-        "id, compliance_score, content_type, flag_count, flags, created_at"
+        "id, compliance_score, content_type, flag_count, flags_enc, flags, created_at"
       )
       .eq("profile_id", profileId)
       .gte("created_at", ninetyDaysAgo.toISOString())
@@ -42,7 +47,38 @@ export async function GET() {
       )
     }
 
-    const allScans = scans || []
+    type ScanAggregateRow = {
+      id: string
+      compliance_score: number | null
+      content_type: string | null
+      flag_count: number | null
+      flags_enc: string | null
+      flags: ScanFlag[] | null
+      created_at: string
+    }
+
+    const allScans = await withCryptoRequestScope(async () =>
+      ((scansRaw ?? []) as ScanAggregateRow[]).map((row) => {
+        const flags: Flag[] | null =
+          row.flags_enc != null
+            ? decryptJSONForUser<Flag[]>({
+                userId: profileId,
+                envelope: row.flags_enc,
+                table: "scans",
+                column: "flags",
+                rowId: row.id,
+              })
+            : (row.flags as Flag[] | null)
+        return {
+          id: row.id,
+          compliance_score: row.compliance_score,
+          content_type: row.content_type,
+          flag_count: row.flag_count,
+          flags,
+          created_at: row.created_at,
+        }
+      }),
+    )
 
     // --- Daily scores (last 30 days) ---
     const thirtyDaysAgo = new Date()

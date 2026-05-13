@@ -70,6 +70,13 @@ export interface ScanEncryptedRow {
   rewritten_text_enc: string | null
   flags_enc: string | null
   source_url_enc: string | null
+  // Legacy plaintext columns (dropped in migration 036). During the
+  // dual-write transition these are still present on existing rows; reads
+  // fall back to them when the `_enc` companion is NULL.
+  original_text?: string | null
+  rewritten_text?: string | null
+  flags?: ScanFlag[] | null
+  source_url?: string | null
   compliance_score: number | null
   flag_count: number
   high_risk_count: number
@@ -114,45 +121,52 @@ export interface ScanUpdate {
 // --- Pure transforms -------------------------------------------------------
 
 export function decryptScanRow(profileId: string, row: ScanEncryptedRow): Scan {
-  const originalText = row.original_text_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.original_text_enc,
-        table: TABLE,
-        column: "original_text",
-        rowId: row.id,
-      })
-    : ""
+  // Plaintext-fallback during the dual-write transition (migration 035 -> 036):
+  // prefer the encrypted envelope; fall back to the legacy plaintext column
+  // when `_enc` is NULL (row predates the backfill).
+  const originalText =
+    row.original_text_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.original_text_enc,
+          table: TABLE,
+          column: "original_text",
+          rowId: row.id,
+        })
+      : row.original_text ?? ""
 
-  const rewrittenText = row.rewritten_text_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.rewritten_text_enc,
-        table: TABLE,
-        column: "rewritten_text",
-        rowId: row.id,
-      })
-    : null
+  const rewrittenText =
+    row.rewritten_text_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.rewritten_text_enc,
+          table: TABLE,
+          column: "rewritten_text",
+          rowId: row.id,
+        })
+      : row.rewritten_text ?? null
 
-  const flags = row.flags_enc
-    ? decryptJSONForUser<ScanFlag[]>({
-        userId: profileId,
-        envelope: row.flags_enc,
-        table: TABLE,
-        column: "flags",
-        rowId: row.id,
-      })
-    : []
+  const flags =
+    row.flags_enc != null
+      ? decryptJSONForUser<ScanFlag[]>({
+          userId: profileId,
+          envelope: row.flags_enc,
+          table: TABLE,
+          column: "flags",
+          rowId: row.id,
+        })
+      : (row.flags as ScanFlag[] | null) ?? []
 
-  const sourceUrl = row.source_url_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.source_url_enc,
-        table: TABLE,
-        column: "source_url",
-        rowId: row.id,
-      })
-    : null
+  const sourceUrl =
+    row.source_url_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.source_url_enc,
+          table: TABLE,
+          column: "source_url",
+          rowId: row.id,
+        })
+      : row.source_url ?? null
 
   return {
     id: row.id,
@@ -309,8 +323,14 @@ export function encryptScanUpdate(
 
 // --- DB access -------------------------------------------------------------
 
+// Includes both `*_enc` columns and the legacy plaintext columns. Once
+// migration 036 drops the plaintext columns, prune them from this list and
+// from `ScanEncryptedRow`.
 const SELECT_COLUMNS =
-  "id, profile_id, user_id, content_type, original_text_enc, rewritten_text_enc, flags_enc, source_url_enc, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, scan_duration_ms, created_at"
+  "id, profile_id, user_id, content_type, " +
+  "original_text_enc, rewritten_text_enc, flags_enc, source_url_enc, " +
+  "original_text, rewritten_text, flags, source_url, " +
+  "compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, scan_duration_ms, created_at"
 
 export async function getScan(
   supabase: SupabaseClient,

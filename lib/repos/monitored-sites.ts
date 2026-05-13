@@ -49,6 +49,9 @@ export interface MonitoredSiteEncryptedRow {
   profile_id: string
   domain_enc: string | null
   name_enc: string | null
+  // Legacy plaintext columns (dropped in migration 036). Dual-write transition.
+  domain?: string | null
+  name?: string | null
   is_active: boolean
   crawl_frequency: string | null
   last_crawl_at: string | null
@@ -92,25 +95,27 @@ export function decryptMonitoredSiteRow(
   profileId: string,
   row: MonitoredSiteEncryptedRow,
 ): MonitoredSite {
-  const domain = row.domain_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.domain_enc,
-        table: TABLE,
-        column: "domain",
-        rowId: row.id,
-      })
-    : ""
+  const domain =
+    row.domain_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.domain_enc,
+          table: TABLE,
+          column: "domain",
+          rowId: row.id,
+        })
+      : row.domain ?? ""
 
-  const name = row.name_enc
-    ? decryptForUser({
-        userId: profileId,
-        envelope: row.name_enc,
-        table: TABLE,
-        column: "name",
-        rowId: row.id,
-      })
-    : null
+  const name =
+    row.name_enc != null
+      ? decryptForUser({
+          userId: profileId,
+          envelope: row.name_enc,
+          table: TABLE,
+          column: "name",
+          rowId: row.id,
+        })
+      : row.name ?? null
 
   return {
     id: row.id,
@@ -215,8 +220,10 @@ export function encryptMonitoredSiteUpdate(
 
 // --- DB access -------------------------------------------------------------
 
+// Includes both `*_enc` columns and the legacy plaintext columns. Prune
+// once migration 036 drops the plaintext columns.
 const SELECT_COLUMNS =
-  "id, profile_id, domain_enc, name_enc, is_active, crawl_frequency, last_crawl_at, next_crawl_at, total_pages, avg_compliance_score, created_at, updated_at"
+  "id, profile_id, domain_enc, name_enc, domain, name, is_active, crawl_frequency, last_crawl_at, next_crawl_at, total_pages, avg_compliance_score, created_at, updated_at"
 
 export async function getMonitoredSite(
   supabase: SupabaseClient,
@@ -304,6 +311,37 @@ export async function updateMonitoredSite(
 
     if (error) throw error
     return decryptMonitoredSiteRow(profileId, data as unknown as MonitoredSiteEncryptedRow)
+  })
+}
+
+/**
+ * Cron read path: fetch the next batch of monitored sites due for a crawl.
+ * Service-role context — no `profile_id` filter. Pre-encryption this was a
+ * `select("*, profiles!inner(treatments)")` JOIN; the JOIN is gone because
+ * `profiles.treatments` is now encrypted and only the per-user repo path
+ * can read it. Cron callers fetch sites via this helper, then resolve
+ * treatments per site via `getProfile(serviceClient, site.profile_id)`
+ * inside the encryption request scope.
+ */
+export async function listMonitoredSitesForCron(
+  supabase: SupabaseClient,
+  opts: { limit?: number; dueBefore?: string } = {},
+): Promise<MonitoredSite[]> {
+  return withCryptoRequestScope(async () => {
+    const limit = opts.limit ?? 10
+    const dueBefore = opts.dueBefore ?? new Date().toISOString()
+
+    const { data, error } = await supabase
+      .from(TABLE)
+      .select(SELECT_COLUMNS)
+      .eq("is_active", true)
+      .lte("next_crawl_at", dueBefore)
+      .order("next_crawl_at", { ascending: true })
+      .limit(limit)
+
+    if (error) throw error
+    const rows = (data ?? []) as unknown as MonitoredSiteEncryptedRow[]
+    return rows.map((row) => decryptMonitoredSiteRow(row.profile_id, row))
   })
 }
 

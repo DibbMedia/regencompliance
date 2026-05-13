@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { isValidUUID } from "@/lib/validations"
+import { getMonitoredSite } from "@/lib/repos/monitored-sites"
+import { listPagesForSite } from "@/lib/repos/site-pages"
 
 // GET - list all pages for a site with compliance data
 export async function GET(
@@ -23,14 +25,8 @@ export async function GET(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Verify site ownership
-    const { data: site } = await supabase
-      .from("monitored_sites")
-      .select("id")
-      .eq("id", id)
-      .eq("profile_id", profileId)
-      .single()
-
+    // Verify site ownership via repo lookup.
+    const site = await getMonitoredSite(supabase, profileId, id)
     if (!site) {
       return NextResponse.json({ error: "Site not found" }, { status: 404 })
     }
@@ -40,40 +36,46 @@ export async function GET(
     const sort = searchParams.get("sort") || "score_asc"
     const status = searchParams.get("status")
 
-    // Build query
-    let query = supabase
-      .from("site_pages")
-      .select("*")
-      .eq("site_id", id)
+    // Fetch all pages, decrypted; sort client-side because compliance_score
+    // and last_scanned_at are pass-through columns but the repo doesn't
+    // expose an `order_by` knob today and the page count per site is
+    // bounded (max 50 discovered, often less).
+    const { pages } = await listPagesForSite(supabase, profileId, id, {
+      limit: 1000,
+      status: status ?? undefined,
+    })
 
-    // Filter by status
-    if (status) {
-      query = query.eq("status", status)
-    }
+    const sorted = [...pages].sort((a, b) => {
+      switch (sort) {
+        case "score_desc": {
+          const av = a.compliance_score
+          const bv = b.compliance_score
+          if (av == null && bv == null) return 0
+          if (av == null) return -1
+          if (bv == null) return 1
+          return bv - av
+        }
+        case "recent": {
+          const av = a.last_scanned_at
+          const bv = b.last_scanned_at
+          if (av == null && bv == null) return 0
+          if (av == null) return -1
+          if (bv == null) return 1
+          return av < bv ? 1 : av > bv ? -1 : 0
+        }
+        case "score_asc":
+        default: {
+          const av = a.compliance_score
+          const bv = b.compliance_score
+          if (av == null && bv == null) return 0
+          if (av == null) return 1
+          if (bv == null) return -1
+          return av - bv
+        }
+      }
+    })
 
-    // Sort
-    switch (sort) {
-      case "score_asc":
-        query = query.order("compliance_score", { ascending: true, nullsFirst: false })
-        break
-      case "score_desc":
-        query = query.order("compliance_score", { ascending: false, nullsFirst: true })
-        break
-      case "recent":
-        query = query.order("last_scanned_at", { ascending: false, nullsFirst: true })
-        break
-      default:
-        query = query.order("compliance_score", { ascending: true, nullsFirst: false })
-    }
-
-    const { data: pages, error } = await query
-
-    if (error) {
-      console.error("Failed to fetch pages:", error)
-      return NextResponse.json({ error: "Failed to fetch pages" }, { status: 500 })
-    }
-
-    return NextResponse.json({ pages: pages || [] })
+    return NextResponse.json({ pages: sorted })
   } catch (error) {
     console.error("Pages GET error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
