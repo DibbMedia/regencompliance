@@ -323,13 +323,11 @@ export function encryptScanUpdate(
 
 // --- DB access -------------------------------------------------------------
 
-// Includes both `*_enc` columns and the legacy plaintext columns. Once
-// migration 036 drops the plaintext columns, prune them from this list and
-// from `ScanEncryptedRow`.
+// Post-cutover: migration 036 dropped the plaintext original_text / rewritten_text
+// / flags / source_url columns.
 const SELECT_COLUMNS =
   "id, profile_id, user_id, content_type, " +
   "original_text_enc, rewritten_text_enc, flags_enc, source_url_enc, " +
-  "original_text, rewritten_text, flags, source_url, " +
   "compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, scan_duration_ms, created_at"
 
 export async function getScan(

@@ -163,12 +163,9 @@ export function encryptTeamMemberWrite(
 
 // --- CRUD ------------------------------------------------------------------
 
-// SELECT_COLUMNS includes the legacy plaintext `email` column during the
-// Wave 2A transition window so reads can fall back when `email_enc` is NULL.
-// After migration 034 drops `email` the column vanishes - the followup
-// cleanup commit will trim it out of this string.
+// Post-cutover: migration 034 dropped the plaintext `email` column.
 const SELECT_COLUMNS =
-  "id, profile_id, user_id, email_enc, email, role, invite_token, accepted, accepted_at, invited_at"
+  "id, profile_id, user_id, email_enc, role, invite_token, accepted, accepted_at, invited_at"
 
 export async function getTeamMember(
   supabase: SupabaseClient,

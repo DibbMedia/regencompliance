@@ -140,11 +140,9 @@ export function encryptTicketUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
-// `subject` is the legacy plaintext column read for backfill-fallback during
-// the 037 -> 038 transition. After migration 038 drops it, remove `subject`
-// from this list (Postgres will error if you select a dropped column).
+// Post-cutover: migration 038 dropped the plaintext subject column.
 const SELECT_COLS =
-  "id, profile_id, user_id, subject_enc, subject, status, priority, created_at, updated_at"
+  "id, profile_id, user_id, subject_enc, status, priority, created_at, updated_at"
 
 export async function getTicket(
   supabase: SupabaseClient,

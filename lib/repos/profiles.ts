@@ -233,14 +233,12 @@ export function encryptProfileWrite(
 
 // --- CRUD ------------------------------------------------------------------
 
-// SELECT_COLUMNS includes the legacy plaintext `clinic_name` / `treatments`
-// columns during the Wave 2A transition window so reads can fall back when
-// `_enc` is NULL. After migration 034 drops them they vanish from the row
-// without code changes (PostgREST silently ignores missing select columns
-// when the FK constraint is dropped, but the cleaner story is the followup
-// commit that removes them from this string).
+// Post-cutover: migration 034 dropped clinic_name + treatments. PostgREST
+// returns PGRST204 on any select that names a non-existent column, so the
+// plaintext fallbacks in decryptProfileRow are now dead code (kept as
+// defensive null/[] returns in case a row has *_enc NULL).
 const SELECT_COLUMNS =
-  "id, clinic_name_enc, treatments_enc, clinic_name, treatments, " +
+  "id, clinic_name_enc, treatments_enc, " +
   "logo_url, subscription_status, " +
   "stripe_customer_id, stripe_subscription_id, is_beta_subscriber, " +
   "beta_enrolled_at, cancelled_at, onboarding_complete, theme_preference, " +

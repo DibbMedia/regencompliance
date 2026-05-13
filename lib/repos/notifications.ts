@@ -200,10 +200,9 @@ export function encryptNotificationUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
-// Legacy plaintext columns (title, body, action_url) are kept in SELECT during
-// the 037 -> 038 transition. After 038 drops them, remove from this list.
+// Post-cutover: migration 038 dropped the plaintext title / body / action_url columns.
 const SELECT_COLS =
-  "id, profile_id, title_enc, body_enc, action_url_enc, title, body, action_url, type, read, created_at"
+  "id, profile_id, title_enc, body_enc, action_url_enc, type, read, created_at"
 
 export async function getNotification(
   supabase: SupabaseClient,

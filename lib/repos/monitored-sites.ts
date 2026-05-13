@@ -220,10 +220,9 @@ export function encryptMonitoredSiteUpdate(
 
 // --- DB access -------------------------------------------------------------
 
-// Includes both `*_enc` columns and the legacy plaintext columns. Prune
-// once migration 036 drops the plaintext columns.
+// Post-cutover: migration 036 dropped the plaintext domain / name columns.
 const SELECT_COLUMNS =
-  "id, profile_id, domain_enc, name_enc, domain, name, is_active, crawl_frequency, last_crawl_at, next_crawl_at, total_pages, avg_compliance_score, created_at, updated_at"
+  "id, profile_id, domain_enc, name_enc, is_active, crawl_frequency, last_crawl_at, next_crawl_at, total_pages, avg_compliance_score, created_at, updated_at"
 
 export async function getMonitoredSite(
   supabase: SupabaseClient,

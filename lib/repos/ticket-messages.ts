@@ -133,11 +133,9 @@ export function encryptTicketMessageUpdate(
 
 // --- Async repo API --------------------------------------------------------
 
-// `message` is the legacy plaintext column read for backfill-fallback during
-// the 037 -> 038 transition. After migration 038 drops it, remove from this
-// list (Postgres errors if you select a dropped column).
+// Post-cutover: migration 038 dropped the plaintext message column.
 const SELECT_COLS =
-  "id, ticket_id, profile_id, user_id, is_admin, message_enc, message, created_at"
+  "id, ticket_id, profile_id, user_id, is_admin, message_enc, created_at"
 
 export async function getTicketMessage(
   supabase: SupabaseClient,

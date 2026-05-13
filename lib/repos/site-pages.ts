@@ -238,10 +238,9 @@ export function encryptSitePageUpdate(
 
 // --- DB access -------------------------------------------------------------
 
-// Includes both `*_enc` columns and the legacy plaintext columns. Prune
-// once migration 036 drops the plaintext columns.
+// Post-cutover: migration 036 dropped the plaintext url / title columns.
 const SELECT_COLUMNS =
-  "id, site_id, profile_id, url_enc, title_enc, url, title, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at"
+  "id, site_id, profile_id, url_enc, title_enc, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at"
 
 export async function getSitePage(
   supabase: SupabaseClient,
