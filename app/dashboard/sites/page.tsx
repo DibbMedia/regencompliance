@@ -137,8 +137,9 @@ export default function SitesPage() {
         return
       }
       const data = await res.json()
-      const pagesScanned = data.summary?.pages_scanned || 0
-      const avgScore = data.summary?.avg_score || "N/A"
+      // API returns fields directly on the response, not under .summary.
+      const pagesScanned = data.pages_scanned ?? 0
+      const avgScore = data.avg_compliance_score ?? "N/A"
       toast.success(`Scan complete! ${pagesScanned} pages scanned. Average score: ${avgScore}`)
       mutate("/api/sites")
     } catch {

@@ -133,7 +133,13 @@ export default function SiteDetailPage() {
   const [sortBy, setSortBy] = useState<SortKey>("score")
   const [filterBy, setFilterBy] = useState<FilterKey>("all")
 
-  const { data: apiData, isLoading } = useSWR<SiteApiResponse>(`/api/sites/${id}`, fetcher)
+  // Poll every 3s while a scan is running so site_pages.status flips
+  // (pending -> scanning -> scanned) animate in the UI. Once scanning ends
+  // the interval goes to 0 so SWR stops polling.
+  const { data: apiData, isLoading } = useSWR<SiteApiResponse>(`/api/sites/${id}`, fetcher, {
+    refreshInterval: scanning ? 3000 : 0,
+    revalidateOnFocus: true,
+  })
   const site = apiData ? { ...apiData.site, pages: apiData.pages } : null
 
   async function handleScanAll() {
@@ -147,8 +153,19 @@ export default function SiteDetailPage() {
         return
       }
       const data = await res.json()
-      const pagesScanned = data.summary?.pages_scanned || 0
-      toast.success(`Scan complete! ${pagesScanned} pages scanned.`)
+      // API returns the count directly on the response, not under .summary.
+      // Before the fix this read data.summary?.pages_scanned and always got 0.
+      const pagesScanned = data.pages_scanned ?? 0
+      const pagesFailed = data.pages_failed ?? 0
+      const pagesQueued = data.pages_queued ?? 0
+      const detail = [
+        `${pagesScanned} scanned`,
+        pagesFailed > 0 ? `${pagesFailed} failed` : null,
+        pagesQueued > 0 ? `${pagesQueued} queued for next run` : null,
+      ]
+        .filter(Boolean)
+        .join(", ")
+      toast.success(`Scan complete: ${detail}`)
       mutate(`/api/sites/${id}`)
     } catch {
       toast.error("Network error.")
