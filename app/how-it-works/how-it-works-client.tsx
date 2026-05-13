@@ -20,7 +20,6 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
-import { SITE_URL } from "@/lib/site-url"
 
 const STEPS = [
   {
@@ -142,21 +141,10 @@ const PAGE_FAQ_JSONLD = JSON.stringify({
   })),
 })
 
-const HOWTO_JSONLD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How RegenCompliance scans and rewrites healthcare marketing",
-  description:
-    "Six-step process from pasting content through audit-trail capture. Each step runs in under a minute; full workflow in under 5 minutes.",
-  totalTime: "PT5M",
-  step: STEPS.map((s, i) => ({
-    "@type": "HowToStep",
-    position: i + 1,
-    name: s.title,
-    text: s.body.replace(/&rsquo;/g, "'"),
-    url: `${SITE_URL}/how-it-works#step-${i + 1}`,
-  })),
-})
+// HowTo schema lives on the server page (app/how-it-works/page.tsx) so it
+// stays in sync with the breadcrumb / canonical metadata. Don't reintroduce
+// a client-side HowTo here - that produced duplicate JSON-LD blocks on the
+// rendered page (caught in the 2026-05-13 Rich Results audit).
 
 export default function HowItWorksClient() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -166,10 +154,6 @@ export default function HowItWorksClient() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: PAGE_FAQ_JSONLD }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: HOWTO_JSONLD }}
       />
 
       <MarketingBg />
