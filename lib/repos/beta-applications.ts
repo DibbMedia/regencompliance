@@ -53,19 +53,30 @@ export interface BetaApplicationWrite {
 
 export interface BetaApplicationEncryptedRow {
   id: string
-  name_enc: string
-  email_enc: string
-  clinic_name_enc: string
-  specialty_enc: string
-  role_enc: string
+  name_enc: string | null
+  email_enc: string | null
+  clinic_name_enc: string | null
+  specialty_enc: string | null
+  role_enc: string | null
   website_enc: string | null
-  monthly_volume_enc: string
-  why_apply_enc: string
+  monthly_volume_enc: string | null
+  why_apply_enc: string | null
   ip_address_enc: string | null
   user_agent_enc: string | null
   source: string | null
   accepted_terms_at: string
   created_at: string
+  // Plaintext fallbacks (mig 041 -> backfill -> mig 042 transition).
+  name?: string | null
+  email?: string | null
+  clinic_name?: string | null
+  specialty?: string | null
+  role?: string | null
+  website?: string | null
+  monthly_volume?: string | null
+  why_apply?: string | null
+  ip_address?: string | null
+  user_agent?: string | null
 }
 
 export interface BetaApplicationInsertShape {
@@ -101,19 +112,31 @@ function decOpt(rowId: string, column: string, envelope: string | null | undefin
   return decryptForRow({ rowId, envelope, table: TABLE, column })
 }
 
+// Dual-read: prefer *_enc, fall back to the plaintext column when *_enc is NULL.
+// After mig 042 drops the plaintext side the fallback branch is dead; the
+// conditional stays as a defense against any historical re-import.
+function readReq(rowId: string, column: string, enc: string | null, plain: string | null | undefined): string {
+  if (enc) return dec(rowId, column, enc)
+  return plain ?? ""
+}
+function readOpt(rowId: string, column: string, enc: string | null, plain: string | null | undefined): string | null {
+  if (enc) return decOpt(rowId, column, enc)
+  return plain ?? null
+}
+
 export function decryptBetaApplicationRow(row: BetaApplicationEncryptedRow): BetaApplication {
   return {
     id: row.id,
-    name: dec(row.id, "name", row.name_enc),
-    email: dec(row.id, "email", row.email_enc),
-    clinic_name: dec(row.id, "clinic_name", row.clinic_name_enc),
-    specialty: dec(row.id, "specialty", row.specialty_enc),
-    role: dec(row.id, "role", row.role_enc),
-    website: decOpt(row.id, "website", row.website_enc),
-    monthly_volume: dec(row.id, "monthly_volume", row.monthly_volume_enc),
-    why_apply: dec(row.id, "why_apply", row.why_apply_enc),
-    ip_address: decOpt(row.id, "ip_address", row.ip_address_enc),
-    user_agent: decOpt(row.id, "user_agent", row.user_agent_enc),
+    name: readReq(row.id, "name", row.name_enc, row.name),
+    email: readReq(row.id, "email", row.email_enc, row.email),
+    clinic_name: readReq(row.id, "clinic_name", row.clinic_name_enc, row.clinic_name),
+    specialty: readReq(row.id, "specialty", row.specialty_enc, row.specialty),
+    role: readReq(row.id, "role", row.role_enc, row.role),
+    website: readOpt(row.id, "website", row.website_enc, row.website),
+    monthly_volume: readReq(row.id, "monthly_volume", row.monthly_volume_enc, row.monthly_volume),
+    why_apply: readReq(row.id, "why_apply", row.why_apply_enc, row.why_apply),
+    ip_address: readOpt(row.id, "ip_address", row.ip_address_enc, row.ip_address),
+    user_agent: readOpt(row.id, "user_agent", row.user_agent_enc, row.user_agent),
     source: row.source,
     accepted_terms_at: row.accepted_terms_at,
     created_at: row.created_at,

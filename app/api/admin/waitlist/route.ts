@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
 import { parsePagination, isValidUUID } from "@/lib/validations"
+import { listWaitlistForAdmin } from "@/lib/repos/waitlist"
 
 export const maxDuration = 30
 
@@ -11,29 +12,34 @@ export async function GET(request: Request) {
   const { serviceClient } = auth
   const { searchParams } = new URL(request.url)
   const { page, limit } = parsePagination(searchParams)
-  const search = (searchParams.get("search") || "").trim().slice(0, 100)
 
-  let query = serviceClient
+  // Search by name/email REMOVED per plan §12.6: post-Phase-6 encryption the
+  // email + name columns are opaque ciphertext, so server-side ilike no
+  // longer matches anything meaningful. Admin pivots to row UUID or browses
+  // by created_at order. The query param is silently ignored so old
+  // bookmarks don't 400 - the UI also dropped the search input.
+
+  // Pull the page from the repo (decrypts each row). For the total count we
+  // do a head:true count on the table directly - count doesn't need
+  // decryption.
+  const { count } = await serviceClient
     .from("waitlist")
-    .select("id, name, email, source, created_at", { count: "exact" })
-    .order("created_at", { ascending: false })
-    .range((page - 1) * limit, page * limit - 1)
+    .select("id", { count: "exact", head: true })
 
-  if (search) {
-    // Escape % and _ for ilike, then wrap
-    const safe = search.replace(/[%_\\]/g, (c) => `\\${c}`)
-    query = query.or(`name.ilike.%${safe}%,email.ilike.%${safe}%`)
-  }
-
-  const { data, count, error } = await query
-
-  if (error) {
+  let entries
+  try {
+    entries = await listWaitlistForAdmin(serviceClient, {
+      limit,
+      offset: (page - 1) * limit,
+      order: "desc",
+    })
+  } catch (error) {
     console.error("Admin waitlist fetch error:", error)
     return NextResponse.json({ error: "Failed to fetch waitlist" }, { status: 500 })
   }
 
   return NextResponse.json({
-    entries: data || [],
+    entries,
     total: count || 0,
     page,
     totalPages: Math.max(1, Math.ceil((count || 0) / limit)),

@@ -5,6 +5,7 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { getClientIp } from "@/lib/ip"
 import { sendToGhl } from "@/lib/ghl"
 import { deriveSource } from "@/lib/source-tracking"
+import { createWaitlistEntry } from "@/lib/repos/waitlist"
 
 export const maxDuration = 10
 
@@ -23,7 +24,10 @@ export async function POST(request: Request) {
       )
     }
 
-    // 5 signups per IP per 10 minutes
+    // 5 signups per IP per 10 minutes. Per plan §12.1 the email unique
+    // constraint is gone (encryption made it impossible to enforce), so the
+    // rate limits are now the only line of defense against dup spam. Worst
+    // case: ~5 dup rows per attacker IP per 10 min; admin dedupes manually.
     const limit = await checkRateLimit(`waitlist:${ip}`, 5, 10 * 60 * 1000)
     if (!limit.allowed) {
       return NextResponse.json(
@@ -50,24 +54,20 @@ export async function POST(request: Request) {
     const userAgent = request.headers.get("user-agent")?.slice(0, 500) || null
 
     const supabase = createServiceClient()
-    const { error } = await supabase.from("waitlist").insert({
-      name,
-      email,
-      ip_address: ip,
-      user_agent: userAgent,
-      source: deriveSource(request),
-    })
 
-    if (error) {
-      // Postgres unique_violation
-      if (error.code === "23505") {
-        // Idempotent: return uniform success. The previous response
-        // included alreadyOnList:true which itself leaked existence -
-        // a probe could see the boolean and confirm the email was
-        // already in the table.
-        return NextResponse.json({ success: true })
-      }
-      console.error("Waitlist insert error:", error)
+    try {
+      await createWaitlistEntry(supabase, {
+        name,
+        email,
+        ip_address: ip,
+        user_agent: userAgent,
+        source: deriveSource(request),
+      })
+    } catch (err) {
+      // Per plan §12.1 there is no longer a 23505 idempotent-success path -
+      // the unique constraint on email was dropped because it can't survive
+      // encryption. Any insert error here is a real failure.
+      console.error("Waitlist insert error:", err)
       return NextResponse.json(
         { error: "Failed to join waitlist. Please try again." },
         { status: 500 }
@@ -75,8 +75,6 @@ export async function POST(request: Request) {
     }
 
     // GHL pipeline: tag the waitlist contact and drop into the nurture workflow.
-    // Only fires on first-time signups (the unique-violation branch above
-    // skipped this path) so the GHL workflow doesn't double-trigger nurture.
     void sendToGhl("waitlist", { email, name })
 
     return NextResponse.json({ success: true })

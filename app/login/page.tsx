@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, Suspense } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -37,6 +37,24 @@ function LoginContent() {
 
   const errorParam = searchParams.get("error")
   const errorMessage = errorParam ? ERROR_MESSAGES[errorParam] || "An error occurred. Please try again." : null
+
+  // Beta reservation_token claim (plan §12.2). When Stripe redirects users
+  // back here after a successful checkout, the success_url carries
+  // ?claim=<reservation_token>. Stash it server-side in the rc_beta_claim
+  // cookie (30-min TTL) so /auth/callback can claim by token after email
+  // verification - the old email-based claim path is dead.
+  const claimToken = searchParams.get("claim")
+  useEffect(() => {
+    if (!claimToken) return
+    void fetch("/api/beta/stash-claim", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ claim: claimToken }),
+    }).catch(() => {
+      // Stash failure is non-blocking; the user can still sign up and the
+      // beta seat sits unclaimed in beta_purchases for an operator to fix.
+    })
+  }, [claimToken])
 
   const loginForm = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -103,8 +121,28 @@ function LoginContent() {
       toast.success("Signed in successfully!")
     }
 
-    // Attempt to claim beta purchase if one exists for this email (non-blocking)
-    fetch("/api/beta/claim", { method: "POST" }).catch(() => {})
+    // Attempt to claim beta purchase via reservation_token (plan §12.2).
+    // Token lives in the rc_beta_claim cookie (stashed when ?claim=<token>
+    // landed on this page from Stripe). Non-blocking; auth callback also
+    // claims when present (deferred Wave 2E merge).
+    const claimCookie = document.cookie
+      .split("; ")
+      .find((c) => c.startsWith("rc_beta_claim="))
+      ?.split("=")[1]
+    if (claimCookie) {
+      fetch("/api/beta/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservation_token: claimCookie }),
+      })
+        .then((r) => {
+          if (r.ok) {
+            // Clear the cookie - claim is sticky from this point on.
+            document.cookie = "rc_beta_claim=; Path=/; Max-Age=0; SameSite=Lax"
+          }
+        })
+        .catch(() => {})
+    }
 
     setRedirecting(true)
     router.push("/dashboard/scanner")
