@@ -7,7 +7,12 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
 import { headers } from "next/headers"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildOrganizationSchema,
+  buildWebSiteSchema,
+} from "@/lib/schema"
 import "./globals.css"
 
 const poppins = Poppins({
@@ -16,61 +21,14 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 })
 
-const SOFTWARE_APPLICATION_JSON = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "RegenCompliance",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
-  offers: {
-    "@type": "Offer",
-    price: "297",
-    priceCurrency: "USD",
-    description: "Beta rate - $297/mo locked in for life",
-  },
-  description: "FDA/FTC compliance scanner for healthcare practices",
-  url: SITE_URL,
-})
-
-const ORGANIZATION_JSON = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "RegenCompliance",
-  alternateName: "RegenCompliance by Regen Portal LLC",
-  url: SITE_URL,
-  logo: `${SITE_URL}/og-image.png`,
-  description:
-    "FDA/FTC compliance scanning software purpose-built for healthcare practices - regenerative medicine, med spas, weight loss, dental, aesthetic, and IV therapy clinics.",
-  contactPoint: {
-    "@type": "ContactPoint",
-    email: "support@regencompliance.ai",
-    contactType: "customer support",
-    availableLanguage: ["English"],
-  },
-  knowsAbout: [
-    "FDA warning letters",
-    "FTC Endorsement Guides",
-    "healthcare marketing compliance",
-    "structure-function claims",
-    "HCT/P regulation",
-    "state medical board advertising rules",
-  ],
-})
-
-const WEBSITE_JSON = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "RegenCompliance",
-  url: SITE_URL,
-  description:
-    "FDA/FTC compliance scanning for healthcare marketing.",
-  publisher: {
-    "@type": "Organization",
-    name: "RegenCompliance",
-    url: SITE_URL,
-  },
-  inLanguage: "en-US",
-})
+// Organization + WebSite are emitted from the root layout so every page
+// inherits the brand entity. Per-page schemas (FAQPage, Article, Service,
+// BreadcrumbList, etc.) are added by each page using the helpers in
+// lib/schema.
+const SITE_LEVEL_SCHEMAS = [
+  buildOrganizationSchema(),
+  buildWebSiteSchema(),
+]
 
 export const metadata: Metadata = {
   title: {
@@ -79,11 +37,11 @@ export const metadata: Metadata = {
   },
   description:
     "Scan your marketing content against live FDA/FTC enforcement data. AI-powered compliance scoring and rewriting for healthcare practices.",
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(MARKETING_URL),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE_URL,
+    url: MARKETING_URL,
     siteName: "RegenCompliance",
     title: "RegenCompliance - FDA/FTC Compliance Scanner",
     description:
@@ -105,7 +63,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: SITE_URL,
+    canonical: MARKETING_URL,
   },
   robots: {
     index: true,
@@ -134,21 +92,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
-          nonce={nonce}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: SOFTWARE_APPLICATION_JSON }}
-        />
-        <script
-          nonce={nonce}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: ORGANIZATION_JSON }}
-        />
-        <script
-          nonce={nonce}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: WEBSITE_JSON }}
-        />
+        <JsonLd schema={SITE_LEVEL_SCHEMAS} nonce={nonce} />
       </head>
       <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]" suppressHydrationWarning>
         <ThemeProvider

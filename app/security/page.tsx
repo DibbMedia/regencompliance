@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
 import SecurityClient from "./security-client"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
-const canonical = `${SITE_URL}/security`
+const canonical = `${MARKETING_URL}/security`
 
 export const metadata: Metadata = {
   title: "Security &amp; Data Handling - RegenCompliance",
@@ -25,6 +26,23 @@ export const metadata: Metadata = {
   },
 }
 
+const webPageSchema = {
+  "@context": "https://schema.org" as const,
+  "@type": "WebPage" as const,
+  name: "Security & Data Handling - RegenCompliance",
+  description:
+    "How RegenCompliance handles your data - zero patient data, no AI training on customer content, encryption, access controls, audit trails, and the full infrastructure stack.",
+  url: canonical,
+}
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: "Security", url: canonical },
+])
+
 export default function SecurityPage() {
-  return <SecurityClient />
+  return (
+    <>
+      <JsonLd schema={[webPageSchema, breadcrumbSchema]} />
+      <SecurityClient />
+    </>
+  )
 }

@@ -3,10 +3,16 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { COMPETITORS } from "@/lib/compare/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildItemListSchema,
+} from "@/lib/schema"
 import { CompareHubClient, type HubFaq } from "@/components/compare/compare-hub-client"
 
-const canonical = `${SITE_URL}/compare`
+const canonical = `${MARKETING_URL}/compare`
 
 const HUB_MISCONCEPTIONS: HubFaq[] = [
   {
@@ -101,60 +107,20 @@ export const metadata: Metadata = {
 }
 
 export default function ComparePage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Compare",
-        item: canonical,
-      },
-    ],
-  }
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: COMPETITORS.map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `${SITE_URL}/vs/${c.slug}`,
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Compare", url: canonical },
+  ])
+  const itemListSchema = buildItemListSchema(
+    COMPETITORS.map((c) => ({
       name: `RegenCompliance vs ${c.competitor}`,
+      url: `${MARKETING_URL}/vs/${c.slug}`,
     })),
-  }
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [...HUB_MISCONCEPTIONS, ...HUB_FAQS].map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
+  )
+  const faqSchema = buildFaqSchema([...HUB_MISCONCEPTIONS, ...HUB_FAQS])
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd schema={[breadcrumbSchema, itemListSchema, faqSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

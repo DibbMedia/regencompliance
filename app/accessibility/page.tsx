@@ -2,15 +2,32 @@ import Link from "next/link"
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
+
+const canonical = `${MARKETING_URL}/accessibility`
 
 export const metadata = {
   title: "Accessibility Statement - RegenCompliance",
   description: "Accessibility Statement for RegenCompliance, the FDA/FTC compliance scanner for healthcare practices.",
+  alternates: { canonical },
 }
+
+const SCHEMAS = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Accessibility Statement - RegenCompliance",
+    description: "Accessibility Statement for RegenCompliance, operated by Regen Portal LLC.",
+    url: canonical,
+  },
+  buildBreadcrumbSchema([{ name: "Accessibility", url: canonical }]),
+]
 
 export default function AccessibilityPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      <JsonLd schema={SCHEMAS} />
       <MarketingBg />
       <MarketingHeader />
 

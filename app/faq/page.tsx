@@ -6,6 +6,8 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { CheckoutButton } from "@/components/checkout-button"
 import { IS_LAUNCHED } from "@/lib/env"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema"
 import {
   ArrowRight,
   ChevronDown,
@@ -140,17 +142,10 @@ const faqCategories: FaqCategory[] = [
 
 const ALL_FILTER = "All"
 
-const FAQ_JSONLD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqCategories.flatMap((cat) =>
-    cat.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  ),
-})
+const FAQ_SCHEMAS = [
+  buildFaqSchema(faqCategories.flatMap((c) => c.faqs)),
+  buildBreadcrumbSchema([{ name: "FAQ", url: `${MARKETING_URL}/faq` }]),
+]
 
 export default function FaqPage() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
@@ -168,10 +163,7 @@ export default function FaqPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: FAQ_JSONLD }}
-      />
+      <JsonLd schema={FAQ_SCHEMAS} />
       <MarketingBg />
       <MarketingHeader />
 

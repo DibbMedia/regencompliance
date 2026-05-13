@@ -16,7 +16,8 @@ import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { STATES, getStateBySlug, getRelatedStates } from "@/lib/state/data"
 import { SPECIALTIES } from "@/lib/specialty/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
 export async function generateStaticParams() {
   return STATES.map((s) => ({ state: s.slug }))
@@ -31,7 +32,7 @@ export async function generateMetadata({
   const meta = getStateBySlug(state)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `${SITE_URL}/state/${meta.slug}`
+  const canonical = `${MARKETING_URL}/state/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -56,56 +57,32 @@ export default async function StatePage({
   if (!meta) notFound()
 
   const related = getRelatedStates(state)
-  const canonical = `${SITE_URL}/state/${meta.slug}`
+  const canonical = `${MARKETING_URL}/state/${meta.slug}`
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "State rules",
-        item: `${SITE_URL}/state`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: meta.state,
-        item: canonical,
-      },
-    ],
-  }
-
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "State rules", url: `${MARKETING_URL}/state` },
+    { name: meta.state, url: canonical },
+  ])
   const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@context": "https://schema.org" as const,
+    "@type": "WebPage" as const,
     name: meta.title,
     description: meta.description,
     url: canonical,
     about: {
       "@type": "Place",
       name: meta.state,
-      address: { "@type": "PostalAddress", addressRegion: meta.abbreviation, addressCountry: "US" },
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: meta.abbreviation,
+        addressCountry: "US",
+      },
     },
   }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
+      <JsonLd schema={[breadcrumbSchema, webPageSchema]} />
       <MarketingBg />
       <MarketingHeader />
 

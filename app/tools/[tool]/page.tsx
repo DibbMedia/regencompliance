@@ -3,7 +3,13 @@ import { notFound } from "next/navigation"
 import { ToolLayout } from "@/components/tools/tool-layout"
 import { TOOLS, getToolBySlug, getRelatedTools } from "@/lib/tools/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildSoftwareApplicationSchema,
+} from "@/lib/schema"
 
 export async function generateStaticParams() {
   return TOOLS.map((t) => ({ tool: t.slug }))
@@ -18,7 +24,7 @@ export async function generateMetadata({
   const meta = getToolBySlug(tool)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `${SITE_URL}/tools/${meta.slug}`
+  const canonical = `${MARKETING_URL}/tools/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -49,70 +55,27 @@ export default async function ToolPage({
 
   const related = getRelatedTools(tool)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `${SITE_URL}/tools/${meta.slug}`
+  const canonical = `${MARKETING_URL}/tools/${meta.slug}`
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: meta.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Tools",
-        item: `${SITE_URL}/tools`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: meta.name,
-        item: canonical,
-      },
-    ],
-  }
-
-  const softwareFeatureSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: meta.title,
-    description: meta.description,
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Tools", url: `${MARKETING_URL}/tools` },
+    { name: meta.name, url: canonical },
+  ])
+  const faqSchema = meta.faqs.length ? buildFaqSchema(meta.faqs) : null
+  const softwareSchema = buildSoftwareApplicationSchema({
     url: canonical,
-    about: {
-      "@type": "SoftwareApplication",
-      name: `RegenCompliance ${meta.name}`,
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
-    },
-  }
+    name: `RegenCompliance ${meta.name}`,
+    description: meta.description,
+  })
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareFeatureSchema) }}
+      <JsonLd
+        schema={[
+          softwareSchema,
+          breadcrumbSchema,
+          ...(faqSchema ? [faqSchema] : []),
+        ]}
       />
       <ToolLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>

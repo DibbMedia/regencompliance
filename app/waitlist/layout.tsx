@@ -2,12 +2,12 @@ import type { Metadata } from "next"
 import { MARKETING_URL } from "@/lib/site-url"
 import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 
-const canonical = `${MARKETING_URL}/demo`
+const canonical = `${MARKETING_URL}/waitlist`
 
 export const metadata: Metadata = {
-  title: "Free Demo",
+  title: "Waitlist - RegenCompliance",
   description:
-    "Try the RegenCompliance scanner free. Paste healthcare marketing content and get instant FDA/FTC compliance scoring.",
+    "Join the standard-pricing waitlist. We email when the standard tier opens after the founder beta closes.",
   alternates: { canonical },
 }
 
@@ -15,15 +15,15 @@ const SCHEMAS = [
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Free Demo - RegenCompliance",
+    name: "Waitlist - RegenCompliance",
     description:
-      "Try the RegenCompliance scanner free. Paste healthcare marketing content and get instant FDA/FTC compliance scoring.",
+      "Join the standard-pricing waitlist. We email when the standard tier opens after the founder beta closes.",
     url: canonical,
   },
-  buildBreadcrumbSchema([{ name: "Free demo", url: canonical }]),
+  buildBreadcrumbSchema([{ name: "Waitlist", url: canonical }]),
 ]
 
-export default function DemoLayout({
+export default function WaitlistLayout({
   children,
 }: {
   children: React.ReactNode

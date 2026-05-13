@@ -3,11 +3,18 @@ import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
 import { TOOLS } from "@/lib/tools/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  buildItemListSchema,
+  buildSoftwareApplicationSchema,
+} from "@/lib/schema"
 import { ToolsHubClient } from "./tools-hub-client"
 import { HUB_FAQS } from "./hub-faqs"
 
-const canonical = `${SITE_URL}/tools`
+const canonical = `${MARKETING_URL}/tools`
 
 export const metadata: Metadata = {
   title: "RegenCompliance Tools - Scanner, AI Rewriter, Audit Trail, Library, Alerts",
@@ -30,59 +37,27 @@ export const metadata: Metadata = {
 }
 
 export default function ToolsIndexPage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Tools",
-        item: canonical,
-      },
-    ],
-  }
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: TOOLS.map((t, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      url: `${SITE_URL}/tools/${t.slug}`,
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Tools", url: canonical },
+  ])
+  const itemListSchema = buildItemListSchema(
+    TOOLS.map((t) => ({
       name: t.name,
+      url: `${MARKETING_URL}/tools/${t.slug}`,
     })),
-  }
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: HUB_FAQS.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
+  )
+  const faqSchema = buildFaqSchema(HUB_FAQS)
+  const softwareSchema = buildSoftwareApplicationSchema({ url: canonical })
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      <JsonLd
+        schema={[
+          softwareSchema,
+          breadcrumbSchema,
+          itemListSchema,
+          faqSchema,
+        ]}
       />
       <MarketingBg />
       <MarketingHeader />

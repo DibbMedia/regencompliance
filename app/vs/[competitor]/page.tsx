@@ -7,7 +7,8 @@ import {
   getRelatedCompetitors,
 } from "@/lib/compare/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema, buildFaqSchema } from "@/lib/schema"
 
 export async function generateStaticParams() {
   return COMPETITORS.map((c) => ({ competitor: c.slug }))
@@ -22,7 +23,7 @@ export async function generateMetadata({
   const meta = getCompetitorBySlug(competitor)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `${SITE_URL}/vs/${meta.slug}`
+  const canonical = `${MARKETING_URL}/vs/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -53,74 +54,29 @@ export default async function CompetitorPage({
 
   const related = getRelatedCompetitors(competitor)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `${SITE_URL}/vs/${meta.slug}`
+  const canonical = `${MARKETING_URL}/vs/${meta.slug}`
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: meta.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Compare",
-        item: `${SITE_URL}/compare`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: `vs ${meta.competitor}`,
-        item: canonical,
-      },
-    ],
-  }
-
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Compare", url: `${MARKETING_URL}/compare` },
+    { name: `vs ${meta.competitor}`, url: canonical },
+  ])
+  const faqSchema = meta.faqs.length ? buildFaqSchema(meta.faqs) : null
   const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@context": "https://schema.org" as const,
+    "@type": "WebPage" as const,
     name: meta.title,
     description: meta.description,
     url: canonical,
-    about: {
-      "@type": "SoftwareApplication",
-      name: "RegenCompliance",
-      applicationCategory: "BusinessApplication",
-    },
-    mainEntity: {
-      "@type": "Product",
-      name: `RegenCompliance vs ${meta.competitor}`,
-      description: meta.description,
-    },
   }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      <JsonLd
+        schema={[
+          webPageSchema,
+          breadcrumbSchema,
+          ...(faqSchema ? [faqSchema] : []),
+        ]}
       />
       <CompareLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>

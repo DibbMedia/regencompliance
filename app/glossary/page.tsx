@@ -18,10 +18,11 @@ import {
   TERMS_BY_CATEGORY,
   type GlossaryTerm,
 } from "@/lib/glossary/terms"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 import { TermCard } from "./term-card"
 
-const canonical = `${SITE_URL}/glossary`
+const canonical = `${MARKETING_URL}/glossary`
 
 export const metadata: Metadata = {
   title:
@@ -149,28 +150,13 @@ function KeyTakeaway({ text }: { text: string }) {
 }
 
 export default function GlossaryPage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Glossary",
-        item: canonical,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "Glossary", url: canonical },
+  ])
 
   const definedTermSet = {
-    "@context": "https://schema.org",
-    "@type": "DefinedTermSet",
+    "@context": "https://schema.org" as const,
+    "@type": "DefinedTermSet" as const,
     name: "Healthcare Marketing Compliance Glossary",
     description:
       "Definitions of FDA, FTC, device, and state regulatory terms relevant to healthcare marketing compliance.",
@@ -187,14 +173,7 @@ export default function GlossaryPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermSet) }}
-      />
+      <JsonLd schema={[breadcrumbSchema, definedTermSet]} />
       <MarketingBg />
       <MarketingHeader />
 

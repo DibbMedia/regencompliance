@@ -7,7 +7,13 @@ import {
   getRelatedSpecialties,
 } from "@/lib/specialty/registry"
 import { getPostsBySlugs } from "@/lib/blog/registry"
-import { SITE_URL } from "@/lib/site-url"
+import { MARKETING_URL } from "@/lib/site-url"
+import {
+  JsonLd,
+  buildBreadcrumbSchema,
+  buildFaqSchema,
+  organizationRef,
+} from "@/lib/schema"
 
 export async function generateStaticParams() {
   return SPECIALTIES.map((s) => ({ specialty: s.slug }))
@@ -22,7 +28,7 @@ export async function generateMetadata({
   const meta = getSpecialtyBySlug(specialty)
   if (!meta) return { title: "Not found" }
 
-  const canonical = `${SITE_URL}/for/${meta.slug}`
+  const canonical = `${MARKETING_URL}/for/${meta.slug}`
   return {
     title: meta.title,
     description: meta.description,
@@ -53,53 +59,22 @@ export default async function SpecialtyPage({
 
   const related = getRelatedSpecialties(specialty)
   const relatedPosts = getPostsBySlugs(meta.relatedBlogSlugs)
-  const canonical = `${SITE_URL}/for/${meta.slug}`
+  const canonical = `${MARKETING_URL}/for/${meta.slug}`
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: meta.faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  }
+  const faqSchema = meta.faqs.length ? buildFaqSchema(meta.faqs) : null
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "For specialties",
-        item: `${SITE_URL}/for`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: `For ${meta.specialty}`,
-        item: canonical,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: "For specialties", url: `${MARKETING_URL}/for` },
+    { name: `For ${meta.specialty}`, url: canonical },
+  ])
 
   const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
+    "@context": "https://schema.org" as const,
+    "@type": "Service" as const,
     name: `FDA/FTC Compliance Scanning for ${meta.specialty}`,
     description: meta.description,
-    provider: {
-      "@type": "Organization",
-      name: "RegenCompliance",
-      url: `${SITE_URL}`,
-    },
+    url: canonical,
+    provider: organizationRef(),
     areaServed: {
       "@type": "Country",
       name: "United States",
@@ -110,20 +85,11 @@ export default async function SpecialtyPage({
     },
   }
 
+  const schemas = [breadcrumbSchema, serviceSchema, ...(faqSchema ? [faqSchema] : [])]
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
+      <JsonLd schema={schemas} />
       <SpecialtyLayout meta={meta} related={related} relatedPosts={relatedPosts} />
     </>
   )
