@@ -9,7 +9,9 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:plaintext-leaks": "tsx scripts/check-plaintext-leaks.ts",
+    "rotate-keys": "tsx scripts/key-rotation.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.1",
