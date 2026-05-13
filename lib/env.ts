@@ -92,6 +92,7 @@ export const EARLY_ACCESS_CODE = process.env.EARLY_ACCESS_CODE?.trim() || ''
 export type Env = z.infer<typeof envSchema>
 
 let validated = false
+let warnedMissingEncryptionKey = false
 
 export function validateEnv(): void {
   if (validated) return
@@ -110,6 +111,32 @@ export function validateEnv(): void {
     if (typeof value === 'string' && process.env[key] !== value) {
       process.env[key] = value
     }
+  }
+
+  // Production-only tighten: ENCRYPTION_KEY_V1 must be set. The schema
+  // marks it optional (because tests and local dev don't always have it),
+  // but in production a missing key means every encrypted-column read will
+  // hard-error at runtime. Fail fast at boot instead.
+  if (process.env.NODE_ENV === 'production' && !result.data.ENCRYPTION_KEY_V1) {
+    throw new Error(
+      'Invalid environment: ENCRYPTION_KEY_V1 is required in production. ' +
+        'Generate with `openssl rand -hex 32` and set in Vercel as Sensitive.',
+    )
+  }
+
+  // Outside production, warn once if the key is unset so devs notice before
+  // their first encrypted-column read explodes.
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    !result.data.ENCRYPTION_KEY_V1 &&
+    !warnedMissingEncryptionKey
+  ) {
+    warnedMissingEncryptionKey = true
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[env] ENCRYPTION_KEY_V1 is unset. Generate with `openssl rand -hex 32` ' +
+        'and set in .env.local before exercising encrypted columns.',
+    )
   }
 
   validated = true

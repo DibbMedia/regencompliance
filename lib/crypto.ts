@@ -44,6 +44,56 @@ const INFO_ROW = "regen:row-dek:v1"
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+// --- Production fallback refusal (Phase 7 hardening) -----------------------
+//
+// In production we refuse to derive a DEK if the master key looks like a
+// fallback (collides with another secret), is the all-zero / single-char
+// degenerate, or matches a well-known test fixture. These checks are skipped
+// outside production so the Wave 1 crypto test fixture keeps working.
+
+// Env vars whose value the master key MUST NOT equal in production. If the
+// operator pasted, e.g., SUPABASE_SERVICE_ROLE_KEY into ENCRYPTION_KEY_V1 by
+// mistake, derivation halts at first use rather than silently working.
+const FALLBACK_COLLISION_ENVS = [
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "NEXTAUTH_SECRET",
+  "DEMO_COOKIE_SECRET",
+  "STRIPE_WEBHOOK_SECRET",
+  "STRIPE_SECRET_KEY",
+  "STRIPE_RESTRICTED_KEY",
+  "CRON_SECRET",
+  "LOOKUP_HMAC_KEY",
+] as const
+
+// Test fixtures used in tests/lib/crypto.test.ts. Hex strings only — anything
+// matching one of these in production indicates an unset / placeholder key.
+const WEAK_TEST_KEYS: ReadonlyArray<string> = [
+  "a".repeat(64),
+  "b".repeat(64),
+  "0".repeat(64),
+  "1".repeat(64),
+  "f".repeat(64),
+  "deadbeef".repeat(8),
+  "cafebabe".repeat(8),
+]
+
+function isProduction(): boolean {
+  return process.env.NODE_ENV === "production"
+}
+
+function isAllSameChar(s: string): boolean {
+  if (s.length === 0) return false
+  const first = s[0]
+  for (let i = 1; i < s.length; i++) if (s[i] !== first) return false
+  return true
+}
+
+function refuseFallback(reason: string): never {
+  throw new Error(
+    `Refusing to derive DEK: ${reason}. Generate a fresh key with \`openssl rand -hex 32\` and set it in Vercel as Sensitive.`,
+  )
+}
+
 function loadKey(): Buffer {
   const raw = process.env[KEY_ENV]?.trim()
   if (!raw) {
@@ -54,6 +104,37 @@ function loadKey(): Buffer {
   if (!/^[0-9a-f]{64}$/i.test(raw)) {
     throw new Error(`${KEY_ENV} must be 64 lowercase hex chars (32 bytes / 256 bits).`)
   }
+
+  if (isProduction()) {
+    const normalized = raw.toLowerCase()
+
+    // 1. Reject degenerate keys (all-zero, all-same-char).
+    if (isAllSameChar(normalized)) {
+      refuseFallback(`${KEY_ENV} is a degenerate single-character key`)
+    }
+
+    // 2. Reject keys that match Wave 1 / common test fixtures.
+    for (const weak of WEAK_TEST_KEYS) {
+      if (normalized === weak.toLowerCase()) {
+        refuseFallback(`${KEY_ENV} matches a known test fixture`)
+      }
+    }
+
+    // 3. Reject collisions with other env vars. We compare the trimmed raw
+    //    string (not just normalized hex), because a colliding secret like
+    //    SUPABASE_SERVICE_ROLE_KEY will not be hex but would still indicate
+    //    the operator mis-typed the env var name.
+    for (const otherEnv of FALLBACK_COLLISION_ENVS) {
+      const other = process.env[otherEnv]?.trim()
+      if (!other) continue
+      if (other === raw) {
+        refuseFallback(
+          `${KEY_ENV} collides with ${otherEnv} in production`,
+        )
+      }
+    }
+  }
+
   return Buffer.from(raw, "hex")
 }
 
