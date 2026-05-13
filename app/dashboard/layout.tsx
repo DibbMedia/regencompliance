@@ -6,6 +6,7 @@ import { DashboardHeader } from "@/components/layout/dashboard-header"
 import { HelpButton } from "@/components/help-button"
 import { NavigationProgress } from "@/components/navigation-progress"
 import { SessionTimeout } from "@/components/session-timeout"
+import { getProfile } from "@/lib/repos/profiles"
 
 export default async function DashboardLayout({
   children,
@@ -19,11 +20,9 @@ export default async function DashboardLayout({
     redirect("/login")
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("clinic_name, onboarding_complete, subscription_status")
-    .eq("id", user.id)
-    .maybeSingle()
+  // Route through the profiles repo so clinic_name is decrypted under the
+  // caller's per-user DEK (Wave 2A; see docs/user-level-encryption-plan.md).
+  const profile = await getProfile(supabase, user.id)
 
   if (!profile) {
     redirect("/onboarding/clinic")

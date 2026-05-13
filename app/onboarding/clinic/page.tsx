@@ -18,19 +18,16 @@ export default function OnboardingClinicPage() {
   const supabase = createClient()
 
   // Hydrate from existing profile so back/refresh doesn't lose state.
-  // Server saves clinic_name + logo_url via PATCH; the client just
-  // wasn't re-reading it on mount.
+  // Wave 2A: clinic_name is now encrypted, so the browser supabase client
+  // can't read it directly - route through /api/profile which decrypts
+  // server-side under the caller's per-user DEK.
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("clinic_name, logo_url")
-          .eq("id", user.id)
-          .maybeSingle()
+        const res = await fetch("/api/profile")
+        if (!res.ok) return
+        const profile = await res.json()
         if (cancelled) return
         if (profile?.clinic_name) setClinicName(profile.clinic_name)
         if (profile?.logo_url) {
@@ -42,7 +39,7 @@ export default function OnboardingClinicPage() {
       }
     })()
     return () => { cancelled = true }
-  }, [supabase])
+  }, [])
 
   function processFile(file: File) {
     if (file.size > 2 * 1024 * 1024) {

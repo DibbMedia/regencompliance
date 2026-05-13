@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { verifyDeveloperAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
+import { updateProfile, type ProfileWrite } from "@/lib/repos/profiles"
 
 const ALLOWED_STATUSES = ["active", "inactive", "past_due", "cancelled"] as const
 
@@ -21,7 +22,10 @@ export async function PATCH(
   const body = await request.json().catch(() => null)
   if (!body) return NextResponse.json({ error: "Invalid body" }, { status: 400 })
 
-  const updates: Record<string, unknown> = {}
+  // Route through the profiles repo so the (unrelated) crypto columns stay
+  // intact even though this endpoint only touches plaintext pass-through
+  // fields (subscription_status, is_beta_subscriber).
+  const updates: ProfileWrite = {}
   if (body.subscription_status !== undefined) {
     if (!ALLOWED_STATUSES.includes(body.subscription_status)) {
       return NextResponse.json({ error: "Invalid subscription_status" }, { status: 400 })
@@ -35,8 +39,9 @@ export async function PATCH(
     return NextResponse.json({ error: "No changes" }, { status: 400 })
   }
 
-  const { error } = await serviceClient.from("profiles").update(updates).eq("id", id)
-  if (error) {
+  try {
+    await updateProfile(serviceClient, id, updates)
+  } catch (error) {
     console.error("[admin/users PATCH] database error:", error)
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
   }
@@ -48,7 +53,7 @@ export async function PATCH(
     action: "admin.user.update",
     resource_type: "user",
     resource_id: id,
-    details: updates,
+    details: updates as Record<string, unknown>,
     ip_address: ip,
     user_agent: userAgent,
   })

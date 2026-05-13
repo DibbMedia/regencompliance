@@ -55,24 +55,18 @@ export default function AccountPage() {
 
       if (member) setRole(member.role)
 
-      // For members, load the workspace owner's profile (the clinic they
-      // belong to). For owners, load their own. Pre-fix this always loaded
-      // the user's own profile, so members saw their (empty) clinic name.
-      const profileIdToLoad = member?.role === "member" && member.profile_id
-        ? member.profile_id
-        : user.id
-
-      const { data: p } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", profileIdToLoad)
-        .single()
-
-      if (p) {
-        setProfile(p as Profile)
-        setClinicName(p.clinic_name || "")
-        setTreatments(p.treatments || [])
-      }
+      // Wave 2A: clinic_name + treatments are encrypted under the profile
+      // owner's per-user DEK. The browser supabase client can't decrypt, so
+      // we route through /api/profile which decrypts server-side. For team
+      // members this returns the member's own (empty) profile rather than
+      // the owner's - the owner-profile view for team members is deferred
+      // until /api/profile gets a workspace-aware variant.
+      const res = await fetch("/api/profile")
+      if (!res.ok) return
+      const p: Profile = await res.json()
+      setProfile(p)
+      setClinicName(p.clinic_name || "")
+      setTreatments(p.treatments || [])
     }
     load()
   }, [supabase])

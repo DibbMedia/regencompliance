@@ -32,6 +32,7 @@ function baseRow(overrides: Partial<ProfileEncryptedRow> = {}): ProfileEncrypted
     cancelled_at: null,
     onboarding_complete: false,
     theme_preference: "system",
+    badge_id: null,
     created_at: "2026-05-13T00:00:00Z",
     updated_at: "2026-05-13T00:00:00Z",
     ...overrides,

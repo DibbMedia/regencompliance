@@ -4,6 +4,8 @@ import { requireWriteMode } from "@/lib/impersonation"
 import { stripe } from "@/lib/stripe"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 import { sendToGhl } from "@/lib/ghl"
+import { getProfile } from "@/lib/repos/profiles"
+import { anonymizeAuditLogForUser } from "@/lib/repos/audit-log"
 
 export async function POST(request: Request) {
   const { ip, userAgent } = getRequestMeta(request)
@@ -32,12 +34,11 @@ export async function POST(request: Request) {
 
   const serviceClient = createServiceClient()
 
-  // Get profile for Stripe info and email template
-  const { data: profile } = await serviceClient
-    .from("profiles")
-    .select("clinic_name, stripe_subscription_id, stripe_customer_id")
-    .eq("id", user.id)
-    .maybeSingle()
+  // Get profile for Stripe info and email template. Wave 2A: clinic_name is
+  // encrypted - the repo decrypts it under the user's DEK BEFORE we delete
+  // the row (and thus before crypto-shredding the DEK is implicit through
+  // master-key-only retention).
+  const profile = await getProfile(serviceClient, user.id)
 
   const clinicName = profile?.clinic_name || "there"
   const userEmail = user.email
@@ -92,9 +93,12 @@ export async function POST(request: Request) {
     // 6. Delete profile
     await serviceClient.from("profiles").delete().eq("id", user.id)
 
-    if (userEmail) {
-      await serviceClient.from("audit_log").update({ user_email: null }).eq("user_email", userEmail)
-    }
+    // GDPR right-to-be-forgotten: re-key the user's audit-log rows so their
+    // free-text columns (user_email, ip_address, user_agent, details) are
+    // no longer recoverable under a soon-to-be-shredded user DEK. The
+    // user_id column stays plaintext (UUID, not PII on its own) so the
+    // audit trail still exists for compliance investigations.
+    await anonymizeAuditLogForUser(serviceClient, user.id)
 
     const { error: authDeleteError } = await serviceClient.auth.admin.deleteUser(user.id)
     if (authDeleteError) {
