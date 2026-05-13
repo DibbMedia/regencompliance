@@ -9,6 +9,8 @@ import { createUserNotification } from "@/lib/notifications"
 import { isValidUUID } from "@/lib/validations"
 import { scanSitePages, type RuleForPrompt } from "@/lib/scan/run-site-crawl"
 import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
+import { getMonitoredSite } from "@/lib/repos/monitored-sites"
+import { getProfile } from "@/lib/repos/profiles"
 
 const MAX_PAGES_PER_CRAWL = 20
 
@@ -46,23 +48,13 @@ export async function POST(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_status, treatments")
-      .eq("id", profileId)
-      .single()
+    const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
     }
 
-    const { data: site } = await supabase
-      .from("monitored_sites")
-      .select("id, domain, profile_id")
-      .eq("id", id)
-      .eq("profile_id", profileId)
-      .single()
-
+    const site = await getMonitoredSite(supabase, profileId, id)
     if (!site) {
       return NextResponse.json({ error: "Site not found" }, { status: 404 })
     }
@@ -80,7 +72,7 @@ export async function POST(
     }))
 
     const result = await scanSitePages(supabase, {
-      site,
+      site: { id: site.id, domain: site.domain, profile_id: site.profile_id },
       rulesForPrompt,
       treatments: profile.treatments ?? [],
       profileId,

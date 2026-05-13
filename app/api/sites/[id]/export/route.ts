@@ -5,7 +5,11 @@ import ReactPDF from "@react-pdf/renderer"
 import { SitePdfDocument } from "@/lib/pdf-template"
 import type { SitePageData } from "@/lib/pdf-template"
 import { isValidUUID } from "@/lib/validations"
+import { getMonitoredSite } from "@/lib/repos/monitored-sites"
+import { listPagesForSite } from "@/lib/repos/site-pages"
 import { getProfile } from "@/lib/repos/profiles"
+import { decryptJSONForUser, withCryptoRequestScope } from "@/lib/crypto"
+import type { ScanFlag } from "@/lib/types"
 
 export const maxDuration = 60
 
@@ -29,68 +33,73 @@ export async function GET(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Check subscription. Profile read goes through the repo so clinic_name
-    // is decrypted under the workspace owner's per-user DEK.
+    // Subscription gate + clinic name via encrypted profile repo.
     const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
     }
 
-    // Verify site ownership
-    const { data: site } = await supabase
-      .from("monitored_sites")
-      .select("*")
-      .eq("id", id)
-      .eq("profile_id", profileId)
-      .single()
-
+    // Verify site ownership via repo.
+    const site = await getMonitoredSite(supabase, profileId, id)
     if (!site) {
       return NextResponse.json({ error: "Site not found" }, { status: 404 })
     }
 
-    // Fetch all pages with scores
-    const { data: pages } = await supabase
-      .from("site_pages")
-      .select("*")
-      .eq("site_id", id)
-      .order("compliance_score", { ascending: true, nullsFirst: false })
+    // Fetch all pages, decrypted.
+    const { pages } = await listPagesForSite(supabase, profileId, id, { limit: 1000 })
+    const sortedPages = [...pages].sort((a, b) => {
+      const av = a.compliance_score
+      const bv = b.compliance_score
+      if (av == null && bv == null) return 0
+      if (av == null) return 1
+      if (bv == null) return -1
+      return av - bv
+    })
 
-    // For pages with scans, fetch top flags from their last scan
-    const pagesWithScans = (pages || []).filter((p: { last_scan_id: string | null }) => p.last_scan_id)
-    const scanIds = pagesWithScans.map((p: { last_scan_id: string }) => p.last_scan_id)
+    // For pages with scans, decrypt top flags from their last scan. The
+    // flags column lives on scans, encrypted under the same profile DEK
+    // (AAD bound to scan row id), so we read flags_enc + the legacy flags
+    // column and decrypt per-row.
+    const pagesWithScans = sortedPages.filter((p) => p.last_scan_id != null)
+    const scanIds = pagesWithScans.map((p) => p.last_scan_id as string)
 
-    const scanFlagsMap: Record<string, { flags: unknown[] }> = {}
+    const scanFlagsMap: Record<string, { flags: ScanFlag[] }> = {}
     if (scanIds.length > 0) {
-      // Fetch scans in batches of 50 to avoid query limits
-      const batchSize = 50
-      for (let i = 0; i < scanIds.length; i += batchSize) {
-        const batch = scanIds.slice(i, i + batchSize)
-        const { data: scans } = await supabase
-          .from("scans")
-          .select("id, flags")
-          .in("id", batch)
+      await withCryptoRequestScope(async () => {
+        const batchSize = 50
+        for (let i = 0; i < scanIds.length; i += batchSize) {
+          const batch = scanIds.slice(i, i + batchSize)
+          const { data: scans } = await supabase
+            .from("scans")
+            .select("id, flags_enc, flags")
+            .in("id", batch)
 
-        if (scans) {
-          for (const scan of scans) {
-            scanFlagsMap[scan.id] = { flags: (scan.flags || []) as unknown[] }
+          if (scans) {
+            for (const scan of scans as Array<{
+              id: string
+              flags_enc: string | null
+              flags: ScanFlag[] | null
+            }>) {
+              const flags: ScanFlag[] =
+                scan.flags_enc != null
+                  ? decryptJSONForUser<ScanFlag[]>({
+                      userId: profileId,
+                      envelope: scan.flags_enc,
+                      table: "scans",
+                      column: "flags",
+                      rowId: scan.id,
+                    })
+                  : (scan.flags as ScanFlag[] | null) ?? []
+              scanFlagsMap[scan.id] = { flags }
+            }
           }
         }
-      }
+      })
     }
 
     // Build page data for the PDF
-    const pageData: SitePageData[] = (pages || []).map((p: {
-      id: string
-      url: string
-      title: string | null
-      compliance_score: number | null
-      high_risk_count: number
-      medium_risk_count: number
-      low_risk_count: number
-      last_scanned_at: string | null
-      last_scan_id: string | null
-    }) => {
+    const pageData: SitePageData[] = sortedPages.map((p) => {
       const scanData = p.last_scan_id ? scanFlagsMap[p.last_scan_id] : null
       return {
         id: p.id,
@@ -112,11 +121,6 @@ export async function GET(
         site: {
           domain: site.domain,
           name: site.name,
-          // monitored_sites column names are avg_compliance_score / last_crawl_at
-          // (per migration 005). Pre-2026-05-05 this passed site.compliance_score
-          // and site.last_scanned_at - both undefined - so the PDF fell back to
-          // recomputing from pages with a missing "last scanned" date. Use the
-          // real columns and let SitePdfDocument fall back if null.
           compliance_score: site.avg_compliance_score,
           last_scanned_at: site.last_crawl_at,
           pages: pageData,

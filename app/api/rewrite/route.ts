@@ -10,6 +10,8 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { getComplianceBiblePrompt, getComplianceBibleRewriteGuidance } from "@/lib/compliance-bible"
 import { trackApiUsage } from "@/lib/api-costs"
 import { captureError } from "@/lib/error-tracking"
+import { getScan, updateScanRewrite } from "@/lib/repos/scans"
+import { getProfile } from "@/lib/repos/profiles"
 
 export async function POST(request: Request) {
   try {
@@ -35,12 +37,8 @@ export async function POST(request: Request) {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Check subscription
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_status")
-      .eq("id", profileId)
-      .single()
+    // Subscription gate via encrypted profile repo.
+    const profile = await getProfile(supabase, profileId)
 
     if (!profile || !["active", "past_due"].includes(profile.subscription_status ?? "")) {
       return NextResponse.json({ error: "Active subscription required" }, { status: 403 })
@@ -53,19 +51,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 })
     }
 
-    // Get scan
-    const { data: scan } = await supabase
-      .from("scans")
-      .select("original_text, flags, profile_id")
-      .eq("id", parsed.data.scan_id)
-      .single()
+    // Get scan via the encrypted repo. getScan() also filters by profile_id,
+    // so cross-tenant access returns null.
+    const scan = await getScan(supabase, profileId, parsed.data.scan_id)
 
-    if (!scan || scan.profile_id !== profileId) {
+    if (!scan) {
       return NextResponse.json({ error: "Scan not found" }, { status: 404 })
     }
 
-    const flagsSummary = (scan.flags as Array<{ banned_phrase: string; alternative: string }>)
-      .map((f) => `"${f.banned_phrase}" → "${f.alternative}"`)
+    const flagsSummary = scan.flags
+      .map((f) => `"${f.banned_phrase}" -> "${f.alternative}"`)
       .join("; ")
 
     // Claude Sonnet rewrite
@@ -102,11 +97,8 @@ Return ONLY the rewritten text. No explanations, no JSON.`,
 
     const rewrittenText = response.content.find((b) => b.type === "text")?.text ?? ""
 
-    // Update scan with rewrite
-    await supabase
-      .from("scans")
-      .update({ rewritten_text: rewrittenText })
-      .eq("id", parsed.data.scan_id)
+    // Update scan with rewrite via the encrypted repo.
+    await updateScanRewrite(supabase, profileId, parsed.data.scan_id, rewrittenText)
 
     return NextResponse.json({ rewritten_text: rewrittenText })
   } catch (error) {

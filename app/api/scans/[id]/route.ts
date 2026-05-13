@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { isValidUUID } from "@/lib/validations"
+import { getScan } from "@/lib/repos/scans"
 
 export async function GET(
   request: Request,
@@ -22,18 +23,11 @@ export async function GET(
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    const { data: scan, error } = await supabase
-      .from("scans")
-      .select("*")
-      .eq("id", id)
-      .single()
+    // getScan() also filters by profile_id, so a stranger's scan returns null.
+    const scan = await getScan(supabase, profileId, id)
 
-    if (error || !scan) {
+    if (!scan) {
       return NextResponse.json({ error: "Scan not found" }, { status: 404 })
-    }
-
-    if (scan.profile_id !== profileId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }
 
     return NextResponse.json(scan)

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
+import { getScanForAdmin } from "@/lib/repos/scans"
 
 export async function GET(
   _request: Request,
@@ -20,13 +21,11 @@ export async function GET(
       )
     }
 
-    const { data: scan, error } = await serviceClient
-      .from("scans")
-      .select("id, profile_id, content_type, original_text, compliance_score, flag_count, flags, created_at")
-      .eq("id", scanId)
-      .single()
+    // Admin read path: decrypt under the scan's own profile_id (read from
+    // the row, not the requesting admin's id).
+    const scan = await getScanForAdmin(serviceClient, scanId)
 
-    if (error || !scan) {
+    if (!scan) {
       return NextResponse.json(
         { error: "Scan not found" },
         { status: 404 }
@@ -40,7 +39,14 @@ export async function GET(
 
     return NextResponse.json({
       scan: {
-        ...scan,
+        id: scan.id,
+        profile_id: scan.profile_id,
+        content_type: scan.content_type,
+        original_text: scan.original_text,
+        compliance_score: scan.compliance_score,
+        flag_count: scan.flag_count,
+        flags: scan.flags,
+        created_at: scan.created_at,
         user_email: user?.email || "unknown",
       },
     })
