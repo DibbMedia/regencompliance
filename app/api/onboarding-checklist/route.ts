@@ -62,7 +62,7 @@ export async function GET() {
       .from("scans")
       .select("id", { count: "exact", head: true })
       .eq("profile_id", profileId)
-      .not("rewritten_text", "is", null)
+      .not("rewritten_text_enc", "is", null)
 
     const { count: siteCount } = await supabase
       .from("monitored_sites")
