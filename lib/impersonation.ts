@@ -2,6 +2,11 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { createServiceClient } from "@/lib/supabase/server"
 import { getAdminRole } from "@/lib/admin"
+import {
+  createImpersonationSession,
+  deleteImpersonationSession,
+  getImpersonationSession,
+} from "@/lib/repos/impersonation-sessions"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
 export const IMPERSONATE_COOKIE = "regen_impersonate"
@@ -31,19 +36,19 @@ export async function getActiveImpersonation(
   if (!sessionId) return null
 
   const svc = supabaseForRead ?? createServiceClient()
-  const { data } = await svc
-    .from("impersonation_sessions")
-    .select("id, admin_user_id, admin_email, target_user_id, target_email, mode, expires_at")
-    .eq("id", sessionId)
-    .maybeSingle()
+  let session
+  try {
+    session = await getImpersonationSession(svc, sessionId)
+  } catch {
+    return null
+  }
+  if (!session) return null
+  if (new Date(session.expires_at).getTime() < Date.now()) return null
 
-  if (!data) return null
-  if (new Date(data.expires_at).getTime() < Date.now()) return null
-
-  const role = await getAdminRole(data.admin_email)
+  const role = await getAdminRole(session.admin_email)
   if (!role) {
     try {
-      await svc.from("impersonation_sessions").delete().eq("id", data.id)
+      await deleteImpersonationSession(svc, session.id)
     } catch {
       /* best-effort */
     }
@@ -51,13 +56,13 @@ export async function getActiveImpersonation(
   }
 
   return {
-    session_id: data.id,
-    admin_user_id: data.admin_user_id,
-    admin_email: data.admin_email,
-    target_user_id: data.target_user_id,
-    target_email: data.target_email,
-    mode: data.mode as ImpersonationMode,
-    expires_at: data.expires_at,
+    session_id: session.id,
+    admin_user_id: session.admin_user_id,
+    admin_email: session.admin_email,
+    target_user_id: session.target_user_id,
+    target_email: session.target_email,
+    mode: session.mode as ImpersonationMode,
+    expires_at: session.expires_at,
   }
 }
 
@@ -81,25 +86,17 @@ export async function startImpersonation(opts: {
   const svc = createServiceClient()
   const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString()
 
-  const { data, error } = await svc
-    .from("impersonation_sessions")
-    .insert({
-      admin_user_id: opts.adminUserId,
-      admin_email: opts.adminEmail,
-      target_user_id: opts.targetUserId,
-      target_email: opts.targetEmail,
-      mode: opts.mode,
-      expires_at: expiresAt,
-    })
-    .select("id, admin_user_id, admin_email, target_user_id, target_email, mode, expires_at")
-    .single()
-
-  if (error || !data) {
-    throw new Error(`Failed to start impersonation: ${error?.message ?? "no row returned"}`)
-  }
+  const session = await createImpersonationSession(svc, {
+    admin_user_id: opts.adminUserId,
+    admin_email: opts.adminEmail,
+    target_user_id: opts.targetUserId,
+    target_email: opts.targetEmail,
+    mode: opts.mode,
+    expires_at: expiresAt,
+  })
 
   const jar = await cookies()
-  jar.set(IMPERSONATE_COOKIE, data.id, {
+  jar.set(IMPERSONATE_COOKIE, session.id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -108,13 +105,13 @@ export async function startImpersonation(opts: {
   })
 
   return {
-    session_id: data.id,
-    admin_user_id: data.admin_user_id,
-    admin_email: data.admin_email,
-    target_user_id: data.target_user_id,
-    target_email: data.target_email,
-    mode: data.mode as ImpersonationMode,
-    expires_at: data.expires_at,
+    session_id: session.id,
+    admin_user_id: session.admin_user_id,
+    admin_email: session.admin_email,
+    target_user_id: session.target_user_id,
+    target_email: session.target_email,
+    mode: session.mode as ImpersonationMode,
+    expires_at: session.expires_at,
   }
 }
 
@@ -126,7 +123,7 @@ export async function stopImpersonation(): Promise<void> {
   if (sessionId) {
     try {
       const svc = createServiceClient()
-      await svc.from("impersonation_sessions").delete().eq("id", sessionId)
+      await deleteImpersonationSession(svc, sessionId)
     } catch {
       /* best-effort */
     }
