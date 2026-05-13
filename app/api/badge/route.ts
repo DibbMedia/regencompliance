@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import { MARKETING_URL } from "@/lib/site-url"
 import { randomBytes } from "node:crypto"
+import { getProfile } from "@/lib/repos/profiles"
 
 function generateBadgeId(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -27,14 +28,13 @@ export async function GET() {
 
     const profileId = await effectiveProfileId(user.id, supabase)
 
-    // Get profile
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("clinic_name, badge_id, created_at")
-      .eq("id", profileId)
-      .single()
+    // Profile read goes through the repo so clinic_name is decrypted under
+    // the workspace owner's per-user DEK (Wave 2A; user is the workspace
+    // owner here when profileId === user.id, or a team member viewing the
+    // owner's badge, in which case the repo's tenant key is the owner's id).
+    const profile = await getProfile(supabase, profileId)
 
-    if (profileError || !profile) {
+    if (!profile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 })
     }
 

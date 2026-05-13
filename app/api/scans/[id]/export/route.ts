@@ -4,6 +4,7 @@ import { effectiveProfileId } from "@/lib/supabase/resolve-profile"
 import ReactPDF from "@react-pdf/renderer"
 import { ScanPdfDocument } from "@/lib/pdf-template"
 import { isValidUUID } from "@/lib/validations"
+import { getProfile } from "@/lib/repos/profiles"
 
 export const maxDuration = 30
 
@@ -36,11 +37,7 @@ export async function GET(
       return NextResponse.json({ error: "Scan not found" }, { status: 404 })
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("clinic_name")
-      .eq("id", profileId)
-      .single()
+    const profile = await getProfile(supabase, profileId)
 
     const clinicName = profile?.clinic_name || "Unknown Clinic"
     const scanDate = new Date(scan.created_at).toISOString().split("T")[0]

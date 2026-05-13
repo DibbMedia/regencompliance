@@ -4,6 +4,8 @@ import { requireWriteMode } from "@/lib/impersonation"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { logAudit } from "@/lib/audit-log"
 import { sendToGhl } from "@/lib/ghl"
+import { getProfile } from "@/lib/repos/profiles"
+import { listTeamMembers } from "@/lib/repos/team-members"
 
 export async function POST() {
   try {
@@ -22,21 +24,16 @@ export async function POST() {
 
   const serviceClient = createServiceClient()
 
-  // Collect all user data
-  const [
-    { data: profile },
-    { data: scans },
-    { data: tickets },
-    { data: ticketMessages },
-    { data: notifications },
-    { data: teamMembers },
-  ] = await Promise.all([
-    serviceClient.from("profiles").select("*").eq("id", user.id).maybeSingle(),
-    serviceClient.from("scans").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }),
-    serviceClient.from("support_tickets").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }),
-    serviceClient.from("ticket_messages").select("*, support_tickets!inner(profile_id)").eq("support_tickets.profile_id", user.id).order("created_at", { ascending: false }),
-    serviceClient.from("notifications").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }),
-    serviceClient.from("team_members").select("*").eq("profile_id", user.id).order("invited_at", { ascending: false }),
+  // Collect all user data. Wave 2A: profile + team_members run through the
+  // repos so the export is decrypted plaintext (matches what the user sees
+  // in the app); other tables remain plaintext until later waves.
+  const [profile, scans, tickets, ticketMessages, notifications, teamMembers] = await Promise.all([
+    getProfile(serviceClient, user.id),
+    serviceClient.from("scans").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }).then((r) => r.data),
+    serviceClient.from("support_tickets").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }).then((r) => r.data),
+    serviceClient.from("ticket_messages").select("*, support_tickets!inner(profile_id)").eq("support_tickets.profile_id", user.id).order("created_at", { ascending: false }).then((r) => r.data),
+    serviceClient.from("notifications").select("*").eq("profile_id", user.id).order("created_at", { ascending: false }).then((r) => r.data),
+    listTeamMembers(serviceClient, user.id),
   ])
 
   const exportData = {

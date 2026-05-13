@@ -74,17 +74,15 @@ export default function OnboardingTreatmentsPage() {
   const supabase = createClient()
 
   // Hydrate from existing profile so back/refresh doesn't lose state.
+  // Wave 2A: treatments is encrypted, so we route through /api/profile to
+  // decrypt server-side rather than reading the ciphertext directly.
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("treatments")
-          .eq("id", user.id)
-          .maybeSingle()
+        const res = await fetch("/api/profile")
+        if (!res.ok) return
+        const profile = await res.json()
         if (cancelled) return
         const stored = (profile?.treatments as string[] | null) ?? []
         if (stored.length === 0) return
@@ -99,7 +97,7 @@ export default function OnboardingTreatmentsPage() {
       }
     })()
     return () => { cancelled = true }
-  }, [supabase])
+  }, [])
 
   function addCustom() {
     const trimmed = customTreatment.trim()

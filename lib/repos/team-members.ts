@@ -14,6 +14,12 @@
 // `invite_token` stays plaintext: it's already a random secret with no
 // plaintext content to leak. Admin email search dies on this table; admin
 // pivots to `auth.users.email` or row UUID lookup per the plan §12.6.
+//
+// Wave 2A dual-state notes:
+//   - WRITES go to `email_enc` only. There is no dual-write.
+//   - READS prefer `email_enc` and fall back to the legacy plaintext `email`
+//     column when `email_enc IS NULL` (un-backfilled rows). After migration
+//     034 drops `email`, the fallback path becomes dead code.
 
 import type { SupabaseClient } from "@supabase/supabase-js"
 import {
@@ -49,13 +55,17 @@ export interface TeamMemberWrite {
   accepted_at?: string | null
 }
 
-/** On-disk shape after the team_members cutover. During dual-write the
- *  plaintext `email` column will still exist; this repo reads only `email_enc`. */
+/** On-disk shape during the Wave 2A transition window. Both ciphertext and
+ *  legacy plaintext `email` are selectable; reads prefer ciphertext and fall
+ *  back to plaintext when `email_enc IS NULL`. After migration 034 drops
+ *  `email` the fallback path is dead code. */
 export interface TeamMemberEncryptedRow {
   id: string
   profile_id: string
   user_id: string | null
   email_enc: string | null
+  // Legacy plaintext fallback. Optional because migration 034 drops it.
+  email?: string | null
   role: TeamRole
   invite_token: string | null
   accepted: boolean
@@ -85,22 +95,25 @@ export function decryptTeamMemberRow(
     )
   }
 
-  // `email` is non-nullable in the plaintext contract. An invite always has
-  // an email; we treat a null `email_enc` as a hard error rather than fall
-  // back to an empty string (silent data loss is worse than throwing).
-  if (row.email_enc === null) {
+  // `email` is non-nullable in the plaintext contract. Prefer ciphertext; if
+  // it's NULL try the transitional plaintext fallback. If both are missing
+  // it's a data integrity error - we throw rather than silently return "".
+  let email: string
+  if (row.email_enc != null) {
+    email = decryptForUser({
+      userId: profileId,
+      envelope: row.email_enc,
+      table: TABLE,
+      column: "email",
+      rowId: row.id,
+    })
+  } else if (row.email != null) {
+    email = row.email // legacy plaintext fallback (transitional)
+  } else {
     throw new Error(
-      `decryptTeamMemberRow: row ${row.id} has NULL email_enc (data integrity error)`,
+      `decryptTeamMemberRow: row ${row.id} has NULL email_enc AND NULL email (data integrity error)`,
     )
   }
-
-  const email = decryptForUser({
-    userId: profileId,
-    envelope: row.email_enc,
-    table: TABLE,
-    column: "email",
-    rowId: row.id,
-  })
 
   return {
     id: row.id,
@@ -150,8 +163,12 @@ export function encryptTeamMemberWrite(
 
 // --- CRUD ------------------------------------------------------------------
 
+// SELECT_COLUMNS includes the legacy plaintext `email` column during the
+// Wave 2A transition window so reads can fall back when `email_enc` is NULL.
+// After migration 034 drops `email` the column vanishes - the followup
+// cleanup commit will trim it out of this string.
 const SELECT_COLUMNS =
-  "id, profile_id, user_id, email_enc, role, invite_token, accepted, accepted_at, invited_at"
+  "id, profile_id, user_id, email_enc, email, role, invite_token, accepted, accepted_at, invited_at"
 
 export async function getTeamMember(
   supabase: SupabaseClient,
