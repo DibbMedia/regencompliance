@@ -120,8 +120,14 @@ describe("POST /api/tickets - encryption contract (Wave 2C)", () => {
     )
     expect(res.status).toBe(201)
 
-    // Two inserts: support_tickets, then ticket_messages.
-    expect(state.inserts.length).toBe(2)
+    // Three inserts: support_tickets, ticket_messages, and an audit_log
+    // entry (added 2026-05-13 for SOC 2 user-action trail).
+    expect(state.inserts.length).toBe(3)
+    const auditInsert = state.inserts.find((i) => i.table === "audit_log")
+    expect(auditInsert).toBeDefined()
+    const ap = auditInsert!.payload as Record<string, unknown>
+    expect(ap.action).toBe("ticket.created")
+    expect(ap.resource_type).toBe("ticket")
 
     const ticketInsert = state.inserts.find((i) => i.table === "support_tickets")
     expect(ticketInsert).toBeDefined()

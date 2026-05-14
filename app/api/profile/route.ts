@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/server"
 import { requireWriteMode } from "@/lib/impersonation"
 import { profileSchema } from "@/lib/validations"
 import { getProfile, updateProfile } from "@/lib/repos/profiles"
+import { logAudit, getRequestMeta } from "@/lib/audit-log"
 
 export async function GET() {
   try {
@@ -56,6 +57,19 @@ export async function PATCH(request: Request) {
 
     try {
       const profile = await updateProfile(supabase, user.id, parsed.data)
+      // SOC 2: user-initiated profile changes are tracked in audit_log.
+      // Field names only — `details` is encrypted at rest under the per-user
+      // DEK by lib/repos/audit-log.ts so logging the actual values would be
+      // safe, but names are sufficient and keep the audit row compact.
+      const { ip, userAgent } = getRequestMeta(request)
+      logAudit({
+        user_id: user.id,
+        user_email: user.email,
+        action: "profile.updated",
+        details: { changed_fields: Object.keys(parsed.data) },
+        ip_address: ip,
+        user_agent: userAgent,
+      })
       return NextResponse.json(profile)
     } catch (error) {
       console.error("Profile update error:", error)

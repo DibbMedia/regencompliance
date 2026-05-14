@@ -43,6 +43,21 @@ export function isPrivateIp(ip: string): boolean {
   return false
 }
 
+// Cloud provider + service-mesh metadata endpoints. Most of these resolve to
+// 169.254.169.254 (already in the IPv4 link-local blocklist) but an explicit
+// hostname check is belt-and-suspenders in case DNS resolution returns an
+// unexpected IP (e.g., split-horizon DNS, malicious resolver).
+const METADATA_HOSTS: ReadonlySet<string> = new Set([
+  "metadata.google.internal",
+  "metadata.service.consul",
+  "metadata",
+])
+
+// https:// is enforced above, so the only valid port is 443 (default) or
+// explicitly "443". Block everything else to prevent reaching internal
+// services on non-standard ports via a public-IP hostname.
+const ALLOWED_PORTS: ReadonlySet<string> = new Set(["", "443"])
+
 export async function assertSafeUrl(url: string): Promise<SsrfCheckResult> {
   let parsed: URL
   try {
@@ -55,10 +70,18 @@ export async function assertSafeUrl(url: string): Promise<SsrfCheckResult> {
     return { ok: false, reason: "Only https:// URLs are allowed" }
   }
 
+  if (!ALLOWED_PORTS.has(parsed.port)) {
+    return { ok: false, reason: "Only port 443 is allowed" }
+  }
+
   const hostname = stripBrackets(parsed.hostname.toLowerCase())
 
   if (hostname === "localhost" || hostname === "") {
     return { ok: false, reason: "Localhost is not allowed" }
+  }
+
+  if (METADATA_HOSTS.has(hostname)) {
+    return { ok: false, reason: "Cloud metadata endpoints are blocked" }
   }
 
   if (isIP(hostname) && isPrivateIp(hostname)) {

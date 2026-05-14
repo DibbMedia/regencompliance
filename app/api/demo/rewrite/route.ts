@@ -11,8 +11,15 @@ import { getClientIp } from "@/lib/ip"
 export async function POST(request: Request) {
   try {
     const ip = getClientIp(request)
-    const { allowed } = await checkRateLimit(`demo-rewrite-ip:${ip}`, 5, 24 * 60 * 60 * 1000)
-    if (!allowed) {
+    // Two-window cap to mirror /api/demo/scan: hourly bursts + daily ceiling.
+    // The daily 5/24h was the only cap pre-2026-05-13, which let an attacker
+    // burn all 5 rewrites in seconds and amplify cost. Hourly adds a floor.
+    const { allowed: hourlyAllowed } = await checkRateLimit(`demo-rewrite-ip:${ip}`, 3, 60 * 60 * 1000)
+    if (!hourlyAllowed) {
+      return NextResponse.json({ error: "Demo limit reached. Sign up for unlimited rewrites." }, { status: 429 })
+    }
+    const { allowed: dailyAllowed } = await checkRateLimit(`demo-rewrite-ip-day:${ip}`, 5, 24 * 60 * 60 * 1000)
+    if (!dailyAllowed) {
       return NextResponse.json({ error: "Demo limit reached. Sign up for unlimited rewrites." }, { status: 429 })
     }
 

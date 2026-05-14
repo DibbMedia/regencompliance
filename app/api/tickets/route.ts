@@ -6,6 +6,7 @@ import { ticketCreateSchema, parsePagination } from "@/lib/validations"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { listTickets, createTicket } from "@/lib/repos/support-tickets"
 import { createTicketMessage } from "@/lib/repos/ticket-messages"
+import { logAudit, getRequestMeta } from "@/lib/audit-log"
 
 export async function GET(request: Request) {
   try {
@@ -122,6 +123,20 @@ export async function POST(request: Request) {
       }
       return NextResponse.json({ error: "Failed to create ticket. Please try again." }, { status: 500 })
     }
+
+    // SOC 2: support-action audit trail. Captures who opened which ticket
+    // for forensic correlation with later admin replies.
+    const { ip, userAgent } = getRequestMeta(request)
+    logAudit({
+      user_id: user.id,
+      user_email: user.email,
+      action: "ticket.created",
+      resource_type: "ticket",
+      resource_id: ticket.id,
+      details: { priority: ticketPriority || "normal" },
+      ip_address: ip,
+      user_agent: userAgent,
+    })
 
     return NextResponse.json({ ticket }, { status: 201 })
   } catch (error) {

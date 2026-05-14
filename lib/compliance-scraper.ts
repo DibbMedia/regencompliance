@@ -139,8 +139,12 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
     // Combined with the per-user crawl cap this is a defensive cost ceiling
     // - cheerio handles malformed HTML gracefully but a 2 MB binary still
     // eats CPU.
+    // Restrict to HTML/XHTML. Earlier code also accepted text/plain as
+    // defensive coverage; dropped because it just lets attackers serve
+    // arbitrary text content (config files, source) through the scraper
+    // pipeline, and no real enforcement source serves text/plain.
     const ct = (res.headers.get("content-type") || "").toLowerCase()
-    if (ct && !ct.includes("text/html") && !ct.includes("application/xhtml") && !ct.includes("text/plain")) {
+    if (ct && !ct.includes("text/html") && !ct.includes("application/xhtml")) {
       return null
     }
 

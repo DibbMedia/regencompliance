@@ -72,10 +72,13 @@ export async function GET(request: NextRequest) {
 }
 
 function svgHeaders(): Record<string, string> {
+  // `Access-Control-Allow-Origin: *` was removed 2026-05-13 — `<img>`
+  // embeds do not require CORS, and a wildcard invited fetch() abuse from
+  // arbitrary origins. Browsers still render this SVG when embedded via
+  // an `<img>` tag on any site.
   return {
     "Content-Type": "image/svg+xml",
     "Cache-Control": "public, max-age=3600, s-maxage=3600",
-    "Access-Control-Allow-Origin": "*",
   }
 }
 
