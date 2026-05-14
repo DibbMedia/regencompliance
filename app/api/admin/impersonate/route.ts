@@ -80,13 +80,18 @@ export async function DELETE(request: Request) {
   if ("error" in auth) return auth.error
   const { user } = auth
 
-  await stopImpersonation()
+  const stopped = await stopImpersonation()
 
   const { ip, userAgent } = getRequestMeta(request)
   logAudit({
     user_id: user.id,
     user_email: user.email,
     action: "admin.impersonate.stop",
+    resource_type: stopped.target_user_id ? "user" : undefined,
+    resource_id: stopped.target_user_id ?? undefined,
+    details: stopped.mode
+      ? { mode: stopped.mode, target_email: stopped.target_email }
+      : undefined,
     ip_address: ip,
     user_agent: userAgent,
   })

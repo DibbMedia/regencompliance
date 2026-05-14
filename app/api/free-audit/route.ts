@@ -28,6 +28,7 @@ import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 import { sendToGhl } from "@/lib/ghl"
 import { captureError } from "@/lib/error-tracking"
 import { createFreeAuditLead } from "@/lib/repos/free-audit-leads"
+import { logAudit } from "@/lib/audit-log"
 
 const FREE_AUDIT_USER_ID = "00000000-0000-0000-0000-000000000001"
 const PUBLIC_FLAG_LIMIT = 2
@@ -275,6 +276,21 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     } catch (insertErr) {
       console.error("[free-audit] lead insert error:", insertErr)
     }
+
+    // GDPR / SOC 2: forensic trail for anonymous prospect data collection.
+    // System-key envelope (no user_id) since the prospect has no account
+    // yet. host is captured separately so admins can spot abuse patterns
+    // without decrypting per-row PII.
+    logAudit({
+      action: "free_audit.submitted",
+      details: {
+        host,
+        compliance_score: score,
+        flag_count: allFlags.length,
+      },
+      ip_address: ip,
+      user_agent: userAgent ?? undefined,
+    })
 
     void sendToGhl("free_audit", {
       email,

@@ -115,17 +115,43 @@ export async function startImpersonation(opts: {
   }
 }
 
-export async function stopImpersonation(): Promise<void> {
+export interface StoppedImpersonation {
+  mode: ImpersonationMode | null
+  target_user_id: string | null
+  target_email: string | null
+}
+
+// Returns the stopped session's mode + target so callers can include them
+// in audit log entries for start/stop correlation. Best-effort: if the
+// session row can't be read, returns nulls instead of throwing.
+export async function stopImpersonation(): Promise<StoppedImpersonation> {
   const sessionId = await readImpersonationCookie()
   const jar = await cookies()
   jar.delete(IMPERSONATE_COOKIE)
 
-  if (sessionId) {
-    try {
-      const svc = createServiceClient()
-      await deleteImpersonationSession(svc, sessionId)
-    } catch {
-      /* best-effort */
-    }
+  if (!sessionId) {
+    return { mode: null, target_user_id: null, target_email: null }
   }
+
+  let captured: StoppedImpersonation = {
+    mode: null,
+    target_user_id: null,
+    target_email: null,
+  }
+  try {
+    const svc = createServiceClient()
+    // Read before delete so the audit entry can include the mode.
+    const session = await getImpersonationSession(svc, sessionId)
+    if (session) {
+      captured = {
+        mode: session.mode as ImpersonationMode,
+        target_user_id: session.target_user_id,
+        target_email: session.target_email,
+      }
+    }
+    await deleteImpersonationSession(svc, sessionId)
+  } catch {
+    /* best-effort */
+  }
+  return captured
 }

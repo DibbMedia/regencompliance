@@ -34,7 +34,10 @@ export async function POST(request: Request) {
   const clientIp = getClientIp(request)
 
   // 1. Per-IP floor - applies before any DB read, keeps cost low under abuse.
-  const { allowed: ipAllowed } = await checkRateLimit(`login-ip:${clientIp}`, 30, 15 * 60 * 1000)
+  // 10/15min is the OWASP credential-stuffing recommendation. Tightened from
+  // 30/15min on 2026-05-13 per security audit; per-email lockout (5 fails
+  // -> 15 min, see lib/login-protection.ts) remains the primary defense.
+  const { allowed: ipAllowed } = await checkRateLimit(`login-ip:${clientIp}`, 10, 15 * 60 * 1000)
   if (!ipAllowed) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 })
   }

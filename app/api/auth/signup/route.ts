@@ -5,6 +5,7 @@ import { getClientIp } from "@/lib/ip"
 import { signupSchema } from "@/lib/validations"
 import { checkPasswordBreach } from "@/lib/password-breach"
 import { sendToGhl } from "@/lib/ghl"
+import { logAudit, getRequestMeta } from "@/lib/audit-log"
 
 export async function POST(request: Request) {
   const ip = getClientIp(request)
@@ -67,6 +68,19 @@ export async function POST(request: Request) {
     email: parsed.data.email,
     user_id: data.user?.id ?? null,
     confirmed_at: data.user?.confirmed_at ?? null,
+  })
+
+  // SOC 2: pre-auth signup audit entry (system-key, no user_id since the
+  // user hasn't confirmed email yet). Captures the registration attempt for
+  // forensic timeline reconstruction.
+  const { userAgent } = getRequestMeta(request)
+  logAudit({
+    action: "auth.signup",
+    resource_type: data.user?.id ? "user" : undefined,
+    resource_id: data.user?.id ?? undefined,
+    details: { confirmed: !!data.user?.confirmed_at },
+    ip_address: ip,
+    user_agent: userAgent,
   })
 
   return NextResponse.json({ user: data.user, session: data.session })
