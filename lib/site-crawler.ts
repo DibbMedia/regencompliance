@@ -1,4 +1,5 @@
-import { fetchPage } from "@/lib/compliance-scraper"
+import * as cheerio from "cheerio"
+import { fetchPage, safeFetchHtml } from "@/lib/compliance-scraper"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -47,8 +48,11 @@ const SKIP_EXTENSIONS = [
 ]
 
 // ---------------------------------------------------------------------------
-// discoverPages - BFS crawl to find all internal URLs
+// discoverPages - sitemap-first discovery with BFS fallback
 // ---------------------------------------------------------------------------
+
+const SITEMAP_FETCH_TIMEOUT_MS = 15_000
+const MAX_CHILD_SITEMAPS = 5
 
 export async function discoverPages(
   domain: string,
@@ -57,6 +61,15 @@ export async function discoverPages(
   const limit = Math.min(maxPages, 100)
   const normalizedDomain = domain.replace(/^(https?:\/\/)/, "").replace(/\/$/, "")
   const startUrl = `https://${normalizedDomain}`
+
+  // 1. Try sitemap.xml first.
+  const sitemapPages = await discoverFromSitemap(normalizedDomain, limit)
+  if (sitemapPages.length > 0) {
+    return sitemapPages
+  }
+
+  // 2. Fall back to BFS crawl.
+  console.info("[discoverPages] sitemap not usable, falling back to BFS for " + normalizedDomain)
 
   const visited = new Set<string>()
   const queue: string[] = [startUrl]
@@ -96,6 +109,92 @@ export async function discoverPages(
   }
 
   return pages
+}
+
+// ---------------------------------------------------------------------------
+// discoverFromSitemap - fetch sitemap.xml (handles sitemap-index), filter, dedup
+// ---------------------------------------------------------------------------
+
+async function discoverFromSitemap(
+  normalizedDomain: string,
+  limit: number,
+): Promise<DiscoveredPage[]> {
+  const sitemapUrl = `https://${normalizedDomain}/sitemap.xml`
+
+  try {
+    const xml = await safeFetchHtml(sitemapUrl, SITEMAP_FETCH_TIMEOUT_MS)
+    if (!xml) return []
+
+    const $ = cheerio.load(xml, { xmlMode: true })
+
+    // Collect candidate URLs. If this is a sitemap index, fetch up to
+    // MAX_CHILD_SITEMAPS child sitemaps and merge their <loc> entries.
+    const locUrls: string[] = []
+    const rootName = ($.root().children().first()[0] as { name?: string } | undefined)?.name?.toLowerCase()
+
+    if (rootName === "sitemapindex") {
+      const childUrls: string[] = []
+      $("sitemap > loc").each((_i, el) => {
+        const u = $(el).text().trim()
+        if (u) childUrls.push(u)
+      })
+
+      for (const childUrl of childUrls.slice(0, MAX_CHILD_SITEMAPS)) {
+        try {
+          const childXml = await safeFetchHtml(childUrl, SITEMAP_FETCH_TIMEOUT_MS)
+          if (!childXml) continue
+          const $child = cheerio.load(childXml, { xmlMode: true })
+          $child("url > loc").each((_i, el) => {
+            const u = $child(el).text().trim()
+            if (u) locUrls.push(u)
+          })
+        } catch {
+          // Ignore child-sitemap failures; we'll fall back if the total
+          // usable count ends up at zero.
+          continue
+        }
+      }
+    } else {
+      $("url > loc").each((_i, el) => {
+        const u = $(el).text().trim()
+        if (u) locUrls.push(u)
+      })
+    }
+
+    // Filter to same-origin, drop skip patterns, dedup via normalizeUrl.
+    const seen = new Set<string>()
+    const pages: DiscoveredPage[] = []
+    for (const raw of locUrls) {
+      if (pages.length >= limit) break
+
+      let href: URL
+      try {
+        href = new URL(raw)
+      } catch {
+        continue
+      }
+
+      const hrefHost = href.hostname.replace(/^www\./, "")
+      const domainHost = normalizedDomain.replace(/^www\./, "")
+      if (hrefHost !== domainHost) continue
+
+      if (!href.protocol.startsWith("http")) continue
+
+      const normalized = normalizeUrl(href.toString())
+      if (seen.has(normalized)) continue
+      if (shouldSkipUrl(normalized)) continue
+
+      seen.add(normalized)
+      pages.push({ url: normalized, title: normalized })
+    }
+
+    if (pages.length === 0) return []
+
+    console.info("[discoverPages] sitemap used:", sitemapUrl, "urls=" + pages.length)
+    return pages
+  } catch {
+    return []
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -107,7 +107,7 @@ const DEFAULT_TIMEOUT_MS = 15_000
 const MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 const MAX_REDIRECT_HOPS = 5
 
-async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | null> {
+export async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | null> {
   let current = url
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
     const gate = await assertSafeUrl(current)
@@ -155,8 +155,18 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
     // defensive coverage; dropped because it just lets attackers serve
     // arbitrary text content (config files, source) through the scraper
     // pipeline, and no real enforcement source serves text/plain.
+    // XML variants (application/xml, text/xml, application/rss+xml) are
+    // also accepted so sitemap.xml discovery in lib/site-crawler.ts can
+    // share this fetch path.
     const ct = (res.headers.get("content-type") || "").toLowerCase()
-    if (ct && !ct.includes("text/html") && !ct.includes("application/xhtml")) {
+    if (
+      ct &&
+      !ct.includes("text/html") &&
+      !ct.includes("application/xhtml") &&
+      !ct.includes("application/xml") &&
+      !ct.includes("text/xml") &&
+      !ct.includes("application/rss+xml")
+    ) {
       console.error("[safeFetchHtml] non-html content-type: " + ct + " " + current)
       return null
     }
