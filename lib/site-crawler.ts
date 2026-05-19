@@ -53,6 +53,12 @@ const SKIP_EXTENSIONS = [
 
 const SITEMAP_FETCH_TIMEOUT_MS = 15_000
 const MAX_CHILD_SITEMAPS = 5
+// F-10: defensive entry cap. safeFetchHtml already caps the response body
+// in bytes, but a sitemap that fits under that ceiling could still contain
+// 10k+ <loc> entries (large e-commerce or aggregator sites). Cap parsing
+// so we don't pin CPU on outliers - the downstream filter loop respects
+// maxPages anyway, so anything past this bound would be discarded.
+const MAX_SITEMAP_ENTRIES = 2000
 
 export async function discoverPages(
   domain: string,
@@ -140,11 +146,13 @@ async function discoverFromSitemap(
       })
 
       for (const childUrl of childUrls.slice(0, MAX_CHILD_SITEMAPS)) {
+        if (locUrls.length >= MAX_SITEMAP_ENTRIES) break
         try {
           const childXml = await safeFetchHtml(childUrl, SITEMAP_FETCH_TIMEOUT_MS)
           if (!childXml) continue
           const $child = cheerio.load(childXml, { xmlMode: true })
           $child("url > loc").each((_i, el) => {
+            if (locUrls.length >= MAX_SITEMAP_ENTRIES) return false
             const u = $child(el).text().trim()
             if (u) locUrls.push(u)
           })
@@ -156,9 +164,15 @@ async function discoverFromSitemap(
       }
     } else {
       $("url > loc").each((_i, el) => {
+        if (locUrls.length >= MAX_SITEMAP_ENTRIES) return false
         const u = $(el).text().trim()
         if (u) locUrls.push(u)
       })
+    }
+    if (locUrls.length >= MAX_SITEMAP_ENTRIES) {
+      console.info(
+        "[discoverPages] sitemap entry cap reached (" + MAX_SITEMAP_ENTRIES + ") for " + sitemapUrl + " - remaining entries discarded",
+      )
     }
 
     // Filter to same-origin, drop skip patterns, dedup via normalizeUrl.
