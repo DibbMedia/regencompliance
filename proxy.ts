@@ -38,14 +38,43 @@ const publicPaths = [
   "/auth/reset-password",
 ]
 
+// Both canonical hosts are valid connect-src targets. Cross-origin hops
+// between the marketing apex and the app subdomain (Next.js <Link> prefetch
+// of app paths from marketing pages, login redirects) are otherwise blocked
+// by connect-src 'self'. Derived at runtime from the same env vars and with
+// the same trim / www-variant / try-catch handling as allowedOrigins() in
+// lib/security/origin.ts.
+function siteConnectOrigins(): string[] {
+  const out: string[] = []
+  for (const envVar of ["NEXT_PUBLIC_APP_URL", "NEXT_PUBLIC_MARKETING_URL"]) {
+    const value = process.env[envVar]?.trim()
+    if (value) {
+      try {
+        const parsed = new URL(value)
+        out.push(parsed.origin)
+        if (
+          envVar === "NEXT_PUBLIC_MARKETING_URL" &&
+          !parsed.hostname.startsWith("www.")
+        ) {
+          out.push(`${parsed.protocol}//www.${parsed.hostname}`)
+        }
+      } catch {
+        /* ignore malformed env */
+      }
+    }
+  }
+  return out
+}
+
 function buildCsp(nonce: string): string {
+  const siteOrigins = siteConnectOrigins()
   return [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' https: data:",
     "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://api.anthropic.com https://*.sentry.io https://*.vercel-insights.com https://vitals.vercel-insights.com",
+    `connect-src 'self'${siteOrigins.length ? " " + siteOrigins.join(" ") : ""} https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://api.anthropic.com https://*.sentry.io https://*.vercel-insights.com https://vitals.vercel-insights.com`,
     "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
