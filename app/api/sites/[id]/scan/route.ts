@@ -13,11 +13,11 @@ import { getMonitoredSite } from "@/lib/repos/monitored-sites"
 import { getProfile } from "@/lib/repos/profiles"
 
 // F-04: raised from 20 to 25. The crawl loop in lib/scan/run-site-crawl.ts
-// is serial (awaits each page's fetch + Claude call sequentially), so the
-// per-trigger ceiling has to stay inside the 60s Vercel function timeout
-// (maxDuration above is 300 but Hobby/Pro functions still terminate at 60s
-// for non-cron paths on the current plan). 25 leaves margin for slower
-// pages while letting the Process queue button drain backlogs faster.
+// is serial (awaits each page's fetch + Claude call sequentially). With
+// maxDuration = 300 (Vercel Pro), 25 pages at ~3s/page stays well inside
+// the 5-minute ceiling and lets the "Process queue" button drain backlogs
+// faster than the old 20-page cap. F-08: corrected an earlier comment that
+// claimed a 60s ceiling - that's the Hobby plan, not Pro.
 const MAX_PAGES_PER_CRAWL = 25
 
 export async function POST(
