@@ -33,6 +33,21 @@ export interface AuditEntry {
 // process and every 100th thereafter, with the running count attached.
 let auditFailureCount = 0
 
+// F-07: cache the service client across calls so undici can keep-alive
+// sockets. Each createServiceClient() builds a fresh @supabase/ssr instance
+// with its own connection pool; in a multi-page site scan this burst of
+// fresh TLS handshakes was the source of the [Audit] fetch-failed /
+// ECONNRESET noise. Reusing one client across the function-instance
+// lifetime lets the SDK reuse warmed sockets. The client carries no
+// per-request state (cookies are stubbed to return []), so it's safe to
+// share. Lazily initialized so process.env (already trimmed by
+// validateEnv in instrumentation) is set before first use.
+let cachedServiceClient: ReturnType<typeof createServiceClient> | null = null
+function getAuditServiceClient() {
+  if (!cachedServiceClient) cachedServiceClient = createServiceClient()
+  return cachedServiceClient
+}
+
 /**
  * Log an audit event. Non-blocking - never throws.
  *
@@ -42,7 +57,7 @@ let auditFailureCount = 0
  */
 export function logAudit(entry: AuditEntry): void {
   try {
-    const supabase = createServiceClient()
+    const supabase = getAuditServiceClient()
     void createAuditLogEntry(supabase, {
       user_id: entry.user_id ?? null,
       user_email: entry.user_email ?? null,
