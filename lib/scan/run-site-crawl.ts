@@ -141,6 +141,31 @@ export async function scanSitePages(
   let failedCount = 0
   const lowScorePages: string[] = []
 
+  // Write last_error in its own update() call so a missing column on prod
+  // (migration 043 not yet applied by operator) cannot break the status
+  // update sitting next to it. PostgREST returns PGRST204 for unknown
+  // columns; the Supabase JS client surfaces it via `error` (does not throw)
+  // and the outer try/catch covers any unexpected network throw. Either
+  // way, callers do not see a failure. Once migration 043 is live this
+  // could fold back into the main status update, but the dual-write keeps
+  // the crawler robust during the migration-lag window.
+  const recordLastError = async (pageId: string, reason: string) => {
+    try {
+      const { error: lastErrorWriteErr } = await supabase
+        .from("site_pages")
+        .update({ last_error: reason.slice(0, 500) })
+        .eq("id", pageId)
+      if (lastErrorWriteErr) {
+        console.warn(
+          `[${source}] last_error write skipped (migration 043 pending?):`,
+          lastErrorWriteErr.message,
+        )
+      }
+    } catch (lastErrorThrow) {
+      console.warn(`[${source}] last_error write threw (migration 043 pending?):`, lastErrorThrow)
+    }
+  }
+
   for (const page of toProcess) {
     try {
       await supabase.from("site_pages").update({ status: "scanning" }).eq("id", page.id)
@@ -148,10 +173,14 @@ export async function scanSitePages(
       const content = await extractPageContent(page.url)
       if (!content || !content.text) {
         console.error("[run-site-crawl] page failed extraction:", page.url)
+        const reason = !content
+          ? "extractPageContent returned null - fetch/parse failure, see runtime logs"
+          : "extractPageContent returned empty text - page had no extractable copy"
         await supabase
           .from("site_pages")
           .update({ status: "error", updated_at: new Date().toISOString() })
           .eq("id", page.id)
+        await recordLastError(page.id, reason)
         failedCount++
         continue
       }
@@ -183,6 +212,10 @@ export async function scanSitePages(
           .from("site_pages")
           .update({ status: "error", updated_at: new Date().toISOString() })
           .eq("id", page.id)
+        await recordLastError(
+          page.id,
+          `Claude response was not valid JSON (length=${responseText.length}) - see runtime logs`,
+        )
         failedCount++
         continue
       }
@@ -197,6 +230,10 @@ export async function scanSitePages(
           .from("site_pages")
           .update({ status: "error", updated_at: new Date().toISOString() })
           .eq("id", page.id)
+        await recordLastError(
+          page.id,
+          `Claude returned non-numeric compliance_score (got ${typeof rawScore})`,
+        )
         failedCount++
         continue
       }
@@ -237,6 +274,24 @@ export async function scanSitePages(
         updated_at: new Date().toISOString(),
       })
 
+      // Clear any stale last_error on a successful scan. Same migration-lag
+      // dance as recordLastError - silently ignore PGRST204 if migration 043
+      // is not yet applied on prod.
+      try {
+        const { error: clearErr } = await supabase
+          .from("site_pages")
+          .update({ last_error: null })
+          .eq("id", page.id)
+        if (clearErr) {
+          console.warn(
+            `[${source}] last_error clear skipped (migration 043 pending?):`,
+            clearErr.message,
+          )
+        }
+      } catch (clearThrow) {
+        console.warn(`[${source}] last_error clear threw (migration 043 pending?):`, clearThrow)
+      }
+
       scannedCount++
       totalScore += score
 
@@ -256,6 +311,11 @@ export async function scanSitePages(
         .from("site_pages")
         .update({ status: "error", updated_at: new Date().toISOString() })
         .eq("id", page.id)
+      const reason =
+        pageError instanceof Error
+          ? `${pageError.name}: ${pageError.message}`
+          : "Unknown error during page scan - see runtime logs"
+      await recordLastError(page.id, reason)
       failedCount++
     }
   }

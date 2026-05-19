@@ -9,7 +9,8 @@
 //   - `title` -> `title_enc TEXT`
 //
 // Pass-through: id, site_id, profile_id, compliance_score, flag_count,
-//   *_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at.
+//   *_risk_count, last_scan_id, last_scanned_at, status, last_error,
+//   created_at, updated_at.
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { decryptForUser, encryptForUser, withCryptoRequestScope } from "@/lib/crypto"
 
@@ -29,6 +30,7 @@ export interface SitePage {
   last_scan_id: string | null
   last_scanned_at: string | null
   status: string | null
+  last_error: string | null
   created_at: string
   updated_at: string
 }
@@ -47,6 +49,7 @@ export interface SitePageWrite {
   last_scan_id?: string | null
   last_scanned_at?: string | null
   status?: string | null
+  last_error?: string | null
   created_at?: string
   updated_at?: string
 }
@@ -68,6 +71,7 @@ export interface SitePageEncryptedRow {
   last_scan_id: string | null
   last_scanned_at: string | null
   status: string | null
+  last_error: string | null
   created_at: string
   updated_at: string
 }
@@ -86,6 +90,7 @@ export interface SitePageInsert {
   last_scan_id?: string | null
   last_scanned_at?: string | null
   status?: string | null
+  last_error?: string | null
   created_at?: string
   updated_at?: string
 }
@@ -101,6 +106,7 @@ export interface SitePageUpdate {
   last_scan_id?: string | null
   last_scanned_at?: string | null
   status?: string | null
+  last_error?: string | null
   updated_at?: string
 }
 
@@ -143,6 +149,7 @@ export function decryptSitePageRow(profileId: string, row: SitePageEncryptedRow)
     last_scan_id: row.last_scan_id,
     last_scanned_at: row.last_scanned_at,
     status: row.status,
+    last_error: row.last_error ?? null,
     created_at: row.created_at,
     updated_at: row.updated_at,
   }
@@ -187,6 +194,7 @@ export function encryptSitePageWrite(
   if (input.last_scan_id !== undefined) insert.last_scan_id = input.last_scan_id
   if (input.last_scanned_at !== undefined) insert.last_scanned_at = input.last_scanned_at
   if (input.status !== undefined) insert.status = input.status
+  if (input.last_error !== undefined) insert.last_error = input.last_error
   if (input.created_at) insert.created_at = input.created_at
   if (input.updated_at) insert.updated_at = input.updated_at
   return insert
@@ -231,6 +239,7 @@ export function encryptSitePageUpdate(
   if (patch.last_scan_id !== undefined) update.last_scan_id = patch.last_scan_id
   if (patch.last_scanned_at !== undefined) update.last_scanned_at = patch.last_scanned_at
   if (patch.status !== undefined) update.status = patch.status
+  if (patch.last_error !== undefined) update.last_error = patch.last_error
   if (patch.updated_at !== undefined) update.updated_at = patch.updated_at
 
   return update
@@ -240,7 +249,7 @@ export function encryptSitePageUpdate(
 
 // Post-cutover: migration 036 dropped the plaintext url / title columns.
 const SELECT_COLUMNS =
-  "id, site_id, profile_id, url_enc, title_enc, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, created_at, updated_at"
+  "id, site_id, profile_id, url_enc, title_enc, compliance_score, flag_count, high_risk_count, medium_risk_count, low_risk_count, last_scan_id, last_scanned_at, status, last_error, created_at, updated_at"
 
 export async function getSitePage(
   supabase: SupabaseClient,

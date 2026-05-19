@@ -62,6 +62,7 @@ function buildEncryptedRow(
     last_scan_id: insert.last_scan_id ?? null,
     last_scanned_at: insert.last_scanned_at ?? null,
     status: insert.status ?? null,
+    last_error: insert.last_error ?? null,
     created_at: "2026-05-13T00:00:00Z",
     updated_at: "2026-05-13T00:00:00Z",
   }
