@@ -111,7 +111,10 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
   let current = url
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
     const gate = await assertSafeUrl(current)
-    if (!gate.ok || !gate.resolvedIps?.length) return null
+    if (!gate.ok || !gate.resolvedIps?.length) {
+      console.error("[safeFetchHtml] assertSafeUrl blocked: " + current + " reason=" + (gate.reason ?? "no-ips"))
+      return null
+    }
 
     // pinnedFetch connects to the IP we just validated, so a hostile DNS
     // server can't swap in a private IP between assertSafeUrl and fetch.
@@ -127,12 +130,21 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
 
     if (res.status >= 300 && res.status < 400) {
       const loc = res.headers.get("location")
-      if (!loc) return null
-      try { current = new URL(loc, current).toString() } catch { return null }
+      if (!loc) {
+        console.error("[safeFetchHtml] redirect without location: " + current)
+        return null
+      }
+      try { current = new URL(loc, current).toString() } catch {
+        console.error("[safeFetchHtml] malformed redirect location: " + loc + " from " + current)
+        return null
+      }
       continue
     }
 
-    if (!res.ok) return null
+    if (!res.ok) {
+      console.error("[safeFetchHtml] non-OK status: " + res.status + " " + current)
+      return null
+    }
 
     // Reject non-HTML responses. Without this guard a target server can
     // serve any binary as text/html and we burn the 2 MB cap parsing it.
@@ -145,11 +157,15 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
     // pipeline, and no real enforcement source serves text/plain.
     const ct = (res.headers.get("content-type") || "").toLowerCase()
     if (ct && !ct.includes("text/html") && !ct.includes("application/xhtml")) {
+      console.error("[safeFetchHtml] non-html content-type: " + ct + " " + current)
       return null
     }
 
     const declared = res.headers.get("content-length")
-    if (declared && Number(declared) > MAX_RESPONSE_BYTES) return null
+    if (declared && Number(declared) > MAX_RESPONSE_BYTES) {
+      console.error("[safeFetchHtml] declared content-length exceeds cap: " + declared + " " + current)
+      return null
+    }
 
     const reader = res.body?.getReader()
     if (!reader) {
@@ -165,6 +181,7 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
       bytes += value.byteLength
       if (bytes > MAX_RESPONSE_BYTES) {
         try { await reader.cancel() } catch { /* ignore */ }
+        console.error("[safeFetchHtml] body bytes exceed cap at " + bytes + " " + current)
         return null
       }
       out += decoder.decode(value, { stream: true })
@@ -172,6 +189,7 @@ async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | n
     out += decoder.decode()
     return out
   }
+  console.error("[safeFetchHtml] max redirects exhausted: " + current)
   return null
 }
 
@@ -183,7 +201,8 @@ export async function fetchPage(
     const html = await safeFetchHtml(url, timeoutMs)
     if (!html) return null
     return cheerio.load(html)
-  } catch {
+  } catch (err) {
+    console.error("[fetchPage] threw:", url, err instanceof Error ? err.message : String(err))
     return null
   }
 }

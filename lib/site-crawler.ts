@@ -105,7 +105,10 @@ export async function discoverPages(
 export async function extractPageContent(url: string): Promise<PageContent | null> {
   try {
     const $ = await fetchPage(url)
-    if (!$) return null
+    if (!$) {
+      console.error("[extractPageContent] fetchPage returned null:", url)
+      return null
+    }
 
     const title = $("title").first().text().trim() || url
     const metaDescription = $('meta[name="description"]').attr("content")?.trim()
@@ -126,10 +129,14 @@ export async function extractPageContent(url: string): Promise<PageContent | nul
       text = text.slice(0, 10000)
     }
 
-    if (text.length < 50) return null // not enough content
+    if (text.length < 50) {
+      console.error("[extractPageContent] insufficient body text:", url, "chars=", text.length)
+      return null // not enough content
+    }
 
     return { url, title, text, metaDescription }
-  } catch {
+  } catch (err) {
+    console.error("[extractPageContent] threw:", url, err instanceof Error ? err.message : String(err))
     return null
   }
 }

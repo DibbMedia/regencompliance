@@ -147,6 +147,7 @@ export async function scanSitePages(
 
       const content = await extractPageContent(page.url)
       if (!content || !content.text) {
+        console.error("[run-site-crawl] page failed extraction:", page.url)
         await supabase
           .from("site_pages")
           .update({ status: "error", updated_at: new Date().toISOString() })
