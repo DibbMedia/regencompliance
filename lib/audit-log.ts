@@ -28,6 +28,11 @@ export interface AuditEntry {
   status?: "success" | "failure" | "error"
 }
 
+// Module-level counter so transient Supabase outages (ECONNRESET / fetch
+// failed) don't spam Vercel runtime logs. We log the first failure of the
+// process and every 100th thereafter, with the running count attached.
+let auditFailureCount = 0
+
 /**
  * Log an audit event. Non-blocking - never throws.
  *
@@ -49,7 +54,13 @@ export function logAudit(entry: AuditEntry): void {
       user_agent: entry.user_agent ?? null,
       status: entry.status ?? "success",
     }).catch((err) => {
-      console.error("[Audit] Failed to log:", err)
+      auditFailureCount++
+      if (auditFailureCount === 1 || auditFailureCount % 100 === 0) {
+        console.warn(
+          "[Audit] write failed (total since start: " + auditFailureCount + "): " +
+          (err instanceof Error ? err.message : String(err))
+        )
+      }
     })
   } catch {
     // Never throw from audit logging.
