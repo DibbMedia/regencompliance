@@ -15,7 +15,7 @@
 // in via `SiteRef` is already decrypted by the caller.
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { anthropic } from "@/lib/anthropic"
-import { extractPageContent } from "@/lib/site-crawler"
+import { extractPageContentWithStatus } from "@/lib/site-crawler"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { createScan } from "@/lib/repos/scans"
 import {
@@ -119,11 +119,17 @@ export async function scanSitePages(
 
   // listPagesForSiteAsService decrypts url/title per row using the
   // denormalized profile_id (migration 035).
-  const pages = await listPagesForSiteAsService(supabase, site.id, {
+  const allPages = await listPagesForSiteAsService(supabase, site.id, {
     orderBy: "last_scanned_at",
     ascending: true,
     nullsFirst: true,
   })
+
+  // F-06 part 2: pages marked status='retired' (typically because the URL
+  // 404'd on a prior scan) are skipped here so we don't re-fail them every
+  // cron run. This filter applies to BOTH cron and manual triggers since
+  // they all flow through this loop.
+  const pages = allPages.filter((p) => p.status !== "retired")
 
   const toProcess = pages.slice(0, maxPages)
   const overflow = pages.slice(maxPages)
@@ -170,20 +176,36 @@ export async function scanSitePages(
     try {
       await supabase.from("site_pages").update({ status: "scanning" }).eq("id", page.id)
 
-      const content = await extractPageContent(page.url)
-      if (!content || !content.text) {
-        console.error("[run-site-crawl] page failed extraction:", page.url)
-        const reason = !content
-          ? "extractPageContent returned null - fetch/parse failure, see runtime logs"
-          : "extractPageContent returned empty text - page had no extractable copy"
-        await supabase
-          .from("site_pages")
-          .update({ status: "error", updated_at: new Date().toISOString() })
-          .eq("id", page.id)
-        await recordLastError(page.id, reason)
+      const extractResult = await extractPageContentWithStatus(page.url)
+      if (!extractResult.ok) {
+        console.error(
+          "[run-site-crawl] page failed extraction:",
+          page.url,
+          "status=" + extractResult.httpStatus,
+          "reason=" + extractResult.reason,
+        )
+        // F-06 part 2: HTTP 404 means the page is gone. Mark it retired so
+        // future crawls (cron AND manual triggers) skip it instead of
+        // re-failing each week. Other failure modes (timeout, non-HTML,
+        // body cap, content too short, etc.) keep the existing 'error'
+        // status so the next run gets another shot.
+        if (extractResult.httpStatus === 404) {
+          await supabase
+            .from("site_pages")
+            .update({ status: "retired", updated_at: new Date().toISOString() })
+            .eq("id", page.id)
+          await recordLastError(page.id, "HTTP 404")
+        } else {
+          await supabase
+            .from("site_pages")
+            .update({ status: "error", updated_at: new Date().toISOString() })
+            .eq("id", page.id)
+          await recordLastError(page.id, extractResult.reason)
+        }
         failedCount++
         continue
       }
+      const content = extractResult
 
       const scanStart = Date.now()
       const safePageUrl = (page.url || "").replace(/[\r\n`]/g, " ").slice(0, 500)

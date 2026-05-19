@@ -107,13 +107,26 @@ const DEFAULT_TIMEOUT_MS = 15_000
 const MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 const MAX_REDIRECT_HOPS = 5
 
-export async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | null> {
+/**
+ * Structured result for fetch paths that need to surface the HTTP status
+ * (e.g., F-06 retire-on-404 in the site-crawl loop). Successful responses
+ * carry the body; failures carry the last-seen status (or null if the call
+ * never reached an HTTP response) plus a short reason string for logging.
+ */
+export type SafeFetchHtmlResult =
+  | { ok: true; html: string }
+  | { ok: false; httpStatus: number | null; reason: string }
+
+export async function safeFetchHtmlWithStatus(
+  url: string,
+  timeoutMs: number,
+): Promise<SafeFetchHtmlResult> {
   let current = url
   for (let hop = 0; hop <= MAX_REDIRECT_HOPS; hop++) {
     const gate = await assertSafeUrl(current)
     if (!gate.ok || !gate.resolvedIps?.length) {
       console.error("[safeFetchHtml] assertSafeUrl blocked: " + current + " reason=" + (gate.reason ?? "no-ips"))
-      return null
+      return { ok: false, httpStatus: null, reason: "assertSafeUrl blocked: " + (gate.reason ?? "no-ips") }
     }
 
     // pinnedFetch connects to the IP we just validated, so a hostile DNS
@@ -132,18 +145,18 @@ export async function safeFetchHtml(url: string, timeoutMs: number): Promise<str
       const loc = res.headers.get("location")
       if (!loc) {
         console.error("[safeFetchHtml] redirect without location: " + current)
-        return null
+        return { ok: false, httpStatus: res.status, reason: "redirect without location" }
       }
       try { current = new URL(loc, current).toString() } catch {
         console.error("[safeFetchHtml] malformed redirect location: " + loc + " from " + current)
-        return null
+        return { ok: false, httpStatus: res.status, reason: "malformed redirect location" }
       }
       continue
     }
 
     if (!res.ok) {
       console.error("[safeFetchHtml] non-OK status: " + res.status + " " + current)
-      return null
+      return { ok: false, httpStatus: res.status, reason: "HTTP " + res.status }
     }
 
     // Reject non-HTML responses. Without this guard a target server can
@@ -168,19 +181,22 @@ export async function safeFetchHtml(url: string, timeoutMs: number): Promise<str
       !ct.includes("application/rss+xml")
     ) {
       console.error("[safeFetchHtml] non-html content-type: " + ct + " " + current)
-      return null
+      return { ok: false, httpStatus: res.status, reason: "non-html content-type: " + ct }
     }
 
     const declared = res.headers.get("content-length")
     if (declared && Number(declared) > MAX_RESPONSE_BYTES) {
       console.error("[safeFetchHtml] declared content-length exceeds cap: " + declared + " " + current)
-      return null
+      return { ok: false, httpStatus: res.status, reason: "declared content-length exceeds cap" }
     }
 
     const reader = res.body?.getReader()
     if (!reader) {
       const txt = await res.text()
-      return txt.length > MAX_RESPONSE_BYTES ? null : txt
+      if (txt.length > MAX_RESPONSE_BYTES) {
+        return { ok: false, httpStatus: res.status, reason: "body bytes exceed cap" }
+      }
+      return { ok: true, html: txt }
     }
     const decoder = new TextDecoder()
     let out = ""
@@ -192,29 +208,56 @@ export async function safeFetchHtml(url: string, timeoutMs: number): Promise<str
       if (bytes > MAX_RESPONSE_BYTES) {
         try { await reader.cancel() } catch { /* ignore */ }
         console.error("[safeFetchHtml] body bytes exceed cap at " + bytes + " " + current)
-        return null
+        return { ok: false, httpStatus: res.status, reason: "body bytes exceed cap at " + bytes }
       }
       out += decoder.decode(value, { stream: true })
     }
     out += decoder.decode()
-    return out
+    return { ok: true, html: out }
   }
   console.error("[safeFetchHtml] max redirects exhausted: " + current)
-  return null
+  return { ok: false, httpStatus: null, reason: "max redirects exhausted" }
+}
+
+/**
+ * Back-compat wrapper around safeFetchHtmlWithStatus. Returns the HTML body
+ * on success or null on any failure. Use safeFetchHtmlWithStatus when the
+ * caller needs the HTTP status code (e.g., to distinguish 404 for retire-
+ * on-404 logic).
+ */
+export async function safeFetchHtml(url: string, timeoutMs: number): Promise<string | null> {
+  const result = await safeFetchHtmlWithStatus(url, timeoutMs)
+  return result.ok ? result.html : null
+}
+
+export type FetchPageResult =
+  | { ok: true; $: cheerio.CheerioAPI }
+  | { ok: false; httpStatus: number | null; reason: string }
+
+export async function fetchPageWithStatus(
+  url: string,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<FetchPageResult> {
+  try {
+    const result = await safeFetchHtmlWithStatus(url, timeoutMs)
+    if (!result.ok) return result
+    return { ok: true, $: cheerio.load(result.html) }
+  } catch (err) {
+    console.error("[fetchPage] threw:", url, err instanceof Error ? err.message : String(err))
+    return {
+      ok: false,
+      httpStatus: null,
+      reason: err instanceof Error ? err.message : String(err),
+    }
+  }
 }
 
 export async function fetchPage(
   url: string,
   timeoutMs: number = DEFAULT_TIMEOUT_MS,
 ): Promise<cheerio.CheerioAPI | null> {
-  try {
-    const html = await safeFetchHtml(url, timeoutMs)
-    if (!html) return null
-    return cheerio.load(html)
-  } catch (err) {
-    console.error("[fetchPage] threw:", url, err instanceof Error ? err.message : String(err))
-    return null
-  }
+  const result = await fetchPageWithStatus(url, timeoutMs)
+  return result.ok ? result.$ : null
 }
 
 /**

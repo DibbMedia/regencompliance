@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio"
-import { fetchPage, safeFetchHtml } from "@/lib/compliance-scraper"
+import { fetchPage, fetchPageWithStatus, safeFetchHtml } from "@/lib/compliance-scraper"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -201,13 +201,31 @@ async function discoverFromSitemap(
 // extractPageContent - fetch and extract visible text from a URL
 // ---------------------------------------------------------------------------
 
-export async function extractPageContent(url: string): Promise<PageContent | null> {
+/**
+ * Structured result for callers that need the HTTP status on failure (e.g.,
+ * the per-site scan loop in lib/scan/run-site-crawl.ts uses httpStatus===404
+ * to retire dead pages). For callers that only care "did it succeed?", use
+ * extractPageContent which returns null on any failure.
+ */
+export type ExtractPageContentResult =
+  | (PageContent & { ok: true })
+  | { ok: false; httpStatus: number | null; reason: string }
+
+export async function extractPageContentWithStatus(
+  url: string,
+): Promise<ExtractPageContentResult> {
   try {
-    const $ = await fetchPage(url)
-    if (!$) {
-      console.error("[extractPageContent] fetchPage returned null:", url)
-      return null
+    const fetchResult = await fetchPageWithStatus(url)
+    if (!fetchResult.ok) {
+      console.error(
+        "[extractPageContent] fetchPage failed:",
+        url,
+        "status=" + fetchResult.httpStatus,
+        "reason=" + fetchResult.reason,
+      )
+      return { ok: false, httpStatus: fetchResult.httpStatus, reason: fetchResult.reason }
     }
+    const $ = fetchResult.$
 
     const title = $("title").first().text().trim() || url
     const metaDescription = $('meta[name="description"]').attr("content")?.trim()
@@ -230,14 +248,29 @@ export async function extractPageContent(url: string): Promise<PageContent | nul
 
     if (text.length < 50) {
       console.error("[extractPageContent] insufficient body text:", url, "chars=", text.length)
-      return null // not enough content
+      return {
+        ok: false,
+        httpStatus: 200,
+        reason: "insufficient body text (chars=" + text.length + ")",
+      }
     }
 
-    return { url, title, text, metaDescription }
+    return { ok: true, url, title, text, metaDescription }
   } catch (err) {
     console.error("[extractPageContent] threw:", url, err instanceof Error ? err.message : String(err))
-    return null
+    return {
+      ok: false,
+      httpStatus: null,
+      reason: err instanceof Error ? err.message : String(err),
+    }
   }
+}
+
+export async function extractPageContent(url: string): Promise<PageContent | null> {
+  const result = await extractPageContentWithStatus(url)
+  if (!result.ok) return null
+  const { url: u, title, text, metaDescription } = result
+  return { url: u, title, text, metaDescription }
 }
 
 // ---------------------------------------------------------------------------
