@@ -25,6 +25,22 @@ import {
 } from "@/lib/repos/site-pages"
 import type { ScanFlag } from "@/lib/types"
 
+// F-09: module-level counter for the migration-043-pending warn. Until the
+// operator applies migration 043, every failed page tries to write
+// last_error and fails with PGRST204 (unknown column). Without sampling,
+// 20 failed pages in one trigger = 20 warn lines. Sample like F-02: warn
+// on the first hit, then every Nth, with the running count attached.
+let lastErrorSkipCount = 0
+const LAST_ERROR_SKIP_WARN_SAMPLE = 100
+function warnLastErrorSkip(source: string, kind: "skipped" | "threw", detail: string) {
+  lastErrorSkipCount++
+  if (lastErrorSkipCount === 1 || lastErrorSkipCount % LAST_ERROR_SKIP_WARN_SAMPLE === 0) {
+    console.warn(
+      `[${source}] last_error write ${kind} (migration 043 pending? total since start: ${lastErrorSkipCount}): ${detail}`,
+    )
+  }
+}
+
 export interface RuleForPrompt {
   id: string
   phrase: string
@@ -162,13 +178,14 @@ export async function scanSitePages(
         .update({ last_error: reason.slice(0, 500) })
         .eq("id", pageId)
       if (lastErrorWriteErr) {
-        console.warn(
-          `[${source}] last_error write skipped (migration 043 pending?):`,
-          lastErrorWriteErr.message,
-        )
+        warnLastErrorSkip(source, "skipped", lastErrorWriteErr.message)
       }
     } catch (lastErrorThrow) {
-      console.warn(`[${source}] last_error write threw (migration 043 pending?):`, lastErrorThrow)
+      warnLastErrorSkip(
+        source,
+        "threw",
+        lastErrorThrow instanceof Error ? lastErrorThrow.message : String(lastErrorThrow),
+      )
     }
   }
 
