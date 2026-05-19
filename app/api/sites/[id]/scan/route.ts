@@ -12,7 +12,13 @@ import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 import { getMonitoredSite } from "@/lib/repos/monitored-sites"
 import { getProfile } from "@/lib/repos/profiles"
 
-const MAX_PAGES_PER_CRAWL = 20
+// F-04: raised from 20 to 25. The crawl loop in lib/scan/run-site-crawl.ts
+// is serial (awaits each page's fetch + Claude call sequentially), so the
+// per-trigger ceiling has to stay inside the 60s Vercel function timeout
+// (maxDuration above is 300 but Hobby/Pro functions still terminate at 60s
+// for non-cron paths on the current plan). 25 leaves margin for slower
+// pages while letting the Process queue button drain backlogs faster.
+const MAX_PAGES_PER_CRAWL = 25
 
 export async function POST(
   _request: Request,

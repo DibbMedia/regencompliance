@@ -12,12 +12,14 @@ import {
   Trash2,
   ExternalLink,
   AlertTriangle,
+  AlertCircle,
   CheckCircle2,
   BarChart3,
   FileSearch,
   ArrowUpDown,
   Filter,
   Download,
+  ListRestart,
 } from "lucide-react"
 import { toast } from "sonner"
 import { ScoreExplainer } from "@/components/score-explainer"
@@ -36,6 +38,10 @@ interface SitePage {
   last_scanned_at: string | null
   last_scan_id: string | null
   status: string
+  // F-03: surfaced when status is "error". Optional because the data-layer
+  // column (migration 043 + lib/repos/site-pages.ts) ships separately; rows
+  // from a build without it will simply omit this field.
+  last_error?: string | null
 }
 
 interface SiteData {
@@ -128,6 +134,7 @@ export default function SiteDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const [scanning, setScanning] = useState(false)
+  const [processingQueue, setProcessingQueue] = useState(false)
   const [removing, setRemoving] = useState(false)
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false)
   const [sortBy, setSortBy] = useState<SortKey>("score")
@@ -137,7 +144,7 @@ export default function SiteDetailPage() {
   // (pending -> scanning -> scanned) animate in the UI. Once scanning ends
   // the interval goes to 0 so SWR stops polling.
   const { data: apiData, isLoading } = useSWR<SiteApiResponse>(`/api/sites/${id}`, fetcher, {
-    refreshInterval: scanning ? 3000 : 0,
+    refreshInterval: scanning || processingQueue ? 3000 : 0,
     revalidateOnFocus: true,
   })
   const site = apiData ? { ...apiData.site, pages: apiData.pages } : null
@@ -171,6 +178,39 @@ export default function SiteDetailPage() {
       toast.error("Network error.")
     } finally {
       setScanning(false)
+    }
+  }
+
+  // F-04: drain queued pages by re-triggering the scan endpoint. Same
+  // request body as Scan All Pages (the route reads no body); the per-
+  // trigger cap on the API decides how many queued pages move per click.
+  async function handleProcessQueue() {
+    setProcessingQueue(true)
+    toast.info("Processing queued pages...", { duration: 12000 })
+    try {
+      const res = await fetch(`/api/sites/${id}/scan`, { method: "POST" })
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error(data.error || "Process queue failed.")
+        return
+      }
+      const data = await res.json()
+      const pagesScanned = data.pages_scanned ?? 0
+      const pagesFailed = data.pages_failed ?? 0
+      const pagesQueued = data.pages_queued ?? 0
+      const detail = [
+        `${pagesScanned} scanned`,
+        pagesFailed > 0 ? `${pagesFailed} failed` : null,
+        pagesQueued > 0 ? `${pagesQueued} still queued` : null,
+      ]
+        .filter(Boolean)
+        .join(", ")
+      toast.success(`Queue processed: ${detail}`)
+      mutate(`/api/sites/${id}`)
+    } catch {
+      toast.error("Network error.")
+    } finally {
+      setProcessingQueue(false)
     }
   }
 
@@ -304,7 +344,7 @@ export default function SiteDetailPage() {
           <div className="flex flex-wrap gap-2 shrink-0">
             <button
               onClick={handleScanAll}
-              disabled={scanning}
+              disabled={scanning || processingQueue}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#55E039] to-[#3BB82A] text-[#0a0a0a] text-sm font-bold shadow-[0_4px_20px_rgba(85,224,57,0.3)] hover:shadow-[0_4px_30px_rgba(85,224,57,0.5)] transition-all duration-300 disabled:opacity-50"
             >
               {scanning ? (
@@ -316,6 +356,24 @@ export default function SiteDetailPage() {
                 <>
                   <RefreshCw className="h-4 w-4" />
                   Scan All Pages
+                </>
+              )}
+            </button>
+            <button
+              onClick={handleProcessQueue}
+              disabled={scanning || processingQueue}
+              title="Re-run the scan against any pages that are queued, error, or pending"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#55E039]/20 bg-[#55E039]/[0.04] text-[#55E039] text-sm font-medium hover:bg-[#55E039]/[0.08] hover:border-[#55E039]/30 transition-all duration-300 disabled:opacity-50"
+            >
+              {processingQueue ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <ListRestart className="h-4 w-4" />
+                  Process queue now
                 </>
               )}
             </button>
@@ -507,6 +565,16 @@ export default function SiteDetailPage() {
 }
 
 function PageRow({ page, truncatedUrl }: { page: SitePage; truncatedUrl: string }) {
+  // F-03: surface the underlying failure reason inline for any page whose
+  // crawl ended in "error". last_error is written by run-site-crawl on
+  // extraction or scan failure; we truncate to ~100 chars and put the full
+  // text in title= for hover, matching the existing inline URL tooltip
+  // pattern on this page.
+  const isErrored = page.status === "error"
+  const errorText = page.last_error ?? null
+  const truncatedError =
+    errorText && errorText.length > 100 ? errorText.slice(0, 97) + "..." : errorText
+
   return (
     <div className="flex items-center gap-4">
       {/* Score */}
@@ -525,6 +593,21 @@ function PageRow({ page, truncatedUrl }: { page: SitePage; truncatedUrl: string 
         <p className="text-xs text-white/65 truncate" title={page.url}>
           {truncatedUrl}
         </p>
+        {isErrored && truncatedError && (
+          <p
+            className="mt-1 flex items-start gap-1.5 text-[11px] text-red-300/90 leading-snug"
+            title={errorText ?? undefined}
+          >
+            <AlertCircle className="h-3 w-3 mt-0.5 shrink-0 text-red-400" />
+            <span className="truncate">Scan failed: {truncatedError}</span>
+          </p>
+        )}
+        {isErrored && !truncatedError && (
+          <p className="mt-1 flex items-start gap-1.5 text-[11px] text-red-300/90 leading-snug">
+            <AlertCircle className="h-3 w-3 mt-0.5 shrink-0 text-red-400" />
+            <span>Scan failed (reason not recorded)</span>
+          </p>
+        )}
       </div>
 
       {/* Flag counts */}
