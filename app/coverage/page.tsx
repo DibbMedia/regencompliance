@@ -5,6 +5,7 @@ import {
   Globe,
   Mail,
   MessageSquare,
+  Music,
   Search,
   ShieldCheck,
   Sparkles,
@@ -180,7 +181,7 @@ const CHANNEL_DISPLAY: Record<
   },
   tiktok: {
     name: "TikTok",
-    icon: Sparkles,
+    icon: Music,
     description: "TikTok organic and paid creative under platform health certification.",
   },
   email: {
