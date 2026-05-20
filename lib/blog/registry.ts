@@ -239,6 +239,24 @@ import PackagePricingBody, {
 import MidwiferyBody, {
   meta as midwiferyMeta,
 } from "./posts/midwifery-doula-marketing-compliance"
+import Glp1CompoundedBody, {
+  meta as glp1CompoundedMeta,
+} from "./posts/glp-1-compounded-marketing-compliance-2026"
+import KetamineGuideBody, {
+  meta as ketamineGuideMeta,
+} from "./posts/ketamine-clinic-marketing-compliance-guide"
+import NadIvFdaBody, {
+  meta as nadIvFdaMeta,
+} from "./posts/nad-iv-therapy-marketing-fda-position"
+import OzoneRulesBody, {
+  meta as ozoneRulesMeta,
+} from "./posts/ozone-therapy-marketing-compliance-rules"
+import Bpc157Body, {
+  meta as bpc157Meta,
+} from "./posts/bpc-157-peptide-marketing-503a-pharmacy"
+import TrtMensHealthBody, {
+  meta as trtMensHealthMeta,
+} from "./posts/trt-marketing-compliance-mens-health"
 
 export const POSTS: BlogPostModule[] = [
   { meta: fdaWarningLettersMeta, Body: FdaWarningLettersBody },
@@ -321,6 +339,12 @@ export const POSTS: BlogPostModule[] = [
   { meta: homeopathicMeta, Body: HomeopathicBody },
   { meta: packagePricingMeta, Body: PackagePricingBody },
   { meta: midwiferyMeta, Body: MidwiferyBody },
+  { meta: glp1CompoundedMeta, Body: Glp1CompoundedBody },
+  { meta: ketamineGuideMeta, Body: KetamineGuideBody },
+  { meta: nadIvFdaMeta, Body: NadIvFdaBody },
+  { meta: ozoneRulesMeta, Body: OzoneRulesBody },
+  { meta: bpc157Meta, Body: Bpc157Body },
+  { meta: trtMensHealthMeta, Body: TrtMensHealthBody },
 ]
 
 export const POSTS_SORTED = [...POSTS].sort(
