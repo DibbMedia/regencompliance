@@ -40,12 +40,33 @@ let auditFailureCount = 0
 // ECONNRESET noise. Reusing one client across the function-instance
 // lifetime lets the SDK reuse warmed sockets. The client carries no
 // per-request state (cookies are stubbed to return []), so it's safe to
-// share. Lazily initialized so process.env (already trimmed by
-// validateEnv in instrumentation) is set before first use.
+// share.
+//
+// Lifetime: the singleton is created on the FIRST REQUEST AFTER A WARM
+// START (not at module top-level), so process.env has already been trimmed
+// by validateEnv() in instrumentation.ts before this client is built. The
+// client captures whatever SUPABASE_SERVICE_ROLE_KEY was at that moment;
+// if the key is rotated, warm Vercel functions keep using the stale key
+// until they recycle (~15 minutes). That is acceptable for audit-log
+// writes (worst case: a brief window of failed writes that the sampled-
+// warn at line 73 will surface).
 let cachedServiceClient: ReturnType<typeof createServiceClient> | null = null
 function getAuditServiceClient() {
   if (!cachedServiceClient) cachedServiceClient = createServiceClient()
   return cachedServiceClient
+}
+
+/**
+ * Test-only: reset the cached service client so a fresh env (e.g. mocked
+ * SUPABASE_SERVICE_ROLE_KEY) is picked up on the next logAudit() call.
+ * Wrapped in NODE_ENV check so a production typo cannot accidentally
+ * pin-prick the keep-alive pool. Not exported for runtime use.
+ */
+export function resetAuditServiceClientForTests(): void {
+  if (process.env.NODE_ENV !== "test") {
+    throw new Error("resetAuditServiceClientForTests() may only be called in tests")
+  }
+  cachedServiceClient = null
 }
 
 /**
