@@ -224,6 +224,23 @@ describe("STATE_SOURCES registry", () => {
     }
   })
 
+  it("requires detailSelector on every implemented entry (IN-04)", () => {
+    // Without an explicit detailSelector the state-pipeline silently falls
+    // back to DEFAULT_DETAIL_SELECTOR. That's fine for the implementer who
+    // checked the markup, but a future addition that forgets the field
+    // would silently regress to the lowest-common-denominator chain. Fail
+    // loudly instead so the contributor either picks a selector or sets
+    // it to "body" intentionally (the sentinel for PDF-text extraction).
+    for (const s of STATE_SOURCES) {
+      if (s.status === "implemented") {
+        expect(
+          s.detailSelector,
+          `${s.state}/${s.kind} is implemented but has no detailSelector`,
+        ).toBeTruthy()
+      }
+    }
+  })
+
   it("includes at least one implemented entry for the 5 explicit asks (FL, CA, TX, NY, UT)", () => {
     const required = ["FL", "CA", "TX", "NY", "UT"]
     for (const code of required) {

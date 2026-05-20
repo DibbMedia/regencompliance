@@ -122,9 +122,14 @@ export async function GET(request: Request) {
     }
   }
 
-  console.info(
-    `[scrape-rules] documentDate hit-rate: parsed=${dateParsed}, fallback=${dateFallback}`,
-  )
+  // IN-03: skip the hit-rate log when both counters are zero. Without this
+  // guard, an all-sources-fail run still emitted `parsed=0, fallback=0`
+  // which is noise without signal.
+  if (dateParsed > 0 || dateFallback > 0) {
+    console.info(
+      `[scrape-rules] documentDate hit-rate: parsed=${dateParsed}, fallback=${dateFallback}`,
+    )
+  }
 
   // Calculate totals
   const totalNewRules = Object.values(results).reduce((sum, r) => sum + r.newRules, 0)

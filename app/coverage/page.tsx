@@ -376,6 +376,9 @@ export default function CoveragePage() {
                     <h3 className="text-base font-extrabold text-white">{display.name}</h3>
                   </div>
                   <p className="text-sm text-white/65 mb-3 leading-relaxed">{display.description}</p>
+                  {/* IN-02: show first 3 restrictions for card density; the
+                      full list (up to 10 for the website channel) lives in
+                      compliance-bible.ts channelRules[key].restrictions. */}
                   <ul className="space-y-1.5 text-xs text-white/55 leading-relaxed border-t border-white/10 pt-3">
                     {rule.restrictions.slice(0, 3).map((r) => (
                       <li key={r} className="flex gap-2">
