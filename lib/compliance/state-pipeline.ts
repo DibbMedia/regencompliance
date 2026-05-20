@@ -224,7 +224,16 @@ export async function runStateRulesPipeline(
           continue
         }
 
-        const rules = await extractRulesFromText(articleText, state.name, adapter.type)
+        // extractRulesFromText returns { rules, documentDate } since the
+        // source-date wave; use the parsed issuance date for the rules'
+        // source_date so freshness queries measure when the agency issued
+        // the letter, not when we ingested it. enforcement_actions keep the
+        // ingest date as before (they're for library/audit not freshness).
+        const { rules, documentDate } = await extractRulesFromText(
+          articleText,
+          state.name,
+          adapter.type,
+        )
         if (rules.length === 0) {
           stateResult.detailsProcessed++
           totalDetailsProcessed++
@@ -235,7 +244,7 @@ export async function runStateRulesPipeline(
           rules,
           url,
           state.name,
-          today,
+          documentDate ?? today,
           supabase,
           actionId,
         )

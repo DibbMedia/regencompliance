@@ -133,18 +133,21 @@ describe("runStateRulesPipeline - scaffolded sources", () => {
     ])
     mockedFetch.mockResolvedValueOnce(sampleArticleHtml)
     mockedUpsertAction.mockResolvedValueOnce("action-1")
-    mockedExtractRules.mockResolvedValueOnce([
-      {
-        banned_phrase: "stem cells cure arthritis",
-        banned_phrase_variants: ["stem cells will cure arthritis"],
-        compliant_alternative: "stem cell therapy is being studied for joint conditions",
-        risk_level: "high",
-        category: "health_claims",
-        applies_to: ["stem_cell"],
-        title: "Cure claim cited in FL order",
-        description: "FL board cited a clinic for cure-of-arthritis stem cell claims.",
-      },
-    ])
+    mockedExtractRules.mockResolvedValueOnce({
+      rules: [
+        {
+          banned_phrase: "stem cells cure arthritis",
+          banned_phrase_variants: ["stem cells will cure arthritis"],
+          compliant_alternative: "stem cell therapy is being studied for joint conditions",
+          risk_level: "high",
+          category: "health_claims",
+          applies_to: ["stem_cell"],
+          title: "Cure claim cited in FL order",
+          description: "FL board cited a clinic for cure-of-arthritis stem cell claims.",
+        },
+      ],
+      documentDate: null,
+    })
     mockedInsertRules.mockResolvedValueOnce(1)
 
     const result = await runStateRulesPipeline(fakeSupabase)
@@ -243,30 +246,36 @@ describe("runStateRulesPipeline - per-link error capture", () => {
       .mockResolvedValueOnce("action-1")
       .mockResolvedValueOnce("action-2")
     mockedExtractRules
-      .mockResolvedValueOnce([
-        {
-          banned_phrase: "x",
-          banned_phrase_variants: ["x"],
-          compliant_alternative: "y",
-          risk_level: "high",
-          category: "health_claims",
-          applies_to: ["stem_cell"],
-          title: "t",
-          description: "d",
-        },
-      ])
-      .mockResolvedValueOnce([
-        {
-          banned_phrase: "z",
-          banned_phrase_variants: ["z"],
-          compliant_alternative: "y",
-          risk_level: "high",
-          category: "health_claims",
-          applies_to: ["stem_cell"],
-          title: "t",
-          description: "d",
-        },
-      ])
+      .mockResolvedValueOnce({
+        rules: [
+          {
+            banned_phrase: "x",
+            banned_phrase_variants: ["x"],
+            compliant_alternative: "y",
+            risk_level: "high",
+            category: "health_claims",
+            applies_to: ["stem_cell"],
+            title: "t",
+            description: "d",
+          },
+        ],
+        documentDate: null,
+      })
+      .mockResolvedValueOnce({
+        rules: [
+          {
+            banned_phrase: "z",
+            banned_phrase_variants: ["z"],
+            compliant_alternative: "y",
+            risk_level: "high",
+            category: "health_claims",
+            applies_to: ["stem_cell"],
+            title: "t",
+            description: "d",
+          },
+        ],
+        documentDate: null,
+      })
     // First insert throws, second succeeds.
     mockedInsertRules
       .mockRejectedValueOnce(new Error("supabase write timed out"))
@@ -320,7 +329,7 @@ describe("runStateRulesPipeline - per-state link cap", () => {
     ])
     mockedFetch.mockResolvedValue(sampleArticleHtml)
     mockedUpsertAction.mockResolvedValue("action-id")
-    mockedExtractRules.mockResolvedValue([])
+    mockedExtractRules.mockResolvedValue({ rules: [], documentDate: null })
     mockedInsertRules.mockResolvedValue(0)
 
     const result = await runStateRulesPipeline(fakeSupabase)
