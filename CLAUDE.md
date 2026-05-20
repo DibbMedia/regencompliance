@@ -97,7 +97,9 @@ Adding a new event type: extend `GhlEvent` in `lib/ghl.ts` + `EVENT_TAGS`, fire 
 - Domain cutover to `regencompliance.ai`: code is ready (apex/app split landed), DNS + Vercel Domains + Stripe webhook re-bind + Supabase Auth allowlist + Search Console Change of Address still pending.
 - Privacy + Terms pages are placeholders pending the user's attorney; lawyer-supplied copy still TBD.
 - Optional: set `DEMO_COOKIE_SECRET` in Vercel (currently falls back to `NEXTAUTH_SECRET` / `SUPABASE_SERVICE_ROLE_KEY`).
-- Decision outstanding: `support@regencompliance.com` vs `.ai` (11+ legal/marketing strings). `oscar@regenportal.com` in `platform_admins` (mig 019 seed) - migrate or remove?
+- `oscar@regenportal.com` in `platform_admins` (mig 019 seed) - migrate or remove? (decision pending)
+
+**Resolved 2026-05-20:** Support email is canonically `support@regencompliance.ai`. All customer-facing surfaces (`mailto:` links, `lib/schema/organization.ts`, `app/llms.txt`, `docs/ghl-workflow-specs.md`, marketing copy) already use this form. Never introduce `support@regencompliance.com` in new code.
 
 **Code backlog (none launch-blocking):**
 - Source/UTM tracking on waitlist + free-audit + beta-apply (currently hardcoded `"website"`).
