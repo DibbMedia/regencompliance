@@ -70,6 +70,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Stale worktree leftovers from agent dispatch. Same reason as the
+    // vitest exclude (vitest.config.ts) - without this, every `npm run lint`
+    // floods on .claude/worktrees/*/ checkouts that aren't real code.
+    ".claude/**",
   ]),
 ]);
 

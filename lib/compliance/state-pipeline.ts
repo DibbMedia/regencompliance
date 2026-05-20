@@ -37,7 +37,6 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { scrapeAllImplementedStates } from "@/lib/compliance/state-scraper"
 import {
   safeFetchHtml,
-  extractArticleText,
   extractRulesFromText,
   insertRulesWithDedup,
   upsertEnforcementAction,

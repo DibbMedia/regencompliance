@@ -123,25 +123,9 @@ function makeSupabaseMock(state: MockState): SupabaseClient {
     return {
       select: (_cols: string) => {
         state.selectCalls += 1
-        const filterChain = {
-          // Single-key filter: used by acceptInvite (.eq invite_token) and the
-          // listTeamMembers chain (.eq profile_id .order).
-          eq: (_col: string, _val: unknown) => ({
-            // Two-key path (getTeamMember): .eq().eq().maybeSingle()
-            eq: (_col2: string, _val2: unknown) => ({
-              maybeSingle: async () => ({ data: state.row, error: null }),
-            }),
-            // Single-key paths.
-            maybeSingle: async () => ({ data: state.row, error: null }),
-            order: (_orderCol: string, _opts: { ascending: boolean }) => ({
-              then: undefined,
-              // listTeamMembers awaits .order() directly; emulate that.
-              // Vitest awaits the returned thenable.
-            }),
-          }),
-        }
-        // listTeamMembers awaits the result of .order() directly. To make
-        // that work, we return a thenable from .order(). Rewire here.
+        // listTeamMembers awaits the result of .order() directly, so .order()
+        // returns a Promise. Other paths (.eq().maybeSingle(), .eq().eq().maybeSingle())
+        // resolve to the appropriate row instead.
         const filterChainWithOrder = {
           eq: (_col: string, _val: unknown) => ({
             eq: (_col2: string, _val2: unknown) => ({

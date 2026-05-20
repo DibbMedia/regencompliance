@@ -245,10 +245,6 @@ function scanFile(file: string): Finding[] {
   return findings
 }
 
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-}
-
 function main(): void {
   const allFiles = walk(APP_DIR)
   const routeFiles = allFiles.filter(isRouteFile)
