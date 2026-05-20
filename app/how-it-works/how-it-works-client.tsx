@@ -26,9 +26,9 @@ const STEPS = [
     n: "01",
     icon: Scan,
     title: "Paste your marketing content",
-    body: "Website copy, social post, ad creative, email, call script, blog post. Anything you&rsquo;d publish. Paste, upload a file, or enter a URL.",
+    body: "Website copy, social post, ad creative, email, call script, blog post. Anything you’d publish. Paste, upload a file, or enter a URL.",
     detail:
-      "The scanner accepts text (paste), files (.txt, .pdf, .docx), or URLs. No special formatting required. The content can be rough draft, final copy, or already-published marketing you&rsquo;re auditing.",
+      "The scanner accepts text (paste), files (.txt, .pdf, .docx), or URLs. No special formatting required. The content can be rough draft, final copy, or already-published marketing you’re auditing.",
   },
   {
     n: "02",
@@ -44,7 +44,7 @@ const STEPS = [
     title: "Score and flags returned in 30 seconds",
     body: "A 0-100 compliance score plus every flagged phrase highlighted in context, with risk level, rule source, and compliant alternative.",
     detail:
-      "The score correlates with real enforcement outcomes in the letters we&rsquo;ve analyzed. HIGH-severity flags represent immediate enforcement triggers; MEDIUM and LOW are substantiation and disclosure concerns. Every flag includes the specific rule and source authority.",
+      "The score correlates with real enforcement outcomes in the letters we’ve analyzed. HIGH-severity flags represent immediate enforcement triggers; MEDIUM and LOW are substantiation and disclosure concerns. Every flag includes the specific rule and source authority.",
   },
   {
     n: "04",
@@ -76,7 +76,7 @@ const TECH_POINTS = [
   {
     icon: Shield,
     title: "Trained on real enforcement, not the open web",
-    body: "Every rule in the scanner&rsquo;s engine cites a specific enforcement source. Patterns come from FDA warning letters and FTC settlements, not hypothetical best practices.",
+    body: "Every rule in the scanner’s engine cites a specific enforcement source. Patterns come from FDA warning letters and FTC settlements, not hypothetical best practices.",
   },
   {
     icon: Clock,
@@ -86,7 +86,7 @@ const TECH_POINTS = [
   {
     icon: CheckCircle2,
     title: "Context-aware, not just keyword matching",
-    body: "The engine understands the difference between &lsquo;helps support joint comfort&rsquo; and &lsquo;treats arthritis.&rsquo; Context drives classification, not raw word frequency.",
+    body: "The engine understands the difference between ‘helps support joint comfort’ and ‘treats arthritis.’ Context drives classification, not raw word frequency.",
   },
   {
     icon: Shield,
@@ -96,7 +96,7 @@ const TECH_POINTS = [
   {
     icon: Lock,
     title: "Your content is never used for training",
-    body: "Anthropic&rsquo;s Claude API with no-training enabled on every request. Content scans, results return, nothing feeds model training anywhere.",
+    body: "Anthropic’s Claude API with no-training enabled on every request. Content scans, results return, nothing feeds model training anywhere.",
   },
 ]
 
@@ -115,7 +115,7 @@ const FAQS = [
     a: "8-15 seconds for typical marketing content (500-1000 words). Up to 30 seconds for long documents. File uploads add a few seconds for extraction.",
   },
   {
-    q: "What&rsquo;s included in the $297/mo founding rate?",
+    q: "What’s included in the $297/mo founding rate?",
     a: "Unlimited scans, unlimited rewrites, full rule library access, permanent audit trail with PDF/CSV export, daily enforcement alerts, and 3 team seats. Every tool across every specialty.",
   },
   {
@@ -210,10 +210,9 @@ export default function HowItWorksClient() {
                           {step.title}
                         </h2>
                       </div>
-                      <p
-                        className="text-base text-white/80 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: step.body }}
-                      />
+                      <p className="text-base text-white/80 leading-relaxed">
+                        {step.body}
+                      </p>
                       <p className="mt-3 text-sm text-white/60 leading-relaxed">
                         {step.detail}
                       </p>
@@ -312,10 +311,9 @@ export default function HowItWorksClient() {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span
-                      className="text-[15px] font-semibold text-white"
-                      dangerouslySetInnerHTML={{ __html: faq.q }}
-                    />
+                    <span className="text-[15px] font-semibold text-white">
+                      {faq.q}
+                    </span>
                     <ChevronDown
                       className={`h-4 w-4 text-white/50 shrink-0 transition-transform duration-300 ${
                         openFaq === i ? "rotate-180" : ""
