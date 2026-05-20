@@ -95,7 +95,32 @@ using its own email step, not Resend):**
 | `regen_user_id` | Single Line |
 | `regen_confirmed_at` | Single Line |
 
+**UTM / attribution (every lead-capture event - waitlist, beta-apply, free-audit):**
+
+| Field name | Type | Purpose |
+|---|---|---|
+| `regen_utm_source` | Single Line | First-touch UTM source from landing-page URL (e.g. `google`, `facebook`, `newsletter`) |
+| `regen_utm_medium` | Single Line | First-touch medium (`cpc`, `organic`, `email`, etc.) |
+| `regen_utm_campaign` | Single Line | First-touch campaign tag |
+| `regen_utm_term` | Single Line | First-touch keyword / term |
+| `regen_utm_content` | Single Line | First-touch creative variant |
+| `regen_referrer` | Single Line | `document.referrer` at landing |
+| `regen_landing_path` | Single Line | Path the user hit on first landing (e.g. `/coverage`) |
+| `regen_first_seen_at` | Single Line | ISO timestamp of first landing capture |
+
 The code matches by either the slugified field name (`regen_event`) or GHL's full key (`contact.regen_event`), so you can name the field anything as long as the slug ends up matching. Field names are cached in-process for 10 minutes so newly-created fields propagate without a redeploy.
+
+### C2. UTM capture flow
+
+How the UTM fields above get populated:
+
+1. A tiny client component `<UtmTracker />` is mounted in `app/layout.tsx` so it runs on every page.
+2. On first mount, if the current URL has any `utm_*` query param, it POSTs the parsed values + `document.referrer` + the landing path to `/api/utm/track`.
+3. `/api/utm/track` sets an `HttpOnly` cookie `rc_utm` (base64-encoded JSON, 30-day TTL, `SameSite=Lax`, `Secure` in prod).
+4. The lead-capture form routes (`/api/waitlist`, `/api/beta-apply`, `/api/free-audit`) read the cookie server-side on submit, decode it, and forward the eight UTM fields to GHL on the `sendToGhl` call.
+5. **Fail-open:** if the cookie is missing or malformed, the form submission still works - the UTM custom fields just don't get populated on the GHL contact.
+
+**Last-touch behavior:** a new visit with new `utm_*` params overwrites the existing cookie. The cookie always reflects the *most recent* UTM-tagged landing, not the very first one across the visitor's history. This is intentional - last-touch attribution is what most marketing teams want for paid-campaign ROI reporting. If you need true first-touch persistence later, add a second cookie with `Max-Age=63072000` (2 years) that the API only sets when no prior first-touch cookie exists.
 
 ### D. Tags fired per event
 
