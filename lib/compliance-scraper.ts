@@ -926,6 +926,18 @@ export async function insertRulesWithDedup(
     )
     if (exactMatch) {
       exactDup++
+      // WR-02: the string comparison below is lexicographic. It only matches
+      // chronological order when BOTH `existingDate` and `sourceDate` are
+      // strict YYYY-MM-DD strings (PG `date` column, or PG timestamp/
+      // timestamptz with the date prefix). If the compliance_rules.source_date
+      // column is ever migrated to a type that serializes with millisecond
+      // precision, fractional seconds, or a different zero-pad rule, this
+      // guard silently misorders rules. The downstream `.lt("source_date",
+      // sourceDate)` re-guard at the UPDATE makes the DB the source of
+      // truth (so a misorder produces a no-op, not a corrupt write), but
+      // the in-memory pre-check could miss legitimate bumps. Today the
+      // column is `date` (YYYY-MM-DD); keep it that way or rewrite this
+      // pair of checks to compare via Date objects.
       const existingDate = exactMatch.row.source_date
       const shouldBump = !existingDate || existingDate < sourceDate
       if (shouldBump) {
