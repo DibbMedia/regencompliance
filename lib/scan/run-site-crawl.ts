@@ -25,22 +25,6 @@ import {
 } from "@/lib/repos/site-pages"
 import type { ScanFlag } from "@/lib/types"
 
-// F-09: module-level counter for the migration-043-pending warn. Until the
-// operator applies migration 043, every failed page tries to write
-// last_error and fails with PGRST204 (unknown column). Without sampling,
-// 20 failed pages in one trigger = 20 warn lines. Sample like F-02: warn
-// on the first hit, then every Nth, with the running count attached.
-let lastErrorSkipCount = 0
-const LAST_ERROR_SKIP_WARN_SAMPLE = 100
-function warnLastErrorSkip(source: string, kind: "skipped" | "threw", detail: string) {
-  lastErrorSkipCount++
-  if (lastErrorSkipCount === 1 || lastErrorSkipCount % LAST_ERROR_SKIP_WARN_SAMPLE === 0) {
-    console.warn(
-      `[${source}] last_error write ${kind} (migration 043 pending? total since start: ${lastErrorSkipCount}): ${detail}`,
-    )
-  }
-}
-
 export interface RuleForPrompt {
   id: string
   phrase: string
@@ -180,31 +164,13 @@ export async function scanSitePages(
   let failedCount = 0
   const lowScorePages: string[] = []
 
-  // Write last_error in its own update() call so a missing column on prod
-  // (migration 043 not yet applied by operator) cannot break the status
-  // update sitting next to it. PostgREST returns PGRST204 for unknown
-  // columns; the Supabase JS client surfaces it via `error` (does not throw)
-  // and the outer try/catch covers any unexpected network throw. Either
-  // way, callers do not see a failure. Once migration 043 is live this
-  // could fold back into the main status update, but the dual-write keeps
-  // the crawler robust during the migration-lag window.
-  const recordLastError = async (pageId: string, reason: string) => {
-    try {
-      const { error: lastErrorWriteErr } = await supabase
-        .from("site_pages")
-        .update({ last_error: reason.slice(0, 500) })
-        .eq("id", pageId)
-      if (lastErrorWriteErr) {
-        warnLastErrorSkip(source, "skipped", lastErrorWriteErr.message)
-      }
-    } catch (lastErrorThrow) {
-      warnLastErrorSkip(
-        source,
-        "threw",
-        lastErrorThrow instanceof Error ? lastErrorThrow.message : String(lastErrorThrow),
-      )
-    }
-  }
+  // CR-03: migration 043 (site_pages.last_error) is a hard prerequisite
+  // for this loop. It is applied to prod and is the only environment that
+  // runs this code path. Writes fold last_error directly into the main
+  // status updates so reads (which also assume the column exists via
+  // SELECT_COLUMNS in lib/repos/site-pages.ts) and writes are symmetric.
+  // No defensive dual-write needed.
+  const truncReason = (r: string) => r.slice(0, 500)
 
   for (const page of toProcess) {
     try {
@@ -226,15 +192,21 @@ export async function scanSitePages(
         if (extractResult.httpStatus === 404) {
           await supabase
             .from("site_pages")
-            .update({ status: "retired", updated_at: new Date().toISOString() })
+            .update({
+              status: "retired",
+              last_error: "HTTP 404",
+              updated_at: new Date().toISOString(),
+            })
             .eq("id", page.id)
-          await recordLastError(page.id, "HTTP 404")
         } else {
           await supabase
             .from("site_pages")
-            .update({ status: "error", updated_at: new Date().toISOString() })
+            .update({
+              status: "error",
+              last_error: truncReason(extractResult.reason),
+              updated_at: new Date().toISOString(),
+            })
             .eq("id", page.id)
-          await recordLastError(page.id, extractResult.reason)
         }
         failedCount++
         continue
@@ -279,12 +251,14 @@ export async function scanSitePages(
         console.error(`[${source}] parse failure for page ${page.id}, length=${responseText.length}`)
         await supabase
           .from("site_pages")
-          .update({ status: "error", updated_at: new Date().toISOString() })
+          .update({
+            status: "error",
+            last_error: truncReason(
+              `Claude response was not valid JSON (length=${responseText.length}) - see runtime logs`,
+            ),
+            updated_at: new Date().toISOString(),
+          })
           .eq("id", page.id)
-        await recordLastError(
-          page.id,
-          `Claude response was not valid JSON (length=${responseText.length}) - see runtime logs`,
-        )
         failedCount++
         continue
       }
@@ -297,12 +271,14 @@ export async function scanSitePages(
       if (score == null) {
         await supabase
           .from("site_pages")
-          .update({ status: "error", updated_at: new Date().toISOString() })
+          .update({
+            status: "error",
+            last_error: truncReason(
+              `Claude returned non-numeric compliance_score (got ${typeof rawScore})`,
+            ),
+            updated_at: new Date().toISOString(),
+          })
           .eq("id", page.id)
-        await recordLastError(
-          page.id,
-          `Claude returned non-numeric compliance_score (got ${typeof rawScore})`,
-        )
         failedCount++
         continue
       }
@@ -330,6 +306,7 @@ export async function scanSitePages(
       })
 
       // updateSitePage re-encrypts title under the same DEK + new AAD.
+      // last_error: null clears any stale failure reason from the prior run.
       await updateSitePage(supabase, profileId, page.id, {
         compliance_score: score,
         flag_count: flags.length,
@@ -340,26 +317,9 @@ export async function scanSitePages(
         last_scanned_at: new Date().toISOString(),
         status: "scanned",
         title: content.title,
+        last_error: null,
         updated_at: new Date().toISOString(),
       })
-
-      // Clear any stale last_error on a successful scan. Same migration-lag
-      // dance as recordLastError - silently ignore PGRST204 if migration 043
-      // is not yet applied on prod.
-      try {
-        const { error: clearErr } = await supabase
-          .from("site_pages")
-          .update({ last_error: null })
-          .eq("id", page.id)
-        if (clearErr) {
-          console.warn(
-            `[${source}] last_error clear skipped (migration 043 pending?):`,
-            clearErr.message,
-          )
-        }
-      } catch (clearThrow) {
-        console.warn(`[${source}] last_error clear threw (migration 043 pending?):`, clearThrow)
-      }
 
       scannedCount++
       totalScore += score
@@ -376,15 +336,18 @@ export async function scanSitePages(
       }
     } catch (pageError) {
       console.error(`[${source}] error scanning ${page.url}:`, pageError)
-      await supabase
-        .from("site_pages")
-        .update({ status: "error", updated_at: new Date().toISOString() })
-        .eq("id", page.id)
       const reason =
         pageError instanceof Error
           ? `${pageError.name}: ${pageError.message}`
           : "Unknown error during page scan - see runtime logs"
-      await recordLastError(page.id, reason)
+      await supabase
+        .from("site_pages")
+        .update({
+          status: "error",
+          last_error: truncReason(reason),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", page.id)
       failedCount++
     }
   }
