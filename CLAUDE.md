@@ -28,7 +28,7 @@ Primary stack: TypeScript (main), Python (scraping/scripts), WordPress/PHP (plug
 
 ## Project Context: RegenCompliance
 
-**What this is:** SaaS that scans regenerative-medicine clinic copy (websites, ads, social posts, email) for FDA + FTC compliance violations. Live at `compliance.regenportal.com` (cutover to `regencompliance.ai` queued). Currently in **founder-beta apply mode** - `/apply` is the primary CTA across marketing (Waitlist link dropped from nav 2026-05-07; standard tier shows "Coming Soon" + Join the Waitlist link only). Beta tier $297/mo capped at 25 founders, standard $497/mo.
+**What this is:** SaaS that scans regenerative-medicine clinic copy (websites, ads, social posts, email) for FDA + FTC compliance violations. Live at `regencompliance.ai` (the canonical domain - all slugs, marketing links, Stripe return URLs, GHL workflow links, and external partner placements use this domain; the legacy `compliance.regenportal.com` is historical only). Currently in **founder-beta apply mode** - `/apply` is the primary CTA across marketing (Waitlist link dropped from nav 2026-05-07; standard tier shows "Coming Soon" + Join the Waitlist link only). Beta tier $297/mo capped at 25 founders, standard $497/mo.
 
 **Stack:** Next.js (App Router) + TypeScript + Supabase (Postgres + Auth + Storage) + Vercel + Tailwind v4 + shadcn/ui + Resend (env-gated, NOT active yet — see Email Policy). Stripe restricted-key on prod env.
 
@@ -99,7 +99,8 @@ Adding a new event type: extend `GhlEvent` in `lib/ghl.ts` + `EVENT_TAGS`, fire 
 - Optional: set `DEMO_COOKIE_SECRET` in Vercel (currently falls back to `NEXTAUTH_SECRET` / `SUPABASE_SERVICE_ROLE_KEY`).
 **Resolved 2026-05-20:**
 - Support email is canonically `support@regencompliance.ai`. All customer-facing surfaces (`mailto:` links, `lib/schema/organization.ts`, `app/llms.txt`, `docs/ghl-workflow-specs.md`, marketing copy) already use this form. Never introduce `support@regencompliance.com` in new code.
-- `oscar@regenportal.com` in `platform_admins` (migration 019 seed) stays as-is. The row exists but the address is not auto-emailed by any code path; it documents the historical admin slot. Do not propose migration or removal without explicit user instruction.
+- `platform_admins` table (migration 019 seed) has exactly TWO rows and stays that way: `isaac@dibbenterprizes.com` (developer / Dibb Media owner) + `oscar@regenportal.com` (support). Neither is auto-emailed by any code path; they govern admin-route access via `verifyAdmin()`. Do not add, migrate, or remove rows without explicit user instruction.
+- Canonical domain is `regencompliance.ai`. All slugs, marketing CTAs, blog URLs, tool URLs, specialty/state/competitor pages, Stripe return URLs, GHL workflow links, and external partner placements use this domain. `compliance.regenportal.com` is legacy / historical only - do not introduce it in new code, copy, or docs.
 
 **Code backlog (none launch-blocking):**
 - Source/UTM tracking on waitlist + free-audit + beta-apply (currently hardcoded `"website"`).

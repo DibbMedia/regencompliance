@@ -17,7 +17,7 @@
 4. CI runs automatically: `secretlint` + `tests` (vitest + tsc) + `npm-audit` + `CodeQL`.
 5. All CI jobs must be green before the Vercel deploy is trusted.
 6. Vercel auto-deploys on push; production URL refreshes within minutes.
-7. Post-deploy verification: `https://compliance.regenportal.com/api/health` returns current commit SHA in the `version` field.
+7. Post-deploy verification: `https://regencompliance.ai/api/health` returns current commit SHA in the `version` field.
 
 ## Commit message conventions
 

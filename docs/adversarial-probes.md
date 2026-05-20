@@ -3,8 +3,8 @@
 Browser-console smoke tests for the security hardening shipped in batch C + migrations 020/022.
 
 Run each probe **as a normal (non-admin) logged-in user** against
-`https://compliance.regenportal.com`. Each probe tells you what the expected
-response is. Anything else is a regression.
+`https://regencompliance.ai` (the canonical production domain). Each probe
+tells you what the expected response is. Anything else is a regression.
 
 ---
 

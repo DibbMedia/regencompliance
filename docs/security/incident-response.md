@@ -1,6 +1,6 @@
 # Incident Response Plan
 
-**Scope:** RegenCompliance (compliance.regenportal.com) production.
+**Scope:** RegenCompliance (regencompliance.ai) production.
 **Owner:** Dibb Media (isaac@dibbenterprizes.com).
 **Last reviewed:** 2026-04-24.
 

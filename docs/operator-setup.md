@@ -179,7 +179,7 @@ No callback into our API is required - all the data lives on the contact record.
 
 - [ ] **Restricted key**: confirm `STRIPE_RESTRICTED_KEY` is set in Vercel Production. Permissions per `docs/stripe-restricted-key-setup.md`: Checkout Sessions Write, Customers Write, Subscriptions Write, Billing Portal Sessions Write, Prices Read, Products Read; everything else None.
 - [ ] **Old `STRIPE_SECRET_KEY` revoked**: 48h soak ended 2026-04-26. Revoke the legacy key in Stripe Dashboard - Developers - API keys.
-- [ ] **Webhook endpoint** points to `https://compliance.regenportal.com/api/stripe/webhook` (or new domain post-cutover). Subscribed events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`, `invoice.paid`, `customer.subscription.trial_will_end`. `STRIPE_WEBHOOK_SECRET` env var matches the endpoint's signing secret.
+- [ ] **Webhook endpoint** points to `https://regencompliance.ai/api/stripe/webhook` (canonical post-cutover URL). Subscribed events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`, `invoice.paid`, `customer.subscription.trial_will_end`. `STRIPE_WEBHOOK_SECRET` env var matches the endpoint's signing secret.
 - [ ] **Price IDs match copy**: `STRIPE_PRICE_ID` -> $497/mo recurring; `STRIPE_BETA_PRICE_ID` -> $297/mo recurring. Pull each from Stripe Dashboard - Products and verify the dollar amount.
 - [ ] **Customer Portal config** (Settings - Billing - Customer Portal): "Default return URL" = `${NEXT_PUBLIC_APP_URL}/dashboard/account`. Terms link = `${NEXT_PUBLIC_APP_URL}/terms`. Privacy link = `${NEXT_PUBLIC_APP_URL}/privacy`. Allow self-serve cancel: ON.
 - [ ] **Public business website** (Settings - Public Details): set to the production domain. Shows on receipts.
@@ -220,7 +220,7 @@ No callback into our API is required - all the data lives on the contact record.
 | `AI_SPEND_DAILY_CAP_CENTS` | Caps daily Anthropic spend per `lib/ai-spend-guard.ts`. Recommend $500/day = `50000` for paid beta. | Not set; kill-switch disabled until set. **Migration 026 fixed the bug** that made this non-functional even when set - now wired correctly via `trackApiUsage` -> service client. |
 | `CRON_SECRET` | Gates all `/api/cron/*` routes. Required for Vercel Cron triggers + manual cron invocations. | Should be set already; if not, generate with `openssl rand -hex 32`. |
 | `ENCRYPTION_KEY_V1` | At-rest encryption envelope for any future encrypted columns (`lib/crypto.ts`). | Optional. No production caller yet. |
-| `NEXT_PUBLIC_APP_URL` | Drives every `SITE_URL` import + every Stripe return URL + Supabase signup redirect. | Currently `https://compliance.regenportal.com`. Flip to `https://regencompliance.ai` at domain cutover. |
+| `NEXT_PUBLIC_APP_URL` | Drives every `SITE_URL` import + every Stripe return URL + Supabase signup redirect. | Canonical value: `https://regencompliance.ai` (the live domain post-cutover). |
 
 ## 5. Migrations to apply (in order)
 

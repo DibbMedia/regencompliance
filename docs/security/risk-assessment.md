@@ -1,6 +1,6 @@
 # Risk Assessment
 
-**Scope:** RegenCompliance SaaS (compliance.regenportal.com).
+**Scope:** RegenCompliance SaaS (regencompliance.ai).
 **Method:** Qualitative likelihood × impact, scored 1-4 each, risk = L × I.
 **Last reviewed:** 2026-04-24.
 
