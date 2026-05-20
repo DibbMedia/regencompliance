@@ -13,6 +13,8 @@ import {
 import { MarketingHeader } from "@/components/marketing-header"
 import { MarketingFooter } from "@/components/marketing-footer"
 import { MarketingBg } from "@/components/marketing-bg"
+import { CheckoutButton } from "@/components/checkout-button"
+import { IS_LAUNCHED } from "@/lib/env"
 import { MARKETING_URL } from "@/lib/site-url"
 import { JsonLd, buildBreadcrumbSchema } from "@/lib/schema"
 import { COMPLIANCE_BIBLE } from "@/lib/compliance-bible"
@@ -275,13 +277,20 @@ export default function CoveragePage() {
               Every modality, channel, and regulation in our active rule set. The scanner reads your marketing copy and matches it against the same compliance bible our team maintains for FDA warning letters and FTC enforcement actions.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/apply"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors"
-              >
-                Apply for Beta
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {IS_LAUNCHED ? (
+                <CheckoutButton className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors cursor-pointer disabled:opacity-70">
+                  Get Started
+                  <ArrowRight className="h-4 w-4" />
+                </CheckoutButton>
+              ) : (
+                <Link
+                  href="/apply"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors"
+                >
+                  Apply for Beta
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
               <Link
                 href="/how-it-works"
                 className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white/80 hover:bg-white/[0.05] transition-colors"
@@ -417,13 +426,20 @@ export default function CoveragePage() {
             Founders get a $297/mo seat locked for life. Scan unlimited content against every modality and channel above.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/apply"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-6 py-3 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors"
-            >
-              Apply for Beta
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {IS_LAUNCHED ? (
+              <CheckoutButton className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-6 py-3 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors cursor-pointer disabled:opacity-70">
+                Get Started
+                <ArrowRight className="h-4 w-4" />
+              </CheckoutButton>
+            ) : (
+              <Link
+                href="/apply"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#55E039] px-6 py-3 text-sm font-semibold text-black hover:bg-[#6FF055] transition-colors"
+              >
+                Apply for Beta
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
             <Link
               href="/free-audit"
               className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white/80 hover:bg-white/[0.05] transition-colors"
