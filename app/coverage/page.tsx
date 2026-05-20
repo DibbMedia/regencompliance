@@ -33,8 +33,10 @@ export const metadata: Metadata = {
 }
 
 // Friendly display metadata for each modality key in COMPLIANCE_BIBLE.modalityRules.
-// Keys must match the bible's modalityRules keys.
-const MODALITY_DISPLAY: Record<string, { name: string; description: string }> = {
+// Keys must match the bible's modalityRules keys exactly. The regression test
+// at tests/lib/compliance-bible.test.ts asserts parity so a future bible
+// expansion cannot silently render raw underscored keys on this page.
+export const MODALITY_DISPLAY: Record<string, { name: string; description: string }> = {
   stem_cell: {
     name: "Stem cell therapy",
     description: "Cord blood, MSC, and adult stem cell offerings for orthopedic, cosmetic, and wellness use.",
@@ -44,7 +46,7 @@ const MODALITY_DISPLAY: Record<string, { name: string; description: string }> = 
     description: "Exosome injections marketed for orthopedic, aesthetic, and wellness applications.",
   },
   prp: {
-    name: "PRP / PRF",
+    name: "PRP / PRF (autologous)",
     description: "Platelet-rich plasma and fibrin for joints, hair restoration, aesthetics, and dental use.",
   },
   peptides: {
@@ -67,29 +69,93 @@ const MODALITY_DISPLAY: Record<string, { name: string; description: string }> = 
     name: "Hyperbaric oxygen (HBOT)",
     description: "Hyperbaric chambers marketed for wound care, recovery, neurological, or anti-aging use.",
   },
-  glp1: {
-    name: "GLP-1 weight loss",
-    description: "Semaglutide, tirzepatide, and compounded GLP-1s for medically supervised weight loss.",
+  glp_1_compounded: {
+    name: "Compounded GLP-1",
+    description: "Compounded semaglutide and tirzepatide programs run by 503A/503B pharmacies for medically supervised weight loss.",
   },
   ketamine: {
     name: "Ketamine therapy",
     description: "IV, IM, intranasal, and Spravato ketamine programs for mood and pain.",
   },
-  nad: {
-    name: "NAD+ therapy",
+  nad_iv: {
+    name: "NAD+ IV therapy",
     description: "NAD+ IVs and injectables marketed for wellness, longevity, and recovery.",
   },
-  ozone: {
+  ozone_therapy: {
     name: "Ozone therapy",
     description: "Major autohemotherapy, insufflation, and prolozone offerings.",
   },
-  bpc157: {
-    name: "BPC-157 peptides",
+  bpc_157: {
+    name: "BPC-157 peptide",
     description: "BPC-157 marketed for tendon, gut, and recovery support.",
   },
-  trt: {
+  trt_men: {
     name: "TRT / men's hormone optimization",
     description: "Testosterone replacement and men's hormone programs.",
+  },
+  sermorelin: {
+    name: "Sermorelin",
+    description: "Growth hormone-releasing hormone analogue compounded for anti-aging and recovery protocols.",
+  },
+  ipamorelin: {
+    name: "Ipamorelin",
+    description: "Selective GHRP marketed for sleep, recovery, and body composition.",
+  },
+  cjc_1295: {
+    name: "CJC-1295",
+    description: "Long-acting GHRH analogue often paired with ipamorelin for growth hormone stacks.",
+  },
+  tesamorelin: {
+    name: "Tesamorelin (Egrifta)",
+    description: "FDA-approved for HIV-associated lipodystrophy; widely marketed off-label for weight loss.",
+  },
+  tb_500: {
+    name: "TB-500 / thymosin beta-4",
+    description: "Peptide marketed for soft-tissue and tendon recovery.",
+  },
+  ghk_cu: {
+    name: "GHK-Cu copper peptide",
+    description: "Copper-binding tripeptide promoted for skin repair, hair regrowth, and wound healing.",
+  },
+  pt_141: {
+    name: "PT-141 (bremelanotide)",
+    description: "Melanocortin receptor agonist marketed for sexual function.",
+  },
+  tirzepatide: {
+    name: "Tirzepatide (Mounjaro / Zepbound)",
+    description: "Dual GIP/GLP-1 receptor agonist for type 2 diabetes and chronic weight management.",
+  },
+  retatrutide: {
+    name: "Retatrutide (investigational)",
+    description: "Investigational triple agonist; not FDA approved and widely flagged in compounder warning letters.",
+  },
+  hcg_weight_loss: {
+    name: "HCG weight loss",
+    description: "Human chorionic gonadotropin marketed for weight loss despite FDA's unapproved-use determination.",
+  },
+  whartons_jelly: {
+    name: "Wharton's jelly",
+    description: "Umbilical-cord-derived product marketed for orthopedic and regenerative use; FDA enforcement target.",
+  },
+  bmac: {
+    name: "Bone marrow aspirate concentrate (BMAC)",
+    description: "Autologous bone marrow concentrate for orthopedic and wound applications.",
+  },
+  shockwave_ed: {
+    name: "Shockwave ED therapy",
+    description: "Low-intensity extracorporeal shockwave devices marketed for erectile dysfunction.",
+  },
+  botulinum_toxin: {
+    name: "Botulinum toxin (Botox / Dysport / Xeomin / Jeuveau)",
+    description: "Neuromodulator injections for aesthetic and therapeutic use.",
+  },
+  hyaluronic_acid_filler: {
+    name: "HA dermal fillers",
+    description: "Hyaluronic acid filler injections for facial volumization and contouring.",
+  },
+  prp_birth_tissue: {
+    name: "Birth-tissue 'PRP' (cord blood / placenta)",
+    description: "Non-autologous birth-tissue products marketed as 'PRP'; flagged by FDA as misbranded HCT/Ps.",
   },
 }
 

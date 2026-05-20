@@ -4,6 +4,7 @@ import {
   getComplianceBiblePrompt,
   getComplianceBibleRewriteGuidance,
 } from "@/lib/compliance-bible"
+import { MODALITY_DISPLAY } from "@/app/coverage/page"
 
 describe("COMPLIANCE_BIBLE", () => {
   it("has red light categories", () => {
@@ -57,6 +58,21 @@ describe("COMPLIANCE_BIBLE", () => {
     expect(COMPLIANCE_BIBLE.modalityRules.exosomes).toBeDefined()
     expect(COMPLIANCE_BIBLE.modalityRules.prp).toBeDefined()
     expect(COMPLIANCE_BIBLE.modalityRules.peptides).toBeDefined()
+  })
+
+  it("coverage page MODALITY_DISPLAY keys are in parity with bible modalityRules (CR-01)", () => {
+    const bibleKeys = Object.keys(COMPLIANCE_BIBLE.modalityRules).sort()
+    const displayKeys = Object.keys(MODALITY_DISPLAY).sort()
+    const missingFromDisplay = bibleKeys.filter((k) => !displayKeys.includes(k))
+    const extraInDisplay = displayKeys.filter((k) => !bibleKeys.includes(k))
+    expect(
+      missingFromDisplay,
+      `Bible has modality keys that the /coverage page cannot render with friendly names: ${missingFromDisplay.join(", ")}`,
+    ).toEqual([])
+    expect(
+      extraInDisplay,
+      `/coverage page has MODALITY_DISPLAY keys not present in the bible: ${extraInDisplay.join(", ")}`,
+    ).toEqual([])
   })
 })
 
