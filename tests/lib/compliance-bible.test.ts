@@ -60,6 +60,37 @@ describe("COMPLIANCE_BIBLE", () => {
     expect(COMPLIANCE_BIBLE.modalityRules.peptides).toBeDefined()
   })
 
+  it("citationGaps is well-formed where present (IN-05)", () => {
+    // Optional field; when set, each entry must be a non-empty string so
+    // an audit grep can surface real signal instead of empty placeholders.
+    for (const [key, rule] of Object.entries(COMPLIANCE_BIBLE.modalityRules)) {
+      if (rule.citationGaps === undefined) continue
+      expect(
+        Array.isArray(rule.citationGaps),
+        `${key}.citationGaps must be string[] when present`,
+      ).toBe(true)
+      expect(rule.citationGaps.length, `${key}.citationGaps must be non-empty`).toBeGreaterThan(0)
+      for (const gap of rule.citationGaps) {
+        expect(typeof gap, `${key}.citationGaps entry must be a string`).toBe("string")
+        expect(gap.trim().length, `${key}.citationGaps entry must be non-blank`).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it("known modalities with primary-letter gaps are flagged via citationGaps (IN-05)", () => {
+    // tesamorelin / bmac / shockwave_ed have honest "no primary-subject WL
+    // publicly indexed as of 2026-05-20" annotations baked into their
+    // regulatoryStatus prose. The structured citationGaps field mirrors
+    // that so a sweep can find them by structure, not prose.
+    const expectGap = ["tesamorelin", "bmac", "shockwave_ed"] as const
+    for (const key of expectGap) {
+      expect(
+        COMPLIANCE_BIBLE.modalityRules[key].citationGaps,
+        `${key} should have citationGaps[] documenting its primary-letter gap`,
+      ).toBeDefined()
+    }
+  })
+
   it("coverage page MODALITY_DISPLAY keys are in parity with bible modalityRules (CR-01)", () => {
     const bibleKeys = Object.keys(COMPLIANCE_BIBLE.modalityRules).sort()
     const displayKeys = Object.keys(MODALITY_DISPLAY).sort()

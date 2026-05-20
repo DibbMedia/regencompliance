@@ -28,6 +28,16 @@ interface ModalityRule {
   regulatoryStatus: string
   canSay: string[]
   cannotSay: string[]
+  /**
+   * IN-05: structured record of best-effort citations where a primary
+   * FDA warning letter, Federal Register notice, or PCAC decision was
+   * NOT publicly indexed at the time of bible authorship. Each entry
+   * describes what evidence is missing so a future audit/sweep can
+   * grep for `citationGaps` to find re-research targets without
+   * scanning prose. Empty / absent means all citations in this entry
+   * are backed by primary URLs.
+   */
+  citationGaps?: string[]
 }
 
 interface ChannelRule {
@@ -612,6 +622,9 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
         "Compounded tesamorelin same as Egrifta at lower cost",
         "Tesamorelin cures age-related abdominal fat",
       ],
+      citationGaps: [
+        "No FDA warning letter with tesamorelin as primary subject publicly indexed as of 2026-05-20 - off-label exposure rides on the broader GLP-class enforcement umbrella. Re-search after the next quarterly FDA compounder enforcement wave.",
+      ],
     },
     tb_500: {
       regulatoryStatus: "TB-500 (thymosin beta-4 fragment / LKKTETQ) is not an FDA-approved drug. FDA placed TB-500 (along with full-length thymosin beta-4) on Category 2 of the interim 503A bulks list as a substance presenting significant safety risks (https://www.fda.gov/drugs/human-drug-compounding/certain-bulk-drug-substances-use-compounding-may-present-significant-safety-risks). Section 503A bulk-substance criteria under 21 USC 353a(b)(1)(A) are not satisfied. TB-500 (free base and acetate) is scheduled to be reviewed by the Pharmacy Compounding Advisory Committee at the July 23-24, 2026 meeting (https://www.fda.gov/advisory-committees/advisory-committee-calendar/july-23-24-2026-meeting-pharmacy-compounding-advisory-committee-07232026); the PCAC outcome does not change the current Category 2 status until FDA acts on the committee's recommendation. TB-500 is prohibited in sport under WADA's S2 class (peptide hormones / growth factors). FDA has issued warning letters to peptide compounders selling BPC-157, TB-500, and related substances (Summit Research Peptides, Dec 10, 2024, https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/summit-research-peptides-695607-12102024).",
@@ -744,6 +757,9 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
         "Risk-free bone marrow stem cell shot",
         "Our BMAC product is safe and effective for [non-homologous indication]",
       ],
+      citationGaps: [
+        "No FDA warning letter with BMAC as primary cited violation publicly indexed as of 2026-05-20. Enforcement consistently rides alongside SVF, amnio, or umbilical-derived products under the same HCT/P umbrella. Re-search when a BMAC-primary letter publishes.",
+      ],
     },
     shockwave_ed: {
       regulatoryStatus: "Low-intensity extracorporeal shockwave therapy (Li-ESWT) for erectile dysfunction, often marketed under brand programs such as GAINSWave or under generic 'shockwave for ED' branding, is NOT FDA cleared or approved for the treatment of erectile dysfunction. The American Urological Association's 2018 ED Guideline (updated 2024) classifies Li-ESWT for ED as investigational and recommends use only within research protocols. Several acoustic-wave devices hold 510(k) clearances for OTHER indications (e.g., activation of connective tissue, pain reduction, improved local blood supply, treatment of chronic diabetic foot ulcers, treatment of certain second-degree burns); using a device cleared for one indication to treat ED is off-label device use, and clinic marketing claims for ED efficacy are subject to FDA misbranding enforcement under 21 USC 352 (intended-use doctrine, 21 CFR 801.4 - intended use can be established by promotional labeling) and FTC Section 5 substantiation rules. The exposure model for shockwave-ED marketing has historically run through FTC consumer-protection enforcement on the unsubstantiated efficacy claims (https://www.ftc.gov/legal-library/browse/cases-proceedings/cases) and state medical-board action against the prescribing physician, rather than through an FDA device warning letter naming GAINSWave or Li-ESWT specifically; no FDA warning letter with GAINSWave or shockwave-for-ED as the primary cited violation has been publicly indexed as of 2026-05-20. Clinics relying on this gap should not - the absence of a primary FDA letter is an enforcement-priority artifact, not an endorsement of the marketing.",
@@ -759,6 +775,9 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
         "Guaranteed restoration of sexual function",
         "Risk-free, drug-free ED cure",
         "Permanent fix for erectile dysfunction with no surgery",
+      ],
+      citationGaps: [
+        "No FDA warning letter with GAINSWave or shockwave-for-ED as primary cited violation publicly indexed as of 2026-05-20. Enforcement runs through FTC consumer-protection on unsubstantiated efficacy claims + state medical-board action on the prescribing physician. The absence of an FDA letter is an enforcement-priority artifact, NOT an endorsement.",
       ],
     },
     botulinum_toxin: {
