@@ -98,10 +98,25 @@ export async function GET(request: Request) {
 
       // For FDA sources, try paginated results
       if (source.type === "fda_warning" || source.type === "fda_483") {
+        // WR-07: build paginated variants via URLSearchParams so a listUrl
+        // that already carries query params doesn't produce malformed
+        // `...?foo=bar?page=1`. Today FDA's listUrl is bare, but the
+        // pattern would break the moment a future source adds a query.
+        const buildPageUrl = (base: string, page: number): string => {
+          try {
+            const u = new URL(base)
+            if (page > 0) u.searchParams.set("page", String(page))
+            return u.toString()
+          } catch {
+            // base is not a parseable URL - fall back to the legacy form
+            // so a misconfigured source doesn't crash the cron.
+            return page > 0 ? `${base}?page=${page}` : base
+          }
+        }
         const pageUrls = [
-          source.listUrl,
-          `${source.listUrl}?page=1`,
-          `${source.listUrl}?page=2`,
+          buildPageUrl(source.listUrl, 0),
+          buildPageUrl(source.listUrl, 1),
+          buildPageUrl(source.listUrl, 2),
         ]
         for (const pageUrl of pageUrls) {
           try {
