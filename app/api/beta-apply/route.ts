@@ -6,6 +6,7 @@ import { getClientIp } from "@/lib/ip"
 import { sendToGhl } from "@/lib/ghl"
 import { deriveSource } from "@/lib/source-tracking"
 import { createBetaApplication } from "@/lib/repos/beta-applications"
+import { parseUtmCookieFromRequest } from "@/lib/utm"
 
 export const maxDuration = 10
 
@@ -75,6 +76,11 @@ export async function POST(request: Request) {
       )
     }
 
+    // Pull UTM cookie set by the landing page tracker. Fail-open.
+    // Reads off Request.headers so vitest can call POST(req) without a
+    // Next request scope.
+    const utm = parseUtmCookieFromRequest(request)
+
     // GHL pipeline: drop the applicant into the founder-beta review workflow.
     void sendToGhl("beta_apply", {
       email,
@@ -85,6 +91,14 @@ export async function POST(request: Request) {
       website: website || null,
       monthly_volume,
       why_apply,
+      utm_source: utm.utm_source,
+      utm_medium: utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+      utm_term: utm.utm_term,
+      utm_content: utm.utm_content,
+      referrer: utm.referrer,
+      landing_path: utm.landing_path,
+      first_seen_at: utm.captured_at,
     })
 
     return NextResponse.json({ success: true })
