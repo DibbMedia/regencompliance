@@ -178,11 +178,15 @@ export async function runStateRulesPipeline(
 
     const candidates = sr.links.slice(0, MAX_DETAILS_PER_STATE)
     const linkErrors: StatePipelineLinkError[] = []
-    const today = new Date().toISOString().split("T")[0]
     const adapter = asComplianceSource(state)
 
     for (const link of candidates) {
       const url = link.url
+      // WR-08: capture `today` per-link rather than per-state so a sweep
+      // that spans midnight UTC stamps each link with its actual ingest
+      // date. Previously the state-level capture meant earlier states in
+      // a long run got yesterday's date while later states got today's.
+      const today = new Date().toISOString().split("T")[0]
       try {
         // Single fetch per detail page. safeFetchHtml enforces SSRF +
         // 2 MB cap; cheerio parsing happens here in extractTextFromHtml.
