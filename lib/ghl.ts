@@ -26,6 +26,20 @@
  *     regen_event             - the event name, e.g. "signup"
  *     regen_source            - "website" by default
  *     regen_event_at          - ISO timestamp of the latest event
+ *     regen_utm_source        - first-touch UTM source (e.g. "google", "facebook", "newsletter")
+ *     regen_utm_medium        - first-touch medium (e.g. "cpc", "organic", "email")
+ *     regen_utm_campaign      - first-touch campaign tag
+ *     regen_utm_term          - first-touch keyword/term
+ *     regen_utm_content       - first-touch creative variant
+ *     regen_referrer          - document.referrer at landing
+ *     regen_landing_path      - the path the user hit on landing (e.g. "/coverage")
+ *     regen_first_seen_at     - ISO timestamp of first landing (cookie capture)
+ *
+ *   Note: the regen_utm_* / regen_referrer / regen_landing_path /
+ *   regen_first_seen_at fields are populated from the `rc_utm` HttpOnly
+ *   cookie set by the first landing page. Fail-open: if the cookie is
+ *   absent on form submit (organic traffic, cleared cookies), these
+ *   fields just don't get written - the contact upsert still happens.
  *
  *   Event-specific (passed through from callsites):
  *     regen_user_id           - signup
@@ -268,6 +282,7 @@ export async function sendToGhl(event: GhlEvent, contact: GhlContact): Promise<v
   }
 
   // Standard custom fields populated on every event.
+  // "website" is the channel; UTM source / medium / campaign live in their own regen_utm_* fields below, populated from the rc_utm cookie via the form route's cookie read.
   const customFields: Record<string, string | number | boolean> = {
     regen_event: event,
     regen_source: "website",
