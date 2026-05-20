@@ -36,20 +36,9 @@ const nextConfig: NextConfig = {
   },
 }
 
-// Wrap with Sentry if @sentry/nextjs is installed and DSN is configured
-let finalConfig: NextConfig = nextConfig
-try {
-  if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { withSentryConfig } = require("@sentry/nextjs")
-    finalConfig = withSentryConfig(nextConfig, {
-      silent: true,
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-    })
-  }
-} catch {
-  // @sentry/nextjs not installed - skip Sentry build integration
-}
+// Sentry wiring was removed alongside lib/error-tracking.ts - see the
+// docstring there. Re-add `withSentryConfig` here when the operator
+// commits to wiring a remote error tracker; until then there's no
+// reason to gate a config wrapper on an env var that nothing reads.
 
-export default finalConfig
+export default nextConfig
