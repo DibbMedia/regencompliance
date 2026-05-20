@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { CookieConsent } from "@/components/cookie-consent"
 import { ImpersonationBanner } from "@/components/impersonation-banner"
+import { UtmTracker } from "@/components/utm-tracker"
 import { headers } from "next/headers"
 import { MARKETING_URL } from "@/lib/site-url"
 import {
@@ -103,6 +104,7 @@ export default async function RootLayout({
           nonce={nonce}
         >
           <ImpersonationBanner />
+          <UtmTracker />
           <TooltipProvider>
             {children}
           </TooltipProvider>
