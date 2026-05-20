@@ -41,6 +41,16 @@ Primary stack: TypeScript (main), Python (scraping/scripts), WordPress/PHP (plug
 - Domain cutover prep landed: code split into apex (marketing) + app subdomain, env trim + path fallback, www<->apex redirect loop killed. Operator-side DNS/Vercel/Stripe/Supabase cutover still pending.
 - 2026-05-07 launch overhaul: dropped Waitlist from nav, founder/standard pricing cards parallelized, /apply/for/tools/compare/specialty pages reflowed, 6 specialty pages got commonMistakes data, /vs/claude + /vs/perplexity competitor pages, Privacy/Terms wiped to lawyer-pending placeholders, /cookies + /accessibility added, "Dibb Enterprises LLC" -> "Regen Portal LLC", security page vendor-disclosure scrubbed, /contact form + GHL plumbing.
 
+### URL slugs are locked (load-bearing - read before renaming any route)
+
+**Every URL path in this app is finalized and live in marketing materials (paid ads, emails, blog posts, partner placements) as of 2026-05-19.** Silently renaming any route breaks live external links and burns ad spend.
+
+**Before any change that affects a URL path:**
+1. Surface the proposed change to the user with the exact `before -> after` path. Wait for explicit approval. No silent renames during refactors, audits, "cleanup" passes, or sweeps.
+2. If approved, add a 301/308 redirect from the old slug to the new one in the SAME commit. Static paths -> `next.config.ts` `redirects()`. Dynamic paths or host-aware -> `proxy.ts` middleware. Do NOT split the rename and the redirect across commits.
+3. URL-affecting changes include: renaming a route folder under `app/`, restructuring a dynamic segment, deleting a route, changing a data-driven slug (blog post `slug`, specialty key, tool key, state slug, competitor slug in `lib/blog/posts/*`, `lib/tools/data/*`, `lib/tools/data/scanner.ts`, etc.), or changing `generateStaticParams` keys.
+4. Sitemap + internal `<Link>` updates do NOT substitute for a redirect - external traffic doesn't follow them.
+
 ### Email policy (load-bearing — read before proposing email anywhere)
 
 **GHL is the canonical email + CRM path.** All transactional email (welcome, beta-welcome, payment-failed, cancellation, account-deleted, data-export confirmation, receipts) runs as a GHL workflow triggered by the matching `regen-*` tag. The integration is a Private Integration Token + Contacts API upsert (see `lib/ghl.ts` + `docs/operator-setup.md`); **do NOT propose Resend, nodemailer/SMTP, AWS SES, or any new email provider** for new email work.
