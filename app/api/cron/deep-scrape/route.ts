@@ -384,8 +384,15 @@ ${JSON.stringify(rulesForReview, null, 2)}`,
         ruleB: (typeof allRules)[0]
       }> = []
 
-      for (let i = 0; i < allRules.length; i++) {
+      // CR-02 fix: cap is enforced INSIDE the inner loop. With the inner
+      // check only on the outer iteration boundary, one common phrase
+      // (e.g. "stem cell") could push hundreds of pairs against the active
+      // ruleset before the cap fired, blowing through the 300s function
+      // budget on the downstream Claude Haiku confirmation batches.
+      const PAIR_CAP = 20
+      outer: for (let i = 0; i < allRules.length; i++) {
         for (let j = i + 1; j < allRules.length; j++) {
+          if (flaggedPairs.length >= PAIR_CAP) break outer
           const phraseA = allRules[i].banned_phrase.toLowerCase().trim()
           const phraseB = allRules[j].banned_phrase.toLowerCase().trim()
 
@@ -393,8 +400,6 @@ ${JSON.stringify(rulesForReview, null, 2)}`,
             flaggedPairs.push({ ruleA: allRules[i], ruleB: allRules[j] })
           }
         }
-        // Cap at 20 pairs to stay within time limits
-        if (flaggedPairs.length >= 20) break
       }
 
       metrics.dedup_sweep.pairs_checked = flaggedPairs.length
