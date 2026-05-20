@@ -10,6 +10,20 @@ export interface DiscoveredPage {
   title: string
 }
 
+/**
+ * Result of discoverPages. WR-09: the sitemap parser caps at
+ * MAX_SITEMAP_ENTRIES so a 10k-page aggregator site doesn't pin CPU.
+ * When the cap fires, `capReached: true` lets the caller surface a
+ * "site has more pages than we track" UI signal. `totalDiscovered`
+ * is the count of locUrls seen *before* the limit filter, useful for
+ * telling the operator how big the sitemap actually was.
+ */
+export interface DiscoverPagesResult {
+  pages: DiscoveredPage[]
+  capReached: boolean
+  totalDiscovered: number
+}
+
 export interface PageContent {
   url: string
   title: string
@@ -63,15 +77,15 @@ const MAX_SITEMAP_ENTRIES = 2000
 export async function discoverPages(
   domain: string,
   maxPages: number = 50,
-): Promise<DiscoveredPage[]> {
+): Promise<DiscoverPagesResult> {
   const limit = Math.min(maxPages, 100)
   const normalizedDomain = domain.replace(/^(https?:\/\/)/, "").replace(/\/$/, "")
   const startUrl = `https://${normalizedDomain}`
 
   // 1. Try sitemap.xml first.
-  const sitemapPages = await discoverFromSitemap(normalizedDomain, limit)
-  if (sitemapPages.length > 0) {
-    return sitemapPages
+  const sitemapResult = await discoverFromSitemap(normalizedDomain, limit)
+  if (sitemapResult.pages.length > 0) {
+    return sitemapResult
   }
 
   // 2. Fall back to BFS crawl.
@@ -114,7 +128,9 @@ export async function discoverPages(
     })
   }
 
-  return pages
+  // BFS has no sitemap-style cap; the queue exhausts naturally when we hit
+  // the limit or run out of links. capReached only signals the sitemap cap.
+  return { pages, capReached: false, totalDiscovered: pages.length }
 }
 
 // ---------------------------------------------------------------------------
@@ -124,12 +140,13 @@ export async function discoverPages(
 async function discoverFromSitemap(
   normalizedDomain: string,
   limit: number,
-): Promise<DiscoveredPage[]> {
+): Promise<DiscoverPagesResult> {
+  const empty: DiscoverPagesResult = { pages: [], capReached: false, totalDiscovered: 0 }
   const sitemapUrl = `https://${normalizedDomain}/sitemap.xml`
 
   try {
     const xml = await safeFetchHtml(sitemapUrl, SITEMAP_FETCH_TIMEOUT_MS)
-    if (!xml) return []
+    if (!xml) return empty
 
     const $ = cheerio.load(xml, { xmlMode: true })
 
@@ -169,7 +186,8 @@ async function discoverFromSitemap(
         if (u) locUrls.push(u)
       })
     }
-    if (locUrls.length >= MAX_SITEMAP_ENTRIES) {
+    const capReached = locUrls.length >= MAX_SITEMAP_ENTRIES
+    if (capReached) {
       console.info(
         "[discoverPages] sitemap entry cap reached (" + MAX_SITEMAP_ENTRIES + ") for " + sitemapUrl + " - remaining entries discarded",
       )
@@ -202,12 +220,17 @@ async function discoverFromSitemap(
       pages.push({ url: normalized, title: normalized })
     }
 
-    if (pages.length === 0) return []
+    if (pages.length === 0) return empty
 
-    console.info("[discoverPages] sitemap used:", sitemapUrl, "urls=" + pages.length)
-    return pages
+    console.info(
+      "[discoverPages] sitemap used:", sitemapUrl,
+      "urls=" + pages.length,
+      "sitemapEntries=" + locUrls.length,
+      "capReached=" + capReached,
+    )
+    return { pages, capReached, totalDiscovered: locUrls.length }
   } catch {
-    return []
+    return empty
   }
 }
 

@@ -133,13 +133,21 @@ export async function POST(request: Request) {
     after(async () => {
       try {
         const discovered = await discoverPages(normalizedDomain, 50)
-        if (discovered.length === 0) return
+        if (discovered.pages.length === 0) return
+
+        if (discovered.capReached) {
+          console.info(
+            "[sites POST] sitemap cap reached for site=" + site.id +
+              " - sitemap had " + discovered.totalDiscovered +
+              " entries, tracking first " + discovered.pages.length,
+          )
+        }
 
         const serviceClient = createServiceClient()
         // Sequential createSitePage so each row is encrypted under the
         // owner's per-user DEK. For the typical ~50 discovered pages this
         // adds <50ms total.
-        for (const p of discovered) {
+        for (const p of discovered.pages) {
           await createSitePage(serviceClient, {
             site_id: site.id,
             profile_id: profileId,
@@ -151,7 +159,7 @@ export async function POST(request: Request) {
 
         await serviceClient
           .from("monitored_sites")
-          .update({ total_pages: discovered.length })
+          .update({ total_pages: discovered.pages.length })
           .eq("id", site.id)
       } catch (crawlError) {
         console.error("Background page discovery error:", crawlError)
