@@ -143,7 +143,68 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
         "fabricated testimonials", "undisclosed paid reviews",
         "undisclosed family member reviews", "fake patient stories",
       ],
-      why: "FTC Endorsement Guides require truthful, disclosed testimonials",
+      why: "16 CFR Part 255 (FTC Endorsement Guides, 2023 revision) requires truthful endorsements with disclosed material connections",
+    },
+    {
+      category: "Compounded GLP-1 misrepresentation",
+      patterns: [
+        "our compounded semaglutide is FDA approved",
+        "same as Ozempic at a fraction of the cost",
+        "FDA-grade semaglutide", "research-grade semaglutide for human use",
+        "guaranteed weight loss with our shot",
+        "compounded tirzepatide approved for weight loss",
+      ],
+      why: "Compounded semaglutide/tirzepatide are not FDA approved; 21 USC 353a/353b limit compounding and prohibit 'essentially a copy' of an approved drug; FDA warning letters issued to US Chem Labs and Synthetix (Feb 2024) for unapproved sales",
+    },
+    {
+      category: "Ketamine off-label promotion",
+      patterns: [
+        "ketamine cures depression", "FDA approved ketamine for PTSD",
+        "ketamine therapy treats anxiety", "at-home ketamine with no doctor visit",
+        "permanent fix for treatment-resistant depression",
+        "ketamine has no risk of addiction",
+      ],
+      why: "Ketamine is Schedule III (21 CFR 1308.13(b)(7)); not FDA approved for any psychiatric indication. Only Spravato (esketamine) is approved for TRD and is REMS-restricted. Ryan Haight Act (21 USC 829(e)) requires in-person evaluation before controlled-substance telemedicine prescribing",
+    },
+    {
+      category: "NAD+ disease and anti-aging claims",
+      patterns: [
+        "NAD+ reverses aging", "NAD+ IV cures addiction/Parkinson's/Alzheimer's",
+        "NAD+ repairs DNA damage", "FDA approved NAD+ therapy",
+        "clinically proven to extend lifespan",
+      ],
+      why: "NAD+ injectable/IV products are not FDA approved finished drugs; disease and serious health claims require RCT-grade substantiation under FTC Health Products Compliance Guidance",
+    },
+    {
+      category: "Ozone therapy efficacy claims",
+      patterns: [
+        "ozone therapy treats cancer/Lyme/autoimmune",
+        "10-pass ozone cures chronic disease",
+        "EBOO ozone heals the body",
+        "FDA cleared ozone treatment", "medical ozone is safe and effective",
+      ],
+      why: "21 CFR 801.415 states ozone has 'no known useful medical application'; FDA O3UV warning letter (Jul 7, 2025) cited unapproved-device claims for autohemotherapy/EBOO",
+    },
+    {
+      category: "BPC-157 peptide efficacy claims",
+      patterns: [
+        "BPC-157 heals tendons/ligaments/gut",
+        "BPC-157 repairs tissue damage",
+        "Body Protective Compound proven for injury recovery",
+        "FDA approved BPC-157 protocol",
+        "research-grade BPC-157 for human use",
+      ],
+      why: "BPC-157 is not FDA approved and does not meet 21 USC 353a(b)(1)(A) bulks-substance criteria; FDA issued warning letter to Summit Research Peptides (Dec 10, 2024) for unapproved peptide sales",
+    },
+    {
+      category: "TRT anti-aging and risk-free claims",
+      patterns: [
+        "TRT reverses aging", "TRT is risk-free for men",
+        "FDA approved Low T treatment for age-related decline",
+        "boost your testosterone with no side effects",
+        "lifetime testosterone optimization with no cardiovascular risk",
+      ],
+      why: "FDA 2015 class-wide labeling change clarifies testosterone is NOT approved for age-related low testosterone and warns of possible increased risk of heart attack and stroke; testosterone is Schedule III under 21 CFR 1308.13",
     },
   ],
 
@@ -230,7 +291,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   // -------------------------------------------------------------------------
   modalityRules: {
     stem_cell: {
-      regulatoryStatus: "Only cord-blood-derived HPCs (e.g., HEMACORD, DUCORD) are FDA approved, and only for blood disorders. All other stem cell therapies are unapproved.",
+      regulatoryStatus: "Only cord-blood-derived HPCs (e.g., HEMACORD, DUCORD) are FDA approved, and only for blood disorders. All other stem cell therapies are unapproved. HCT/Ps are governed by 21 CFR Part 1271: §1271.10 sets the four criteria for regulation solely under section 361 (minimal manipulation, homologous use, no combination with another article, no systemic effect or limited to autologous/first-degree-allogeneic/reproductive use); §1271.15(b) provides the same-surgical-procedure exception; §1271.350 sets adverse-event reporting via Form FDA-3500A within 15 calendar days.",
       canSay: [
         "We offer stem cell consultations",
         "Cord-blood-derived stem cells are FDA approved for certain blood disorders",
@@ -243,7 +304,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
       ],
     },
     exosomes: {
-      regulatoryStatus: "NO FDA-approved exosome products exist. Education only. FDA issued explicit warning in 2019.",
+      regulatoryStatus: "NO FDA-approved exosome products exist. Education only. FDA issued an explicit Consumer Alert in 2019/2020 (https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/public-safety-notification-exosome-products). Exosomes are 351 biologics requiring a BLA; they do not satisfy the four 21 CFR 1271.10 criteria for 361 HCT/P regulation, and §1271.350 adverse-event reporting still applies where distributed.",
       canSay: [
         "What are exosomes? (educational)",
         "Exosome research is ongoing",
@@ -305,7 +366,7 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
       ],
     },
     svf_adipose: {
-      regulatoryStatus: "SVF/adipose stem cells are unapproved 351 biologics. Cannot be marketed as therapy.",
+      regulatoryStatus: "SVF/adipose stem cells are unapproved 351 biologics. Cannot be marketed as therapy. Enzymatic SVF preparation generally fails 21 CFR 1271.10(a)(1) ('minimally manipulated' criterion) per FDA's HCT/P framework; courts have upheld this (US v. US Stem Cell Clinic, 11th Cir. 2021). The 21 CFR 1271.15(b) same-surgical-procedure exception is narrow and does not cover most SVF clinical models. 21 CFR 1271.350 adverse-event reporting applies where distributed.",
       canSay: [
         "Adipose-derived cell research is ongoing",
       ],
@@ -324,6 +385,109 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
       cannotSay: [
         "HBOT treats autism/cancer/anti-aging",
         "Hyperbaric oxygen cures [non-cleared condition]",
+      ],
+    },
+    glp_1_compounded: {
+      regulatoryStatus: "Compounded semaglutide/tirzepatide/retatrutide are not FDA-approved drugs. Compounding under 21 USC 353a (503A pharmacies) or 353b (503B outsourcing facilities) is permitted only under narrow shortage-list / patient-specific exceptions; FDA removed semaglutide and tirzepatide from the drug shortage list in 2024-2025 and clarified that compounding 'essentially a copy' of an approved drug is prohibited (https://www.fda.gov/drugs/human-drug-compounding/fda-clarifies-policies-compounders-national-glp-1-supply-begins-stabilize). FDA issued warning letters to US Chem Labs (Feb 7, 2024, https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/us-chem-labs-669074-02072024) and Synthetix/Helix Chemical Supply (Feb 7, 2024) for selling unapproved semaglutide and tirzepatide as 'research only.' FTC has flagged misleading GLP-1 weight-loss marketing under Section 5 of the FTC Act.",
+      canSay: [
+        "FDA-approved semaglutide (Ozempic, Wegovy) and tirzepatide (Mounjaro, Zepbound) are prescription medications",
+        "Discuss whether a GLP-1 medication may be appropriate during a medical consultation",
+        "Compounded semaglutide is not FDA approved and is only permitted under limited pharmacy-compounding rules",
+      ],
+      cannotSay: [
+        "Our compounded semaglutide is FDA approved",
+        "Lose [X] pounds guaranteed with semaglutide",
+        "Same as Ozempic at a fraction of the cost",
+        "Safe weight-loss shot with no side effects",
+        "Compounded GLP-1 cures obesity/diabetes",
+        "Research-grade semaglutide for human use",
+        "FDA-grade semaglutide",
+      ],
+    },
+    ketamine: {
+      regulatoryStatus: "Ketamine is a DEA Schedule III controlled substance (21 CFR 1308.13(b)(7)). FDA-approved ketamine is an IV/IM anesthetic; it is NOT FDA approved for depression, PTSD, or any psychiatric indication - those uses are off-label. Esketamine (Spravato) is the only FDA-approved ketamine-class product for treatment-resistant depression and is restricted under a REMS program requiring in-office administration and observation. Compounded oral and nasal ketamine carry FDA safety alerts (https://www.fda.gov/drugs/human-drug-compounding/fda-warns-patients-and-health-care-providers-about-potential-risks-associated-compounded-ketamine and https://www.fda.gov/drugs/human-drug-compounding/fda-alerts-health-care-professionals-potential-risks-associated-compounded-ketamine-nasal-spray). The Ryan Haight Act, 21 USC 829(e), requires at least one in-person medical evaluation before any controlled-substance prescription via telemedicine (subject to time-limited DEA flexibilities).",
+      canSay: [
+        "Ketamine is a Schedule III controlled substance, FDA approved as an anesthetic",
+        "Spravato (esketamine) is FDA approved for treatment-resistant depression and is administered under a REMS program",
+        "Use of ketamine for depression is off-label and not FDA approved for that indication",
+        "Federal law requires an in-person medical evaluation before prescribing controlled substances via telemedicine",
+      ],
+      cannotSay: [
+        "Ketamine cures depression",
+        "Ketamine is FDA approved for PTSD/anxiety/depression",
+        "Ketamine therapy works for everyone",
+        "Safe at-home ketamine treatment with no risks",
+        "Permanent fix for treatment-resistant depression",
+        "No risk of addiction or abuse",
+        "Get your ketamine prescription with no doctor visit",
+      ],
+    },
+    nad_iv: {
+      regulatoryStatus: "NAD+ injectable/IV products are not FDA-approved finished drugs for any indication. They are compounded preparations subject to 21 USC 353a/353b. FDA has issued recalls of compounded NAD products for being out-of-specification (e.g., Olympia Pharmacy nationwide recall covering compounded NAD injectables, https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts). FTC Section 5 unfair-and-deceptive-practices authority applies to anti-aging or disease-treatment claims for any IV therapy; FTC's 2022 Health Products Compliance Guidance requires randomized controlled human clinical trials to substantiate disease and structure/function claims for health products.",
+      canSay: [
+        "NAD+ is a coenzyme found naturally in the body",
+        "Wellness-oriented IV programs may include NAD+ as part of a provider-supervised regimen",
+        "NAD+ injectable and IV products are not FDA approved for any disease indication",
+      ],
+      cannotSay: [
+        "NAD+ reverses aging",
+        "NAD+ IV cures addiction/Parkinson's/Alzheimer's",
+        "NAD+ repairs DNA damage",
+        "Anti-aging IV drip - guaranteed results",
+        "FDA-approved NAD+ therapy",
+        "NAD+ restores youthful energy and brain function",
+        "Clinically proven to extend lifespan",
+      ],
+    },
+    ozone_therapy: {
+      regulatoryStatus: "FDA has no approved medical use for ozone. 21 CFR 801.415 states 'ozone is a toxic gas with no known useful medical application in specific, adjunctive, or preventive therapy.' Devices that generate ozone for therapeutic use are unapproved/unauthorized devices; FDA issued a warning letter to O3UV, LLC on July 7, 2025 for marketing autohemotherapy/EBOO (extracorporeal blood oxygenation and ozonation) devices without authorization (https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/o3uv-llc-668840-07072025). Earlier warning letters include Living Foods LLC (July 5, 2022) for ozone-based products marketed as new drugs without approval.",
+      canSay: [
+        "FDA has not approved any medical use for ozone",
+        "We do not offer ozone therapy",
+      ],
+      cannotSay: [
+        "Ozone therapy treats cancer/Lyme/COVID/autoimmune disease",
+        "Ozone IV is safe and effective",
+        "FDA approved ozone treatment",
+        "10-pass ozone cures chronic disease",
+        "EBOO ozone therapy heals the body",
+        "Ozone kills viruses and bacteria in the bloodstream",
+        "Medical ozone is FDA cleared",
+      ],
+    },
+    bpc_157: {
+      regulatoryStatus: "BPC-157 is not an FDA-approved drug. It is not on the section 503A bulks list permitted for compounding, and FDA has stated it does not qualify as a USP/NF monograph substance or a component of an FDA-approved drug; under 21 USC 353a(b)(1)(A), bulk drug substances used in 503A compounding must satisfy one of those criteria. FDA has issued warning letters to peptide compounders selling BPC-157 (e.g., Summit Research Peptides, Dec 10, 2024, https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/summit-research-peptides-695607-12102024). // TODO: needs citation - specific FDA Sept 2023 'Category 2' bulks decision date for BPC-157 (FDA category-list pages 404'd; Federal Register link blocked by unblock proxy).",
+      canSay: [
+        "BPC-157 is not FDA approved",
+        "We do not prescribe or compound BPC-157",
+        "Peptide research is an active and evolving field",
+      ],
+      cannotSay: [
+        "BPC-157 heals tendons/ligaments/gut",
+        "BPC-157 repairs tissue damage",
+        "Body Protective Compound proven for injury recovery",
+        "FDA approved BPC-157 protocol",
+        "Safe peptide therapy with no side effects",
+        "BPC-157 accelerates healing",
+        "Research-grade BPC-157 for human use",
+      ],
+    },
+    trt_men: {
+      regulatoryStatus: "Testosterone is a DEA Schedule III controlled substance (21 CFR 1308.13). FDA-approved testosterone products are indicated only for men with low testosterone levels caused by certain medical conditions (classical hypogonadism). FDA issued a Drug Safety Communication on March 3, 2015 requiring class-wide labeling changes warning of possible increased risk of heart attack and stroke and clarifying that the benefit and safety of testosterone has NOT been established for low testosterone due to aging (https://www.fda.gov/drugs/drug-safety-and-availability/fda-issues-class-wide-labeling-changes-testosterone-products). Compounded testosterone preparations are not FDA approved. FTC has acted against 'Low T' marketing under Section 5 of the FTC Act for unsubstantiated claims about energy, libido, and vitality.",
+      canSay: [
+        "FDA-approved testosterone products are indicated for men with hypogonadism from specific medical conditions",
+        "Testosterone is a Schedule III controlled substance and requires a valid prescription",
+        "FDA labeling for testosterone warns of possible increased risk of heart attack and stroke",
+        "The benefit and safety of testosterone has not been established for low testosterone due to aging",
+      ],
+      cannotSay: [
+        "TRT reverses aging",
+        "TRT is risk-free for men",
+        "Boost your testosterone naturally with no side effects",
+        "TRT cures low energy/depression/erectile dysfunction",
+        "Anti-aging testosterone protocol",
+        "FDA-approved Low T treatment for age-related decline",
+        "Lifetime testosterone optimization with no cardiovascular risk",
       ],
     },
   },
@@ -372,6 +536,20 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
         "Must identify sender/business",
       ],
     },
+    website: {
+      restrictions: [
+        "Testimonials and endorsements must comply with 16 CFR Part 255 (FTC Endorsement Guides, final revision effective July 26, 2023, 88 FR 48102): truthful, substantiated, material connections disclosed, and not deceptive",
+        "Consumer testimonials that imply atypical results must include clear and conspicuous disclosure that results are not what most consumers will achieve; a generic 'results not typical' line is insufficient if it is not clear and conspicuous",
+        "Expert endorsements require that the endorser have qualifications sufficient to give the endorsement (16 CFR 255.3) and must reflect the endorser's actual opinions",
+        "Health-product claims must be substantiated by competent and reliable scientific evidence (FTC Health Products Compliance Guidance 2022); for disease and serious health claims FTC generally expects randomized, controlled human clinical trials",
+        "Before/after photos must depict the actual patient receiving the actual treatment, with the same lighting/angle/posing, and may not imply a guaranteed or typical result",
+        "Before/after and identifiable patient images require written HIPAA authorization (45 CFR 164.508) and patient written consent for marketing use",
+        "State medical-advertising rules apply (e.g., NAC 630.190 prohibiting false, deceptive, misleading or guarantee-based advertising; Fla. Stat. 458.3245 and 459.0127 requiring a specific FDA-approval-status notice in stem cell ads)",
+        "Treatment-page disclaimers: any modality not FDA approved for the advertised use must carry a clear off-label or non-FDA-approved status disclaimer",
+        "Credential and title claims must be truthful and verifiable: only ABMS- or AOA-recognized board certifications may be described as 'board-certified'; specialty terms must match the certifying body",
+        "Provider directory information (NPI, state license number, DEA registration where relevant) must be accurate and not misleading",
+      ],
+    },
   },
 
   // -------------------------------------------------------------------------
@@ -400,15 +578,15 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
     },
     {
       name: "State Notice - Florida",
-      text: "Florida requires: The patient is advised that stem cell therapies are not proven by the FDA to be safe or effective for the condition being treated.",
+      text: "Per Fla. Stat. 458.3245 (allopathic physicians) and Fla. Stat. 459.0127 (osteopathic physicians), advertisements for stem cell therapies that are not FDA approved must include the following notice, clearly legible in type no smaller than the largest font used in the advertisement: 'THIS NOTICE MUST BE PROVIDED TO YOU UNDER FLORIDA LAW. This physician performs one or more stem cell therapies that have not yet been approved by the United States Food and Drug Administration. You are encouraged to consult with your primary care provider before undergoing any stem cell therapy.' A signed informed consent form covering the nature of the treatment, its FDA-approval status, anticipated results, risks, and alternatives is also required.",
     },
     {
       name: "State Notice - Utah",
-      text: "Utah requires informed consent for investigational stem cell treatments, including risks, alternatives, and that the treatment is not FDA approved.",
+      text: "Per Utah Code 58-1-512 (licensure consent and disclosure for HCT/P / stem cell therapy under Title 58 of the Utah Code), a health care provider must obtain a signed informed consent before performing stem cell therapy, stating in language the patient can reasonably understand: the nature and character of the proposed treatment, the FDA-approval status of the treatment, the anticipated results, and recognized possible alternative forms of treatment. The requirement may not apply where the provider has obtained an investigational new drug or device approval from the FDA.",
     },
     {
       name: "State Notice - Nevada",
-      text: "Nevada requires stem cell clinics to register and provide informed consent disclosing investigational status.",
+      text: "Per NAC 630.190 (Nevada Administrative Code, Chapter 630, Board of Medical Examiners) under NRS Title 54 / NRS Chapter 630, a Nevada licensee may not advertise in a manner that claims a manifestly incurable disease can be cured, makes false claims of skill or efficacy, claims professional superiority, guarantees results, or includes any statement known or reasonably knowable to be false, deceptive, misleading, or harmful. NRS 630.304 establishes false advertising as grounds for disciplinary action.",
     },
   ],
 }
