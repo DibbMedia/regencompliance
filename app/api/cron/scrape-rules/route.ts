@@ -31,6 +31,12 @@ export async function GET(request: Request) {
   const supabase = createServiceClient()
   const results: Record<string, SourceResult> = {}
 
+  // Track documentDate extraction success so we can monitor Claude's parse
+  // accuracy across runs. parsed = used Claude's documentDate; fallback =
+  // Claude returned null/malformed and we used today's date instead.
+  let dateParsed = 0
+  let dateFallback = 0
+
   // Process all 5 sources
   for (const source of COMPLIANCE_SOURCES) {
     const result: SourceResult = { success: false, newRules: 0, errors: [] }
@@ -60,23 +66,41 @@ export async function GET(request: Request) {
 
           const today = new Date().toISOString().split("T")[0]
 
+          const { rules, documentDate } = await extractRulesFromText(
+            articleText,
+            source.name,
+            source.type,
+          )
+
+          // Prefer the parsed issuance date so source_date reflects when the
+          // agency actually issued the action, not when we ingested it. Fall
+          // back to today only when Claude couldn't find a visible date.
+          const sourceDate = documentDate ?? today
+          if (documentDate) {
+            dateParsed++
+          } else {
+            dateFallback++
+            console.info(
+              `[scrape-rules] documentDate fallback: source=${source.id} url=${url} using today=${today}`,
+            )
+          }
+
           const actionId = await upsertEnforcementAction(
             source,
             url,
             articleText,
-            today,
+            sourceDate,
             supabase,
           )
           if (!actionId) continue
 
-          const rules = await extractRulesFromText(articleText, source.name, source.type)
           if (rules.length === 0) continue
 
           const insertedCount = await insertRulesWithDedup(
             rules,
             url,
             source.name,
-            today,
+            sourceDate,
             supabase,
             actionId,
           )
@@ -97,6 +121,10 @@ export async function GET(request: Request) {
       console.error(`Error scraping ${source.id}:`, e)
     }
   }
+
+  console.info(
+    `[scrape-rules] documentDate hit-rate: parsed=${dateParsed}, fallback=${dateFallback}`,
+  )
 
   // Calculate totals
   const totalNewRules = Object.values(results).reduce((sum, r) => sum + r.newRules, 0)

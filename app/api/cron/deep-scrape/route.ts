@@ -75,6 +75,11 @@ export async function GET(request: Request) {
     duration_ms: 0,
   }
 
+  // Track documentDate extraction success across every article processed in
+  // this run so we can monitor Claude's parse accuracy.
+  let dateParsed = 0
+  let dateFallback = 0
+
   // =========================================================================
   // 2. Deep Archive Crawl - 15 links per source
   // =========================================================================
@@ -176,23 +181,41 @@ export async function GET(request: Request) {
 
           const today = new Date().toISOString().split("T")[0]
 
+          const { rules, documentDate } = await extractRulesFromText(
+            articleText,
+            source.name,
+            source.type,
+          )
+
+          // Prefer the parsed issuance date so source_date reflects when the
+          // agency actually issued the action, not when we ingested it. Fall
+          // back to today only when Claude couldn't find a visible date.
+          const sourceDate = documentDate ?? today
+          if (documentDate) {
+            dateParsed++
+          } else {
+            dateFallback++
+            console.info(
+              `[deep-scrape] documentDate fallback: source=${source.id} url=${url} using today=${today}`,
+            )
+          }
+
           const actionId = await upsertEnforcementAction(
             source,
             url,
             articleText,
-            today,
+            sourceDate,
             supabase,
           )
           if (!actionId) continue
 
-          const rules = await extractRulesFromText(articleText, source.name, source.type)
           if (rules.length === 0) continue
 
           const insertedCount = await insertRulesWithDedup(
             rules,
             url,
             source.name,
-            today,
+            sourceDate,
             supabase,
             actionId,
           )
@@ -610,6 +633,9 @@ ${JSON.stringify(rulesForAssignment, null, 2)}`,
 
   console.log(
     `[deep-scrape] Complete: ${metrics.new_rules} new, ${metrics.rules_improved} improved, ${metrics.duplicates_removed} deduped, ${metrics.treatments_assigned} treatments in ${metrics.duration_ms}ms`,
+  )
+  console.info(
+    `[deep-scrape] documentDate hit-rate: parsed=${dateParsed}, fallback=${dateFallback}`,
   )
 
   return NextResponse.json({

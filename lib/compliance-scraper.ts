@@ -380,17 +380,38 @@ For each violation found, output a JSON object with these fields:
 - "title": short title (under 80 chars) for a news feed
 - "description": one sentence description for a news feed
 
-Return ONLY a JSON array of these objects. No markdown, no explanation.
-If no violations are found relevant to regenerative medicine, return an empty array [].`
+Return ONLY a JSON object with two top-level fields: "documentDate" (ISO YYYY-MM-DD string parsed from the document's publication or issuance date - typically near the top of FDA warning letters, FTC press releases, DOJ releases; use null if no date is visible) and "rules" (a JSON array of the violation objects described above). No markdown, no explanation.
+If no violations are found relevant to regenerative medicine, return {"documentDate": null, "rules": []}.`
 
 /**
- * Extract banned phrases from article text using Claude Haiku.
+ * Result shape for extractRulesFromText. `rules` is the array of extracted
+ * violations (same shape as before). `documentDate` is the issuance date
+ * parsed from the source text - the publication/issuance date of the FDA
+ * letter, FTC press release, DOJ release, etc. - in ISO YYYY-MM-DD form,
+ * or null if Claude could not find a visible date in the document.
+ *
+ * Call-sites use `documentDate` to set `source_date` on inserted rules so
+ * freshness queries (`source_date >= now() - interval '7 days'`) reflect
+ * when the agency issued the action rather than when we ingested it.
+ */
+export interface ExtractRulesResult {
+  rules: ExtractedRule[]
+  documentDate: string | null
+}
+
+/** Tight ISO date guard: only accepts YYYY-MM-DD with no time component. */
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+
+/**
+ * Extract banned phrases (and the document's issuance date) from article text
+ * using Claude Haiku. Returns an empty rules array on any failure; documentDate
+ * is null whenever Claude omitted it or returned a malformed value.
  */
 export async function extractRulesFromText(
   text: string,
   sourceName: string,
   sourceType: string,
-): Promise<ExtractedRule[]> {
+): Promise<ExtractRulesResult> {
   try {
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
@@ -405,7 +426,7 @@ export async function extractRulesFromText(
     })
 
     const content = response.content[0]
-    if (content.type !== "text") return []
+    if (content.type !== "text") return { rules: [], documentDate: null }
 
     // Parse JSON - handle possible markdown fencing
     let jsonStr = content.text.trim()
@@ -413,13 +434,34 @@ export async function extractRulesFromText(
       jsonStr = jsonStr.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "")
     }
 
-    const parsed = JSON.parse(jsonStr)
-    if (!Array.isArray(parsed)) return []
+    const parsed = JSON.parse(jsonStr) as unknown
 
-    return parsed as ExtractedRule[]
+    // Tolerate two shapes: the new {documentDate, rules} object (preferred)
+    // and the legacy bare array (older prompt or Claude reverting to it).
+    // Either way, normalize to ExtractRulesResult so call-sites get a stable
+    // shape.
+    let rules: ExtractedRule[] = []
+    let rawDate: unknown = null
+    if (Array.isArray(parsed)) {
+      rules = parsed as ExtractedRule[]
+    } else if (parsed && typeof parsed === "object") {
+      const obj = parsed as { rules?: unknown; documentDate?: unknown }
+      if (Array.isArray(obj.rules)) rules = obj.rules as ExtractedRule[]
+      rawDate = obj.documentDate ?? null
+    }
+
+    // Validate documentDate against the strict ISO YYYY-MM-DD regex. Anything
+    // else (e.g. "March 15, 2024", "2024/03/15", numbers, garbage) becomes
+    // null so downstream code can fall back to new Date() cleanly.
+    let documentDate: string | null = null
+    if (typeof rawDate === "string" && ISO_DATE_RE.test(rawDate)) {
+      documentDate = rawDate
+    }
+
+    return { rules, documentDate }
   } catch (e) {
     console.error("[extractRulesFromText] failed for", sourceName, e)
-    return []
+    return { rules: [], documentDate: null }
   }
 }
 
