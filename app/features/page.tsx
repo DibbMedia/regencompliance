@@ -247,7 +247,7 @@ export default function FeaturesPage() {
                 The Compliance Library is a searchable, categorized database of over 300 active compliance rules covering healthcare marketing across all practice types. Each rule includes the banned or risky phrase, a compliant alternative, a risk severity rating, and the original source - whether that is an FDA warning letter, FTC press release, CBER guidance document, or state medical board ruling.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
-                The library is organized by treatment type (PRP, stem cells, exosomes, peptides, prolotherapy, BMAC, Wharton&apos;s jelly, dermal fillers, weight loss treatments, dental implants, chiropractic, IV therapy), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
+                The library is organized by treatment type (PRP, stem cells, exosomes, peptides including BPC-157, prolotherapy, BMAC, Wharton&apos;s jelly, dermal fillers, GLP-1 weight loss, dental implants, chiropractic, IV therapy, NAD+, ozone therapy, ketamine, TRT and men&apos;s hormone optimization, BHRT, HBOT), by claim type (efficacy claims, cure claims, FDA status claims, testimonial claims, comparative claims), and by risk level. You can browse it like a reference manual or search for specific phrases to check before you publish.
               </p>
               <p className="text-base text-white/70 leading-relaxed mb-6">
                 Think of it as a living compliance manual written specifically for your industry. Healthcare attorneys charge $500 to $1,000 per hour to review marketing content. The compliance library gives your team the same reference knowledge that those attorneys use, accessible instantly and updated automatically as new enforcement actions are published.
@@ -273,7 +273,7 @@ export default function FeaturesPage() {
                   <span className="text-sm font-extrabold text-white">Rule Categories</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {["Stem Cells", "PRP", "Exosomes", "Peptides", "Prolotherapy", "BMAC", "Dermal Fillers", "Weight Loss", "Dental", "IV Therapy", "Efficacy Claims", "Cure Claims", "Testimonials", "FDA Status"].map((tag) => (
+                  {["Stem Cells", "PRP", "Exosomes", "Peptides", "BPC-157", "GLP-1", "Ketamine", "NAD+", "Ozone", "TRT", "BHRT", "HBOT", "IV Therapy", "Dermal Fillers", "Efficacy Claims", "Cure Claims", "Testimonials", "FDA Status"].map((tag) => (
                     <span key={tag} className="rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 text-xs text-white/60">{tag}</span>
                   ))}
                 </div>

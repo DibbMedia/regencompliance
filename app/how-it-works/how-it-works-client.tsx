@@ -89,6 +89,11 @@ const TECH_POINTS = [
     body: "The engine understands the difference between &lsquo;helps support joint comfort&rsquo; and &lsquo;treats arthritis.&rsquo; Context drives classification, not raw word frequency.",
   },
   {
+    icon: Shield,
+    title: "14+ modalities covered out of the box",
+    body: "Stem cells, exosomes, PRP, peptides (including BPC-157), GLP-1 weight loss, ketamine, NAD+, ozone, TRT, BHRT, HBOT, IV therapy, SVF/adipose, and more - each with its own regulatory status and rule set. See /coverage for the full list.",
+  },
+  {
     icon: Lock,
     title: "Your content is never used for training",
     body: "Anthropic&rsquo;s Claude API with no-training enabled on every request. Content scans, results return, nothing feeds model training anywhere.",
