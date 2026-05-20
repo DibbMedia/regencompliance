@@ -120,12 +120,48 @@ Wave 6 verify chain used `set -o pipefail` per the lesson from Wave 4. tsc/vites
 - `/coverage` route.
 - The modality `key`s in `COMPLIANCE_BIBLE.modalityRules` - rules in the bible reference them by name; scanner output JSON keys off them; the `/coverage` page generates section anchors from them. Renaming any of these requires explicit user approval + a same-commit redirect or rename-with-alias.
 
+## Wave 7 - CI unblock (commit `6823026`)
+
+Post-push CI on `814a1b6` surfaced four failures:
+
+| # | Job | Failure | Root cause | Fix |
+|---|---|---|---|---|
+| 1 | plaintext-leak-guard | exit 127 | `tsx` referenced in 3 npm scripts (`check:plaintext-leaks`, `verify:no-plaintext`, `rotate-keys`) but absent from `devDependencies` | Added `tsx@^4` + refreshed lockfile |
+| 2 | eslint | `lib/compliance/state-pipeline.ts:40` unused `extractArticleText` import | Pipeline uses inline `extractTextFromHtml`; the import was a leftover from an earlier design | Dropped |
+| 3 | eslint | `tests/lib/repos/team-members.test.ts:126` dead `filterChain` literal | Superseded by `filterChainWithOrder` a few lines down | Removed |
+| 4 | eslint | `scripts/check-plaintext-leaks.ts:248` dead `escapeRegex` helper | Never called anywhere in the script | Removed |
+
+Bonus: added `.claude/**` to `eslint.config.mjs` `globalIgnores`. Without it, stale agent-worktree leftovers in `.claude/worktrees/` flood local `npm run lint` with 5000+ duplicate findings. Same pattern as Wave 4's `vitest.config.ts` exclude.
+
+## Wave 8 - bible TODO citation resolution (commit `a8c656b`)
+
+The Wave 5 and Wave 6 cite-or-TODO discipline left 8 `// TODO: needs citation` markers in `lib/compliance-bible.ts` where mid-session WebFetch had returned 404s. Worked through all 8 with parallel WebSearch against fda.gov + federalregister.gov.
+
+**5 of 8 fully resolved** (TODO removed, primary citation inline):
+
+| Modality | New citation added |
+|---|---|
+| `bpc_157` | PCAC July 23-24 2026 advisory calendar URL + Xcel Research LLC 12/10/2024 WL alongside Summit Research Peptides |
+| `sermorelin` | Full Geref withdrawal trail: EMD Serono July 11 + Dec 2 2008 discontinuation letters; 74 FR 23407 (May 19 2009) withdrawing NDAs 19-863 + 20-443 effective June 18 2009; March 4 2013 FR notice confirming withdrawal was NOT for safety/effectiveness reasons (the basis 503A pharmacies cite under 21 USC 353a(b)(1)(A)(ii)) |
+| `tb_500` | Corrected the April 2026 misnote to July 23-24 2026 PCAC meeting; clarified PCAC outcome does not change Category 2 status until FDA acts on the recommendation |
+| `ghk_cu` | April 22 2026 Cat-1 withdrawal (nominators withdrew); May 5 2026 partial-withdrawal clarification (injectable withdrawn, non-injectable retained and added back to Cat 1); FDA stated intent to consult PCAC on 503A inclusion before end of February 2027; drug-claim trigger for topical/cosmetic GHK-Cu under FDCA section 201(g) |
+| `retatrutide` | 7 specific FDA WLs spanning Dec 2024 - Mar 2026: Summit Research Peptides 695607, Xcel Research LLC 694608, GLP-1 Solution 715883, ASN-LABS 716459, Darmerica LLC 716152, Mile High Compounds LLC 721600, Gram Peptides 721806 |
+
+**3 of 8 partial** (TODO marker replaced with honest "no primary-subject WL publicly indexed as of 2026-05-20" annotation; downstream carry-path context strengthened):
+
+- `tesamorelin`: added 2025 Egrifta WR labeling cite (`accessdata.fda.gov` 022505s020lbl.pdf) confirming NOT indicated for weight loss + the broader unapproved-GLP-1 enforcement umbrella URL.
+- `bmac`: added the US Stem Cell Clinic LLC 524470 (08/24/2017) precedent + the Gottlieb/Marks 45-letter HCT/P umbrella commissioner statement. Notes BMAC enforcement consistently rides alongside SVF / amnio / cord rather than as primary cited substance.
+- `shockwave_ed`: documents the FTC + state-medical-board carry-path explanation, plus the explicit warning that the FDA-letter gap is an enforcement-priority artifact NOT an endorsement of the marketing.
+
+**Same commit, CLAUDE.md update:** baked `support@regencompliance.ai` as canonical support email (the `.com` form retired permanently). The "Decision outstanding" line in `Things that aren't done` was replaced with a load-bearing "Resolved 2026-05-20" note. Only remaining open decision in that section: `oscar@regenportal.com` platform_admin - migrate or remove.
+
 ## State of the world at session close
 
-- Main tip `814a1b6` pushed.
-- Prod `next build` green; 3944/3944 vitest.
+- Main tip `a8c656b` pushed; CI green.
+- Prod `next build` green; 3944/3944 vitest; eslint 0 errors; leak guard clean (85 route files scanned).
 - Migrations 001-043 all applied to prod. No pending operator actions.
 - CSP fully nonced; `connect-src` covers apex + `app.` subdomain.
 - Scanner failure modes are now observable: page-level errors persist to `site_pages.last_error`, dashboard renders them, "Process queue now" button is available.
-- Compliance bible covers 24+ modalities with citations; 8 open `TODO(citation)` markers for items where FDA pages were unreachable during the session.
-- Weekly auto-refresh wired (`/api/cron/weekly-refresh`, Sun 1am CDT) but **dormant until the operator deploys the cron in Vercel** - the `vercel.json` entry is in place; Vercel detects new cron entries on next deploy of `main`.
+- Compliance bible covers 24+ modalities with primary FDA / Federal Register / FTC citations. 5 of the 8 mid-session TODO markers are now fully resolved with inline primary URLs; the remaining 3 are honestly documented gaps (no primary-subject letter publicly indexed) with strengthened carry-path context.
+- Weekly auto-refresh wired (`/api/cron/weekly-refresh`, Sun 1am CDT). `vercel.json` entry in place; Vercel auto-registers crons on each new deploy of `main`.
+- Canonical support email permanently `support@regencompliance.ai`.
