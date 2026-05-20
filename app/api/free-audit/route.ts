@@ -29,6 +29,7 @@ import { sendToGhl } from "@/lib/ghl"
 import { captureError } from "@/lib/error-tracking"
 import { createFreeAuditLead } from "@/lib/repos/free-audit-leads"
 import { logAudit } from "@/lib/audit-log"
+import { parseUtmCookieFromRequest } from "@/lib/utm"
 
 const FREE_AUDIT_USER_ID = "00000000-0000-0000-0000-000000000001"
 const PUBLIC_FLAG_LIMIT = 2
@@ -292,6 +293,11 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       user_agent: userAgent ?? undefined,
     })
 
+    // Pull UTM cookie set by the landing page tracker. Fail-open.
+    // Reads off Request.headers so vitest can call POST(req) without a
+    // Next request scope.
+    const utm = parseUtmCookieFromRequest(request)
+
     void sendToGhl("free_audit", {
       email,
       name: name || null,
@@ -302,6 +308,14 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       high_risk_count: highCount,
       medium_risk_count: mediumCount,
       low_risk_count: lowCount,
+      utm_source: utm.utm_source,
+      utm_medium: utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+      utm_term: utm.utm_term,
+      utm_content: utm.utm_content,
+      referrer: utm.referrer,
+      landing_path: utm.landing_path,
+      first_seen_at: utm.captured_at,
     })
 
     return NextResponse.json({
