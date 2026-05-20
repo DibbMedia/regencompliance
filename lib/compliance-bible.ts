@@ -496,14 +496,6 @@ export const COMPLIANCE_BIBLE: ComplianceBible = {
   // CHANNEL RULES - per-advertising-platform restrictions
   // -------------------------------------------------------------------------
   channelRules: {
-    website: {
-      restrictions: [
-        "No disease treatment claims for unapproved therapies",
-        "Testimonials require typicality disclosures and HIPAA authorization",
-        "Before/after photos require informed consent and cannot imply guaranteed results",
-        "Cite FDA-approved status truthfully; do not imply broader approval than granted",
-      ],
-    },
     google_ads: {
       restrictions: [
         "No speculative/experimental treatment ads (stem cells, exosomes, PRP, gene therapy)",
