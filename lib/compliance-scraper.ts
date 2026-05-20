@@ -792,8 +792,52 @@ export async function refreshActionRollup(
 // ---------------------------------------------------------------------------
 
 /**
+ * Normalize a banned phrase for dedup comparison: lowercase, collapse internal
+ * whitespace runs to a single space, trim. Used as the canonical key for
+ * exact-match dedup and as the input to the near-dup substring check.
+ *
+ * Exported so tests can pin the normalization contract; downstream code
+ * should prefer letting insertRulesWithDedup do the comparison.
+ */
+export function normalizePhrase(phrase: string): string {
+  return phrase.toLowerCase().replace(/\s+/g, " ").trim()
+}
+
+/**
+ * Stem a normalized phrase by stripping a single trailing 's' from each word
+ * (only when removal still leaves a 3+ char stem). Lets the substring
+ * near-dup check catch trivial plural/singular and verb-tense variations
+ * like "cures cancer" vs "cure cancer". Not a real stemmer - just enough
+ * to paper over the most common morphology in enforcement-action phrases.
+ */
+function stemNormalized(normalized: string): string {
+  return normalized
+    .split(" ")
+    .map((w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w))
+    .join(" ")
+}
+
+interface ExistingRuleRow {
+  id: string
+  banned_phrase: string
+  category: string | null
+  source_date: string | null
+}
+
+/**
  * Insert rules into Supabase, skipping duplicates. Each rule is linked to the
  * provided enforcement_action_id (nullable for manual entries).
+ *
+ * Dedup layers (in order, fail-fast):
+ *   1. Normalized exact match (case + whitespace insensitive). If hit, the
+ *      existing row's source_date is bumped forward when the candidate's date
+ *      is newer - this is the "re-confirmed this scrape window" signal so
+ *      downstream surfaces can tell still-evidenced rules from stale ones.
+ *   2. Near-dup substring check within the same category: candidate's
+ *      normalized form contains or is contained by an existing normalized
+ *      form. Skipped + logged.
+ *   3. Semantic dup via isDuplicateRule (token-overlap + Claude fallback).
+ *
  * Returns the count of newly inserted rules.
  */
 export async function insertRulesWithDedup(
@@ -806,45 +850,132 @@ export async function insertRulesWithDedup(
 ): Promise<number> {
   if (rules.length === 0) return 0
 
-  // Fetch existing banned phrases. Bounded to last 5000 rules ordered by
-  // created_at so this stays O(1) regardless of total rule count - older
-  // rules are unlikely to be the target of new-rule semantic dedup.
+  // Fetch existing rules with the metadata needed for dedup + freshness.
+  // Bounded to last 5000 rules ordered by created_at so this stays O(1)
+  // regardless of total rule count - older rules are unlikely to be the
+  // target of new-rule semantic dedup.
   const { data: existing } = await supabase
     .from("compliance_rules")
-    .select("banned_phrase")
+    .select("id, banned_phrase, category, source_date")
     .order("created_at", { ascending: false })
     .limit(5000)
 
-  const existingPhrases = (existing ?? []).map(
-    (r: { banned_phrase: string }) => r.banned_phrase,
-  )
+  const existingRows: ExistingRuleRow[] = (existing ?? []) as ExistingRuleRow[]
+
+  // Pre-compute normalized + stemmed forms once so each candidate is O(n)
+  // over the existing set instead of O(n) string ops per candidate.
+  const normalizedExisting = existingRows.map((row) => {
+    const normalized = normalizePhrase(row.banned_phrase)
+    return { row, normalized, stemmed: stemNormalized(normalized) }
+  })
 
   let inserted = 0
+  let exactDup = 0
+  let nearDup = 0
 
   for (const rule of rules) {
-    const isDup = await isDuplicateRule(rule.banned_phrase, existingPhrases)
-    if (isDup) continue
+    const normalizedCandidate = normalizePhrase(rule.banned_phrase)
+    if (normalizedCandidate.length === 0) continue
 
-    const { error } = await supabase.from("compliance_rules").insert({
-      banned_phrase: rule.banned_phrase,
-      banned_phrase_variants: rule.banned_phrase_variants,
-      compliant_alternative: rule.compliant_alternative,
-      risk_level: rule.risk_level,
-      category: rule.category,
-      applies_to: rule.applies_to,
-      source_url: sourceUrl,
-      source_name: sourceName,
-      source_date: sourceDate,
-      enforcement_action_id: enforcementActionId,
-      is_active: true,
+    // Layer 1: normalized exact match. Treat as a re-confirmation - bump
+    // source_date forward when the candidate is newer.
+    const exactMatch = normalizedExisting.find(
+      (e) => e.normalized === normalizedCandidate,
+    )
+    if (exactMatch) {
+      exactDup++
+      const existingDate = exactMatch.row.source_date
+      const shouldBump = !existingDate || existingDate < sourceDate
+      if (shouldBump) {
+        // Guarded UPDATE: only bump when existing source_date is older than
+        // the candidate's. The DB updated_at trigger fires on any UPDATE,
+        // but we set it explicitly so a row inspected by hand reflects the
+        // re-confirmation timestamp even if the trigger is dropped.
+        await supabase
+          .from("compliance_rules")
+          .update({ source_date: sourceDate, updated_at: new Date().toISOString() })
+          .eq("id", exactMatch.row.id)
+          .lt("source_date", sourceDate)
+        // Reflect the bump locally so subsequent candidates in the same
+        // batch see the freshest date.
+        exactMatch.row.source_date = sourceDate
+      }
+      continue
+    }
+
+    // Layer 2: near-dup substring check within the SAME category. Skip
+    // (don't bump - we're not confident the rules are actually identical).
+    // Compare on the stemmed forms so "cures cancer" matches "cure cancer".
+    const stemmedCandidate = stemNormalized(normalizedCandidate)
+    const nearMatch = normalizedExisting.find((e) => {
+      if (e.row.category !== rule.category) return false
+      return (
+        e.normalized.includes(normalizedCandidate) ||
+        normalizedCandidate.includes(e.normalized) ||
+        e.stemmed.includes(stemmedCandidate) ||
+        stemmedCandidate.includes(e.stemmed)
+      )
     })
+    if (nearMatch) {
+      nearDup++
+      console.info(
+        `[scrape-rules] near-dup skip: "${rule.banned_phrase}" ~ "${nearMatch.row.banned_phrase}" (category=${rule.category})`,
+      )
+      continue
+    }
+
+    // Layer 3: existing semantic dedup (token-overlap + Claude). Preserves
+    // the prior catch-rate for phrases that paraphrase across surface forms.
+    const isDup = await isDuplicateRule(
+      rule.banned_phrase,
+      existingRows.map((r) => r.banned_phrase),
+    )
+    if (isDup) {
+      nearDup++
+      continue
+    }
+
+    const { data: insertedRow, error } = await supabase
+      .from("compliance_rules")
+      .insert({
+        banned_phrase: rule.banned_phrase,
+        banned_phrase_variants: rule.banned_phrase_variants,
+        compliant_alternative: rule.compliant_alternative,
+        risk_level: rule.risk_level,
+        category: rule.category,
+        applies_to: rule.applies_to,
+        source_url: sourceUrl,
+        source_name: sourceName,
+        source_date: sourceDate,
+        enforcement_action_id: enforcementActionId,
+        is_active: true,
+      })
+      .select("id")
+      .single()
 
     if (!error) {
       inserted++
-      // Add to existing list so subsequent rules in same batch dedup against it
-      existingPhrases.push(rule.banned_phrase)
+      // Add to existing list so subsequent rules in the same batch dedup
+      // against it. Use the inserted row's id when available; fall back to
+      // an empty string only if the .select() shape changes upstream.
+      const newRow: ExistingRuleRow = {
+        id: (insertedRow as { id?: string } | null)?.id ?? "",
+        banned_phrase: rule.banned_phrase,
+        category: rule.category,
+        source_date: sourceDate,
+      }
+      existingRows.push(newRow)
+      normalizedExisting.push({
+        row: newRow,
+        normalized: normalizedCandidate,
+        stemmed: stemmedCandidate,
+      })
     }
   }
+
+  console.info(
+    `[scrape-rules] dedup summary: inserted=${inserted}, exact_dup=${exactDup}, near_dup=${nearDup}`,
+  )
 
   return inserted
 }
