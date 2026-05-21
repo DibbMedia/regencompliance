@@ -119,13 +119,24 @@ function readCookie(request: Request, name: string): string | null {
  *   - decodes to a valid `${userId}.${ts}.${sig}` triple,
  *   - has a signature that matches HMAC-SHA256(secret, `${userId}.${ts}`)
  *     compared via timingSafeEqual,
- *   - has a timestamp within STEP_UP_TTL_SECONDS of now.
+ *   - has a timestamp within STEP_UP_TTL_SECONDS of now,
+ *   - was issued for the currently-authenticated `userId` (prevents cookie
+ *     reuse across admins — a cookie minted for admin A presented by admin B
+ *     fails this check). The cookie userId / supplied userId comparison runs
+ *     through timingSafeEqual so a probing attacker can't learn another
+ *     admin's UUID by measuring response timing.
  *
  * Returns false on anything else — bad cookie, forged sig, expired, missing
- * secret env, malformed payload. NEVER throws (callers gate on truthiness).
+ * secret env, malformed payload, userId mismatch. NEVER throws (callers gate
+ * on truthiness).
  */
-export async function hasFreshStepUp(request: Request): Promise<boolean> {
+export async function hasFreshStepUp(
+  request: Request,
+  userId: string,
+): Promise<boolean> {
   try {
+    if (!userId || typeof userId !== "string") return false
+
     const raw = readCookie(request, STEP_UP_COOKIE)
     if (!raw) return false
 
@@ -138,17 +149,30 @@ export async function hasFreshStepUp(request: Request): Promise<boolean> {
 
     const parts = decoded.split(".")
     if (parts.length !== 3) return false
-    const [userId, tsStr, sig] = parts
-    if (!userId || !tsStr || !sig) return false
+    const [cookieUserId, tsStr, sig] = parts
+    if (!cookieUserId || !tsStr || !sig) return false
 
     const ts = Number(tsStr)
     if (!Number.isFinite(ts) || ts <= 0) return false
 
-    const expected = computeHmac(`${userId}.${tsStr}`)
+    const expected = computeHmac(`${cookieUserId}.${tsStr}`)
     const expectedBuf = Buffer.from(expected, "utf8")
     const sigBuf = Buffer.from(sig, "utf8")
     if (expectedBuf.length !== sigBuf.length) return false
     if (!timingSafeEqual(expectedBuf, sigBuf)) return false
+
+    // Bind the cookie to the current authenticated user. Compare with
+    // timingSafeEqual so an attacker can't measure response-time differences
+    // to recover the legitimate admin's UUID byte-by-byte. timingSafeEqual
+    // requires equal-length buffers; the length check below short-circuits
+    // before the constant-time call when sizes differ. (A length mismatch
+    // alone leaks "wrong length" but not the bytes themselves, which is
+    // already public information from `auth.user.id` shape — all our UUIDs
+    // are 36 chars.)
+    const cookieUserBuf = Buffer.from(cookieUserId, "utf8")
+    const userBuf = Buffer.from(userId, "utf8")
+    if (cookieUserBuf.length !== userBuf.length) return false
+    if (!timingSafeEqual(cookieUserBuf, userBuf)) return false
 
     const ageMs = Date.now() - ts
     if (ageMs < 0) return false

@@ -30,8 +30,9 @@ export async function POST(request: Request) {
   const { user, serviceClient, role } = auth
 
   // Step-up gate: impersonate-start is destructive (creates a session that
-  // can mutate another user's data). Require a fresh re-auth cookie.
-  if (!(await hasFreshStepUp(request))) {
+  // can mutate another user's data). Require a fresh re-auth cookie that was
+  // issued for THIS admin (prevents cookie reuse across admins).
+  if (!(await hasFreshStepUp(request, user.id))) {
     const r = stepUpRequired()
     return NextResponse.json(r.body, { status: r.status })
   }
