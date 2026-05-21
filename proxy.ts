@@ -3,6 +3,8 @@ import { NextResponse, type NextRequest } from "next/server"
 import { enforceOrigin } from "@/lib/security/origin"
 import { parseAllowedIps } from "@/lib/security/ip-allowlist"
 import { classifyRequest } from "@/lib/security/bot-defense"
+import { getSecurityClientIp } from "@/lib/security/client-ip"
+import { isIpDenied, denyIp } from "@/lib/security/ip-deny-list"
 
 const IMPERSONATE_COOKIE = "regen_impersonate"
 
@@ -37,30 +39,6 @@ const adminIpAllowlist = parseAllowedIps(process.env.ADMIN_ALLOWED_IPS)
 // the F-02 / F-09 pattern used elsewhere). Lives in module scope; resets
 // only on cold start, which is fine - logs are best-effort.
 let adminIpDenialCount = 0
-
-/**
- * Extract the client IP from a NextRequest. Mirrors `lib/ip.ts`'s priority
- * order: x-vercel-forwarded-for -> x-forwarded-for (LEFT-most per RFC 7239,
- * which is the original client - the lib/ip version uses the rightmost for
- * its own reasons; for an allowlist gate we want the originating client)
- * -> x-real-ip. Inlined instead of imported because the admin-IP gate has
- * different leftmost-vs-rightmost semantics from the general-purpose helper.
- */
-function getAdminGateClientIp(request: NextRequest): string {
-  const vercel = request.headers
-    .get("x-vercel-forwarded-for")
-    ?.split(",")[0]
-    ?.trim()
-  if (vercel) return vercel
-  const xff = request.headers.get("x-forwarded-for")
-  if (xff) {
-    const first = xff.split(",")[0]?.trim()
-    if (first) return first
-  }
-  const real = request.headers.get("x-real-ip")
-  if (real) return real.trim()
-  return "unknown"
-}
 
 function isAdminGatedPath(pathname: string): boolean {
   return (
@@ -134,6 +112,62 @@ function siteConnectOrigins(): string[] {
   return out
 }
 
+// Permissions-Policy lockdown. Defense-in-depth alongside CSP: a successful
+// XSS attacker can't enable webcam/mic/geolocation/etc. on the user's browser
+// via injected code because the top-level document never permits the feature
+// in the first place. Set alongside CSP in `applyCsp` so every response that
+// gets a CSP header also gets this one.
+//
+// Rationale for the non-`()` allowances:
+//   - `payment=(self)` - Stripe Checkout runs in popup; payment-request API
+//     may be needed by their flow. If their popup needs broader perms,
+//     they'll surface a console error and we can widen.
+//   - `publickey-credentials-get=(self)` - required for planned WebAuthn
+//     enrollment (memory note). Pre-allow so we don't have to remember.
+//   - `fullscreen=(self)` - light footprint; no current use but future-
+//     proofs UI features (presentation mode for compliance reports).
+//
+// All Privacy-Sandbox features (interest-cohort, browsing-topics,
+// join-ad-interest-group, run-ad-auction, shared-storage*) are explicitly
+// disabled - we don't want to participate in Google's behavioral-advertising
+// fabric on a HIPAA-adjacent SaaS.
+const PERMISSIONS_POLICY = [
+  "accelerometer=()",
+  "ambient-light-sensor=()",
+  "autoplay=()",
+  "battery=()",
+  "camera=()",
+  "cross-origin-isolated=()",
+  "display-capture=()",
+  "document-domain=()",
+  "encrypted-media=()",
+  "execution-while-not-rendered=()",
+  "execution-while-out-of-viewport=()",
+  "fullscreen=(self)",
+  "geolocation=()",
+  "gyroscope=()",
+  "keyboard-map=()",
+  "magnetometer=()",
+  "microphone=()",
+  "midi=()",
+  "navigation-override=()",
+  "payment=(self)",
+  "picture-in-picture=()",
+  "publickey-credentials-get=(self)",
+  "screen-wake-lock=()",
+  "sync-xhr=()",
+  "usb=()",
+  "web-share=()",
+  "xr-spatial-tracking=()",
+  // Privacy-Sandbox features Google is rolling out - opt out aggressively.
+  "interest-cohort=()",
+  "browsing-topics=()",
+  "join-ad-interest-group=()",
+  "run-ad-auction=()",
+  "shared-storage=()",
+  "shared-storage-select-url=()",
+].join(", ")
+
 function buildCsp(nonce: string): string {
   const siteOrigins = siteConnectOrigins()
   return [
@@ -194,8 +228,35 @@ function isSharedPath(pathname: string): boolean {
   return false
 }
 
+// Sampled-warn counter for IP-deny-list short-circuit denials. Same
+// cadence pattern as the bot-defense counters (1st + every 100th).
+let ipDenyListShortCircuitCount = 0
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // ===== STAGE -1: IP deny list (persistent, auto-populated) =====
+  // Runs even before bot-defense classification. If the IP has been
+  // banned in a previous request wave (attacker-probe-path or
+  // injection-pattern hit), short-circuit straight to 403 - don't even
+  // burn the classifier cycles, don't tarpit (the IP has already shown
+  // its hand). The lookup is in-memory-cached (60s TTL) so the steady-
+  // state cost is a Map.get() per request; cold start awaits one DB
+  // read. See lib/security/ip-deny-list.ts.
+  const clientIpForDeny = getSecurityClientIp(request)
+  if (await isIpDenied(clientIpForDeny)) {
+    ipDenyListShortCircuitCount += 1
+    if (
+      ipDenyListShortCircuitCount === 1 ||
+      ipDenyListShortCircuitCount % BOT_DEFENSE_LOG_SAMPLE === 0
+    ) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[ip-deny-list] denied IP=${clientIpForDeny} path=${pathname} total=${ipDenyListShortCircuitCount}`,
+      )
+    }
+    return new NextResponse("Forbidden", { status: 403 })
+  }
 
   // ===== STAGE 0: Bot defense =====
   // Runs FIRST - before host routing, CSP build, impersonate cookie check,
@@ -226,6 +287,20 @@ export async function proxy(request: NextRequest) {
     // setTimeout via the standard global; await-on-Promise is fine.
     if (classification.reason === "attacker-probe-path") {
       await new Promise((r) => setTimeout(r, 2000))
+    }
+    // Auto-populate persistent IP deny list for the two highest-confidence
+    // attacker signals (target/payload-based, not UA-based). Future
+    // requests from this IP get cut at STAGE -1. UA-based denials are NOT
+    // auto-banned because the UA is mutable. See lib/security/ip-deny-list.ts.
+    if (
+      classification.reason === "attacker-probe-path" ||
+      classification.reason === "injection-pattern"
+    ) {
+      await denyIp(
+        clientIpForDeny,
+        classification.reason,
+        classification.matchedSignature,
+      )
     }
     // Generic body - don't leak which signature tripped (deny-by-obscurity
     // for the matched pattern; the log line has the detail for ops).
@@ -325,6 +400,7 @@ export async function proxy(request: NextRequest) {
 
   const applyCsp = (response: NextResponse): NextResponse => {
     response.headers.set("Content-Security-Policy", csp)
+    response.headers.set("Permissions-Policy", PERMISSIONS_POLICY)
     response.headers.set("x-nonce", nonce)
     response.headers.set(
       "Reporting-Endpoints",
@@ -357,7 +433,7 @@ export async function proxy(request: NextRequest) {
   // the routing logic. When ADMIN_ALLOWED_IPS is unset, `isEmpty()` is true
   // and the gate is a no-op (feature off by default).
   if (!adminIpAllowlist.isEmpty() && isAdminGatedPath(pathname)) {
-    const clientIp = getAdminGateClientIp(request)
+    const clientIp = getSecurityClientIp(request)
     if (!adminIpAllowlist.matches(clientIp)) {
       adminIpDenialCount += 1
       if (adminIpDenialCount === 1 || adminIpDenialCount % 100 === 0) {
