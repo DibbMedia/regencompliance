@@ -23,7 +23,7 @@ import {
   updateSitePage,
   type SitePage,
 } from "@/lib/repos/site-pages"
-import { redactPhiInOutput } from "@/lib/phi-filter"
+import { detectPhi, redactPhiInOutput } from "@/lib/phi-filter"
 import type { ScanFlag } from "@/lib/types"
 
 // Sampled warn counter for output-side PHI redaction across the shared
@@ -32,6 +32,19 @@ import type { ScanFlag } from "@/lib/types"
 // Site crawls walk many pages so without sampling this would dominate the
 // runtime logs on any site that quotes patient testimonials.
 let siteCrawlRedactCount = 0
+
+// Sampled warn counter for INPUT-side PHI skips (added 2026-05-20). The 4
+// standalone scan routes (text/url/file/demo) have their own detectPhi gate
+// at the entrypoint, but the shared site-crawl loop is the highest-volume
+// surface (monitored sites can have dozens of pages each, walked weekly by
+// cron) and was previously shipping extracted page text to Anthropic with
+// no input-side check. A clinic's testimonial page that includes "Sarah K.
+// DOB 03/14/1962, MRN 0042913" was being sent verbatim. We now run
+// detectPhi BEFORE the Anthropic call and skip the page (status =
+// "skipped_phi") if it matches. Separate counter from siteCrawlRedactCount
+// so the two failure modes (input-gate skip vs. output redaction) stay
+// distinguishable in logs.
+let siteCrawlPhiSkipCount = 0
 
 export interface RuleForPrompt {
   id: string
@@ -220,6 +233,39 @@ export async function scanSitePages(
         continue
       }
       const content = extractResult
+
+      // INPUT-side PHI gate (added 2026-05-20). The standalone scan routes
+      // (text/url/file/demo) already block PHI at the entrypoint, but the
+      // shared site-crawl loop previously sent extracted page text to
+      // Anthropic with no input-side check - HIPAA-adjacent because a
+      // clinic's monitored page that contains a patient testimonial with
+      // DOB+MRN would ship to Anthropic unfiltered. SOFT skip semantics:
+      // the failing page gets status="skipped_phi" + a last_error string
+      // so it surfaces in the dashboard as "skipped - page contains PHI
+      // patterns; remove and re-scan", failedCount is incremented, but the
+      // crawl continues with the next page. Output-side redaction below
+      // still runs on the remaining pages as defense in depth.
+      const phiCheck = detectPhi(content.text)
+      if (phiCheck.detected) {
+        siteCrawlPhiSkipCount++
+        if (siteCrawlPhiSkipCount === 1 || siteCrawlPhiSkipCount % 100 === 0) {
+          console.warn(
+            `[${source}] PHI detected, skipped page ${page.id} url ${page.url}: ${phiCheck.patterns.join(", ")} (total since start: ${siteCrawlPhiSkipCount})`
+          )
+        }
+        await supabase
+          .from("site_pages")
+          .update({
+            status: "skipped_phi",
+            last_error: truncReason(
+              `Page content matched PHI patterns: ${phiCheck.patterns.join(", ")}`
+            ),
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", page.id)
+        failedCount++
+        continue
+      }
 
       const scanStart = Date.now()
       const safePageUrl = (page.url || "").replace(/[\r\n`]/g, " ").slice(0, 500)
