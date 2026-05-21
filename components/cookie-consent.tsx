@@ -27,10 +27,20 @@ export function CookieConsent() {
   }, [])
 
   function handleConsent(value: "accepted" | "declined") {
-    // Set cookie (1 year expiry)
+    // Set cookie (1 year expiry).
+    //
+    // Attrs: SameSite=Lax (consent decision is non-sensitive but we still
+    // want CSRF hygiene), Secure when the page itself is served over HTTPS
+    // (i.e. anywhere but localhost). HttpOnly is N/A here because the
+    // banner re-reads the cookie from document.cookie on next visit before
+    // hitting localStorage. See docs/security/cookie-audit-2026-05-20.md.
     const expires = new Date()
     expires.setFullYear(expires.getFullYear() + 1)
-    document.cookie = `cookie_consent=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`
+    const secureFlag =
+      typeof window !== "undefined" && window.location.protocol === "https:"
+        ? "; Secure"
+        : ""
+    document.cookie = `cookie_consent=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Lax${secureFlag}`
 
     // Mirror to localStorage for instant hydration on next visit
     localStorage.setItem("cookie_consent", value)
