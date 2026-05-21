@@ -23,7 +23,7 @@ export const waitlistSchema = z.object({
   // success shape) so the bot gets no signal it tripped a check. Field is
   // optional here so legitimate submissions with empty/absent value pass
   // schema validation. The honeypot gate runs BEFORE schema parse.
-  website_url2: z.string().optional(),
+  website_url2: z.string().max(200).optional(),
 })
 
 export const newsletterSchema = z.object({
@@ -67,7 +67,7 @@ export const freeAuditSchema = z.object({
   // Honeypot - see waitlistSchema for the contract. Optional so legitimate
   // (empty) submissions pass; routes drop non-empty values silently before
   // schema parse runs.
-  website_url2: z.string().optional(),
+  website_url2: z.string().max(200).optional(),
 })
 
 export const CONTACT_SUBJECT_OPTIONS = [
@@ -101,7 +101,7 @@ export const betaApplicationSchema = z.object({
   accept_terms: z.literal(true, { message: 'Please confirm you agree to the founder-beta terms' }),
   // Honeypot - see waitlistSchema for the contract. Routes drop non-empty
   // values silently before schema parse runs.
-  website_url2: z.string().optional(),
+  website_url2: z.string().max(200).optional(),
 })
 
 /** Block private/internal IPs in a URL string */
