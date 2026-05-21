@@ -201,6 +201,42 @@ describe("CSP header — proxy.ts buildCsp template", () => {
   })
 })
 
+// -------- Permissions-Policy regression ------------------------------------
+
+// The Permissions-Policy header is a defense-in-depth lockdown set alongside
+// CSP in `applyCsp` inside proxy.ts. We assert against the proxy.ts source
+// text (same approach as the CSP block above) because the header is built
+// from a single module-scoped const string and we don't have an HTTP harness
+// for the edge runtime.
+describe("Permissions-Policy header", () => {
+  it("proxy.ts sets a Permissions-Policy header alongside CSP", () => {
+    // The proxy.ts source contains both the response.headers.set call and the
+    // PERMISSIONS_POLICY const definition.
+    expect(PROXY_SRC).toMatch(/Permissions-Policy/)
+    expect(PROXY_SRC).toMatch(
+      /response\.headers\.set\(\s*"Permissions-Policy"/,
+    )
+  })
+
+  it("locks down camera, microphone, geolocation, USB", () => {
+    expect(PROXY_SRC).toMatch(/camera=\(\)/)
+    expect(PROXY_SRC).toMatch(/microphone=\(\)/)
+    expect(PROXY_SRC).toMatch(/geolocation=\(\)/)
+    expect(PROXY_SRC).toMatch(/usb=\(\)/)
+  })
+
+  it("opts out of Privacy Sandbox features (interest-cohort, browsing-topics)", () => {
+    expect(PROXY_SRC).toMatch(/interest-cohort=\(\)/)
+    expect(PROXY_SRC).toMatch(/browsing-topics=\(\)/)
+  })
+
+  it("permits payment for Stripe Checkout, fullscreen for own pages, WebAuthn for future enrollment", () => {
+    expect(PROXY_SRC).toMatch(/payment=\(self\)/)
+    expect(PROXY_SRC).toMatch(/fullscreen=\(self\)/)
+    expect(PROXY_SRC).toMatch(/publickey-credentials-get=\(self\)/)
+  })
+})
+
 // -------- Source-tree scan: inline scripts without nonce -------------------
 
 function walkTsx(dir: string, out: string[] = []): string[] {
