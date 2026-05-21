@@ -97,6 +97,85 @@ const PHI_REDACT_PATTERNS: Array<{ name: string; re: RegExp }> = [
   { name: "Insurance ID", re: /\b(?:Policy|Member|Subscriber)\s*(?:ID|#|Number)\s*[:\-]\s*[^\s,.;]+/gi },
 ]
 
+// ---------------------------------------------------------------------------
+// BARE PHI patterns (added 2026-05-20)
+//
+// PHI_REDACT_PATTERNS above gate on a LABEL ("SSN:", "DOB -", "MRN #") so
+// they don't false-positive on a clinic's "Founded in 1985" or its own
+// office phone number. But a hostile / sloppy website can craft text like
+//
+//   "Patient born 1962-03-14, treated for back pain"
+//
+// which has no label and would slip past the gated patterns, getting
+// echoed verbatim into the scans row + free-audit response. These
+// label-less patterns catch HIGH-confidence PHI/PII shapes regardless of
+// surrounding context.
+//
+// **False-positive policy (documented and accepted):**
+// The clinic's own phone number, email address, or founding date COULD
+// match these patterns. That's the tradeoff: this redactor runs on the
+// OUTPUT side (Claude's summary + flag matched_text + flag context),
+// where Claude's job is to FLAG / SUMMARIZE quoted text, not echo it.
+// The scan result will already note the violation; the actual value
+// being redacted (vs. quoted back) is a strict win for PHI safety.
+//
+// Year range on DOB-shaped patterns is intentionally tight (1900-2029)
+// to avoid matching unrelated numeric strings like file paths or part
+// numbers; "1899-01-01" or "12/31/2099" won't match.
+// ---------------------------------------------------------------------------
+const BARE_PHI_REDACT_PATTERNS: Array<{ name: string; re: RegExp; replace: string }> = [
+  // SSN: ###-##-####. The label-gated PHI_REDACT_PATTERNS already
+  // catches this exact regex with a non-global match - it's added here
+  // again with the bare name so the hit list distinguishes the SOURCE
+  // (a bare SSN with no "SSN:" prefix). Same replacement target.
+  { name: "SSN-bare", re: /\b\d{3}-\d{2}-\d{4}\b/g, replace: "[REDACTED-SSN]" },
+
+  // Phone numbers in common US formats: 555-123-4567, (555) 123-4567,
+  // 555.123.4567, 5551234567. The clinic's own phone is the accepted
+  // false-positive cost (see policy note above).
+  {
+    name: "Phone-bare",
+    re: /\b\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4}\b/g,
+    replace: "[REDACTED-PHONE]",
+  },
+
+  // Email addresses. The clinic's contact email is the accepted
+  // false-positive cost.
+  {
+    name: "Email-bare",
+    re: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi,
+    replace: "[REDACTED-EMAIL]",
+  },
+
+  // DOB-shaped values in YYYY-MM-DD form. Year range 1900-2029,
+  // month 01-12, day 01-31. Anchored to word boundaries so it doesn't
+  // bleed into adjacent digits / hyphens.
+  {
+    name: "DOB-bare-iso",
+    re: /\b(?:19[0-9][0-9]|20[0-2][0-9])-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])\b/g,
+    replace: "[REDACTED-DOB]",
+  },
+
+  // DOB-shaped values in US M/D/YYYY form. Same year range; month
+  // 1-12 with optional leading zero; day 1-31 with optional leading
+  // zero. Will catch "03/14/1985" but not bare 4-digit "1985".
+  {
+    name: "DOB-bare-us",
+    re: /\b(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:19[0-9][0-9]|20[0-2][0-9])\b/g,
+    replace: "[REDACTED-DOB]",
+  },
+
+  // MRN-shaped values: 6+ digit numbers preceded by a "#" (the bare-#
+  // variant of the labeled MRN above). The preceding \W is captured
+  // so we can put it back; otherwise the replace would eat the space
+  // / start-of-line and produce weirdly-mashed cleaned text.
+  {
+    name: "MRN-bare-hash",
+    re: /(^|\W)#\s*\d{6,}(?=\W|$)/g,
+    replace: "$1[REDACTED-MRN]",
+  },
+]
+
 // Clone the regex per call. Global regexes carry lastIndex state across
 // successive .test() / .replace() calls which can cause off-by-one false
 // negatives when the same RegExp object is reused on consecutive strings.
@@ -138,14 +217,47 @@ type RedactInputFlag = { matched_text?: string; context?: string }
  *   - The placeholder itself cannot re-match any PHI_REDACT_PATTERNS regex
  *     (none of them match the literal "[REDACTED-..."), so a second pass
  *     through the same redactor is a no-op (idempotent).
+ *
+ * Two passes run in sequence:
+ *   1. **Labeled patterns** (`PHI_REDACT_PATTERNS`) - mirror the input-side
+ *      detectPhi gate. Use the canonical name in the placeholder
+ *      (e.g. `[REDACTED-SSN]`).
+ *   2. **Bare patterns** (`BARE_PHI_REDACT_PATTERNS`) - label-less,
+ *      high-confidence PHI/PII shapes (bare SSN, phone, email, DOB).
+ *      Each pattern carries its own `replace` string so multiple bare
+ *      patterns can collapse to the same canonical placeholder
+ *      (e.g. both `DOB-bare-iso` and `DOB-bare-us` emit
+ *      `[REDACTED-DOB]`). The `hits` set still records the pattern
+ *      `name` so the audit log can distinguish labeled vs bare sources.
+ *
+ * **Why both passes:** the input-side `detectPhi` gate intentionally
+ * gates on labels to avoid blocking legit marketing copy (a clinic's
+ * navigation menu may say "DOB" without it being PHI). The output side
+ * is more aggressive because Claude's job is to FLAG / SUMMARIZE
+ * quoted text, not echo it - so a bare SSN or DOB-shaped string in
+ * Claude's output is almost certainly PHI being quoted back. False
+ * positives (clinic's own phone, founding year, contact email) are
+ * an accepted cost vs. PHI leakage into encrypted scans rows.
  */
 function redactString(text: string): { cleaned: string; hits: Set<string> } {
   const hits = new Set<string>()
   let cleaned = text
+  // Pass 1: labeled patterns.
   for (const { name, re } of PHI_REDACT_PATTERNS) {
     if (freshPattern(re).test(cleaned)) {
       hits.add(name)
       cleaned = cleaned.replace(freshPattern(re), `[REDACTED-${name}]`)
+    }
+  }
+  // Pass 2: bare / label-less patterns. Each pattern brings its own
+  // replacement string (so e.g. `DOB-bare-iso` and `DOB-bare-us`
+  // collapse to the same `[REDACTED-DOB]` placeholder). The `name`
+  // recorded in `hits` is the pattern name (suffix `-bare`) so
+  // audit-log consumers can tell which surface fired.
+  for (const { name, re, replace } of BARE_PHI_REDACT_PATTERNS) {
+    if (freshPattern(re).test(cleaned)) {
+      hits.add(name)
+      cleaned = cleaned.replace(freshPattern(re), replace)
     }
   }
   return { cleaned, hits }
@@ -157,12 +269,19 @@ function redactString(text: string): { cleaned: string; hits: Set<string> } {
  * decides whether to persist the cleaned form (recommended) or block
  * the entire scan.
  *
+ * Output-side redactor is more aggressive than the input-side detectPhi:
+ * the input side gates on labels to avoid blocking legit marketing copy
+ * (e.g., "DOB" in a navigation menu); the output side accepts bare values
+ * because Claude's job is to FLAG/SUMMARIZE quoted text, not echo it.
+ * False positives (clinic's own phone, founding year) are an acceptable
+ * cost vs. PHI leakage into encrypted scans rows.
+ *
  * Replacement format: every match is swapped for the literal
  * `[REDACTED-{patternName}]` token (single contiguous bracketed string,
  * see `redactString` doc above for the rationale). Length is compact and
  * deterministic so any downstream char-offset feature can re-derive
  * offsets if needed; the placeholder cannot re-trigger any
- * PHI_REDACT_PATTERNS regex on a second pass.
+ * PHI_REDACT_PATTERNS or BARE_PHI_REDACT_PATTERNS regex on a second pass.
  *
  * `cleanedFlags` is returned only when the caller passed `flags`. The
  * `matched_text` field is overwritten with its cleaned form; `context`

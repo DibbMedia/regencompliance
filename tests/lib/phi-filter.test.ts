@@ -280,3 +280,150 @@ describe("redactPhiInOutput", () => {
     expect(r.cleanedText).not.toContain("555-123-4567")
   })
 })
+
+// --------------------------------------------------------------------------
+// Bare / label-less PHI patterns (added 2026-05-20)
+//
+// These cover the SEC-B gap: a hostile website can craft text like
+//   "Patient born 1962-03-14, treated for back pain"
+// which has no "DOB:" label and would slip past the labeled-only
+// PHI_REDACT_PATTERNS, getting echoed verbatim into the scans row.
+//
+// The BARE_PHI_REDACT_PATTERNS pass catches high-confidence PHI/PII
+// shapes regardless of context. Documented false-positive tradeoff:
+// a clinic's own phone, contact email, or "Founded 1985" date may be
+// caught - acceptable cost vs. PHI leakage. See the docstring in
+// `lib/phi-filter.ts` for the full policy.
+// --------------------------------------------------------------------------
+describe("redactPhiInOutput - bare / label-less patterns", () => {
+  it("redacts a bare SSN in the summary (no label)", () => {
+    const r = redactPhiInOutput({
+      summary: "Patient born 1962-03-14, ssn 123-45-6789, back pain.",
+    })
+    expect(r.hadHits).toBe(true)
+    // Bare SSN pattern name carries the "-bare" suffix in hits.
+    expect(r.hits.some((h) => h === "SSN" || h === "SSN-bare")).toBe(true)
+    expect(r.cleanedText).toContain("[REDACTED-SSN]")
+    expect(r.cleanedText).not.toContain("123-45-6789")
+  })
+
+  it("redacts a bare phone number in flag.matched_text", () => {
+    const flags = [
+      {
+        rule_id: "r1",
+        matched_text: "Testimonial: \"Call (555) 123-4567 for results\"",
+        banned_phrase: "testimonial",
+        risk_level: "medium" as const,
+        reason: "PHI",
+        alternative: "redact",
+      },
+    ]
+    const r = redactPhiInOutput({ flags })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("Phone-bare")
+    expect(r.cleanedFlags?.[0].matched_text).toContain("[REDACTED-PHONE]")
+    expect(r.cleanedFlags?.[0].matched_text).not.toContain("(555) 123-4567")
+  })
+
+  it("redacts a bare email in flag.context", () => {
+    const flags = [
+      {
+        rule_id: "r1",
+        matched_text: "guaranteed cure",
+        banned_phrase: "cure",
+        risk_level: "high" as const,
+        reason: "FTC violation",
+        alternative: "may help",
+        context: "Patient John gave us his email john@example.com after the visit.",
+      },
+    ]
+    const r = redactPhiInOutput({ flags })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("Email-bare")
+    expect(r.cleanedFlags?.[0].context).toContain("[REDACTED-EMAIL]")
+    expect(r.cleanedFlags?.[0].context).not.toContain("john@example.com")
+  })
+
+  it("redacts a bare DOB in YYYY-MM-DD form (proves year range upper bound)", () => {
+    const r = redactPhiInOutput({
+      summary: "Patient record dated 1985-03-14 was quoted verbatim.",
+    })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("DOB-bare-iso")
+    expect(r.cleanedText).toContain("[REDACTED-DOB]")
+    expect(r.cleanedText).not.toContain("1985-03-14")
+  })
+
+  it("does NOT redact a date with an out-of-range year (proves lower bound)", () => {
+    // 1899 is below the 1900-2029 range encoded in DOB-bare-iso.
+    // Proves the bound: bare digit-shaped strings outside the year
+    // window don't match, which is what stops the redactor from
+    // eating arbitrary numeric strings (file paths, part numbers).
+    const r = redactPhiInOutput({
+      summary: "Building permit 1899-01-01 was issued.",
+    })
+    expect(r.hits).not.toContain("DOB-bare-iso")
+    expect(r.cleanedText).toContain("1899-01-01")
+  })
+
+  it("does NOT redact a bare 4-digit year (proves we don't over-match)", () => {
+    // The clinic's founding year is a documented accepted-FP path -
+    // but ONLY when it appears as a bare 4-digit number, not in a
+    // YYYY-MM-DD shape. This test pins the pattern: a lone year is
+    // safe.
+    const r = redactPhiInOutput({
+      summary: "Founded in 1985, we serve the community.",
+    })
+    expect(r.hits).not.toContain("DOB-bare-iso")
+    expect(r.hits).not.toContain("DOB-bare-us")
+    expect(r.cleanedText).toContain("1985")
+    expect(r.cleanedText).toBe("Founded in 1985, we serve the community.")
+  })
+
+  it("redacts a bare DOB in US M/D/YYYY form", () => {
+    const r = redactPhiInOutput({
+      summary: "Testimonial said 03/14/1985 was when they started treatment.",
+    })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("DOB-bare-us")
+    expect(r.cleanedText).toContain("[REDACTED-DOB]")
+    expect(r.cleanedText).not.toContain("03/14/1985")
+  })
+
+  it("redacts a bare # prefix MRN-shaped 6+ digit number", () => {
+    const r = redactPhiInOutput({
+      summary: "Patient #1234567 was treated last week.",
+    })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("MRN-bare-hash")
+    expect(r.cleanedText).toContain("[REDACTED-MRN]")
+    expect(r.cleanedText).not.toContain("#1234567")
+    expect(r.cleanedText).not.toContain("1234567")
+  })
+
+  it("catches the SEC-B unlabeled DOB attack vector end-to-end", () => {
+    // This is the exact attack the bare patterns were added to
+    // close. Without them, the DOB would be encrypted and persisted
+    // verbatim into the scans row.
+    const flags = [
+      {
+        rule_id: "r1",
+        matched_text: "Patient born 1962-03-14, treated for back pain",
+        banned_phrase: "patient testimonial",
+        risk_level: "high" as const,
+        reason: "PHI testimonial",
+        alternative: "remove patient testimonial",
+        context: "Testimonial section: Patient born 1962-03-14, treated for back pain.",
+      },
+    ]
+    const r = redactPhiInOutput({
+      summary: "Found quoted testimonial: \"Patient born 1962-03-14, treated for back pain.\"",
+      flags,
+    })
+    expect(r.hadHits).toBe(true)
+    expect(r.hits).toContain("DOB-bare-iso")
+    expect(r.cleanedText).not.toContain("1962-03-14")
+    expect(r.cleanedFlags?.[0].matched_text).not.toContain("1962-03-14")
+    expect(r.cleanedFlags?.[0].context).not.toContain("1962-03-14")
+  })
+})
