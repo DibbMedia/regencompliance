@@ -426,7 +426,10 @@ export async function createAuditLogEntry(
     // Compute row_hash. This is best-effort: any failure logs and skips,
     // never blocks the insert. Race caveat: if two inserts read the same
     // prev_hash, both compute hashes off the same parent and the chain
-    // forks at that point. v1 accepts this; the verifier reports forks.
+    // forks at that point. v1 accepts this; the verifier in
+    // scripts/verify-audit-chain.ts distinguishes the fork pattern
+    // (chain-off-grandparent) from post-hoc tampering and exits 0 on
+    // forks-only / 1 on tampers.
     let rowHash: string | null = null
     try {
       // Take the most recent row by created_at and use its row_hash (or

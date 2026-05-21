@@ -40,8 +40,14 @@
 --   row_hash (their SELECTs interleave before either's INSERT), so
 --   the chain forks. v1 accepts this; the production audit-log
 --   write rate is low enough (single-digit writes/sec) that the
---   fork rate is near zero, and the verifier reports forks as
---   informational rather than as tampering.
+--   fork rate is near zero. Concurrent-insert forks are detected
+--   and reported separately by the verifier (they match the
+--   "chain-off-grandparent" pattern); only post-hoc mutations
+--   (stored hash matches NEITHER the linear extension off the
+--   previous row's stored hash NOR the fork-off-grandparent
+--   pattern) cause exit-code 1. See scripts/verify-audit-chain.ts
+--   for the classification algorithm and `expectedLinear` /
+--   `expectedFork` distinction.
 --
 -- All ALTERs are IF NOT EXISTS so the migration is rerunnable.
 
