@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { validateAllowedIpsString } from '@/lib/security/ip-allowlist'
 
 // Vercel env vars can arrive with trailing whitespace (verified incident
 // 2026-04-22: Stripe key rejection). Every string field below uses Zod's
@@ -71,16 +72,34 @@ const envSchema = z
     NEXTAUTH_SECRET: z.string().trim().min(1).optional(),
 
     // Server-only HMAC key for the demo-mode anonymous cookie. Falls back to
-    // NEXTAUTH_SECRET, then SUPABASE_SERVICE_ROLE_KEY (last resort).
+    // NEXTAUTH_SECRET. If neither is set in production, the demo route skips
+    // the cookie entirely (IP-only rate limiting). SUPABASE_SERVICE_ROLE_KEY
+    // is deliberately NOT in the fallback chain - service-role bits must not
+    // leak into another secret's derivation.
     DEMO_COOKIE_SECRET: z.string().trim().min(1).optional(),
 
     // Optional IP allowlist for /admin/, /superadmin/, and /api/admin/ paths.
     // Comma-separated IPv4/IPv6 addresses and/or CIDR blocks. When unset,
     // no IP gating (default). When set, non-matching IPs receive HTTP 403.
-    // Parsing + validation is delegated to lib/security/ip-allowlist.ts;
-    // we keep the env-validation contract loose (`optional()` string) so a
-    // typo in one entry doesn't fail the entire env-validation step at boot.
-    ADMIN_ALLOWED_IPS: z.string().optional(),
+    // Parsing is delegated to lib/security/ip-allowlist.ts. Boot-time
+    // validation here fails fast on malformed entries (e.g. `203.0.113.0/33`)
+    // so a typo is caught at startup, not silently dropped at request time.
+    // Runtime parseAllowedIps keeps its warn-and-skip behavior as defense
+    // in depth (feature-off rather than 500 if the validator is bypassed).
+    ADMIN_ALLOWED_IPS: z
+      .string()
+      .trim()
+      .optional()
+      .superRefine((val, ctx) => {
+        if (!val) return
+        const result = validateAllowedIpsString(val)
+        if (!result.ok) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Invalid ADMIN_ALLOWED_IPS entries: ${result.errors.join('; ')}`,
+          })
+        }
+      }),
   })
   .superRefine((env, ctx) => {
     if (!env.STRIPE_SECRET_KEY && !env.STRIPE_RESTRICTED_KEY) {

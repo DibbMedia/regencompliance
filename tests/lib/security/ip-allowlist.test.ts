@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { parseAllowedIps } from "@/lib/security/ip-allowlist"
+import {
+  parseAllowedIps,
+  validateAllowedIpsString,
+} from "@/lib/security/ip-allowlist"
 
 describe("parseAllowedIps", () => {
   let warnSpy: ReturnType<typeof vi.spyOn>
@@ -247,6 +250,177 @@ describe("parseAllowedIps", () => {
       expect(m.matches("not-an-ip")).toBe(false)
       expect(m.matches("")).toBe(false)
       expect(m.matches("unknown")).toBe(false)
+    })
+  })
+})
+
+describe("validateAllowedIpsString (boot-time validator)", () => {
+  describe("valid input", () => {
+    it("accepts a single IPv4 address", () => {
+      expect(validateAllowedIpsString("203.0.113.42")).toEqual({ ok: true })
+    })
+
+    it("accepts a single IPv4 CIDR block", () => {
+      expect(validateAllowedIpsString("203.0.113.0/24")).toEqual({ ok: true })
+    })
+
+    it("accepts a single IPv6 address", () => {
+      expect(validateAllowedIpsString("2001:db8::1")).toEqual({ ok: true })
+    })
+
+    it("accepts a single IPv6 CIDR block", () => {
+      expect(validateAllowedIpsString("2001:db8::/32")).toEqual({ ok: true })
+    })
+
+    it("accepts a mixed comma-separated list", () => {
+      expect(
+        validateAllowedIpsString("203.0.113.42, 198.51.100.0/24"),
+      ).toEqual({ ok: true })
+    })
+
+    it("accepts a mixed v4 + v6 list", () => {
+      expect(
+        validateAllowedIpsString("203.0.113.42, 2001:db8::/32, 198.51.100.0/24"),
+      ).toEqual({ ok: true })
+    })
+
+    it("tolerates whitespace around entries", () => {
+      expect(
+        validateAllowedIpsString("  203.0.113.42 , 198.51.100.0/24  "),
+      ).toEqual({ ok: true })
+    })
+
+    it("accepts /0 and /32 as valid IPv4 prefixes", () => {
+      expect(validateAllowedIpsString("0.0.0.0/0")).toEqual({ ok: true })
+      expect(validateAllowedIpsString("203.0.113.42/32")).toEqual({ ok: true })
+    })
+
+    it("accepts /0 and /128 as valid IPv6 prefixes", () => {
+      expect(validateAllowedIpsString("::/0")).toEqual({ ok: true })
+      expect(validateAllowedIpsString("2001:db8::1/128")).toEqual({ ok: true })
+    })
+  })
+
+  describe("empty / whitespace input (feature off)", () => {
+    it("returns ok for empty string", () => {
+      expect(validateAllowedIpsString("")).toEqual({ ok: true })
+    })
+
+    it("returns ok for whitespace-only string", () => {
+      expect(validateAllowedIpsString("   \t \n  ")).toEqual({ ok: true })
+    })
+
+    it("returns ok for all-empty comma list", () => {
+      expect(validateAllowedIpsString(" , , ")).toEqual({ ok: true })
+    })
+
+    it("returns ok when entries are all whitespace-only", () => {
+      expect(validateAllowedIpsString("   ,   ,   ")).toEqual({ ok: true })
+    })
+
+    it("returns ok when comma list has trailing/leading commas around valid entries", () => {
+      expect(validateAllowedIpsString(", 203.0.113.42 ,")).toEqual({ ok: true })
+    })
+  })
+
+  describe("invalid input - returns structured errors", () => {
+    it("rejects an out-of-range IPv4 octet", () => {
+      const result = validateAllowedIpsString("203.0.113.300")
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toContain("203.0.113.300")
+      }
+    })
+
+    it("rejects an IPv4 CIDR with prefix > 32", () => {
+      const result = validateAllowedIpsString("203.0.113.0/33")
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toContain("203.0.113.0/33")
+      }
+    })
+
+    it("rejects an IPv6 CIDR with prefix > 128", () => {
+      const result = validateAllowedIpsString("2001:db8::/129")
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toContain("2001:db8::/129")
+      }
+    })
+
+    it("rejects malformed IPv6 with non-hex characters", () => {
+      const result = validateAllowedIpsString("gg::1")
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toContain("gg::1")
+      }
+    })
+
+    it("rejects garbage text as an entry name", () => {
+      const result = validateAllowedIpsString("203.0.113.42, bad-entry")
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toContain("bad-entry")
+        // Valid entry should NOT be in errors
+        expect(result.errors).not.toContain("203.0.113.42")
+      }
+    })
+
+    it("accumulates multiple errors from a single string", () => {
+      const result = validateAllowedIpsString(
+        "203.0.113.300, gg::1, 198.51.100.0/40",
+      )
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toHaveLength(3)
+        expect(result.errors).toContain("203.0.113.300")
+        expect(result.errors).toContain("gg::1")
+        expect(result.errors).toContain("198.51.100.0/40")
+      }
+    })
+
+    it("preserves valid entries while reporting only the invalid one", () => {
+      const result = validateAllowedIpsString(
+        "203.0.113.42, garbage, 198.51.100.1",
+      )
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.errors).toEqual(["garbage"])
+      }
+    })
+
+    it("rejects negative CIDR prefix", () => {
+      const result = validateAllowedIpsString("203.0.113.0/-1")
+      expect(result.ok).toBe(false)
+    })
+
+    it("rejects non-numeric CIDR prefix", () => {
+      const result = validateAllowedIpsString("203.0.113.0/abc")
+      expect(result.ok).toBe(false)
+    })
+
+    it("rejects IPv4 with leading zeros (ambiguous octal)", () => {
+      const result = validateAllowedIpsString("203.0.113.042")
+      expect(result.ok).toBe(false)
+    })
+  })
+
+  describe("interaction with parseAllowedIps (defense in depth)", () => {
+    it("validator rejects what parseAllowedIps would silently skip", () => {
+      // Same bad input: validator fails at boot, parser soft-fails at runtime.
+      const bad = "203.0.113.0/33"
+      const validation = validateAllowedIpsString(bad)
+      expect(validation.ok).toBe(false)
+
+      // parseAllowedIps still produces an empty matcher (feature off) for the
+      // same input. This is the documented defense-in-depth contract.
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {})
+      try {
+        const matcher = parseAllowedIps(bad)
+        expect(matcher.isEmpty()).toBe(true)
+      } finally {
+        warnSpy.mockRestore()
+      }
     })
   })
 })

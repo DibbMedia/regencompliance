@@ -270,3 +270,37 @@ export function parseAllowedIps(envValue: string | undefined | null): IpMatcher 
   }
   return new Matcher(entries)
 }
+
+/**
+ * Boot-time validator for the `ADMIN_ALLOWED_IPS` env var. Accumulates a list
+ * of malformed entries instead of warn-and-skipping like `parseAllowedIps`.
+ * Used by the zod schema in `lib/env.ts` to fail fast at startup so a typo
+ * (e.g. `203.0.113.0/33`) is caught before the operator deploys, rather than
+ * being silently dropped at request time.
+ *
+ * - Empty / whitespace-only input => `{ ok: true }` (feature off).
+ * - Empty entries within a comma list (`",,,"`) => skipped silently (no signal).
+ * - Returns `{ ok: false, errors: [...] }` with the raw rejected entry texts
+ *   when any individual entry fails to parse.
+ *
+ * Defense in depth: `parseAllowedIps` keeps its warn-and-skip runtime behavior
+ * so even if the validator is bypassed (e.g. an env loaded outside boot path),
+ * a bad value yields an empty matcher (feature off) instead of a 500.
+ */
+export function validateAllowedIpsString(
+  value: string,
+): { ok: true } | { ok: false; errors: string[] } {
+  if (value.trim() === "") return { ok: true }
+
+  const errors: string[] = []
+  const parts = value.split(",")
+  for (const part of parts) {
+    const cleaned = part.trim()
+    if (cleaned === "") continue
+    if (parseEntry(cleaned) === null) {
+      errors.push(cleaned)
+    }
+  }
+  if (errors.length > 0) return { ok: false, errors }
+  return { ok: true }
+}
