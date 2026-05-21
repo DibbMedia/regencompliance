@@ -40,6 +40,7 @@ import { verifyAdmin } from "@/lib/admin"
 import { createClient } from "@/lib/supabase/server"
 import { checkRateLimit } from "@/lib/rate-limit"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
+import { getSecurityClientIp } from "@/lib/security/client-ip"
 import {
   STEP_UP_COOKIE,
   STEP_UP_COOKIE_PATH,
@@ -48,27 +49,9 @@ import {
 
 export const maxDuration = 10
 
-// IP source for the step-up security gate. Inlined here (rather than using
-// lib/ip.ts's getClientIp) because the shared helper falls back to RIGHTMOST
-// x-forwarded-for on non-Vercel hosts, which is spoofable - an attacker
-// prepends their own IP to the header and the trusted-proxy semantics shift
-// the "real" client to whatever value they choose. For a brute-force gate we
-// need the LEFTMOST entry (RFC 7239 original client), and we prefer infra-
-// set headers (x-vercel-forwarded-for, cf-connecting-ip) above XFF entirely
-// because those cannot be set by the client.
-function getAdminClientIp(request: Request): string {
-  const vercel = request.headers.get("x-vercel-forwarded-for")?.trim()
-  if (vercel) return vercel.split(",")[0].trim()
-  const cf = request.headers.get("cf-connecting-ip")?.trim()
-  if (cf) return cf
-  const xff = request.headers.get("x-forwarded-for")?.trim()
-  if (xff) return xff.split(",")[0].trim()
-  return request.headers.get("x-real-ip")?.trim() || "unknown"
-}
-
 export async function POST(request: Request) {
   const { ip, userAgent } = getRequestMeta(request)
-  const clientIp = getAdminClientIp(request)
+  const clientIp = getSecurityClientIp(request)
 
   // 1. Per-IP rate limit. Tight (5/min) because step-up is a single button
   //    press from the operator's perspective; sustained traffic is abuse.
