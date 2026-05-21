@@ -14,14 +14,44 @@ export async function PATCH(
   if ("error" in auth) return auth.error
   const { user, serviceClient } = auth
 
+  // Step-up gate: changing a platform admin's role is a privilege change on
+  // the same threat surface as DELETE. Require a fresh re-auth cookie bound
+  // to THIS admin's user id (mirrors the DELETE handler below).
+  if (!(await hasFreshStepUp(request, user.id))) {
+    const r = stepUpRequired()
+    return NextResponse.json(r.body, { status: r.status })
+  }
+
   const { id } = await params
   if (!isValidUUID(id)) {
     return NextResponse.json({ error: "Invalid admin ID" }, { status: 400 })
   }
 
   const body = await request.json().catch(() => null)
+
+  // Justification gate. Must run BEFORE the role validation + DB read so the
+  // audit trail captures intent for every privilege-change attempt.
+  const justCheck = extractJustification(body)
+  if (!justCheck.ok) {
+    return NextResponse.json(justCheck.error!.body, { status: justCheck.error!.status })
+  }
+  const justification = justCheck.justification!
+
   if (!body?.role || (body.role !== "developer" && body.role !== "support")) {
     return NextResponse.json({ error: "role must be developer or support" }, { status: 400 })
+  }
+
+  // Read existing row so we can capture old_role for the audit transition.
+  // The update().select() return value below is the NEW row, which loses
+  // the pre-change role.
+  const { data: existingRow } = await serviceClient
+    .from("platform_admins")
+    .select("id, email, role")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (!existingRow) {
+    return NextResponse.json({ error: "Admin not found or update failed" }, { status: 404 })
   }
 
   const { data, error } = await serviceClient
@@ -43,7 +73,13 @@ export async function PATCH(
     action: "admin.role.update",
     resource_type: "platform_admin",
     resource_id: id,
-    details: { email: data.email, new_role: body.role },
+    details: {
+      target_admin_id: id,
+      justification,
+      new_role: body.role,
+      old_role: existingRow.role,
+      email: data.email,
+    },
     ip_address: ip,
     user_agent: userAgent,
   })
