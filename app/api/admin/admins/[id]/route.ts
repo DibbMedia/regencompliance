@@ -3,6 +3,8 @@ import { verifyDeveloperAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 import { deleteAllSessionsForAdmin } from "@/lib/repos/impersonation-sessions"
+import { hasFreshStepUp, stepUpRequired } from "@/lib/admin/step-up"
+import { extractJustification } from "@/lib/admin/justification"
 
 export async function PATCH(
   request: Request,
@@ -57,10 +59,29 @@ export async function DELETE(
   if ("error" in auth) return auth.error
   const { user, serviceClient } = auth
 
+  // Step-up gate: removing a platform admin is destructive and irreversible.
+  // Require a fresh re-auth cookie that was issued for THIS admin (prevents
+  // cookie reuse across admins), regardless of how recent the normal session
+  // is. Mirrors the DELETE /api/admin/users/[id] gate.
+  if (!(await hasFreshStepUp(request, user.id))) {
+    const r = stepUpRequired()
+    return NextResponse.json(r.body, { status: r.status })
+  }
+
   const { id } = await params
   if (!isValidUUID(id)) {
     return NextResponse.json({ error: "Invalid admin ID" }, { status: 400 })
   }
+
+  // Justification gate. DELETE traditionally carries no body, but Next.js
+  // permits one and the admin UI sends `{ justification }` as JSON. If the
+  // body is missing or unparseable we fail closed with the standard 400.
+  const body = await request.json().catch(() => null)
+  const justCheck = extractJustification(body)
+  if (!justCheck.ok) {
+    return NextResponse.json(justCheck.error!.body, { status: justCheck.error!.status })
+  }
+  const justification = justCheck.justification!
 
   const { data: row } = await serviceClient
     .from("platform_admins")
@@ -106,7 +127,7 @@ export async function DELETE(
     action: "admin.role.revoke",
     resource_type: "platform_admin",
     resource_id: id,
-    details: { email: row.email },
+    details: { email: row.email, target_admin_id: id, justification },
     ip_address: ip,
     user_agent: userAgent,
   })
