@@ -23,6 +23,7 @@
 // All public CRUD wraps in `withCryptoRequestScope` so a single request doing
 // N decrypts pays HKDF once per distinct user_id (or system key derivation).
 
+import { createHash } from "node:crypto"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import {
   decryptForUser,
@@ -38,7 +39,9 @@ import {
 
 const TABLE = "audit_log"
 
-/** Plaintext shape returned by repo reads. */
+/** Plaintext shape returned by repo reads. `row_hash` is the migration-044
+ *  tamper-evident chain hash; NULL for rows inserted before the migration
+ *  applies (the "pre-chain" prefix). */
 export interface AuditLogEntry {
   id: string
   user_id: string | null
@@ -51,6 +54,7 @@ export interface AuditLogEntry {
   user_agent: string | null
   status: string
   created_at: string
+  row_hash: string | null
 }
 
 /** Plaintext shape accepted by writes. `id` and `created_at` are filled by
@@ -73,7 +77,10 @@ export interface AuditLogWrite {
  *  the dual-write window between migrations 039 (add *_enc) and 040 (drop
  *  plaintext) the row may also carry plaintext columns - we keep those as
  *  optional fields so `decryptAuditLogRow` can fall back to plaintext when
- *  `*_enc IS NULL`. Post-040 the plaintext fields are always absent. */
+ *  `*_enc IS NULL`. Post-040 the plaintext fields are always absent.
+ *
+ *  `row_hash` (mig 044) is the tamper-evident chain hash. NULL on rows
+ *  inserted before that migration applied. */
 export interface AuditLogEncryptedRow {
   id: string
   user_id: string | null
@@ -86,6 +93,10 @@ export interface AuditLogEncryptedRow {
   user_agent_enc: string | null
   status: string
   created_at: string
+  // mig 044 chain hash; absent on pre-chain rows and on test fixtures that
+  // don't exercise the chain. Surfaced via decryptAuditLogRow as `null`
+  // when absent.
+  row_hash?: string | null
   // Plaintext fallback fields - present during the 039->040 transition,
   // dropped from the table by 040. Marked optional so post-cutover code
   // doesn't have to thread `undefined` through.
@@ -97,7 +108,9 @@ export interface AuditLogEncryptedRow {
 
 /** Insert payload destined for Supabase. `details_enc` is non-null on insert
  *  because we always serialize an object (defaulting to `{}`) so the field
- *  carries a valid envelope. */
+ *  carries a valid envelope. `row_hash` is filled in by `createAuditLogEntry`
+ *  after the insert payload is built (it needs the previous row's hash, which
+ *  it reads from the DB just before the INSERT). */
 export interface AuditLogEncryptedInsert {
   user_id: string | null
   user_email_enc: string | null
@@ -232,6 +245,7 @@ export function decryptAuditLogRow(row: AuditLogEncryptedRow): AuditLogEntry {
     user_agent,
     status: row.status,
     created_at: row.created_at,
+    row_hash: row.row_hash ?? null,
   }
 }
 
@@ -269,6 +283,95 @@ export function encryptAuditLogWrite(
   }
 }
 
+// --- Tamper-evident hash chain (migration 044) ------------------------------
+//
+// Each audit_log row carries `row_hash = sha256_hex(prev_row_hash_or_empty ||
+// canonical_serialize(this_row_persisted_fields))`. The serializer keys off
+// the ENCRYPTED columns because the chain asserts the persisted on-disk
+// state, not the plaintext interpretation. Swapping a valid encrypted
+// envelope for another valid one still breaks the hash.
+//
+// Inputs to the canonical serializer are exactly the fields the chain
+// commits to. Adding a field here is a chain-format change and would
+// invalidate every row after the change. Removing one similarly.
+
+/** The exact persisted-row shape that gets hashed. Encrypted columns appear
+ *  as their on-disk envelope; plaintext pass-throughs appear as-is. All
+ *  nullable fields are coerced to JS `null` (not `undefined`) so the JSON
+ *  output is stable. */
+export interface AuditLogChainRow {
+  action: string
+  created_at: string
+  details_enc: string | null
+  ip_address_enc: string | null
+  resource_id: string | null
+  resource_type: string | null
+  status: string
+  user_agent_enc: string | null
+  user_email_enc: string | null
+  user_id: string | null
+}
+
+const CHAIN_KEYS: ReadonlyArray<keyof AuditLogChainRow> = [
+  "action",
+  "created_at",
+  "details_enc",
+  "ip_address_enc",
+  "resource_id",
+  "resource_type",
+  "status",
+  "user_agent_enc",
+  "user_email_enc",
+  "user_id",
+]
+
+/** Canonical JSON serialization of a chain row: keys sorted lexicographically
+ *  (CHAIN_KEYS is already sorted), no whitespace, nulls preserved. Stable
+ *  across JS object key-insertion order. */
+export function canonicalSerializeChainRow(row: AuditLogChainRow): string {
+  // Build an object with keys in CHAIN_KEYS order so JSON.stringify
+  // emits them in that order. JS object property order is insertion order
+  // for string keys, so this is the canonical form.
+  const ordered: Record<string, unknown> = {}
+  for (const k of CHAIN_KEYS) {
+    const v = row[k]
+    // Normalize undefined to null so `{x: undefined}` and `{}` hash
+    // identically. (JSON.stringify already drops `undefined` properties,
+    // which would silently break stability if the caller passed one.)
+    ordered[k] = v === undefined ? null : v
+  }
+  return JSON.stringify(ordered)
+}
+
+/** Compute the chain hash for one row given the previous row's `row_hash`
+ *  (or `null` for the genesis row). Returns lowercase hex SHA-256. */
+export function computeRowHash(
+  prevHashHex: string | null,
+  row: AuditLogChainRow,
+): string {
+  const prev = prevHashHex ?? ""
+  const serialized = canonicalSerializeChainRow(row)
+  return createHash("sha256").update(prev).update(serialized).digest("hex")
+}
+
+/** Project the on-disk encrypted row down to the subset of fields the chain
+ *  commits to. Used by the verifier script to recompute hashes from stored
+ *  rows. */
+export function toChainRow(row: AuditLogEncryptedRow): AuditLogChainRow {
+  return {
+    action: row.action,
+    created_at: row.created_at,
+    details_enc: row.details_enc,
+    ip_address_enc: row.ip_address_enc,
+    resource_id: row.resource_id,
+    resource_type: row.resource_type,
+    status: row.status,
+    user_agent_enc: row.user_agent_enc,
+    user_email_enc: row.user_email_enc,
+    user_id: row.user_id,
+  }
+}
+
 // --- CRUD -------------------------------------------------------------------
 
 // Use `*` so the same repo works both pre-cutover (when 040 has not yet
@@ -288,7 +391,19 @@ const SELECT_COLUMNS = "*"
  *  The placeholder details_enc value is computed using the new id, so we
  *  effectively collapse the second step into the first by inserting the
  *  payload along with a generated UUID. We use `crypto.randomUUID()` to avoid
- *  the round-trip. The DB default would also work; this is simpler. */
+ *  the round-trip. The DB default would also work; this is simpler.
+ *
+ *  Tamper-evident chain (mig 044): before the insert, read the most-recent
+ *  row's `row_hash` and compute this row's hash as
+ *  `sha256(prev || canonical_serialize(this_row))`. We allocate `created_at`
+ *  client-side so the hash input matches the stored value; otherwise the
+ *  hash would commit to one timestamp while the DB stored a microsecond
+ *  later. If the chain step fails for any reason (DB hiccup reading prev,
+ *  hash compute throws), we log and proceed without the hash - the
+ *  audit-log write itself must never block on chain ops. The verifier
+ *  treats NULL row_hash rows as pre-chain prefix; a runtime failure here
+ *  thus creates a small unverifiable gap rather than losing the audit
+ *  record entirely. */
 export async function createAuditLogEntry(
   supabase: SupabaseClient,
   input: AuditLogWrite,
@@ -299,9 +414,79 @@ export async function createAuditLogEntry(
     // accepts an explicit value.
     const rowId = (globalThis.crypto ?? (await import("node:crypto"))).randomUUID()
     const payload = encryptAuditLogWrite(input, rowId)
+
+    // Allocate created_at client-side so the chain hash can include it. The
+    // DB default would be NOW() at insert time; we'd then either have to
+    // skip created_at from the chain (weakens tamper detection on timing)
+    // or do a follow-up UPDATE with the hash. Both worse than picking now()
+    // client-side. ISO 8601 with millisecond precision matches Postgres's
+    // timestamptz string form.
+    const createdAt = new Date().toISOString()
+
+    // Compute row_hash. This is best-effort: any failure logs and skips,
+    // never blocks the insert. Race caveat: if two inserts read the same
+    // prev_hash, both compute hashes off the same parent and the chain
+    // forks at that point. v1 accepts this; the verifier reports forks.
+    let rowHash: string | null = null
+    try {
+      // Take the most recent row by created_at and use its row_hash (or
+      // null if that row is pre-chain). The partial index
+      // idx_audit_log_row_hash_created keeps this cheap. We deliberately
+      // don't filter `row_hash IS NOT NULL` here: if the most recent row
+      // is pre-chain, this insert starts a fresh chain segment with
+      // prev=null. That's fine — the verifier walks only chained rows.
+      const { data: prev, error: prevErr } = await supabase
+        .from(TABLE)
+        .select("row_hash")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (prevErr) {
+        // Don't throw — log and continue with no chain hash. The verifier
+        // will treat this row as a NULL-hash gap (pre-chain prefix style).
+        if (process.env.NODE_ENV !== "test") {
+          console.warn(
+            "[audit-log] chain prev-hash read failed: " + prevErr.message,
+          )
+        }
+      } else {
+        const prevHash = prev?.row_hash ?? null
+        rowHash = computeRowHash(prevHash, {
+          action: payload.action,
+          created_at: createdAt,
+          details_enc: payload.details_enc,
+          ip_address_enc: payload.ip_address_enc,
+          resource_id: payload.resource_id,
+          resource_type: payload.resource_type,
+          status: payload.status,
+          user_agent_enc: payload.user_agent_enc,
+          user_email_enc: payload.user_email_enc,
+          user_id: payload.user_id,
+        })
+      }
+    } catch (e) {
+      // Defensive: createHash or canonical serializer should never throw,
+      // but if they do, the audit write still must succeed.
+      if (process.env.NODE_ENV !== "test") {
+        console.warn(
+          "[audit-log] chain compute failed: " +
+            (e instanceof Error ? e.message : String(e)),
+        )
+      }
+    }
+
+    const insertBody: Record<string, unknown> = {
+      id: rowId,
+      created_at: createdAt,
+      ...payload,
+    }
+    if (rowHash !== null) {
+      insertBody.row_hash = rowHash
+    }
+
     const { data, error } = await supabase
       .from(TABLE)
-      .insert({ id: rowId, ...payload })
+      .insert(insertBody)
       .select(SELECT_COLUMNS)
       .single()
 
