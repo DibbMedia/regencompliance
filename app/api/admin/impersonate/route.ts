@@ -3,6 +3,8 @@ import { verifyAdmin } from "@/lib/admin"
 import { startImpersonation, stopImpersonation, getActiveImpersonation } from "@/lib/impersonation"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
+import { hasFreshStepUp, stepUpRequired } from "@/lib/admin/step-up"
+import { extractJustification } from "@/lib/admin/justification"
 
 export async function GET() {
   const auth = await verifyAdmin()
@@ -27,10 +29,25 @@ export async function POST(request: Request) {
   if ("error" in auth) return auth.error
   const { user, serviceClient, role } = auth
 
+  // Step-up gate: impersonate-start is destructive (creates a session that
+  // can mutate another user's data). Require a fresh re-auth cookie.
+  if (!(await hasFreshStepUp(request))) {
+    const r = stepUpRequired()
+    return NextResponse.json(r.body, { status: r.status })
+  }
+
   const body = await request.json().catch(() => null)
   if (!body || !isValidUUID(body.target_user_id)) {
     return NextResponse.json({ error: "target_user_id required" }, { status: 400 })
   }
+
+  // Justification gate: every impersonation must carry a 10-500 char
+  // explanation that lands in audit_log.details for the operator to review.
+  const justCheck = extractJustification(body)
+  if (!justCheck.ok) {
+    return NextResponse.json(justCheck.error!.body, { status: justCheck.error!.status })
+  }
+  const justification = justCheck.justification!
 
   const requestedMode = body.mode === "write" ? "write" : "read"
   if (requestedMode === "write" && role !== "developer") {
@@ -62,7 +79,11 @@ export async function POST(request: Request) {
     action: "admin.impersonate.start",
     resource_type: "user",
     resource_id: body.target_user_id,
-    details: { mode: requestedMode, target_email: targetUser.user.email },
+    details: {
+      mode: requestedMode,
+      target_email: targetUser.user.email,
+      justification,
+    },
     ip_address: ip,
     user_agent: userAgent,
   })

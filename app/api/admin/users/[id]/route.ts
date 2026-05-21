@@ -3,6 +3,8 @@ import { verifyDeveloperAdmin } from "@/lib/admin"
 import { isValidUUID } from "@/lib/validations"
 import { logAudit, getRequestMeta } from "@/lib/audit-log"
 import { updateProfile, type ProfileWrite } from "@/lib/repos/profiles"
+import { hasFreshStepUp, stepUpRequired } from "@/lib/admin/step-up"
+import { extractJustification } from "@/lib/admin/justification"
 
 const ALLOWED_STATUSES = ["active", "inactive", "past_due", "cancelled"] as const
 
@@ -69,10 +71,27 @@ export async function DELETE(
   if ("error" in auth) return auth.error
   const { user, serviceClient } = auth
 
+  // Step-up gate: deletion is the most destructive admin op. Require a
+  // fresh re-auth cookie regardless of how recent the normal session is.
+  if (!(await hasFreshStepUp(request))) {
+    const r = stepUpRequired()
+    return NextResponse.json(r.body, { status: r.status })
+  }
+
   const { id } = await params
   if (!isValidUUID(id)) {
     return NextResponse.json({ error: "Invalid user ID" }, { status: 400 })
   }
+
+  // Justification gate. DELETE traditionally carries no body, but Next.js
+  // permits one and the admin UI sends `{ justification }` as JSON. If the
+  // body is missing or unparseable we fail closed with the standard 400.
+  const body = await request.json().catch(() => null)
+  const justCheck = extractJustification(body)
+  if (!justCheck.ok) {
+    return NextResponse.json(justCheck.error!.body, { status: justCheck.error!.status })
+  }
+  const justification = justCheck.justification!
 
   const { error } = await serviceClient.auth.admin.deleteUser(id)
   if (error) {
@@ -87,6 +106,7 @@ export async function DELETE(
     action: "admin.user.delete",
     resource_type: "user",
     resource_id: id,
+    details: { target_user_id: id, justification },
     ip_address: ip,
     user_agent: userAgent,
   })
