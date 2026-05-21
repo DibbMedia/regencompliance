@@ -16,6 +16,15 @@ export async function PATCH(
   if ("error" in auth) return auth.error
   const { user, serviceClient } = auth
 
+  // Step-up gate: PATCH modifies billing/subscription state
+  // (subscription_status, is_beta_subscriber) — same threat surface as DELETE.
+  // Require a fresh re-auth cookie that was issued for THIS admin, regardless
+  // of how recent the normal session is.
+  if (!(await hasFreshStepUp(request, user.id))) {
+    const r = stepUpRequired()
+    return NextResponse.json(r.body, { status: r.status })
+  }
+
   const { id } = await params
   if (!isValidUUID(id)) {
     return NextResponse.json({ error: "Invalid user ID" }, { status: 400 })
@@ -23,6 +32,15 @@ export async function PATCH(
 
   const body = await request.json().catch(() => null)
   if (!body) return NextResponse.json({ error: "Invalid body" }, { status: 400 })
+
+  // Justification gate. The admin UI sends `{ justification, ...updates }` as
+  // JSON. Missing/short/long justification fails closed with the standard 400
+  // before any DB mutation runs.
+  const justCheck = extractJustification(body)
+  if (!justCheck.ok) {
+    return NextResponse.json(justCheck.error!.body, { status: justCheck.error!.status })
+  }
+  const justification = justCheck.justification!
 
   // Route through the profiles repo so the (unrelated) crypto columns stay
   // intact even though this endpoint only touches plaintext pass-through
@@ -49,13 +67,21 @@ export async function PATCH(
   }
 
   const { ip, userAgent } = getRequestMeta(request)
+  // Audit-log entry captures intent (justification) + scope (which fields
+  // were touched), NOT the values. subscription_status is not PII but we
+  // hold the line principled-ly so future PATCH-able fields don't bleed
+  // into the audit log.
   logAudit({
     user_id: user.id,
     user_email: user.email,
     action: "admin.user.update",
     resource_type: "user",
     resource_id: id,
-    details: updates as Record<string, unknown>,
+    details: {
+      target_user_id: id,
+      justification,
+      patched_fields: Object.keys(updates),
+    },
     ip_address: ip,
     user_agent: userAgent,
   })
@@ -72,8 +98,9 @@ export async function DELETE(
   const { user, serviceClient } = auth
 
   // Step-up gate: deletion is the most destructive admin op. Require a
-  // fresh re-auth cookie regardless of how recent the normal session is.
-  if (!(await hasFreshStepUp(request))) {
+  // fresh re-auth cookie that was issued for THIS admin (prevents cookie
+  // reuse across admins), regardless of how recent the normal session is.
+  if (!(await hasFreshStepUp(request, user.id))) {
     const r = stepUpRequired()
     return NextResponse.json(r.body, { status: r.status })
   }
