@@ -2,8 +2,29 @@ import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 import { enforceOrigin } from "@/lib/security/origin"
 import { parseAllowedIps } from "@/lib/security/ip-allowlist"
+import { classifyRequest } from "@/lib/security/bot-defense"
 
 const IMPERSONATE_COOKIE = "regen_impersonate"
+
+// Bot-defense sampled-warn counters. Mirrors the F-09/admin-IP-allowlist
+// pattern: log the 1st hit + every 100th to keep prod logs readable while
+// still surfacing burst behavior. Lives in module scope; resets on cold
+// start (fine - logs are best-effort observability, not audit-grade).
+let botDefenseDenyCount = 0
+// `botDefenseAllowCount` + `botDefenseRateLimitCount` are reserved for
+// symmetry with the deny counter so future tightening (e.g. promoting
+// rate-limit-strict to an actual response-side throttle) can sample on the
+// same cadence. Currently allow-logs are de-duped via the
+// `seenAllowedCrawlers` Set below, and rate-limit-strict only logs the
+// first hit per cold start - the counters drive the sample cadence.
+let botDefenseAllowCount = 0
+let botDefenseRateLimitCount = 0
+const BOT_DEFENSE_LOG_SAMPLE = 100
+
+// First-hit-per-signature dedup for the noisy "ALLOW" log line. A single
+// Googlebot crawl can hit hundreds of paths; we only need to know the
+// crawler showed up once per cold start.
+const seenAllowedCrawlers = new Set<string>()
 
 // Env-gated IP allowlist for admin surfaces. Parsed once at module load so
 // every request reads from the cached matcher instead of re-parsing the env
@@ -175,6 +196,77 @@ function isSharedPath(pathname: string): boolean {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // ===== STAGE 0: Bot defense =====
+  // Runs FIRST - before host routing, CSP build, impersonate cookie check,
+  // admin-IP allowlist, or Supabase auth roundtrip. A vuln scanner hitting
+  // /wp-admin gets cut here without burning any downstream cost. The
+  // classifier returns one of: "allow" (named AI crawler we trust),
+  // "deny" (UA/path/pattern match for vuln scanners + probes),
+  // "rate-limit-strict" (suspicious but not deny-worthy - flagged for
+  // ops + future tightening), or "normal" (everyone else, fall through).
+  const classification = classifyRequest(request)
+  let botDefenseHeader: string | null = null
+
+  if (classification.verdict === "deny") {
+    botDefenseDenyCount += 1
+    if (
+      botDefenseDenyCount === 1 ||
+      botDefenseDenyCount % BOT_DEFENSE_LOG_SAMPLE === 0
+    ) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[bot-defense] DENY reason=${classification.reason} signature=${classification.matchedSignature} path=${pathname} ua=${(request.headers.get("user-agent") || "").slice(0, 200)} total=${botDefenseDenyCount}`,
+      )
+    }
+    // Tarpit attacker-probe-path requests for 2s so scanners give up on
+    // slow targets. Skip for vuln-scanner-ua + bad-scraper-ua reasons -
+    // they retry regardless, so eating CPU/connection seconds on them is
+    // a cost we pay for no behavioral payoff. Edge runtime supports
+    // setTimeout via the standard global; await-on-Promise is fine.
+    if (classification.reason === "attacker-probe-path") {
+      await new Promise((r) => setTimeout(r, 2000))
+    }
+    // Generic body - don't leak which signature tripped (deny-by-obscurity
+    // for the matched pattern; the log line has the detail for ops).
+    return new NextResponse("Forbidden", { status: 403 })
+  }
+
+  if (classification.verdict === "rate-limit-strict") {
+    botDefenseRateLimitCount += 1
+    if (
+      botDefenseRateLimitCount === 1 ||
+      botDefenseRateLimitCount % BOT_DEFENSE_LOG_SAMPLE === 0
+    ) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[bot-defense] RATE-LIMIT-STRICT reason=${classification.reason} signature=${classification.matchedSignature} path=${pathname} ua=${(request.headers.get("user-agent") || "").slice(0, 200)} total=${botDefenseRateLimitCount}`,
+      )
+    }
+    // Don't deny - let existing per-route rate limits handle the throttle.
+    // We just flag for observability + future tightening (downstream
+    // rate limiters can read this header and apply lower thresholds).
+    botDefenseHeader = "strict-rate-limit"
+  }
+
+  if (classification.verdict === "allow") {
+    botDefenseAllowCount += 1
+    if (!seenAllowedCrawlers.has(classification.matchedSignature)) {
+      seenAllowedCrawlers.add(classification.matchedSignature)
+      // eslint-disable-next-line no-console
+      console.info(
+        `[bot-defense] ALLOW first-hit ai-crawler=${classification.matchedSignature} path=${pathname}`,
+      )
+    }
+    // We do NOT skip the admin-IP allowlist or any other downstream gate
+    // for "allowed" crawlers. The verdict is a trust hint, not a bypass -
+    // a malicious actor spoofing the Googlebot UA shouldn't get a free
+    // pass through /admin. Flag for observability and proceed.
+    botDefenseHeader = "ai-crawler-allowed"
+  }
+
+  // "normal" falls through with no extra work.
+
   const host = (request.headers.get("host") ?? "").toLowerCase().split(":")[0]
   const isAppHost = host === APP_HOST
   const isMarketingHost = MARKETING_HOSTS.includes(host)
@@ -249,6 +341,12 @@ export async function proxy(request: NextRequest) {
     )
     if (isAppHost) {
       response.headers.set("X-Robots-Tag", "noindex, nofollow")
+    }
+    // Bot-defense verdict header for observability (rate-limit-strict +
+    // ai-crawler-allowed). Future enhancement: downstream rate limiters
+    // can read this header and tighten thresholds when it's set.
+    if (botDefenseHeader) {
+      response.headers.set("x-bot-defense", botDefenseHeader)
     }
     return response
   }
