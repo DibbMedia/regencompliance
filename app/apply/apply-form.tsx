@@ -74,6 +74,9 @@ export function BetaApplyForm() {
       website: "",
       why_apply: "",
       accept_terms: false as unknown as true,
+      // Honeypot - see lib/validations.ts. Seeded empty so the value rides
+      // along in the submitted payload; bots fill it, real users can't.
+      website_url2: "",
     },
   })
 
@@ -212,6 +215,25 @@ export function BetaApplyForm() {
               ) : (
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {/* Honeypot - invisible to humans, bots fill it. See
+                        waitlist page for the full pattern + rationale. */}
+                    <input
+                      type="text"
+                      name="website_url2"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: "-9999px",
+                        width: "1px",
+                        height: "1px",
+                        opacity: 0,
+                        pointerEvents: "none",
+                      }}
+                      onChange={(e) => form.setValue("website_url2", e.target.value)}
+                      defaultValue=""
+                    />
                     <FormField
                       control={form.control}
                       name="name"

@@ -12,6 +12,11 @@ const rateLimitState: Record<string, boolean> = { global: true, ip: true, host: 
 const ssrfShouldFail = { value: false }
 const pageContent: { ok: boolean; text: string; title: string } = { ok: true, text: "Stem cell therapy is FDA-approved and cures arthritis. Schedule today.", title: "Test Page" }
 const phiState = { detected: false }
+// When useRealRedactor is true, the @/lib/phi-filter mock delegates the
+// redactPhiInOutput call to the actual module (loaded lazily inside the
+// stub at first invocation). This lets the DLP test exercise the real
+// regex scrubber without restructuring the suite-wide vi.mock factory.
+const useRealRedactor = { value: false }
 const claudeResponse: { json: string } = {
   json: JSON.stringify({
     compliance_score: 25,
@@ -25,6 +30,7 @@ const claudeResponse: { json: string } = {
 }
 const inserted: Array<Record<string, unknown>> = []
 const ghlCalls: Array<{ event: string; contact: Record<string, unknown> }> = []
+const anthropicCalls: Array<unknown> = []
 
 vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: async (key: string) => ({
@@ -47,10 +53,29 @@ vi.mock("@/lib/site-crawler", () => ({
     pageContent.ok ? { url: "https://target.example/", title: pageContent.title, text: pageContent.text } : null,
 }))
 
-vi.mock("@/lib/phi-filter", () => ({
-  detectPhi: () => ({ detected: phiState.detected, patterns: phiState.detected ? ["SSN"] : [] }),
-  PHI_ERROR_MESSAGE: "PHI detected",
-}))
+vi.mock("@/lib/phi-filter", async () => {
+  // Pull in the real module so we can delegate to its redactPhiInOutput
+  // when useRealRedactor.value === true. Static import would defeat
+  // vi.mock; this async factory loads the real impl exactly once and
+  // the closure picks it up on every call to the mocked redactor.
+  const actual = await vi.importActual<typeof import("@/lib/phi-filter")>("@/lib/phi-filter")
+  return {
+    detectPhi: () => ({ detected: phiState.detected, patterns: phiState.detected ? ["SSN"] : [] }),
+    PHI_ERROR_MESSAGE: "PHI detected",
+    redactPhiInOutput: (input: { summary?: string | null; flags?: unknown[] }) => {
+      if (useRealRedactor.value) {
+        return actual.redactPhiInOutput(input as Parameters<typeof actual.redactPhiInOutput>[0])
+      }
+      // Default: pass through, no PHI claimed.
+      return {
+        hadHits: false,
+        hits: [] as string[],
+        cleanedText: typeof input.summary === "string" ? input.summary : "",
+        cleanedFlags: input.flags as never,
+      }
+    },
+  }
+})
 
 vi.mock("@/lib/compliance-bible", () => ({
   getComplianceBiblePrompt: () => "[bible-stub]",
@@ -67,10 +92,13 @@ vi.mock("@/lib/error-tracking", () => ({
 vi.mock("@/lib/anthropic", () => ({
   anthropic: {
     messages: {
-      create: async () => ({
-        content: [{ type: "text", text: claudeResponse.json }],
-        usage: { input_tokens: 100, output_tokens: 200 },
-      }),
+      create: async (...args: unknown[]) => {
+        anthropicCalls.push(args)
+        return {
+          content: [{ type: "text", text: claudeResponse.json }],
+          usage: { input_tokens: 100, output_tokens: 200 },
+        }
+      },
     },
   },
 }))
@@ -131,6 +159,8 @@ describe("POST /api/free-audit", () => {
     phiState.detected = false
     inserted.length = 0
     ghlCalls.length = 0
+    anthropicCalls.length = 0
+    useRealRedactor.value = false
   })
 
   it("429 when global cap exhausted", async () => {
@@ -231,5 +261,91 @@ describe("POST /api/free-audit", () => {
     expect(res1.status).toBe(200)
     expect(res2.status).toBe(200)
     expect(inserted.length).toBe(2)
+  })
+
+  it("honeypot empty: legitimate submission with website_url2: '' runs full scan + persists + fires GHL", async () => {
+    const { POST } = await loadRoute()
+    const res = await POST(req({ ...validBody, website_url2: "" }))
+    expect(res.status).toBe(200)
+    expect(inserted.length).toBe(1)
+    expect(ghlCalls.length).toBe(1)
+    expect(anthropicCalls.length).toBe(1)
+  })
+
+  it("honeypot tripped: non-empty website_url2 silent 200, no Anthropic + no insert + no GHL", async () => {
+    // Honeypot must short-circuit BEFORE the Anthropic call so bots can't
+    // burn LLM budget by probing the route. We assert all three downstream
+    // effects (Claude, DB, GHL) are skipped.
+    const { POST } = await loadRoute()
+    const res = await POST(req({ ...validBody, website_url2: "http://spam.example" }))
+    expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json.success).toBe(true)
+    expect(anthropicCalls.length).toBe(0)
+    expect(inserted.length).toBe(0)
+    expect(ghlCalls.length).toBe(0)
+  })
+
+  it("DLP: PHI in Claude summary is redacted before persist + return", async () => {
+    // Simulate Claude echoing back labelled PHI (DOB/SSN/Patient Name/MRN) in
+    // its summary + a flag's matched_text + context. The output scrubber
+    // (redactPhiInOutput) should swap each match for a canonical
+    // [REDACTED-{patternName}] placeholder before we persist OR return JSON.
+    // We flip useRealRedactor.value so the route hits the real regex set;
+    // detectPhi still no-ops (pageContent.text is the safe default).
+    useRealRedactor.value = true
+    claudeResponse.json = JSON.stringify({
+      compliance_score: 30,
+      summary: "Page references DOB: 1979-04-12 and SSN: 123-45-6789 in customer testimonials.",
+      flags: [
+        {
+          matched_text: "Patient Name: John Doe loves our therapy",
+          banned_phrase: "PHI in testimonial",
+          risk_level: "high",
+          reason: "Patient identifier in marketing copy.",
+          alternative: "Anonymized testimonial",
+          context: "MRN: 998877 - Patient Name: John Doe loves our therapy",
+          element_type: "p",
+        },
+      ],
+    })
+
+    const { POST } = await loadRoute()
+    const res = await POST(req(validBody))
+    expect(res.status).toBe(200)
+    const json = await res.json()
+    // Summary scrubbed: raw PHI gone, placeholders present.
+    expect(json.summary).not.toContain("123-45-6789")
+    expect(json.summary).not.toContain("1979-04-12")
+    expect(json.summary).toContain("[REDACTED-SSN]")
+    expect(json.summary).toContain("[REDACTED-DOB]")
+    // Single flag is within PUBLIC_FLAG_LIMIT so it's unlocked - the public
+    // JSON surfaces its scrubbed matched_text + context. The same cleaned
+    // form was passed into createFreeAuditLead (route mutates
+    // scanResult.flags in-place before persist), so verifying the public
+    // surface here covers both code paths; the encrypted flags_enc column
+    // can't be inspected directly from the test side because the repo
+    // encrypts JSONB through encryptJSONForRow.
+    expect(json.flags).toHaveLength(1)
+    expect(json.flags[0].locked).toBe(false)
+    expect(json.flags[0].matched_text).toContain("[REDACTED-Patient label]")
+    expect(json.flags[0].matched_text).not.toContain("John Doe")
+    expect(json.flags[0].context).toContain("[REDACTED-MRN]")
+    expect(json.flags[0].context).not.toContain("998877")
+    // Persist happened (encrypted row is queued for insert).
+    expect(inserted.length).toBe(1)
+
+    useRealRedactor.value = false
+    // Reset claudeResponse so subsequent tests in this suite (if any get
+    // added below) see the default fixture again.
+    claudeResponse.json = JSON.stringify({
+      compliance_score: 25,
+      summary: "Multiple high-risk efficacy and FDA-approval claims.",
+      flags: [
+        { matched_text: "FDA-approved", banned_phrase: "FDA-approved (stem cells)", risk_level: "high", reason: "No FDA approval for orthopedic stem cells.", alternative: "performed in an FDA-registered facility", context: "Stem cell therapy is FDA-approved and...", element_type: "p" },
+        { matched_text: "cures arthritis", banned_phrase: "cures (disease state)", risk_level: "high", reason: "Treatment claim without substantiation.", alternative: "may help relieve arthritis symptoms", context: "FDA-approved and cures arthritis. Schedule...", element_type: "p" },
+        { matched_text: "Schedule today", banned_phrase: "urgency-without-context", risk_level: "low", reason: "Mild urgency cue near efficacy claim raises FTC scrutiny.", alternative: "Book a consultation", context: "cures arthritis. Schedule today.", element_type: "p" },
+      ],
+    })
   })
 })

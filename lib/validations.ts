@@ -17,6 +17,13 @@ export const inviteSchema = z.object({
 export const waitlistSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be under 100 characters'),
   email: z.string().trim().toLowerCase().email('Please enter a valid email address').max(200),
+  // Honeypot: invisible field rendered offscreen + aria-hidden + tabIndex=-1.
+  // Real users never fill it; bots that crawl form fields do. Route handlers
+  // check for a non-empty value and silently drop the submission (200 with
+  // success shape) so the bot gets no signal it tripped a check. Field is
+  // optional here so legitimate submissions with empty/absent value pass
+  // schema validation. The honeypot gate runs BEFORE schema parse.
+  website_url2: z.string().optional(),
 })
 
 export const newsletterSchema = z.object({
@@ -57,6 +64,10 @@ export const freeAuditSchema = z.object({
   name: z.string().trim().max(100).optional().or(z.literal('')),
   clinic_name: z.string().trim().max(200).optional().or(z.literal('')),
   accept_terms: z.literal(true, { error: 'Please agree to the terms before continuing' }),
+  // Honeypot - see waitlistSchema for the contract. Optional so legitimate
+  // (empty) submissions pass; routes drop non-empty values silently before
+  // schema parse runs.
+  website_url2: z.string().optional(),
 })
 
 export const CONTACT_SUBJECT_OPTIONS = [
@@ -88,6 +99,9 @@ export const betaApplicationSchema = z.object({
   // Zod v4 dropped `errorMap` from the simple-overload params for z.literal -
   // the supported keys are { error?, message? }. Use `message` directly.
   accept_terms: z.literal(true, { message: 'Please confirm you agree to the founder-beta terms' }),
+  // Honeypot - see waitlistSchema for the contract. Routes drop non-empty
+  // values silently before schema parse runs.
+  website_url2: z.string().optional(),
 })
 
 /** Block private/internal IPs in a URL string */

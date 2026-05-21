@@ -127,4 +127,27 @@ describe("POST /api/waitlist", () => {
     expect(row.email).toBeUndefined()
     expect(row.source).toBe("website")
   })
+
+  it("honeypot empty: legitimate submission with website_url2: '' succeeds + inserts", async () => {
+    const { POST } = await loadRoute()
+    const res = await POST(req({ name: "Jane", email: "jane@clinic.com", website_url2: "" }))
+    expect(res.status).toBe(200)
+    expect(inserted.length).toBe(1)
+  })
+
+  it("honeypot tripped: non-empty website_url2 returns silent 200 + drops insert", async () => {
+    // Bot fills the offscreen field. Route must return the same success
+    // shape as a real submission (no 4xx signal back), but skip the DB
+    // insert + GHL ping entirely.
+    const { POST } = await loadRoute()
+    const res = await POST(req({
+      name: "Spambot",
+      email: "spam@spambot.example",
+      website_url2: "http://spam.example",
+    }))
+    expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json.success).toBe(true)
+    expect(inserted.length).toBe(0)
+  })
 })

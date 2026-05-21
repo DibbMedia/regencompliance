@@ -21,7 +21,7 @@ import { anthropic } from "@/lib/anthropic"
 import { deriveSource } from "@/lib/source-tracking"
 import { extractPageContent } from "@/lib/site-crawler"
 import { assertSafeUrl } from "@/lib/ssrf"
-import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
+import { detectPhi, PHI_ERROR_MESSAGE, redactPhiInOutput } from "@/lib/phi-filter"
 import { getComplianceBiblePrompt } from "@/lib/compliance-bible"
 import { trackApiUsage } from "@/lib/api-costs"
 import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
@@ -89,6 +89,19 @@ export async function POST(request: Request) {
     const body = await request.json().catch(() => null)
     if (!body) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
+    }
+
+    // Honeypot gate. See app/api/waitlist/route.ts for the contract.
+    // Silent 200 + success shape, no DB insert, no Anthropic call, no GHL,
+    // no audit. The honeypot must come BEFORE the Anthropic call so a bot
+    // probing the route can't burn LLM budget.
+    if (
+      typeof body === "object" && body !== null &&
+      typeof (body as Record<string, unknown>).website_url2 === "string" &&
+      (body as Record<string, unknown>).website_url2 !== ""
+    ) {
+      console.info("[honeypot] dropped free-audit submission with non-empty website_url2")
+      return NextResponse.json({ success: true })
     }
 
     const parsed = freeAuditSchema.safeParse(body)
@@ -224,6 +237,36 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
         { error: "Compliance engine returned invalid response. Please try again." },
         { status: 503 },
       )
+    }
+
+    // Output-side DLP. The PHI input gate (detectPhi above) catches obvious
+    // patient-record dumps in the source page, but Claude can still echo a
+    // labelled SSN / DOB / MRN that slipped past the input pre-screen back in
+    // its summary or matched_text. Scrub before we persist OR return to the
+    // browser - the public response, the DB row, the GHL payload, and the
+    // logged details all consume the cleaned form. Hits-list (pattern names
+    // only, never values) is the only thing we log so we can spot patterns
+    // without re-leaking PHI into our own observability surface.
+    // Cast: RawFlag's concrete-typed optional fields (risk_level?: string, etc.)
+    // are not structurally assignable to `[k: string]: unknown` even though
+    // every value is a subtype of unknown. The function only reads
+    // matched_text + context, so the cast is safe at the call site.
+    const phiOut = redactPhiInOutput({
+      summary: scanResult.summary,
+      flags: (scanResult.flags ?? []) as unknown as Array<{ matched_text?: string;[k: string]: unknown }>,
+    })
+    if (phiOut.hadHits) {
+      console.warn(`[free-audit] PHI redacted in scan output: ${phiOut.hits.join(", ")}`)
+      scanResult.summary = phiOut.cleanedText
+      // cleanedFlags is ScanFlag[] (matched_text + context already scrubbed);
+      // RawFlag is a strict subset of the fields we touch downstream, so the
+      // cast is safe. Spread + override keeps the optional fields that
+      // ScanFlag promotes to required (rule_id, banned_phrase, etc.) as
+      // whatever Claude emitted - undefined / missing values stay
+      // undefined / missing, which is what RawFlag's optional shape models.
+      if (phiOut.cleanedFlags) {
+        scanResult.flags = phiOut.cleanedFlags as unknown as RawFlag[]
+      }
     }
 
     const allFlags: RawFlag[] = scanResult.flags || []

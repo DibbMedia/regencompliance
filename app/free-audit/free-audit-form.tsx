@@ -78,7 +78,9 @@ export function FreeAuditForm() {
 
   const form = useForm<FreeAuditInput>({
     resolver: zodResolver(freeAuditSchema),
-    defaultValues: { website_url: "", email: "", name: "", clinic_name: "", accept_terms: false as unknown as true },
+    // website_url2 is the honeypot - see lib/validations.ts. Seeded empty so
+    // the value rides along; bots fill it, real users can't.
+    defaultValues: { website_url: "", email: "", name: "", clinic_name: "", accept_terms: false as unknown as true, website_url2: "" },
   })
 
   async function onSubmit(values: FreeAuditInput) {
@@ -139,6 +141,25 @@ export function FreeAuditForm() {
               <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8 backdrop-blur-xl">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    {/* Honeypot - invisible to humans, bots fill it. See
+                        waitlist page for the full pattern + rationale. */}
+                    <input
+                      type="text"
+                      name="website_url2"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: "-9999px",
+                        width: "1px",
+                        height: "1px",
+                        opacity: 0,
+                        pointerEvents: "none",
+                      }}
+                      onChange={(e) => form.setValue("website_url2", e.target.value)}
+                      defaultValue=""
+                    />
                     <FormField
                       control={form.control}
                       name="website_url"

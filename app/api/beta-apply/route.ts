@@ -37,6 +37,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
     }
 
+    // Honeypot gate. See app/api/waitlist/route.ts for the full contract.
+    // Silent 200 + success shape so bots get no signal what they tripped.
+    if (
+      typeof body === "object" && body !== null &&
+      typeof (body as Record<string, unknown>).website_url2 === "string" &&
+      (body as Record<string, unknown>).website_url2 !== ""
+    ) {
+      console.info("[honeypot] dropped beta-apply submission with non-empty website_url2")
+      return NextResponse.json({ success: true })
+    }
+
     const parsed = betaApplicationSchema.safeParse(body)
     if (!parsed.success) {
       const first = parsed.error.issues[0]

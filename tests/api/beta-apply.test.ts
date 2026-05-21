@@ -155,4 +155,24 @@ describe("POST /api/beta-apply", () => {
     // Optional column: null in payload.
     expect(inserted[0].website_enc).toBeNull()
   })
+
+  it("honeypot empty: legitimate submission with website_url2: '' succeeds + inserts + fires GHL", async () => {
+    const { POST } = await loadRoute()
+    const res = await POST(req({ ...validBody, website_url2: "" }))
+    expect(res.status).toBe(200)
+    expect(inserted.length).toBe(1)
+    expect(ghlCalls.length).toBe(1)
+  })
+
+  it("honeypot tripped: non-empty website_url2 returns silent 200 + drops insert + no GHL", async () => {
+    // Bot fills the offscreen field. Route returns the same success shape
+    // (no 4xx tell) but skips DB + GHL entirely.
+    const { POST } = await loadRoute()
+    const res = await POST(req({ ...validBody, website_url2: "http://spam.example" }))
+    expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json.success).toBe(true)
+    expect(inserted.length).toBe(0)
+    expect(ghlCalls.length).toBe(0)
+  })
 })

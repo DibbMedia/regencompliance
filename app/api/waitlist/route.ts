@@ -42,6 +42,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
     }
 
+    // Honeypot gate. The `website_url2` field is rendered invisibly on the
+    // form (offscreen + aria-hidden + tabIndex=-1); only bots crawling field
+    // names will fill it. Return the normal success shape (200) so the bot
+    // gets no signal that this check is what they tripped - mutating bots
+    // re-probe routes that 403, but accept a "success" as terminal. Do not
+    // insert, do not call sendToGhl, do not log audit. Never log the value
+    // itself - operators have injected XSS / log-poisoning payloads here.
+    if (
+      typeof body === "object" && body !== null &&
+      typeof (body as Record<string, unknown>).website_url2 === "string" &&
+      (body as Record<string, unknown>).website_url2 !== ""
+    ) {
+      console.info("[honeypot] dropped waitlist submission with non-empty website_url2")
+      return NextResponse.json({ success: true })
+    }
+
     const parsed = waitlistSchema.safeParse(body)
     if (!parsed.success) {
       const first = parsed.error.issues[0]

@@ -19,7 +19,11 @@ export default function WaitlistPage() {
 
   const form = useForm<WaitlistInput>({
     resolver: zodResolver(waitlistSchema),
-    defaultValues: { name: "", email: "" },
+    // website_url2 is the honeypot - seeded empty so the field rides along
+    // in the submitted payload. Real users can't see/focus it; bots that
+    // walk form fields will fill it and trigger the silent 200 drop in the
+    // route handler. Field is optional in the schema (see lib/validations).
+    defaultValues: { name: "", email: "", website_url2: "" },
   })
 
   async function onSubmit(values: WaitlistInput) {
@@ -101,6 +105,28 @@ export default function WaitlistPage() {
               ) : (
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    {/* Honeypot - invisible to humans, bots fill it. The
+                        offscreen positioning + aria-hidden + tabIndex=-1
+                        keeps the field out of the visual + a11y + keyboard
+                        trees. onChange writes back into react-hook-form so
+                        the value rides along in the JSON POST body. */}
+                    <input
+                      type="text"
+                      name="website_url2"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: "-9999px",
+                        width: "1px",
+                        height: "1px",
+                        opacity: 0,
+                        pointerEvents: "none",
+                      }}
+                      onChange={(e) => form.setValue("website_url2", e.target.value)}
+                      defaultValue=""
+                    />
                     <FormField
                       control={form.control}
                       name="name"
