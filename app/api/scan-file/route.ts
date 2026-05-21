@@ -11,12 +11,17 @@ import { extractTextFromFile, validateFile } from "@/lib/file-extractor"
 import { trackApiUsage } from "@/lib/api-costs"
 import { hashContent } from "@/lib/scan-cache"
 import { captureError } from "@/lib/error-tracking"
-import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
+import { detectPhi, PHI_ERROR_MESSAGE, redactPhiInOutput } from "@/lib/phi-filter"
 import { getActiveComplianceRules } from "@/lib/compliance-rules-cache"
 import { createScan, decryptScanRow, type ScanEncryptedRow } from "@/lib/repos/scans"
 import { getProfile } from "@/lib/repos/profiles"
 import { withCryptoRequestScope } from "@/lib/crypto"
 import type { ScanFlag } from "@/lib/types"
+
+// Sampled warn counter for output-side PHI redaction. See app/api/scan/route.ts
+// for the rationale; uploaded files are a high-risk surface because a clinic
+// might paste a patient export into a PDF/DOCX by accident.
+let scanFileRedactCount = 0
 
 export async function POST(request: Request) {
   try {
@@ -210,10 +215,30 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       )
     }
 
-    const flags = scanResult.flags || []
-    const highCount = flags.filter((f: { risk_level: string }) => f.risk_level === "high").length
-    const mediumCount = flags.filter((f: { risk_level: string }) => f.risk_level === "medium").length
-    const lowCount = flags.filter((f: { risk_level: string }) => f.risk_level === "low").length
+    const rawFlags = (scanResult.flags || []) as ScanFlag[]
+
+    // Output-side PHI scrub. Even though `detectPhi` already vetted the
+    // extracted file text, Claude's quoted-back snippets can include patient
+    // info the input gate missed. Redact BEFORE persistence so the encrypted
+    // scans row never holds raw PHI.
+    const redaction = redactPhiInOutput({
+      summary: scanResult.summary,
+      flags: rawFlags,
+    })
+    if (redaction.hadHits) {
+      scanFileRedactCount++
+      if (scanFileRedactCount === 1 || scanFileRedactCount % 100 === 0) {
+        console.warn(
+          `[scan-file] PHI redacted in scan output for user ${user.id} file ${file.name}: ${redaction.hits.join(", ")} (total since start: ${scanFileRedactCount})`
+        )
+      }
+    }
+    const flags = (redaction.cleanedFlags ?? rawFlags) as ScanFlag[]
+    const cleanedSummary = redaction.hadHits ? redaction.cleanedText : scanResult.summary
+
+    const highCount = flags.filter((f) => f.risk_level === "high").length
+    const mediumCount = flags.filter((f) => f.risk_level === "medium").length
+    const lowCount = flags.filter((f) => f.risk_level === "low").length
 
     // Save scan via encrypted repo. content_hash stays plain.
     let scan
@@ -223,7 +248,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
         user_id: user.id,
         content_type: contentType,
         original_text: extracted.text,
-        flags: flags as ScanFlag[],
+        flags,
         compliance_score: scanResult.compliance_score,
         flag_count: flags.length,
         high_risk_count: highCount,
@@ -243,7 +268,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
 
     return NextResponse.json({
       ...scan,
-      summary: scanResult.summary,
+      summary: cleanedSummary,
       filename: file.name,
       page_count: extracted.pageCount ?? null,
     })

@@ -23,7 +23,15 @@ import {
   updateSitePage,
   type SitePage,
 } from "@/lib/repos/site-pages"
+import { redactPhiInOutput } from "@/lib/phi-filter"
 import type { ScanFlag } from "@/lib/types"
+
+// Sampled warn counter for output-side PHI redaction across the shared
+// site-crawl loop (used by sites/scan, sites/crawl, and cron/site-monitor).
+// Pattern matches lib/audit-log.ts: first hit + every 100th thereafter.
+// Site crawls walk many pages so without sampling this would dominate the
+// runtime logs on any site that quotes patient testimonials.
+let siteCrawlRedactCount = 0
 
 export interface RuleForPrompt {
   id: string
@@ -283,7 +291,28 @@ export async function scanSitePages(
         continue
       }
 
-      const flags = scanResult.flags ?? []
+      const rawFlags = scanResult.flags ?? []
+
+      // Output-side PHI scrub. Site crawls are the highest-risk surface
+      // because the page content was never vetted by `detectPhi` (input gate
+      // only runs on standalone scan routes). If a clinic's testimonial
+      // page quotes "Sarah K., DOB 03/14/1962, MRN 0042913", redact BEFORE
+      // we hand the flags + summary to createScan / updateSitePage so the
+      // encrypted scans + site_pages rows never carry raw PHI.
+      const redaction = redactPhiInOutput({
+        summary: scanResult.summary,
+        flags: rawFlags,
+      })
+      if (redaction.hadHits) {
+        siteCrawlRedactCount++
+        if (siteCrawlRedactCount === 1 || siteCrawlRedactCount % 100 === 0) {
+          console.warn(
+            `[${source}] PHI redacted in scan output for page ${page.id} url ${page.url}: ${redaction.hits.join(", ")} (total since start: ${siteCrawlRedactCount})`
+          )
+        }
+      }
+      const flags = (redaction.cleanedFlags ?? rawFlags) as ScanFlag[]
+
       const highCount = flags.filter((f) => f.risk_level === "high").length
       const mediumCount = flags.filter((f) => f.risk_level === "medium").length
       const lowCount = flags.filter((f) => f.risk_level === "low").length

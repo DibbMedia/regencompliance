@@ -62,6 +62,16 @@ vi.mock("@/lib/impersonation", () => ({
 vi.mock("@/lib/phi-filter", () => ({
   detectPhi: () => ({ detected: false, patterns: [] }),
   PHI_ERROR_MESSAGE: "PHI detected",
+  // Pass-through stub - this test doesn't exercise the output redactor.
+  redactPhiInOutput: (input: {
+    summary?: string | null
+    flags?: Array<{ matched_text?: string;[k: string]: unknown }>
+  }) => ({
+    hadHits: false,
+    hits: [],
+    cleanedText: input.summary ?? "",
+    cleanedFlags: input.flags,
+  }),
 }))
 
 vi.mock("@/lib/api-costs", () => ({

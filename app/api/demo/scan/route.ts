@@ -9,7 +9,13 @@ import { checkRateLimit } from "@/lib/rate-limit"
 import { trackApiUsage } from "@/lib/api-costs"
 import { captureError } from "@/lib/error-tracking"
 import { getClientIp } from "@/lib/ip"
-import { detectPhi, PHI_ERROR_MESSAGE } from "@/lib/phi-filter"
+import { detectPhi, PHI_ERROR_MESSAGE, redactPhiInOutput } from "@/lib/phi-filter"
+
+// Sampled warn counter for output-side PHI redaction in the demo route.
+// Demo doesn't persist scans, but the response is returned to an
+// anonymous caller, so we still scrub before responding. Pattern matches
+// lib/audit-log.ts: first hit + every 100th thereafter.
+let demoScanRedactCount = 0
 
 const MAX_DEMO_SCANS = 3
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
@@ -203,7 +209,27 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       )
     }
 
-    const flags = scanResult.flags || []
+    const rawFlags = scanResult.flags || []
+
+    // Output-side PHI scrub. Demo doesn't persist, but the response goes
+    // back to an anonymous caller; if Claude quoted any patient info from
+    // a pasted snippet that slipped past the input `detectPhi` (defensive
+    // depth - demo input already failed-closed on PHI labels), strip it
+    // from the response payload too. No PHI leaves this route.
+    const redaction = redactPhiInOutput({
+      summary: scanResult.summary,
+      flags: rawFlags,
+    })
+    if (redaction.hadHits) {
+      demoScanRedactCount++
+      if (demoScanRedactCount === 1 || demoScanRedactCount % 100 === 0) {
+        console.warn(
+          `[demo/scan] PHI redacted in scan output for ip ${ip}: ${redaction.hits.join(", ")} (total since start: ${demoScanRedactCount})`
+        )
+      }
+    }
+    const flags = redaction.cleanedFlags ?? rawFlags
+    const cleanedSummary = redaction.hadHits ? redaction.cleanedText : scanResult.summary
 
     // Update demo cookie
     const newDemoState: DemoCookie = {
@@ -214,7 +240,7 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
     const res = NextResponse.json({
       result: {
         compliance_score: scanResult.compliance_score,
-        summary: scanResult.summary,
+        summary: cleanedSummary,
         flags,
         flag_count: flags.length,
         high_risk_count: flags.filter((f: { risk_level: string }) => f.risk_level === "high").length,
@@ -231,7 +257,11 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
 
     res.cookies.set("regen_demo", encodeDemoCookie(newDemoState), {
       httpOnly: true,
-      secure: true,
+      // Secure-in-prod only - hardcoded `true` here previously blocked the
+      // cookie from sticking on http://localhost during dev, which made the
+      // demo flow appear to "reset" between requests. See
+      // docs/security/cookie-audit-2026-05-20.md.
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: COOKIE_MAX_AGE,
       path: "/",

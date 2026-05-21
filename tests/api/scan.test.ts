@@ -60,6 +60,19 @@ vi.mock("@/lib/impersonation", () => ({
 vi.mock("@/lib/phi-filter", () => ({
   detectPhi: () => ({ detected: false, patterns: [] }),
   PHI_ERROR_MESSAGE: "PHI detected",
+  // Output-side scrub stub: pass through unchanged with no hits, since this
+  // test does not exercise the redaction surface. Returning the same flag
+  // array shape the route hands in keeps `createScan` parity with the
+  // pre-redactor path.
+  redactPhiInOutput: (input: {
+    summary?: string | null
+    flags?: Array<{ matched_text?: string;[k: string]: unknown }>
+  }) => ({
+    hadHits: false,
+    hits: [],
+    cleanedText: input.summary ?? "",
+    cleanedFlags: input.flags,
+  }),
 }))
 
 vi.mock("@/lib/api-costs", () => ({
