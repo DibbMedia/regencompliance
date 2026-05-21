@@ -246,6 +246,7 @@ No callback into our API is required - all the data lives on the contact record.
 | `CRON_SECRET` | Gates all `/api/cron/*` routes. Required for Vercel Cron triggers + manual cron invocations. | Should be set already; if not, generate with `openssl rand -hex 32`. |
 | `ENCRYPTION_KEY_V1` | At-rest encryption envelope for any future encrypted columns (`lib/crypto.ts`). | Optional. No production caller yet. |
 | `NEXT_PUBLIC_APP_URL` | Drives every `SITE_URL` import + every Stripe return URL + Supabase signup redirect. | Canonical value: `https://regencompliance.ai` (the live domain post-cutover). |
+| `ADMIN_ALLOWED_IPS` | Comma-separated list of IPv4/IPv6 addresses or CIDR blocks allowed to reach `/admin/`, `/superadmin/`, and `/api/admin/` paths. When unset, no IP gating (default). When set, all other IPs receive HTTP 403. Set this from Vercel env after confirming your team's static egress IP. Example: `ADMIN_ALLOWED_IPS=203.0.113.42, 198.51.100.0/24` | Optional. Off by default. |
 
 ## 5. Migrations to apply (in order)
 

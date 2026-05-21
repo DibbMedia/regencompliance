@@ -1,8 +1,55 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 import { enforceOrigin } from "@/lib/security/origin"
+import { parseAllowedIps } from "@/lib/security/ip-allowlist"
 
 const IMPERSONATE_COOKIE = "regen_impersonate"
+
+// Env-gated IP allowlist for admin surfaces. Parsed once at module load so
+// every request reads from the cached matcher instead of re-parsing the env
+// string. When ADMIN_ALLOWED_IPS is unset / empty, the matcher reports
+// isEmpty()=true and the gate below short-circuits (graceful "feature off"
+// default - safe for dev + opt-in production deployment).
+const adminIpAllowlist = parseAllowedIps(process.env.ADMIN_ALLOWED_IPS)
+
+// Sampled-warn counter for denial logs (every 1st + every 100th, matching
+// the F-02 / F-09 pattern used elsewhere). Lives in module scope; resets
+// only on cold start, which is fine - logs are best-effort.
+let adminIpDenialCount = 0
+
+/**
+ * Extract the client IP from a NextRequest. Mirrors `lib/ip.ts`'s priority
+ * order: x-vercel-forwarded-for -> x-forwarded-for (LEFT-most per RFC 7239,
+ * which is the original client - the lib/ip version uses the rightmost for
+ * its own reasons; for an allowlist gate we want the originating client)
+ * -> x-real-ip. Inlined instead of imported because the admin-IP gate has
+ * different leftmost-vs-rightmost semantics from the general-purpose helper.
+ */
+function getAdminGateClientIp(request: NextRequest): string {
+  const vercel = request.headers
+    .get("x-vercel-forwarded-for")
+    ?.split(",")[0]
+    ?.trim()
+  if (vercel) return vercel
+  const xff = request.headers.get("x-forwarded-for")
+  if (xff) {
+    const first = xff.split(",")[0]?.trim()
+    if (first) return first
+  }
+  const real = request.headers.get("x-real-ip")
+  if (real) return real.trim()
+  return "unknown"
+}
+
+function isAdminGatedPath(pathname: string): boolean {
+  return (
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/") ||
+    pathname === "/superadmin" ||
+    pathname.startsWith("/superadmin/") ||
+    pathname.startsWith("/api/admin/")
+  )
+}
 
 // Canonical production hosts. Localhost / preview deploys / vercel.app hosts
 // fall through and serve everything from one host (single-domain dev mode).
@@ -206,6 +253,25 @@ export async function proxy(request: NextRequest) {
     return response
   }
 
+  // Env-gated IP allowlist for admin surfaces. Runs BEFORE the marketing
+  // short-circuit and BEFORE the Supabase auth roundtrip - a disallowed IP
+  // should fail fast without spending a DB call or even seeing the rest of
+  // the routing logic. When ADMIN_ALLOWED_IPS is unset, `isEmpty()` is true
+  // and the gate is a no-op (feature off by default).
+  if (!adminIpAllowlist.isEmpty() && isAdminGatedPath(pathname)) {
+    const clientIp = getAdminGateClientIp(request)
+    if (!adminIpAllowlist.matches(clientIp)) {
+      adminIpDenialCount += 1
+      if (adminIpDenialCount === 1 || adminIpDenialCount % 100 === 0) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[admin-ip-allowlist] denied IP ${clientIp} for path ${pathname}`,
+        )
+      }
+      return new NextResponse("Forbidden", { status: 403 })
+    }
+  }
+
   // Marketing host short-circuit: every non-API path on the apex is public,
   // so skip the Supabase auth check entirely. APIs still flow through origin
   // enforcement + the skip list below so /api/waitlist, /api/free-audit etc.
@@ -278,10 +344,20 @@ export async function proxy(request: NextRequest) {
           )
           supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
           cookiesToSet.forEach(({ name, value, options }) =>
+            // IMPORTANT: do NOT force httpOnly on Supabase auth cookies.
+            // @supabase/ssr emits multiple cookies (sb-*-auth-token,
+            // sb-*-code-verifier, etc.) and chooses httpOnly per cookie.
+            // Forcing httpOnly:true breaks the client SDK silently with the
+            // "skeleton stuck forever" symptom and no console errors. See
+            // docs/security/cookie-audit-2026-05-20.md and user-memory
+            // feedback_supabase_ssr_no_httponly.md for context.
+            //
+            // We still enforce SameSite=Lax (CSRF defense for cross-site
+            // POSTs) and Secure-in-prod (transport guarantee), but trust
+            // Supabase's per-cookie httpOnly decision.
             supabaseResponse.cookies.set(name, value, {
               ...options,
-              sameSite: "lax",
-              httpOnly: true,
+              sameSite: options.sameSite ?? "lax",
               secure: process.env.NODE_ENV === "production",
             })
           )

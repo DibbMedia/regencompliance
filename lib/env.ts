@@ -73,6 +73,14 @@ const envSchema = z
     // Server-only HMAC key for the demo-mode anonymous cookie. Falls back to
     // NEXTAUTH_SECRET, then SUPABASE_SERVICE_ROLE_KEY (last resort).
     DEMO_COOKIE_SECRET: z.string().trim().min(1).optional(),
+
+    // Optional IP allowlist for /admin/, /superadmin/, and /api/admin/ paths.
+    // Comma-separated IPv4/IPv6 addresses and/or CIDR blocks. When unset,
+    // no IP gating (default). When set, non-matching IPs receive HTTP 403.
+    // Parsing + validation is delegated to lib/security/ip-allowlist.ts;
+    // we keep the env-validation contract loose (`optional()` string) so a
+    // typo in one entry doesn't fail the entire env-validation step at boot.
+    ADMIN_ALLOWED_IPS: z.string().optional(),
   })
   .superRefine((env, ctx) => {
     if (!env.STRIPE_SECRET_KEY && !env.STRIPE_RESTRICTED_KEY) {
