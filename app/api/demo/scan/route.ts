@@ -17,6 +17,11 @@ import { detectPhi, PHI_ERROR_MESSAGE, redactPhiInOutput } from "@/lib/phi-filte
 // lib/audit-log.ts: first hit + every 100th thereafter.
 let demoScanRedactCount = 0
 
+// One-shot warn flag for the case where prod has no demo cookie secret
+// configured. The route still answers (with IP-only rate limiting), but
+// the operator should see the warning once per process.
+let demoCookieWarned = false
+
 const MAX_DEMO_SCANS = 3
 const COOKIE_MAX_AGE = 90 * 24 * 60 * 60 // 90 days
 
@@ -25,30 +30,70 @@ interface DemoCookie {
   started_at: string
 }
 
-// HMAC-sign demo cookies so users can't reset scans_used by editing the
-// cookie (or replay an older lower-count payload). Falls back to the
-// session secret if a dedicated key isn't set; both are server-only.
-function demoSecret(): string {
-  return (
-    process.env.DEMO_COOKIE_SECRET?.trim() ||
-    process.env.NEXTAUTH_SECRET?.trim() ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() ||
-    ""
-  )
+/**
+ * HMAC secret for the anonymous demo cookie.
+ *
+ * Contract: Cookie requires DEMO_COOKIE_SECRET or NEXTAUTH_SECRET in
+ * production. Without either, the demo runs with IP-only rate limiting
+ * (no cookie persistence).
+ *
+ * Fallback chain:
+ *   1. DEMO_COOKIE_SECRET (preferred - dedicated server-only secret)
+ *   2. NEXTAUTH_SECRET (allowed - same trust tier as a cookie HMAC)
+ *   3. In production: returns null. Caller skips the cookie entirely and
+ *      relies on the IP-only rate-limit bucket. We refuse to derive a key
+ *      from SUPABASE_SERVICE_ROLE_KEY (which would leak service-role bits
+ *      into a cookie value) or to sign with an empty key (which is no
+ *      authentication at all).
+ *   4. In dev/test: derives an ephemeral key from ENCRYPTION_KEY_V1 so
+ *      developer machines can exercise the cookie path without needing
+ *      a separate env var. Last-resort literal is dev-only and clearly
+ *      labelled so it can't accidentally ship to prod.
+ */
+function demoCookieSecret(): string | null {
+  const primary = process.env.DEMO_COOKIE_SECRET?.trim()
+  if (primary) return primary
+  const nextAuth = process.env.NEXTAUTH_SECRET?.trim()
+  if (nextAuth) return nextAuth
+  if (process.env.NODE_ENV === "production") {
+    // No safe fallback in prod - the demo runs without rate-limit
+    // memory rather than running with an empty HMAC.
+    return null
+  }
+  return process.env.ENCRYPTION_KEY_V1?.trim() || "dev-only-fallback-do-not-use-in-prod"
 }
 
-function signPayload(payload: string): string {
-  return createHmac("sha256", demoSecret()).update(payload).digest("base64url")
+function warnCookieDisabledOnce(): void {
+  if (!demoCookieWarned) {
+    demoCookieWarned = true
+    console.warn(
+      "[demo-scan] DEMO_COOKIE_SECRET + NEXTAUTH_SECRET both unset in production - rate-limit cookie disabled, falling back to IP-only limit"
+    )
+  }
 }
 
-function encodeDemoCookie(state: DemoCookie): string {
+function signPayload(payload: string, secret: string): string {
+  return createHmac("sha256", secret).update(payload).digest("base64url")
+}
+
+function encodeDemoCookie(state: DemoCookie): string | null {
+  const secret = demoCookieSecret()
+  if (secret === null) {
+    warnCookieDisabledOnce()
+    return null
+  }
   const payload = JSON.stringify(state)
-  const sig = signPayload(payload)
+  const sig = signPayload(payload, secret)
   return `${Buffer.from(payload).toString("base64url")}.${sig}`
 }
 
 function decodeDemoCookie(raw: string | undefined): DemoCookie | null {
-  if (!raw || !demoSecret()) return null
+  if (!raw) return null
+  const secret = demoCookieSecret()
+  if (secret === null) {
+    warnCookieDisabledOnce()
+    return null
+  }
   const [body, sig] = raw.split(".")
   if (!body || !sig) return null
   let payload: string
@@ -57,7 +102,7 @@ function decodeDemoCookie(raw: string | undefined): DemoCookie | null {
   } catch {
     return null
   }
-  const expected = signPayload(payload)
+  const expected = signPayload(payload, secret)
   // Constant-time compare so a forger can't time-attack the suffix.
   const sigBuf = Buffer.from(sig)
   const expBuf = Buffer.from(expected)
@@ -255,17 +300,24 @@ Return empty flags array and score 100 if clean. No text outside JSON.`,
       },
     })
 
-    res.cookies.set("regen_demo", encodeDemoCookie(newDemoState), {
-      httpOnly: true,
-      // Secure-in-prod only - hardcoded `true` here previously blocked the
-      // cookie from sticking on http://localhost during dev, which made the
-      // demo flow appear to "reset" between requests. See
-      // docs/security/cookie-audit-2026-05-20.md.
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-    })
+    // encodeDemoCookie returns null when no HMAC secret is configured
+    // (e.g. prod without DEMO_COOKIE_SECRET or NEXTAUTH_SECRET). Skip the
+    // Set-Cookie header in that case - the IP-only rate limiter is still
+    // active, so the demo just doesn't get cookie-based persistence.
+    const encoded = encodeDemoCookie(newDemoState)
+    if (encoded !== null) {
+      res.cookies.set("regen_demo", encoded, {
+        httpOnly: true,
+        // Secure-in-prod only - hardcoded `true` here previously blocked the
+        // cookie from sticking on http://localhost during dev, which made the
+        // demo flow appear to "reset" between requests. See
+        // docs/security/cookie-audit-2026-05-20.md.
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: COOKIE_MAX_AGE,
+        path: "/",
+      })
+    }
 
     return res
   } catch (error) {
